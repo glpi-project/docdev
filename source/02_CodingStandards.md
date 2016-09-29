@@ -1,7 +1,5 @@
----
-title: Coding standards
-date: 9th September 2009
----
+Coding standards
+================
 
 Indentation
 -----------
