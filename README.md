@@ -2,20 +2,25 @@
 
 Current documentation is built on top of [daux.io project](http://daux.io). It is released under the terms of the <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons BY-NC-ND 4.0 International License</a>.
 
-## Run int!
+## Run it!
 
-You'll first have to install dependencies; running:
+You'll have to install [Python Sphinx](http://sphinx-doc.org/) 1.3 minimum, and Python Markdown module (`recommonmark`).
+
+If your distribution does not provide this version, you could use a `virtualenv`:
 ```
-$ composer install
+$ virtualenv /path/to/virtualenv/files
+$ /path/to/virtualenv/bin/activate
+$ pip install sphinx
+$ pip install recommonmark
 ```
 
-Once done, just run daux locally using (refer to the daux documentation to get other parameters):
-
+Once all has been successfully installed, just run the following to build the documentation:
 ```
-$ ./vendor/bin/daux serve
+$ make html
 ```
 
-Then you'll find documentation on `http://localhost:8085`.
+Results will be avaiable in the `build/html` directory :)
 
+Note that it actually uses the default theme, which differs locally and on readthedocs system.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
