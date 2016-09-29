@@ -1,7 +1,3 @@
----
-title: Source code
----
-
 Source Code management
 ======================
 
