@@ -192,4 +192,9 @@ Many projects make releases without providing any changlog file. It is not simpl
 
 Keep in mind it could help users to know what have been changed. To achieve this, take a look at `Keep an ChangeLog <http://keepachangelog.com/>`_, it will exaplin you some basics and give you guidelines to maintain sug a thing.
 
+Third party libraries
+^^^^^^^^^^^^^^^^^^^^^
+
+Just like GLPi, you shoul use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
+
 .. _plugins_dir_website: http://plugins.glpi-project.org/

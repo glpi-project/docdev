@@ -133,3 +133,21 @@ There are several good practices regarding commit messages, but this is quite si
 * the first line of the commit should be as short and as concise as possible
 * if you want or have to provide details, let a blank line after the first commit line, and go on. Please avoid very long lines (some conventions talks about 80 characters maximum per line, to keep it lisible).
 
+.. _3rd_party_libs:
+
+Third party libraries
+^^^^^^^^^^^^^^^^^^^^^
+
+Third party libraries are handled using the `composer tool <http://getcomposer.org>`_.
+
+To install existing dependencies, just install composer from their website or from your distribution repositories and then run:
+
+.. code-block:: bash
+
+   $ composer install
+
+To add a new library, you will probably found the command line on the library documentation, something like:
+
+.. code-block:: bash
+
+   $ composer require libauthor/libname
