@@ -12,7 +12,7 @@ $ composer install
 Once done, just run daux locally using (refer to the daux documentation to get other parameters):
 
 ```
-$ ./vendor/bin daux serve
+$ ./vendor/bin/daux serve
 ```
 
 Then you'll find documentation on `http://localhost:8085`.
