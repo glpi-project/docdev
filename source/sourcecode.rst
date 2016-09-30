@@ -123,7 +123,7 @@ At the end, you will want to get your changes back to the project. So, just push
 Commit messages
 ^^^^^^^^^^^^^^^
 
-There are several good practices regarding commit messages, but thus is quite simple:
+There are several good practices regarding commit messages, but this is quite simple:
 
 * the commit message may refer an existing ticket if any,
 
