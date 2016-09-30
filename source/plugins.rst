@@ -129,7 +129,7 @@ For instance, a plugin need both an install and an uninstall hook calls. Here is
 Coding standards
 ^^^^^^^^^^^^^^^^
 
-You must respect GLPi's :doc:`global coding standards <../codingstandards>`
+You must respect GLPi's :doc:`global coding standards <../codingstandards>`.
 
 
 Guidelines
@@ -184,5 +184,12 @@ Versionning
 We recommand you to use `semantic versionning <http://semver.org/>` for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
 
 Whatever the versionning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
+
+ChangeLog
+^^^^^^^^^
+
+Many projects make releases without providing any changlog file. It is not simple for any end user (whether a developer or not) to read a repository log or a list of tickets to know what have changed between two releases.
+
+Keep in mind it could help users to know what have been changed. To achieve this, take a look at `Keep an ChangeLog <http://keepachangelog.com/>`_, it will exaplin you some basics and give you guidelines to maintain sug a thing.
 
 .. _plugins_dir_website: http://plugins.glpi-project.org/
