@@ -9,5 +9,5 @@ GLPi Developer Documentation's documentation
 .. toctree::
    :maxdepth: 3
 
-   01_SourceCode.md
-   02_CodingStandards.md
+   sourcecode
+   codingstandards
