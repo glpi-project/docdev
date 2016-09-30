@@ -7,6 +7,8 @@ GLPi provides facilities to develop plugins, and there are many `plugins that ha
 
 Generally speaking, there is really a few things you have to do in order to get a plugin working; many considerations are up to you. Anyways, this guide will provide you some guidelines to get a plugins repository as consistent as possible :)
 
+If you want to see more advanced examples of what it is possible to do with plugins, you can take a look at the `example plugin source code <http://github.com/pluginsGLPI/example/>`_.
+
 .. _plugins_requirements:
 
 Requirements
@@ -24,11 +26,16 @@ setup.php
 
 The plugin's `setup.php` file will be automatically loaded from GLPi's core in order to get its version, to check pre-requisites, etc.
 
+This is a good practice, thus not mandatory, to define a constant name `{PLUGINNAME}_VERSION` in this file.
+
 This is a minimalist example, for a plugin named `myexample` (functions names will contain plugin name):
 
 .. code-block:: php
 
    <?php
+
+   define('MYEXAMPLE_VERSION', '1.2.10');
+
    /**
     * Init the hooks of the plugins - Needed
     *
@@ -46,7 +53,7 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
    function plugin_version_myexample() {
       return [
          'name'           => 'Plugin name that will be displayed',
-         'version'        => '1.2.10',
+         'version'        => MYEXAMPLE_VERSION,
          'author'         => 'John Doe and <a href="http://foobar.com">Foo Bar</a>',
          'license'        => 'GLPv3',
          'homepage'       => 'http://perdu.com',
@@ -119,6 +126,12 @@ For instance, a plugin need both an install and an uninstall hook calls. Here is
       return true;
    }
 
+Coding standards
+^^^^^^^^^^^^^^^^
+
+You must respect GLPi's :doc:`global coding standards <../codingstandards>`
+
+
 Guidelines
 ----------
 
@@ -168,8 +181,8 @@ The plugin directory structure should look like the following:
 Versionning
 ^^^^^^^^^^^
 
-Coding standards
-^^^^^^^^^^^^^^^^
+We recommand you to use `semantic versionning <http://semver.org/>` for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
 
+Whatever the versionning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
 
 .. _plugins_dir_website: http://plugins.glpi-project.org/
