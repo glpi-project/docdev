@@ -6,4 +6,3 @@
                :alt:
 .. |phpfile| image:: /_static/images/php_file.png
                :alt:
-

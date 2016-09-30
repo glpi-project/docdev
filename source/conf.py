@@ -56,6 +56,15 @@ master_doc = 'index'
 project = u'GLPi Developer Documentation'
 copyright = u'2016, Teclib\''
 
+rst_epilog = """
+|ccbyncnd|
+
+.. |ccbyncnd| image:: _static/images/cc-by-nc-nd.png
+   :alt: Creative Commons License
+   :target: http://creativecommons.org/licenses/by-nc-nd/4.0/
+   :class: align-right
+"""
+
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
