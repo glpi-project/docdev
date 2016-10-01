@@ -1,7 +1,7 @@
 Source Code management
 ======================
 
-GLPi source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <(https://github.com/glpi-project/glpi>`_.
+GLPi source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <https://github.com/glpi-project/glpi>`_.
 
 In order to contribute to the source code, you will have to know a few things about Git and the development model we follow.
 
