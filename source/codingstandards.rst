@@ -279,7 +279,7 @@ Database queries
 Checking standards
 ------------------
 
-In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>` rules. From the GLPi directory, just run:
+In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPi directory, just run:
 
 .. code-block:: bash
 
