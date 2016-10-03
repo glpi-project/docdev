@@ -3,8 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-GLPi Developer Documentation's documentation
-============================================
+GLPi Developer Documentation
+============================
+
+.. image:: /_static/images/glpi.png
+   :alt: GLPi
+   :align: center
 
 .. toctree::
    :maxdepth: 3
