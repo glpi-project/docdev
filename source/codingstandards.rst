@@ -287,7 +287,7 @@ In order to check some stabdards are respected, we provide some custom `PHP Code
 
 .. warning::
 
-   At the momet I'm writing these lines, only the ``inc`` directory hass been made stadards compliant wth the script. Other directories, such as ``front``, ``ajax`` and so on will probably throw many errors.
+   At the moment I'm writing these lines, only the ``inc`` directory has been made standards compliant with the script. Other directories, such as ``front``, ``ajax`` and so on will probably throw many errors.
 
 If the above command does not provide any output, then, all is OK :)
 
