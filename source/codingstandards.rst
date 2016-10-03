@@ -275,3 +275,35 @@ Database queries
    $query = "INSERT INTO `glpi_alerts`
                    (`itemtype`, `items_id`, `type`, `date`) // put field's names to avoid mistakes when names of fields change
              VALUE ('contract', '5', '2', NOW())";
+
+Checking standards
+------------------
+
+In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>` rules. From the GLPi directory, just run:
+
+.. code-block:: bash
+
+   phpcs --standard=tools/phpcs-rules.xml inc/
+
+.. warning::
+
+   At the momet I'm writing these lines, only the ``inc`` directory hass been made stadards compliant wth the script. Other directories, such as ``front``, ``ajax`` and so on will probably throw many errors.
+
+If the above command does not provide any output, then, all is OK :)
+
+An example error output would looks like:
+
+.. code-block:: bash
+
+   phpcs --standard=tools/phpcs-rules.xml inc/
+   
+   FILE: /var/www/webapps/glpi/tests/HtmlTest.php
+   ----------------------------------------------------------------------
+   FOUND 3 ERRORS AFFECTING 3 LINES
+   ----------------------------------------------------------------------
+    40 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
+       |       |     4
+    59 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
+       |       |     4
+    64 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
+       |       |     4
