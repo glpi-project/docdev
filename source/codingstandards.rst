@@ -89,31 +89,33 @@ If parameters add block doc for these parameters.
 
 .. code-block:: php
 
-/**
- * decribe utility of the function
- *
- * @param $a      type(integer, array...)    utility of the param
- * @param $b      type(integer, array...)    utility of the param
- *
- * $return of the funtion (boolean, array...)
- *
-**/
-function userName($a, $b) {
- 
+   <?php
+   /**
+    * decribe utility of the function
+    *
+    * @param $a      type(integer, array...)    utility of the param
+    * @param $b      type(integer, array...)    utility of the param
+    *
+    * $return of the funtion (boolean, array...)
+    *
+   **/
+   function userName($a, $b) {
+
 If function from parent add
 
 .. code-block:: php
 
-/**
- *@see CommonGLPI::getMenuContent()
-**/
-function getMenuContent()
+   <?php
+   /**
+    * @see CommonGLPI::getMenuContent()
+   **/
+   function getMenuContent()
 
-If it's a new function, add in block doc 
+If it's a new function, add in block doc:
 
 .. code-block:: php
 
-@since version 9.1
+   @since version 9.1
 
 Call static methods
 ^^^^^^^^^^^^^^^^^^^
