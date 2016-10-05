@@ -86,6 +86,7 @@ Function names must be written in *camelCaps*:
    }
 
 If parameters add block doc for these parameters.
+
 .. code-block:: php
 
 /**
@@ -100,11 +101,19 @@ If parameters add block doc for these parameters.
 function userName($a, $b) {
  
 If function from parent add
+
 .. code-block:: php
+
 /**
  *@see CommonGLPI::getMenuContent()
 **/
 function getMenuContent()
+
+If it's a new function, add in block doc 
+
+.. code-block:: php
+
+@since version 9.1
 
 Call static methods
 ^^^^^^^^^^^^^^^^^^^
