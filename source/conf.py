@@ -59,7 +59,7 @@ copyright = u'2016, Teclib\''
 rst_epilog = """
 |ccbyncnd|
 
-.. |ccbyncnd| image:: _static/images/cc-by-nc-nd.png
+.. |ccbyncnd| image:: /_static/images/cc-by-nc-nd.png
    :alt: Creative Commons License
    :target: http://creativecommons.org/licenses/by-nc-nd/4.0/
    :class: align-right
