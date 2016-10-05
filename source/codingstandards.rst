@@ -85,6 +85,26 @@ Function names must be written in *camelCaps*:
       //do something here!
    }
 
+If parameters add block doc for these parameters.
+.. code-block:: php
+
+/**
+ * decribe utility of the function
+ *
+ * @param $a      type(integer, array...)    utility of the param
+ * @param $b      type(integer, array...)    utility of the param
+ *
+ * $return of the funtion (boolean, array...)
+ *
+**/
+function userName($a, $b) {
+ 
+If function from parent add
+.. code-block:: php
+/**
+ *@see CommonGLPI::getMenuContent()
+**/
+function getMenuContent()
 
 Call static methods
 ^^^^^^^^^^^^^^^^^^^
@@ -155,16 +175,10 @@ Variables and Constants
    $user         = 'glpi';
    // put elements in alphabetic order
    $users        = array('glpi', 'glpi2', 'glpi3');
-   $users        = array(
-      'glpi1'  => 'valeur1',
-      'nexglpi' => array(
-         'down' => '1',
-         'up'   => array(
-            'firstfield' => 'newvalue'
-         )
-      ),
-      'glpi2'   => 'valeur2'
-   );
+   $users        = array('glpi1'   => 'valeur1',
+                         'nexglpi' => array('down' => '1',
+                                            'up'   => array('firstfield' => 'newvalue')),
+                         'glpi2'   => 'valeur2');
    $users_groups = array('glpi', 'glpi2', 'glpi3');
    
    $CFG_GLPI = array();
@@ -238,9 +252,9 @@ Examples:
    
    //single quote cases
    switch ($a) {
-      case 'foo': //use single quote here
+      case 'foo' : //use single quote here
          ...
-      case 'bar':
+      case 'bar' :
          ...
    }
 
@@ -250,6 +264,7 @@ Files
 
 * Name in lower case.
 * Maximum line length: 100 characters
+* Indenttion: 3 spaces
 
 Database queries
 ----------------
