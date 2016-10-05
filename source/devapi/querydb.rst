@@ -5,7 +5,7 @@ To query database, you can use the ``$DB::request()`` method and give it a full 
 
 .. warning::
 
-   Whether this is possible to use full SQL t query database using this method, it should be avoid when possible, and you'd better use :doc:`DBIterator <dbiterator>` instead.
+   Whether this is possible to use full SQL to query database using this method, it should be avoid when possible, and you'd better use :doc:`DBIterator <dbiterator>` instead.
 
 To make a database query that could not be done using DBIterator (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
 
