@@ -39,7 +39,7 @@ In a short form, here is the workflow we'll follow:
 * fork, create a specific branch, and hack
 * open a :abbr:`PR (Pull Request)`
 
-Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged back to the branch, developper must backport the fixes in the `master`; just with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
+Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged into the requested branch, developper must report the fixes in the `master`; with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
 
 Each feature will be hacked in a branch that came from `master`, and will be merged back to `master`.
 
