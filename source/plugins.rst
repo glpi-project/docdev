@@ -181,7 +181,7 @@ The plugin directory structure should look like the following:
 Versionning
 ^^^^^^^^^^^
 
-We recommand you to use `semantic versionning <http://semver.org/>` for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
+We recommand you to use `semantic versionning <http://semver.org/>`_ for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
 
 Whatever the versionning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
 
