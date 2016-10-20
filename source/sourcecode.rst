@@ -1,7 +1,7 @@
 Source Code management
 ======================
 
-GLPi source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <(https://github.com/glpi-project/glpi>`_.
+GLPi source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <https://github.com/glpi-project/glpi>`_.
 
 In order to contribute to the source code, you will have to know a few things about Git and the development model we follow.
 
@@ -39,7 +39,7 @@ In a short form, here is the workflow we'll follow:
 * fork, create a specific branch, and hack
 * open a :abbr:`PR (Pull Request)`
 
-Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged back to the branch, developper must backport the fixes in the `master`; just with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
+Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged into the requested branch, developper must report the fixes in the `master`; with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
 
 Each feature will be hacked in a branch that came from `master`, and will be merged back to `master`.
 
@@ -56,7 +56,7 @@ Just work with a:
 
 A directory named ``glpi`` will bre created where you've issued the clone.
 
-Then - if you did not alreay - you will have to create a fork of the repository on your github account; using the `Fork` button from the `GLPi's Github page <https://github.com/glpi-project/glpi/>`_. This will take a few moments, and you will have a repository created, `{you user name}/glpi - forked from glpi-project/glpi`.
+Then - if you did not already - you will have to create a fork of the repository on your github account; using the `Fork` button from the `GLPi's Github page <https://github.com/glpi-project/glpi/>`_. This will take a few moments, and you will have a repository created, `{you user name}/glpi - forked from glpi-project/glpi`.
 
 Add your fork as a remote from the cloned directory:
 
@@ -68,7 +68,7 @@ You can replace `my_fork` with what you want but `origin` (just remember it); an
 
 A basic good practice using Git is to create a branch for everything you want to do; we'll talk about that in the sections below. Just keep in mind that you will publish your branches on you fork, so you can propose your changes.
 
-Whan you open a new pull request, it will be reviewed by one or more member of the community. If you're asked to make some changes, just commit again on your local branch, push it, and you're done; the pull request will be automatically updated.
+When you open a new pull request, it will be reviewed by one or more member of the community. If you're asked to make some changes, just commit again on your local branch, push it, and you're done; the pull request will be automatically updated.
 
 Bugs
 ^^^^

@@ -16,6 +16,15 @@ Indentation
        // level 1
    // base level
 
+Spacing
+-------
+
+We've adopted "french spacing" rules in the code. The rule is:
+
+* for *simple* punctuation (``,``, ``.``): use *one space after* the punctuation sign;
+* for *double* punctuation (``!``, ``?``, ``:``): use *one space after and one space before* the punctuation sign.
+
+Of course, this rules only aplies on the source code, not on the strings (translatable strings, comments, ...)!
 
 Control structures
 ------------------
@@ -34,7 +43,7 @@ Multiple conditions in several idented lines
    if ($a==$b
       || ($c==$d && $e==$f)) {
      ...
-   } elseif {
+   } else if {
      ...
    }
    
