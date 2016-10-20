@@ -32,6 +32,7 @@ Arguments
 The ``request`` method takes two arguments:
 
 * `table name(s)`: a `string` or an `array` of `string`
+  (optional when given as ``FROM`` option)
 * `option(s)`: `array` of options
 
 
@@ -49,19 +50,29 @@ In this case, all the data from the selected table is iterated:
 .. code-block:: php
 
    <?php
+   $DB->request([FROM => 'glpi_computers']);
+   // => SELECT * FROM `glpi_computers`
+
    $DB->request('glpi_computers');
    // => SELECT * FROM `glpi_computers`
 
 Fields selection
 ^^^^^^^^^^^^^^^^
 
-Using the ``FIELDS`` or ``DISTINCT FIELDS`` option
+Using one of the ``SELECT``, ``FIELDS``, ``DISTINCT FIELDS``
+or ``SELECT DISTINCT`` options
 
 .. code-block:: php
 
    <?php
+   $DB->request(['SELECT' => 'id', 'FROM' => 'glpi_computers']);
+   // => SELECT `id` FROM `glpi_computers`
+
    $DB->request('glpi_computers', ['FIELDS' => 'id']);
    // => SELECT `id` FROM `glpi_computers`
+
+   $DB->request(['SELECT DISTINCT' => 'id', 'FROM' => 'glpi_computers']);
+   // => SELECT DISTINCT `name` FROM `glpi_computers`
 
    $DB->request('glpi_computers', ['DISTINCT FIELDS' => 'name']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
@@ -82,10 +93,13 @@ You need to use criteria, usually a ``FKEY``, to describe howto join the tables:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', 
-                ['FKEY' => ['glpi_computers'=>'id', 
+   $DB->request(['FROM' => ['glpi_computers', 'glpi_computerdisks'],
+                 'FKEY' => ['glpi_computers'=>'id',
                             'glpi_computerdisks'=>'computer_id']]);
-   // => SELECT * FROM `glpi_computers`, `glpi_computerdisks` 
+   $DB->request(['glpi_computers', 'glpi_computerdisks'],
+                ['FKEY' => ['glpi_computers'=>'id',
+                            'glpi_computerdisks'=>'computer_id']]);
+   // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
    //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
 
 Left join
