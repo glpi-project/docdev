@@ -1,5 +1,5 @@
 Review process
-==============
+--------------
 
 Here is the process you must follow when you are reviewing a PR.
 
@@ -10,7 +10,7 @@ Here is the process you must follow when you are reviewing a PR.
 
 2. Check if unit tests are not failing,
 3. Check if coding standards checks are not failing,
-4. Review the code itself. It must follow :doc:`GLPi's coding standards <codingstandards>`,
+4. Review the code itself. It must follow :doc:`GLPi's coding standards <../codingstandards>`,
 5. Using the Github review process, approve, request changes or just comment the PR,
 
   * If some new methods are added, or if the request made important changes in the code, you should ask the developer to write some more unit tests
