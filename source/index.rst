@@ -16,5 +16,5 @@ GLPi Developer Documentation
    sourcecode
    codingstandards
    devapi/index
-   reviewprocess
+   checklists/index
    plugins
