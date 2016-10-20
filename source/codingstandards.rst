@@ -34,7 +34,7 @@ Multiple conditions in several idented lines
    if ($a==$b
       || ($c==$d && $e==$f)) {
      ...
-   } elseif {
+   } else if {
      ...
    }
    
