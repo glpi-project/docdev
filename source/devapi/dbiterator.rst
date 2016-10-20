@@ -194,7 +194,7 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
 Operators
 +++++++++
 
-Default operator is =, but other operators can be used, by giving an array containing operator + value.
+Default operator is ``=``, but other operators can be used, by giving an array containing operator and value.
 
 .. code-block:: php
 
@@ -205,5 +205,5 @@ Default operator is =, but other operators can be used, by giving an array conta
    $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
-Know operators are =, <, <=, >, >=, LIKE, REGEXP, NOT LIKE and NOT REGEX
+Know operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE`` and ``NOT REGEX``.
 
