@@ -21,8 +21,10 @@ Spacing
 
 We've adopted "french spacing" rules in the code. The rule is:
 
-* for *simple* punctuation (``,``, ``.``): use *one space after* the punctuation sign;
-* for *double* punctuation (``!``, ``?``, ``:``): use *one space after and one space before* the punctuation sign.
+* for *simple* punctuation (``,``, ``.``): use *one space after* the punctuation sign
+* for *double* punctuation (``!``, ``?``, ``:``): use *one space after and one space before* the punctuation sign
+* for *opening* punctuation (``(``, ``{``, ``[``): use *one space before* the punctuation sign
+* for *closing* punctuation ( ``)``, ``}``, ``]``): use *one space after* the punctuation sign, excepted for line end, when followed by a semi-colon (``;``)
 
 Of course, this rules only aplies on the source code, not on the strings (translatable strings, comments, ...)!
 
