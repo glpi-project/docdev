@@ -50,7 +50,7 @@ In this case, all the data from the selected table is iterated:
 .. code-block:: php
 
    <?php
-   $DB->request([FROM => 'glpi_computers']);
+   $DB->request(['FROM' => 'glpi_computers']);
    // => SELECT * FROM `glpi_computers`
 
    $DB->request('glpi_computers');
