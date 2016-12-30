@@ -13,8 +13,7 @@ Sources
 -------
 
 GLPI public tarball is designed for ends-user; it will not fit packaging requirements.
-
-For example, this tarball bundle a lot of third party libraries, it does not ships unnit tests, etc.
+For example, this tarball bundle a lot of third party libraries, it does not ships unit tests, etc.
 
 **A better candidate would be to retrieve directly a tarball from github as package source.**
 
@@ -23,10 +22,10 @@ Filesystem Hirerarchie Standard
 
 Most distributions requires that packages follows the  `FHS (Filesystem Hierarchy Standard) <http://www.pathname.com/fhs/>`_:
 
- * ``/etc/glpi`` : configuration files: ``config_db.php`` and ``config_db_slave.php``. Prior to 9.2 release, other files stay in ``glpi/config``; begining with 9.2, those files have been moved;
- * ``/usr/share/glpi`` : the web pages (read only dir);
- * ``/var/lib/glpi/files`` : the GLPI data and state information (session, uploaded documents, cache, cron, plugins, ...);
- * ``/var/log/glpi`` : the various GLPI log files.
+ * ``/etc/glpi`` for configuration files: ``config_db.php`` and ``config_db_slave.php``. Prior to 9.2 release, other files stay in ``glpi/config``; begining with 9.2, those files have been moved;
+ * ``/usr/share/glpi`` for the web pages (read only dir);
+ * ``/var/lib/glpi/files`` for GLPI data and state information (session, uploaded documents, cache, cron, plugins, ...);
+ * ``/var/log/glpi`` for various GLPI log files.
 
 The magic file ``/usr/share/glpi/config/config_path.php`` (not provided in the tarball) allows to configure various paths. The following example is the file used by `Remi <https://blog.remirepo.net/>`_ on its Fedora/Redhat repository:
 
@@ -140,8 +139,8 @@ For `SELinux <http://en.wikipedia.org/wiki/Selinux>`_ enabled distributions, you
 
 As an example, on Redhat based distributions:
 
- * ``/etc/glpi`` and ``/var/lib/glpi``: ``httpd_sys_script_rw_t``. The web server need to write the config file in the former and various data in the latter;
- * ``/var/log/glpi`` : ``httpd_log_t`` (apache log type: write only, no delete).
+ * ``/etc/glpi`` and ``/var/lib/glpi``: ``httpd_sys_script_rw_t``, the web server need to write the config file in the former and various data in the latter;
+ * ``/var/log/glpi``: ``httpd_log_t`` (apache log type: write only, no delete).
 
 Use system cron
 ---------------
@@ -173,7 +172,7 @@ To tell GLPI it must use the system crontab, simply define the ``GLPI_SYSTEM_CRO
 Using system libraries
 ----------------------
 
-Since most distributions prefers the use of system libraries (maintened separately); you can't rely on the vendor directory shipped in the public tarball; nor use composer.
+Since most distributions prefers the use of system libraries (maintained separately); you can't rely on the vendor directory shipped in the public tarball; nor use composer.
 
 The way to handle third party libraries is to provide an autoload file with paths to you system libraries. You'll find all requirements from the ``composer.json`` file provided along with GLPI:
 
@@ -222,11 +221,9 @@ The way to handle third party libraries is to provide an autoload file with path
 Using system fonts rather than bundled ones
 -------------------------------------------
 
-Some distribution prefers the use of system fonts (maintened separately).
+Some distribution prefers the use of system fonts (maintained separately).
 
-GLPI use the `FreeSans.ttf <http://www.nongnu.org/freefont/>` font.
-
-Starting with GLPI 0.78, simply add in the ``config_path.php``:
+GLPI use the `FreeSans.ttf <http://www.nongnu.org/freefont/>`_ font you can configure adding in the ``config_path.php``:
 
 .. code-block:: php
 
