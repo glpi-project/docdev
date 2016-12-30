@@ -18,3 +18,4 @@ GLPI Developer Documentation
    devapi/index
    checklists/index
    plugins
+   packaging
