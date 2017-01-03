@@ -71,7 +71,7 @@ or ``SELECT DISTINCT`` options
    $DB->request('glpi_computers', ['FIELDS' => 'id']);
    // => SELECT `id` FROM `glpi_computers`
 
-   $DB->request(['SELECT DISTINCT' => 'id', 'FROM' => 'glpi_computers']);
+   $DB->request(['SELECT DISTINCT' => 'name', 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
    $DB->request('glpi_computers', ['DISTINCT FIELDS' => 'name']);
