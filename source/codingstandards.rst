@@ -320,11 +320,7 @@ In order to check some stabdards are respected, we provide some custom `PHP Code
 
 .. code-block:: bash
 
-   phpcs --standard=tools/phpcs-rules.xml inc/
-
-.. warning::
-
-   At the moment I'm writing these lines, only the ``inc`` directory has been made standards compliant with the script. Other directories, such as ``front``, ``ajax`` and so on will probably throw many errors.
+   phpcs --standard=tools/phpcs-rules.xml inc/ front/ ajax/ tests/
 
 If the above command does not provide any output, then, all is OK :)
 
@@ -332,7 +328,7 @@ An example error output would looks like:
 
 .. code-block:: bash
 
-   phpcs --standard=tools/phpcs-rules.xml inc/
+   phpcs --standard=tools/phpcs-rules.xml inc/ front/ ajax/ tests/
    
    FILE: /var/www/webapps/glpi/tests/HtmlTest.php
    ----------------------------------------------------------------------
