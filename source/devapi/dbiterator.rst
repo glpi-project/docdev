@@ -169,7 +169,7 @@ A field name and its wanted value:
    $DB->request('glpi_computers', ['is_deleted' => 0]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
-   $DB->request('glpi_computers', ['is_deleted' => 0
+   $DB->request('glpi_computers', ['is_deleted' => 0,
                                    'name'       => 'foo']);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0 AND `name` = 'foo'
 
