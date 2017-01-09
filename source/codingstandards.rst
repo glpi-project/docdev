@@ -83,6 +83,7 @@ Short tag (``<?``) is not allowed; use complete tags (``<?php``).
    <?php
    // code
 
+The PHP closing tag ``?>`` must be avoided on full PHP files (so, it must be in most of GLPI's files!).
 
 Functions
 ---------
