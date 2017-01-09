@@ -83,7 +83,7 @@ Short tag (``<?``) is not allowed; use complete tags (``<?php``).
    <?php
    // code
 
-The PHP closing tag ``?>`` must be avoided on full PHP files (so, it must be in most of GLPI's files!).
+The PHP closing tag ``?>`` must be avoided on full PHP files (so in most of GLPI's files!).
 
 Functions
 ---------
@@ -209,10 +209,60 @@ Variables and Constants
 Comments
 --------
 
-To be more visible, don't put inline block comments into ``/* */`` but comment each line with ``//``.
+To be more visible, don't put inline block comments into ``/* */`` but comment each line with ``//``. Put docblocks comments into ``/** */``.
 
-Each function or method must be documented, as well as all its parameters (see variables types below), and its return.
+Each function or method must be documented, as well as all its parameters (see `Variables types`_ below), and its return.
 
+For each method or function documentation, you'll need at least to have a description, the version it was introduced, the parameters list, the return type; each blocks separated with a blank line. As an example, for a void function:
+
+.. code-block:: php
+
+   <?php
+   /**
+    * Describe what the method does. Be concise :)
+    *
+    * You may want to add some more words about what the function
+    * does, if needed. This is optionnal, but you can be more
+    * descriptive here:
+    * - it does something
+    * - and also something else
+    * - but it doesn't make coffee, unfortunately.
+    *
+    * @since 9.2
+    *
+    * @param string  $param       A parameter, for something
+    * @param boolean $other_param Another parameter
+    *
+    * @return void
+    */
+   function myMethod($param, $other_param) {
+      //[...]
+   }
+
+Some other informations way be added; if the function requires it.
+
+Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation. The `latest GLPI API documentation <https://forge.glpi-project.org/projects/glpi/embedded/index.html>`_ is also available online.
+
+Please follow the order defined below:
+
+ #. Description,
+ #. Long description, if any,
+ #. `@deprecated`.
+ #. `@since`,
+ #. `@var`,
+ #. `@param`,
+ #. `@return`,
+ #. `@see`,
+ #. `@throw`,
+ #. `@todo`,
+
+Parameters documentation
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each parameter must be documented in its own line, begining with the ``@param`` tag, followed by the `Variable types`_, followed by the param name (``$param``), and finally with the description itself.
+If your parameter can be of different types, you can list them separated with a ``|`` or you can use the ``mixed`` type; it's up to you!
+
+All parameters names and description must be aligned vertically on the longest (plu one character); see the above example.
 
 Variables types
 ---------------
