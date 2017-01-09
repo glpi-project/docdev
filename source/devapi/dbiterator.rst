@@ -110,8 +110,8 @@ Using the ``JOIN`` option, with some criteria, usually a ``FKEY``:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', 
-                ['JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'=>'id', 
+   $DB->request(['FROM' => 'glpi_computers',
+                 'JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'=>'id',
                                                                 'glpi_computerdisks'=>'computer_id']]]]);
    // => SELECT * FROM `glpi_computers`
    //       LEFT JOIN `glpi_computerdisks`
@@ -125,7 +125,7 @@ Using the ``COUNT`` option:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['COUNT' => 'cpt']);
+   $DB->request(['FROM' => 'glpi_computers', 'COUNT' => 'cpt']);
    // => SELECT COUNT(*) AS cpt FROM `glpi_computers`
 
 Order
@@ -136,7 +136,7 @@ Using the ``ORDER`` option, with value a field or an array of field. Field name 
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['ORDER' => 'name']);
+   $DB->request(['FROM' => 'glpi_computers', 'ORDER' => 'name']);
    // => SELECT * FROM `glpi_computers` ORDER BY `name`
 
    $DB->request('glpi_computers', ['ORDER' => ['date_mod DESC', 'name ASC']]);
@@ -158,6 +158,9 @@ Criteria
 
 Other option are considered as an array of criteria (implicit logicical ``AND``)
 
+The ``WHERE`` can also be used for legibility.
+
+
 Simple criteria
 +++++++++++++++
 
@@ -166,7 +169,7 @@ A field name and its wanted value:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['is_deleted' => 0]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0]]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
    $DB->request('glpi_computers', ['is_deleted' => 0,
