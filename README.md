@@ -1,4 +1,4 @@
-# GLPi's developper documentation
+# GLPI's developper documentation
 
 [![Build Status](https://readthedocs.org/projects/glpi-developer-documentation/badge/?version=latest)](http://glpi-developer-documentation.readthedocs.io/en/latest/?badge=latest)
 

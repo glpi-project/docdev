@@ -144,7 +144,7 @@ Classes
 
 Class names must be written in `CamelCase`:
 
-GLPi do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.php>`_ right now; so be carefull when creating new classes to take a name that does not exists yet.
+GLPI do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.php>`_ right now; so be carefull when creating new classes to take a name that does not exists yet.
 
 .. code-block:: php
 
@@ -154,7 +154,7 @@ GLPi do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.ph
    }
 
 
-Note: even if GLPi does not use namespaces, some libs does, you will have to take care of that. You can also if you wish use namespaces for PHP objects call.
+Note: even if GLPI does not use namespaces, some libs does, you will have to take care of that. You can also if you wish use namespaces for PHP objects call.
 
 For example, the folloging code:
 
@@ -316,7 +316,7 @@ Database queries
 Checking standards
 ------------------
 
-In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPi directory, just run:
+In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
 
 .. code-block:: bash
 

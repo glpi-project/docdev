@@ -3,7 +3,7 @@
 Plugins
 =======
 
-GLPi provides facilities to develop plugins, and there are many `plugins that have been already published <plugins_dir_website_>`_.
+GLPI provides facilities to develop plugins, and there are many `plugins that have been already published <plugins_dir_website_>`_.
 
 Generally speaking, there is really a few things you have to do in order to get a plugin working; many considerations are up to you. Anyways, this guide will provide you some guidelines to get a plugins repository as consistent as possible :)
 
@@ -14,17 +14,17 @@ If you want to see more advanced examples of what it is possible to do with plug
 Requirements
 ------------
 
-* plugin will be installed by creating a directory in the ``plugins`` directory of the GLPi instance,
+* plugin will be installed by creating a directory in the ``plugins`` directory of the GLPI instance,
 * plugin directory name should never change,
 * each plugin **must** at least provides :ref:`setup.php <plugins_setupphp>` and :ref:`hook.php <plugins_hookphp>` files,
-* if your plugin requires a newer PHP version than GLPi one, or extensions that are not mandatory in core; it is up to you to check that in the install process.
+* if your plugin requires a newer PHP version than GLPI one, or extensions that are not mandatory in core; it is up to you to check that in the install process.
 
 .. _plugins_setupphp:
 
 setup.php
 ^^^^^^^^^
 
-The plugin's `setup.php` file will be automatically loaded from GLPi's core in order to get its version, to check pre-requisites, etc.
+The plugin's `setup.php` file will be automatically loaded from GLPI's core in order to get its version, to check pre-requisites, etc.
 
 This is a good practice, thus not mandatory, to define a constant name `{PLUGINNAME}_VERSION` in this file.
 
@@ -99,7 +99,7 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
 hook.php
 ^^^^^^^^
 
-This file will contains hooks that GLPi may call under some user actions. Refer to core documentation to know more about available hooks.
+This file will contains hooks that GLPI may call under some user actions. Refer to core documentation to know more about available hooks.
 
 For instance, a plugin need both an install and an uninstall hook calls. Here is the minimal file:
 
@@ -129,7 +129,7 @@ For instance, a plugin need both an install and an uninstall hook calls. Here is
 Coding standards
 ^^^^^^^^^^^^^^^^
 
-You must respect GLPi's :doc:`global coding standards <../codingstandards>`.
+You must respect GLPI's :doc:`global coding standards <../codingstandards>`.
 
 
 Guidelines
@@ -195,6 +195,6 @@ Keep in mind it could help users to know what have been changed. To achieve this
 Third party libraries
 ^^^^^^^^^^^^^^^^^^^^^
 
-Just like GLPi, you shoul use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
+Just like GLPI, you shoul use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
 
 .. _plugins_dir_website: http://plugins.glpi-project.org/

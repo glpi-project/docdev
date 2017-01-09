@@ -85,17 +85,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/GLPiDeveloperDocumentation.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/GLPIDeveloperDocumentation.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/GLPiDeveloperDocumentation.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/GLPIDeveloperDocumentation.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/GLPiDeveloperDocumentation"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/GLPiDeveloperDocumentation"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/GLPIDeveloperDocumentation"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/GLPIDeveloperDocumentation"
 	@echo "# devhelp"
 
 epub:

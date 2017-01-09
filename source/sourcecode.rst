@@ -1,7 +1,7 @@
 Source Code management
 ======================
 
-GLPi source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <https://github.com/glpi-project/glpi>`_.
+GLPI source code management is handled by `GIT <https://en.wikipedia.org/wiki/Git>`_ and hosted on `GitHub <https://github.com/glpi-project/glpi>`_.
 
 In order to contribute to the source code, you will have to know a few things about Git and the development model we follow.
 
@@ -23,7 +23,7 @@ Those branches are created when any major version is released. At the time I wro
 Testing
 -------
 
-Unfortunately, tests in GLPi are not numerous... But that's willing to change, and we'd like - as far as possible - that proposals contains unit tests for the bug/feature they're related.
+Unfortunately, tests in GLPI are not numerous... But that's willing to change, and we'd like - as far as possible - that proposals contains unit tests for the bug/feature they're related.
 
 Anyways, existing unit tests may never be broken, if you made a change that breaks something, check your code, or change the unit tests, but fix that! ;)
 
@@ -56,7 +56,7 @@ Just work with a:
 
 A directory named ``glpi`` will bre created where you've issued the clone.
 
-Then - if you did not already - you will have to create a fork of the repository on your github account; using the `Fork` button from the `GLPi's Github page <https://github.com/glpi-project/glpi/>`_. This will take a few moments, and you will have a repository created, `{you user name}/glpi - forked from glpi-project/glpi`.
+Then - if you did not already - you will have to create a fork of the repository on your github account; using the `Fork` button from the `GLPI's Github page <https://github.com/glpi-project/glpi/>`_. This will take a few moments, and you will have a repository created, `{you user name}/glpi - forked from glpi-project/glpi`.
 
 Add your fork as a remote from the cloned directory:
 
