@@ -83,8 +83,15 @@ Here is a configuration file sample for the Apache web server:
        # to overwrite default configuration which could be less than recommanded value
        php_value memory_limit 64M
 
-       Order Deny,Allow
-       Allow from all
+      <IfModule mod_authz_core.c>
+         # Apache 2.4
+         Require all granted
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+         # Apache 2.2
+         Order Deny,Allow
+         Allow from All
+      </IfModule>
    </Directory>
 
    <Directory /usr/share/glpi/install>
@@ -95,23 +102,51 @@ Here is a configuration file sample for the Apache web server:
 
    # This sections remplace the .htaccess files provided in the tarball 
    <Directory /usr/share/glpi/config>
-       Order Allow,Deny
-       Deny from all
+      <IfModule mod_authz_core.c>
+         # Apache 2.4
+         Require all denied
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+         # Apache 2.2
+         Order Deny,Allow
+         Deny from All
+      </IfModule>
    </Directory>
 
    <Directory /usr/share/glpi/locales>
-       Order Allow,Deny
-       Deny from all
+      <IfModule mod_authz_core.c>
+         # Apache 2.4
+         Require all denied
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+         # Apache 2.2
+         Order Deny,Allow
+         Deny from All
+      </IfModule>
    </Directory>
 
    <Directory /usr/share/glpi/install/mysql>
-       Order Allow,Deny
-       Deny from all
+      <IfModule mod_authz_core.c>
+         # Apache 2.4
+         Require all denied
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+         # Apache 2.2
+         Order Deny,Allow
+         Deny from All
+      </IfModule>
    </Directory>
 
    <Directory /usr/share/glpi/scripts>
-       Order Allow,Deny
-       Deny from all
+      <IfModule mod_authz_core.c>
+         # Apache 2.4
+         Require all denied
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+         # Apache 2.2
+         Order Deny,Allow
+         Deny from All
+      </IfModule>
    </Directory>
 
 Logs files rotation
