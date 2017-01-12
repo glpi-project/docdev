@@ -6,3 +6,4 @@ Developer API
 
    querydb
    dbiterator
+   hooks
