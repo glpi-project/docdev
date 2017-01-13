@@ -15,7 +15,9 @@ All hooks called are defined in the ``setup.php`` file of your plugin; into the 
 .. code-block:: php
 
    <?php
+   //call a function
    $PLUGIN_HOOKS['hook_name']['plugin_name'] = 'function_name';
+   //call a static method from an object
    $PLUGIN_HOOKS['other_hook']['plugin_name'] = ['ObjectName', 'methodName'];
 
 Without parameters
@@ -44,6 +46,8 @@ You will also have to declare the function you want to call in you ``hook.php`` 
    }
 
 The hooks that are called without parameters are: ``display_central``, ``post_init init_session``, ``change_entity``, ``change_profile`` and ``display_login``.
+
+.. _hook_item_parameter:
 
 With item as parameter
 ++++++++++++++++++++++
@@ -84,6 +88,36 @@ You will also have to declare the function you want to call in you ``hook.php`` 
 With array of parameters
 ++++++++++++++++++++++++
 
+These hooks will work just as the :ref:`hooks with item as parameter <hook_item_parameter>` expect they will send you an array of parameters instead of only an item instance. The array will contain two entries: ``item`` and ``options``, the first one is the item instance, the second options that have been passed:
+
+.. code-block:: php
+
+   <?php
+   /**
+    * Function that handle a hook with array of parameters
+    *
+    * @param array $params Array of parameters
+    *
+    * @return void
+    */
+   public function myplugin_params_hook(array $params) {
+      print_r($params);
+      //Will display:
+      //Array
+      //(
+      //   [item] => Computer Object
+      //      (...)
+      //
+      //   [options] => Array
+      //      (
+      //            [_target] => /front/computer.form.php
+      //            [id] => 1
+      //            [withtemplate] => 
+      //            [tabnum] => 1
+      //            [itemtype] => Computer
+      //      )
+      //)
+   }
 
 Standards Hooks
 ^^^^^^^^^^^^^^^
@@ -92,6 +126,12 @@ Unclassified
 ++++++++++++
 
 Hooks that cannot be classified in above categories :)
+
+``add_javascript``
+   Add javascript in **all** pages headers
+
+``add_css``
+   Add CSS stylesheet on **all** pages headers
 
 ``display_central``
    Displays something on central page
