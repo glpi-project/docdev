@@ -259,7 +259,7 @@ Please follow the order defined below:
 Parameters documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Each parameter must be documented in its own line, begining with the ``@param`` tag, followed by the `Variable types`_, followed by the param name (``$param``), and finally with the description itself.
+Each parameter must be documented in its own line, begining with the ``@param`` tag, followed by the `Variables types`_, followed by the param name (``$param``), and finally with the description itself.
 If your parameter can be of different types, you can list them separated with a ``|`` or you can use the ``mixed`` type; it's up to you!
 
 All parameters names and description must be aligned vertically on the longest (plu one character); see the above example.
