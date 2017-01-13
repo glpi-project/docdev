@@ -5,10 +5,6 @@ GLPI provides a certain amount of "hooks". Their goal is for plugins (mainly) to
 
 This page describes current existing hooks; but not the way they must be implemented from plugins. Please refer to the plugins development documentation.
 
-.. todo::
-
-   Write plugins development documentation hooks parts and add a link to it!
-
 Usage
 ^^^^^
 
