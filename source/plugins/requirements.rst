@@ -56,7 +56,12 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
    function plugin_myexample_check_prerequisites() {
       // Version check
       if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-         echo "This plugin requires GLPI >= 9.1 and < 9.2";
+         if (method_exists('Plugin', 'messageIncompatible')) {
+            //since GLPI 9.2
+            Plugin::messageIncompatible('core', 9.1, 9.2);
+         } else {
+            echo "This plugin requires GLPI >= 9.1 and < 9.2";
+         }
          return false;
       }
       return true;
@@ -80,6 +85,12 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
       }
       return false;
    }
+
+.. note::
+
+   Since GLPI 9.2, you can rely on ``Plugin::messageIncompatible()`` to display internationalized messages when GLPI or PHP versions are not met.
+
+   On the same model, you can use ``Plugin::messageMissingRequirement()`` to display internationalized message if any extension, plugin or GLPI parameter is missing.
 
 .. _plugins_hookphp:
 
