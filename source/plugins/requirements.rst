@@ -118,3 +118,21 @@ Coding standards
 
 You must respect GLPI's :doc:`global coding standards <../codingstandards>`.
 
+In order to check for coding standards compliance, you can add the `glpi-projecT/coding-standard` to your composer file, using:
+
+.. code-block:: bash
+
+   $ composer require --dev glpi-project/coding-standard
+
+This will install the latest version of the coding-standard used in GLPI core. If you want to use an loder version of the checks (for example if you have a huge amount of work to fix!), you can specify a version in the above command like ``glpi-project/coding-standard:0.5``. Refer to the `coding-standard project changelog <https://github.com/glpi-project/coding-standard/blob/master/CHANGELOG.md>`_ to know more ;)
+
+You can then for example add a line in your ``.travis.yml`` file to automate checking:
+
+.. code-block:: yml
+
+   script:
+     - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
+
+.. note::
+
+   Coding standards and theirs checks are enabled per default using the `empty plugin facilities <http://glpi-plugins.readthedocs.io/en/latest/empty/>`_
