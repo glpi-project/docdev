@@ -367,7 +367,7 @@ Some hooks are automated; they'll be called if the relevant function exists in y
    Actions to execute for rule. Will receive an array with ``output``, ``params`` ans ``action`` keys. Is expected to return an array of actions to execute.
 
 ``preProcessRulePreviewResults``
-   I DO NOT NOW WHAT TO WRITE HERE
+   I DO NOT KNOW WHAT TO WRITE HERE
 
 ``use_rules``
    THIS ONE SEEMS PARTICULAR... I DO NOT KNOW WHAT TO WRITE HERE
@@ -389,10 +389,10 @@ Some hooks are automated; they'll be called if the relevant function exists in y
    Is expected to return an array.
 
 ``preProcessRuleCollectionPreviewResults``
-   I DO NOT NOW WHAT TO WRITE HERE
+   I DO NOT KNOW WHAT TO WRITE HERE
 
 ``ruleImportComputer_addGlobalCriteria``
-   Add global criterai for computer import. Will receive an array of global criterai, is expected to return global criteria array.
+   Add global criteria for computer import. Will receive an array of global criteria, is expected to return global criteria array.
 
 ``ruleImportComputer_getSqlRestriction``
    Adds SQL restriction to (WHAT ?). Will receive an array of the form:
@@ -408,4 +408,4 @@ Some hooks are automated; they'll be called if the relevant function exists in y
          'sql_from'     => 'sql from clause as string'
       )
 
-      Is expected to return the input array modified.
+   Is expected to return the input array modified.
