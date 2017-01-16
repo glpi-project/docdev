@@ -318,3 +318,61 @@ Existing hooks
 
 ``migratetypes``
    Item types to migrate, will receive an array of types to be updated; must return an aray of item types to migrate.
+
+Automatic hooks
+^^^^^^^^^^^^^^^
+
+Some hooks are automated; they'll be called if the relevant function exists in you plugin's ``hook.php`` file. Required function must be of the form ``plugin_{plugin_name}_{hook_name}``.
+
+``MassiveActionsFieldsDisplay``
+   Add massive actions. Will receive an array with ``item`` (the item type) and ``options`` (the search options) as input. These hook have to output its content, and to return true if there is some specific output, false otherwise.
+
+``dynamicReport``
+   Add parameters for print. Will receive the ``$_GET`` array used for query. Is expected to return an array of parameters to add.
+
+``AssignToTicket``
+   I DO NOT NOW WHAT TO WRITE HERE
+
+``MassiveActions``
+   If plugin is parameted to provide massive actions (via ``$PLUGIN_HOOKS['use_massive_actions']``), will pass the item type as parameter, and expect an array of aditional massives actions of the form:
+
+   .. code-block:: php
+
+      <?php
+      return [
+         'Class::method' => 'label'
+      ];
+
+``getDropDown``
+   To declare extra dropdowns. Will not receive any parameter, and is expected to return an array of the form:
+
+   .. code-block:: php
+
+      <?php
+      return [
+         'Class::method' => 'label'
+      ];
+
+``rulePrepareInputDataForProcess``
+    TODO
+
+``executeActions``
+   TODO
+
+``preProcessRulePreviewResults``
+   TODO
+
+``rule_itemtype``
+   TODO
+
+``ruleCollectionPrepareInputDataForProcess``
+   TODO
+
+``preProcessRuleCollectionPreviewResults``
+   TODO
+
+``ruleImportComputer_addGlobalCriteria``
+   TODO
+
+``ruleImportComputer_getSqlRestriction``
+   TODO
