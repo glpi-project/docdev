@@ -331,7 +331,14 @@ Some hooks are automated; they'll be called if the relevant function exists in y
    Add parameters for print. Will receive the ``$_GET`` array used for query. Is expected to return an array of parameters to add.
 
 ``AssignToTicket``
-   I DO NOT NOW WHAT TO WRITE HERE
+   Declare types an ITIL object can be assigned to. Will receive an empty array adn is expected to return a list an array of type of the form:
+
+   .. code-block:: php
+
+      <?php
+      return [
+         'TypeClass' => 'label'
+      ];
 
 ``MassiveActions``
    If plugin is parameted to provide massive actions (via ``$PLUGIN_HOOKS['use_massive_actions']``), will pass the item type as parameter, and expect an array of aditional massives actions of the form:
@@ -354,25 +361,51 @@ Some hooks are automated; they'll be called if the relevant function exists in y
       ];
 
 ``rulePrepareInputDataForProcess``
-    TODO
+    Provide data to process rules. Will receive an array with ``item`` (data used to check criteria) and ``params`` (the parameters) keys. Is expected to retrun an array of rules.
 
 ``executeActions``
-   TODO
+   Actions to execute for rule. Will receive an array with ``output``, ``params`` ans ``action`` keys. Is expected to return an array of actions to execute.
 
 ``preProcessRulePreviewResults``
-   TODO
+   I DO NOT NOW WHAT TO WRITE HERE
 
-``rule_itemtype``
-   TODO
+``use_rules``
+   THIS ONE SEEMS PARTICULAR... I DO NOT KNOW WHAT TO WRITE HERE
 
 ``ruleCollectionPrepareInputDataForProcess``
-   TODO
+   Prepare input data for rules collections. Will receive an array of the form:
+
+   .. code-block:: php
+
+      <?php
+      array(
+         'rule_itemtype'   => 'name fo the rule itemtype',
+         'values'          => array(
+            'input'  => 'input array',
+            'params' => 'array of parameters'
+         )
+      );
+
+   Is expected to return an array.
 
 ``preProcessRuleCollectionPreviewResults``
-   TODO
+   I DO NOT NOW WHAT TO WRITE HERE
 
 ``ruleImportComputer_addGlobalCriteria``
-   TODO
+   Add global criterai for computer import. Will receive an array of global criterai, is expected to return global criteria array.
 
 ``ruleImportComputer_getSqlRestriction``
-   TODO
+   Adds SQL restriction to (WHAT ?). Will receive an array of the form:
+
+   .. code-block:: php
+
+      <?php
+      array(
+         'where_entity' => 'where entity clause',
+         'input'        => 'input array',
+         'criteria'     => 'complex cirteria array',
+         'sql_where'    => 'sql where clause as string',
+         'sql_from'     => 'sql from clause as string'
+      )
+
+      Is expected to return the input array modified.
