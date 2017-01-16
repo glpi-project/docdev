@@ -88,6 +88,8 @@ You will also have to declare the function you want to call in you ``hook.php`` 
       }
    }
 
+The hooks that are called wit item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``.
+
 With array of parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -122,6 +124,10 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
       //)
    }
 
+The hooks that are called wit an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``item_transfer``.
+
+Some hooks will receive a specific array as parameter, they will be detailled below.
+
 Unclassified
 ++++++++++++
 
@@ -140,13 +146,25 @@ Hooks that cannot be classified in above categories :)
    Displays something on the login page
 
 ``status``
-   TODO
+   Displays status
 
 ``post_init``
    After the framework initialization
 
 ``rule_matched``
-   TODO
+   After a rule has matched.
+
+   This hook will receive a specific array that looks like:
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'sub_type'  => 'an item type',
+         'rule_id'   => 'tule id',
+         'input'     => array(), //original input
+         'output'    => array()  //output modified by rule
+      ];
 
 ``init_session``
    At session initialization
@@ -166,7 +184,7 @@ Hooks that can do some busines stuff on items.
    When an item has been emptied
 
 ``post_prepareadd``
-   TODO
+   After ``prepareInputForAdd()`` has been run
 
 ``pre_item_add``
    Before an item has been added
@@ -241,13 +259,13 @@ Hooks that are called from notifications
    When a target has been added to an item
 
 ``item_get_events``
-   TODO
+   After notifications events have been retrieved
 
 ``item_action_targets``
-   TODO
+   After target addresses have been retrieved
 
 ``item_get_datas``
-   TODO
+   After data for template have been retrieved
 
 Functions hooks
 ^^^^^^^^^^^^^^^
@@ -281,22 +299,22 @@ Existing hooks
    After a fields has been unlocked. Will receive the ``$_POST`` array used for the call.
 
 ``restrict_ldap_auth``
-   TODO
+   Aditional LDAP restrictions at connection. Must return a boolean. The ``dn`` string is passed as parameter.
 
 ``undiscloseConfigValue``
    Permit plugin to hide fields that should not appear from the API (like configuration fields, etc). Will receive the requested fields list.
 
 ``infocom``
-   TODO
+   Additional infocom informations oin an item. Will receive an item instance as parameter, is expected to return a table line (``<tr>``).
 
 ``retrieve_more_field_from_ldap``
-   TODO
+   Retrieve aditional fields from LDAP for a user. Will receive the current fields lists, is expected to return a fields list.
 
 ``retrieve_more_data_from_ldap``
-   TODO
+   Retrieve aditional data from LDAP for a user. Will receive current fields list, is expected to return a fields list.
 
 ``display_locked_fields``
-   TODO
+   To manage fields locks. Will receive an array with ``item`` and ``header`` entries. Is expected to output a table line (``<tr>``).
 
 ``migratetypes``
-   TODO
+   Item types to migrate, will receive an array of types to be updated; must return an aray of item types to migrate.
