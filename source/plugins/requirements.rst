@@ -139,7 +139,7 @@ This will install the latest version of the coding-standard used in GLPI core. I
 
 You can then for example add a line in your ``.travis.yml`` file to automate checking:
 
-.. code-block:: yml
+.. code-block:: yaml
 
    script:
      - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .

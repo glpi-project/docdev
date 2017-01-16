@@ -5,8 +5,11 @@ GLPI provides a certain amount of "hooks". Their goal is for plugins (mainly) to
 
 This page describes current existing hooks; but not the way they must be implemented from plugins. Please refer to the plugins development documentation.
 
+Standards Hooks
+^^^^^^^^^^^^^^^
+
 Usage
-^^^^^
++++++
 
 Aside from their goals or when/where they're called; you will see three types of different hooks. Some will receive an item as parameter, others an array of parameters, and some won't receive anything. Basically, the way they're declared into your plugin, and the way you'll handle that will differ.
 
@@ -21,7 +24,7 @@ All hooks called are defined in the ``setup.php`` file of your plugin; into the 
    $PLUGIN_HOOKS['other_hook']['plugin_name'] = ['ObjectName', 'methodName'];
 
 Without parameters
-++++++++++++++++++
+~~~~~~~~~~~~~~~~~~
 
 
 Those hooks are called without any parameters; you cannot attach them to any itemtype; basically they'll permit youi to display extra informations. Let's say you want to call the ``display_login`` hook, in you ``setup.php`` you'll add something like:
@@ -50,7 +53,7 @@ The hooks that are called without parameters are: ``display_central``, ``post_in
 .. _hook_item_parameter:
 
 With item as parameter
-++++++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~~~~
 
 Those hooks will send you an item instance as parameter; you'll have to attach them to the itemtypes you want to apply on. Let's say you want to call the ``pre_item_update`` hook for `Computer` and `Phone` item types, in your ``setup.php`` you'll add something like:
 
@@ -86,7 +89,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
    }
 
 With array of parameters
-++++++++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 These hooks will work just as the :ref:`hooks with item as parameter <hook_item_parameter>` expect they will send you an array of parameters instead of only an item instance. The array will contain two entries: ``item`` and ``options``, the first one is the item instance, the second options that have been passed:
 
@@ -118,9 +121,6 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
       //      )
       //)
    }
-
-Standards Hooks
-^^^^^^^^^^^^^^^
 
 Unclassified
 ++++++++++++
@@ -233,17 +233,58 @@ Hooks that permits to add display on items.
 ``post_show_tab``
    After a tab has been displayed
 
+Notifications
++++++++++++++
+Hooks that are called from notifications
+
+``item_add_targets``
+   When a target has been added to an item
+
+``item_get_events``
+   TODO
+
+``item_action_targets``
+   TODO
+
+``item_get_datas``
+   TODO
+
 Functions hooks
 ^^^^^^^^^^^^^^^
 
+Usage
++++++
+
+Functions hooks declarations are the same than standards hooks one. The main difference is that the hook will wait as output what have been passed as argument.
+
+.. code-block:: php
+
+   <?php
+   /**
+    * Handle hook function
+    *
+    * @param array $$data Array of something (assuming that's what wer're receiving!)
+    *
+    * @return array
+    */
+   public function myplugin_updateitem_called ($data) {
+      //do everything you want
+      //return passed argument
+      return $data;
+   }
+
+
+Existing hooks
+++++++++++++++
+
 ``unlock_fields``
-   TODO
+   After a fields has been unlocked. Will receive the ``$_POST`` array used for the call.
 
 ``restrict_ldap_auth``
    TODO
 
 ``undiscloseConfigValue``
-   TODO
+   Permit plugin to hide fields that should not appear from the API (like configuration fields, etc). Will receive the requested fields list.
 
 ``infocom``
    TODO
@@ -258,20 +299,4 @@ Functions hooks
    TODO
 
 ``migratetypes``
-   TODO
-
-Notifications hooks
-^^^^^^^^^^^^^^^^^^^
-Hooks that are called from notifications
-
-``item_add_targets``
-   When a target has been added to an item
-
-``item_get_events``
-   TODO
-
-``item_action_targets``
-   TODO
-
-``item_get_datas``
    TODO
