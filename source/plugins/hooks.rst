@@ -222,6 +222,15 @@ Hooks that can do some busines stuff on items.
 ``item_transfer``
    When an item is transfered from an entity to another
 
+``item_can``
+   .. versionadded:: 9.2
+
+   Allow to restrict user rights (can't grant more right).
+   If ``right`` property is set (called during CommonDBTM::can) changing it allow to
+   deny evaluated access. Else (called from Search::addDefaultWhere) ``add_where``
+   property can be set to filter search results.
+
+
 Items display related
 +++++++++++++++++++++
 
