@@ -376,10 +376,16 @@ Some hooks are automated; they'll be called if the relevant function exists in y
    Actions to execute for rule. Will receive an array with ``output``, ``params`` ans ``action`` keys. Is expected to return an array of actions to execute.
 
 ``preProcessRulePreviewResults``
-   I DO NOT KNOW WHAT TO WRITE HERE
+
+   .. todo::
+
+      Write documentation for this hook.
 
 ``use_rules``
-   THIS ONE SEEMS PARTICULAR... I DO NOT KNOW WHAT TO WRITE HERE
+
+   .. todo::
+
+      Write documentation for this hook. It lloks at bit particular.
 
 ``ruleCollectionPrepareInputDataForProcess``
    Prepare input data for rules collections. Will receive an array of the form:
@@ -398,13 +404,16 @@ Some hooks are automated; they'll be called if the relevant function exists in y
    Is expected to return an array.
 
 ``preProcessRuleCollectionPreviewResults``
-   I DO NOT KNOW WHAT TO WRITE HERE
+
+.. todo::
+
+      Write documentation for this hook.
 
 ``ruleImportComputer_addGlobalCriteria``
    Add global criteria for computer import. Will receive an array of global criteria, is expected to return global criteria array.
 
 ``ruleImportComputer_getSqlRestriction``
-   Adds SQL restriction to (WHAT ?). Will receive an array of the form:
+   Adds SQL restriction to links. Will receive an array of the form:
 
    .. code-block:: php
 
