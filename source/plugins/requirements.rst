@@ -129,7 +129,7 @@ Coding standards
 
 You must respect GLPI's :doc:`global coding standards <../codingstandards>`.
 
-In order to check for coding standards compliance, you can add the `glpi-projecT/coding-standard` to your composer file, using:
+In order to check for coding standards compliance, you can add the `glpi-project/coding-standard` to your composer file, using:
 
 .. code-block:: bash
 
