@@ -63,4 +63,4 @@ Keep in mind it could help users to know what have been changed. To achieve this
 Third party libraries
 ^^^^^^^^^^^^^^^^^^^^^
 
-Just like GLPI, you shoul use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
+Just like GLPI, you should use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
