@@ -190,31 +190,31 @@ Hooks that can do some busines stuff on items.
    Before an item has been added, allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_add``
-   After adding an item, ``fields`` can be used.
+   After adding an item, ``fields`` property can be used.
 
 ``pre_item_update``
-   Before an item is updated
+   Before an item is updated, allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_update``
-   While updating an item
+   While updating an item, ``fields`` and ``updates`` properties can be used.
 
 ``pre_item_purge``
-   Before an item is purged
+   Before an item is purged, allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_purge``
-   While an item is purged
+   After an item is purged (not pushed to trash, see ``item_delete``). The ``fields`` property still available.
 
 ``pre_item_restore``
-   Before an item is restored
+   Before an item is restored from trash. Notice: cannot stop the process.
 
 ``item_restore``
-   While an item is restored
+   After an item is restored from trash.
 
 ``pre_item_delete``
-   Before an item is deleted
+   Before an item is deleted (moved to trash), allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_delete``
-   While an item is deleted
+   After an item is moved to tash.
 
 ``autoinventory_information``
    After an automated inventory has occured
