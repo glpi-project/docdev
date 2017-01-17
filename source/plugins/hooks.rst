@@ -181,16 +181,16 @@ Items business related
 Hooks that can do some busines stuff on items.
 
 ``item_empty``
-   When an item has been emptied
+   When a new (empty) item has been created. Allow to change / add fields.
 
 ``post_prepareadd``
-   After ``prepareInputForAdd()`` has been run
+   Before an item has been added, after ``prepareInputForAdd()`` has been run, so after rule engine has ben run, allow to edit ``input`` property, setting it to false will stop the process.
 
 ``pre_item_add``
-   Before an item has been added
+   Before an item has been added, allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_add``
-   While adding an item
+   After adding an item, ``fields`` can be used.
 
 ``pre_item_update``
    Before an item is updated
