@@ -205,7 +205,7 @@ Hooks that can do some busines stuff on items.
    After an item is purged (not pushed to trash, see ``item_delete``). The ``fields`` property still available.
 
 ``pre_item_restore``
-   Before an item is restored from trash. Notice: cannot stop the process.
+   Before an item is restored from trash.
 
 ``item_restore``
    After an item is restored from trash.
