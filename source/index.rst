@@ -17,5 +17,5 @@ GLPI Developer Documentation
    codingstandards
    devapi/index
    checklists/index
-   plugins
+   plugins/index
    packaging

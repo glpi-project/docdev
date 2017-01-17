@@ -1,16 +1,3 @@
-.. include:: /globals.rst
-
-Plugins
-=======
-
-GLPI provides facilities to develop plugins, and there are many `plugins that have been already published <plugins_dir_website_>`_.
-
-Generally speaking, there is really a few things you have to do in order to get a plugin working; many considerations are up to you. Anyways, this guide will provide you some guidelines to get a plugins repository as consistent as possible :)
-
-If you want to see more advanced examples of what it is possible to do with plugins, you can take a look at the `example plugin source code <http://github.com/pluginsGLPI/example/>`_.
-
-.. _plugins_requirements:
-
 Requirements
 ------------
 
@@ -69,7 +56,12 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
    function plugin_myexample_check_prerequisites() {
       // Version check
       if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-         echo "This plugin requires GLPI >= 9.1 and < 9.2";
+         if (method_exists('Plugin', 'messageIncompatible')) {
+            //since GLPI 9.2
+            Plugin::messageIncompatible('core', 9.1, 9.2);
+         } else {
+            echo "This plugin requires GLPI >= 9.1 and < 9.2";
+         }
          return false;
       }
       return true;
@@ -93,6 +85,12 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
       }
       return false;
    }
+
+.. note::
+
+   Since GLPI 9.2, you can rely on ``Plugin::messageIncompatible()`` to display internationalized messages when GLPI or PHP versions are not met.
+
+   On the same model, you can use ``Plugin::messageMissingRequirement()`` to display internationalized message if any extension, plugin or GLPI parameter is missing.
 
 .. _plugins_hookphp:
 
@@ -131,70 +129,21 @@ Coding standards
 
 You must respect GLPI's :doc:`global coding standards <../codingstandards>`.
 
+In order to check for coding standards compliance, you can add the `glpi-projecT/coding-standard` to your composer file, using:
 
-Guidelines
-----------
+.. code-block:: bash
 
-Directories structure
-^^^^^^^^^^^^^^^^^^^^^
+   $ composer require --dev glpi-project/coding-standard
 
-Real structure will depend of what your plugin propose. See :ref:`requirements below <plugins_requirements>` to find out what is needed.
+This will install the latest version of the coding-standard used in GLPI core. If you want to use an loder version of the checks (for example if you have a huge amount of work to fix!), you can specify a version in the above command like ``glpi-project/coding-standard:0.5``. Refer to the `coding-standard project changelog <https://github.com/glpi-project/coding-standard/blob/master/CHANGELOG.md>`_ to know more ;)
 
-The plugin directory structure should look like the following:
+You can then for example add a line in your ``.travis.yml`` file to automate checking:
 
-* |folder| `MyPlugin`
+.. code-block:: yaml
 
-  * |folder| `front`
+   script:
+     - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
 
-    * |phpfile| `...`
+.. note::
 
-  * |folder| `inc`
-
-    * |phpfile| `...`
-
-  * |folder| `locale`
-
-    * |file| `...`
-
-  * |folder| `tools`
-
-    * |file| `...`
-
-  * |file| `README.md`
-  * |file| `LICENSE`
-  * |phpfile| `setup.php`
-  * |phpfile| `hook.php`
-  * |file| `MyPlugin.xml`
-  * |file| `MyPlugin.png`
-  * |file| `...`
-  * |phpfile| `...`
-
-* `front` will host all PHP files directly used to display something to the user,
-* `inc` will host all classes,
-* if you internationalize your plugin, localization files will be found under the `locale` directory,
-* if you need any scripting tool (like something to extract or update your translatable strings), you can put them in the `tools` directory
-* a `README.md` file describing the plugin features, how to install it, and so on,
-* a `LICENSE` file contaiing the license,
-* `MyPlugin.xml` and `MyPlugin.png` can be used to reference your plugin on the `plugins directory website <plugins_dir_website_>`_,
-* the required `setup.php` and `hook.php` files.
-
-Versionning
-^^^^^^^^^^^
-
-We recommand you to use `semantic versionning <http://semver.org/>`_ for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
-
-Whatever the versionning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
-
-ChangeLog
-^^^^^^^^^
-
-Many projects make releases without providing any changlog file. It is not simple for any end user (whether a developer or not) to read a repository log or a list of tickets to know what have changed between two releases.
-
-Keep in mind it could help users to know what have been changed. To achieve this, take a look at `Keep an ChangeLog <http://keepachangelog.com/>`_, it will exaplin you some basics and give you guidelines to maintain sug a thing.
-
-Third party libraries
-^^^^^^^^^^^^^^^^^^^^^
-
-Just like GLPI, you shoul use the :ref:`composer tool to manage third party libraries <3rd_party_libs>` for your plugin.
-
-.. _plugins_dir_website: http://plugins.glpi-project.org/
+   Coding standards and theirs checks are enabled per default using the `empty plugin facilities <http://glpi-plugins.readthedocs.io/en/latest/empty/>`_
