@@ -286,7 +286,7 @@ Inserting comment in source code for doxygen.
 Result : full doc for variables, functions, classes...
 
 
-quotes / double quotes
+Quotes / double quotes
 ----------------------
 
 * You must use single quotes for indexes, constants declaration, translations, ...
