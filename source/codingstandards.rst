@@ -99,19 +99,7 @@ Function names must be written in *camelCaps*:
 
 If parameters add block doc for these parameters.
 
-.. code-block:: php
-
-   <?php
-   /**
-    * decribe utility of the function
-    *
-    * @param $a      type(integer, array...)    utility of the param
-    * @param $b      type(integer, array...)    utility of the param
-    *
-    * $return of the funtion (boolean, array...)
-    *
-   **/
-   function userName($a, $b) {
+For example, please see the `Comments`_ section.
 
 If function from parent add
 
