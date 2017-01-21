@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'GLPI Developer Documentation'
-copyright = u'2016, Teclib\''
+copyright = u'2016-2017, Teclib\''
 
 rst_epilog = """
 |ccbyncnd|
