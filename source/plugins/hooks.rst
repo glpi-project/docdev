@@ -136,8 +136,21 @@ Hooks that cannot be classified in above categories :)
 ``add_javascript``
    Add javascript in **all** pages headers
 
+   .. versionadded:: 9.2
+
+      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+
+      The name of the minified ``plugin.js`` file must be ``plugin.min.js``
+
+
 ``add_css``
    Add CSS stylesheet on **all** pages headers
+
+   .. versionadded:: 9.2
+
+      Minified CSS files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+
+      The name of the minified ``plugin.css`` file must be ``plugin.min.css``
 
 ``display_central``
    Displays something on central page
