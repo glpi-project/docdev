@@ -97,21 +97,16 @@ Function names must be written in *camelCaps*:
       //do something here!
    }
 
-If parameters add block doc for these parameters.
-
-For example, please see the `Comments`_ section.
+If parameters add block doc for these parameters, please see the `Comments`_ section for any example.
 
 If function from parent add
 
 .. code-block:: php
 
    <?php
-   /**
-    * @see CommonGLPI::getMenuContent()
-   **/
    function getMenuContent()
 
-If it's a new function, add in block doc:
+If it's a new function, add in block doc (see the `Comments`_ section):
 
 .. code-block:: php
 
@@ -251,6 +246,75 @@ Each parameter must be documented in its own line, begining with the ``@param`` 
 If your parameter can be of different types, you can list them separated with a ``|`` or you can use the ``mixed`` type; it's up to you!
 
 All parameters names and description must be aligned vertically on the longest (plu one character); see the above example.
+
+Override method: @inheritDoc? @see? docblock? no docblock?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are many question regarding the way to document a child method in a child class.
+
+Many editors use the ``{@inheritDoc}`` tag without anything else. **This is wrong**. This *inline* tag is confusing for many users; for more details, see the `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/guides/inheritance.html#the-inheritdoc-tag>`_.
+This tag usage is not forbidden, but make sure to use it properly, or just avoid it. An usage exemple:
+
+.. code-block:: php
+
+   <?php
+
+   abstract class MyClass {
+      /**
+       * This is the documentation block for the curent method.
+       *
+       * @param string $sthing Something to send to the method
+       *
+       * @return string
+       */
+      abstract public function myMethod($sthing);
+   }
+
+   class MyChildClass extends MyClass {
+      /**
+       * {@inheritDoc}
+       *
+       * @param string $sthing Something to send to the method
+       *
+       * @return string
+       */
+      public function myMethod($sthing) {
+         [...]
+      }
+
+Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can alos take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`_. While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
+An usage example:
+
+.. code-block:: php
+
+   <?php
+   /**
+    * Adds something
+    *
+    * @param string $type  Type of thing
+    * @parem string $value The value
+    *
+    * @return boolean
+    */
+   public function add($type, $value) {
+      // [...]
+   }
+
+   /**
+    * Adds myType entry
+    *
+    * @param string $value The value
+    *
+    * @return boolean
+    * @see add()
+    */
+   public function addMyType($value) {
+      return $this->addType('myType', $value);
+   }
+
+Finally, should I add a docblock, or nothing?
+
+PHPDocumentor and various tools will just use parent docblock verbatim if nothing is specified on child methods. So, if the child method acts just as its parent (extending an abstract class, or some super class like ``CommonGLPI`` or ``CommonDBTM``); you may just omit the docblock entirely. The alternative is to copy paste parent docblock entirely; but that way, it would be required to change all children docblocks when parent if changed.
 
 Variables types
 ---------------
