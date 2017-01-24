@@ -293,7 +293,7 @@ An usage example:
     * Adds something
     *
     * @param string $type  Type of thing
-    * @parem string $value The value
+    * @param string $value The value
     *
     * @return boolean
     */
