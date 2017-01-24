@@ -262,6 +262,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
    abstract class MyClass {
       /**
        * This is the documentation block for the curent method.
+       * It does something.
        *
        * @param string $sthing Something to send to the method
        *
@@ -272,7 +273,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
 
    class MyChildClass extends MyClass {
       /**
-       * {@inheritDoc}
+       * {@inheritDoc} Something is done differently for a reason.
        *
        * @param string $sthing Something to send to the method
        *
