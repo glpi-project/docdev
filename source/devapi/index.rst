@@ -10,3 +10,4 @@ Apart from the current documentation, you can also check the `full PHP documenta
    dbiterator
    dbmodel
    translations
+   tools
