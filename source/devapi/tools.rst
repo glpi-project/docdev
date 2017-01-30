@@ -1,5 +1,5 @@
 GLPI dev tools
-----------
+--------------
 
 Differents tools are available on the tools folder.
 You can found here some documentation about them.
@@ -8,8 +8,6 @@ You can found here some documentation about them.
 * locale\move_to_po.php : 
 * locale\update_mo.pl : 
 * locale\update_po.pl : 
-* phpunit\* : tests
-* Doxyfile : Obsolete
 * HEADER : copyright header file (should be used with modify_headers.pl)
 * autoupdatelocales.sh : Probably obsolete
 * check_dict.pl : 
@@ -25,12 +23,10 @@ You can found here some documentation about them.
 * diff_plugin_locale.php : Probably obsolete
 * find_twin_in_dict.sh : Check duplicates key in language template
 * findtableswithoutclass.php :
-* fix_svn_properties.pl : Obsolete
 * fix_utf8_bomfiles.sh : 
 * fk_generate.php : 
 * genapidoc.sh : Generate GLPI phpdoc using apigen
-* generate_bigdump.function.php : requiered for generate_bigdump.php
-* generate_bigdump.php : generate and populate a complete glpi DB
+* generate_bigdump.php & generate_bigdump.function.php : generate and populate a complete glpi DB
 * genphpcov.sh : 
 * getsearchoptions.php : 
 * glpiuser.php : 
@@ -44,9 +40,17 @@ You can found here some documentation about them.
 * modify_headers.pl : Update copyright header (use HEADER file)
 * notincludedlanguages.php : Get all po files not used in GLPI
 * php.vim : Probably obsolete
-* subversion_config_file : Obsolete
 * test_allfiles.php : 
 * test_langfiles.php : 
 * testmail.php : 
 * testunit.php : 
 * update_registered_ids.php : Purge history with some criteria
+
+
+Old tools
+^^^^^^^^^
+These files aren't any longer used, but are still on the tools folder actually
+* phpunit\* : tests
+* Doxyfile : Obsolete
+* fix_svn_properties.pl : Obsolete
+* subversion_config_file : Obsolete
