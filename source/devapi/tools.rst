@@ -1,5 +1,5 @@
 GLPI dev tools
---------------
+==============
 
 Differents tools are available on the tools folder.
 You can found here some documentation about them.
