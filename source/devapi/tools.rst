@@ -12,14 +12,12 @@ You can found here some documentation about them.
 * autoupdatelocales.sh : Probably obsolete
 * check_dict.pl : 
 * check_functions.pl : 
-* check_pofiles.pl : 
 * checkforms.php : Check forms opened / closed
 * checkfunction.php : Check for obsolete function usage
 * cleanhistory.php : Purge history with some criteria
 * cliinstall.php : GLPI install using PHP cli
 * cliupdate.php : GLPI update using PHP cli
 * convert_search_options.php : An utility script to convert old getSearchOptions array to new ones #1396
-* detect_wrong_php_begin_end_file.pl : Check file open and closure
 * diff_plugin_locale.php : Probably obsolete
 * find_twin_in_dict.sh : Check duplicates key in language template
 * findtableswithoutclass.php :
@@ -30,17 +28,13 @@ You can found here some documentation about them.
 * genphpcov.sh : 
 * getsearchoptions.php : 
 * glpiuser.php : 
-* indent.script.vi : Probably obsolete
-* indent_php.pl : Probably obsolete
 * ldap-glpi.ldif : An LDAP export
 * ldap-schema.txt : An LDAP export
 * ldapsync.php : 
-* make_plugin_release.sh : Probably obsolete
 * make_release.sh : Script for making an GLPI release tarball
 * modify_headers.pl : Update copyright header (use HEADER file)
 * notincludedlanguages.php : Get all po files not used in GLPI
 * php.vim : Probably obsolete
-* test_allfiles.php : 
 * test_langfiles.php : 
 * testmail.php : 
 * testunit.php : 
@@ -51,6 +45,3 @@ Old tools
 ^^^^^^^^^
 These files aren't any longer used, but are still on the tools folder actually
 * phpunit\* : tests
-* Doxyfile : Obsolete
-* fix_svn_properties.pl : Obsolete
-* subversion_config_file : Obsolete
