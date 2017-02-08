@@ -7,11 +7,11 @@ The itemtype classes can define a set of `search options`_ to configure which co
 
 It include some short-cuts functions:
 
-* show:              displays the complete search page.
-* showGenericSearch: displays only the multi-criteria form.
-* showList:          displays only the resulting list.
-* getDatas:          return an array of raw data.
-* manageParams:      complete the $_GET values with the $_SESSION values.
+- **show**:              displays the complete search page.
+- **showGenericSearch**: displays only the multi-criteria form.
+- **showList**:          displays only the resulting list.
+- **getDatas**:          return an array of raw data.
+- **manageParams**:      complete the $_GET values with the $_SESSION values.
 
 The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query.
 For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
@@ -28,6 +28,7 @@ All are optionals.
    - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for 1st element.
    - *field*: id of the `searchoption <#search-options>`_.
    - *searchtype*: type of search with one of theses values:
+
       - 'contains'
       - 'equals'
       - 'notequals'
@@ -36,10 +37,13 @@ All are optionals.
       - 'under'
       - 'notunder'
    - *value*: the value to search
+
 - **metacriteria**: is very similar to *criteria* parameter but permits to search in the `search options`_ of an itemtype linked to the current (Ex: the softwares of a computer).
                     Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know wich ones could be.
                     The parameter need the same keys as criteria plus one additional:
+
    - *itemtype*: second itemtype to link.
+
 - **sort**: id of the searchoption to sort by.
 - **order**: **ASC** ending sorting / **DESC** ending sorting.
 - **start**: integer for indicating the start point of pagination.
