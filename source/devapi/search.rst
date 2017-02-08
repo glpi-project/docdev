@@ -23,8 +23,7 @@ GET Parameters
 Here is the list of possible keys which could be passed to control the search engine.
 All are optionals.
 
-- **criteria**: array of criterion arrays to filter the search.
-                Each criterion array must provide:
+- **criteria**: array of criterion arrays to filter the search. Each criterion array must provide:
 
    - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for 1st element.
    - *field*: id of the `searchoption <#search-options>`_.
@@ -41,8 +40,10 @@ All are optionals.
    - *value*: the value to search
 
 - **metacriteria**: is very similar to *criteria* parameter but permits to search in the `search options`_ of an itemtype linked to the current (Ex: the softwares of a computer).
-                    Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know wich ones could be.
-                    The parameter need the same keys as criteria plus one additional:
+
+  Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know wich ones could be.
+
+  The parameter need the same keys as criteria plus one additional:
 
    - *itemtype*: second itemtype to link.
 
