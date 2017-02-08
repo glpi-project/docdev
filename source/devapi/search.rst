@@ -25,6 +25,7 @@ All are optionals.
 
 - **criteria**: array of criterion arrays to filter the search.
                 Each criterion array must provide:
+
    - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for 1st element.
    - *field*: id of the `searchoption <#search-options>`_.
    - *searchtype*: type of search with one of theses values:
@@ -36,6 +37,7 @@ All are optionals.
       - 'morethan'
       - 'under'
       - 'notunder'
+
    - *value*: the value to search
 
 - **metacriteria**: is very similar to *criteria* parameter but permits to search in the `search options`_ of an itemtype linked to the current (Ex: the softwares of a computer).
