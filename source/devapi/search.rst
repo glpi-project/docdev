@@ -65,6 +65,7 @@ Prior to GLPI 9.2 version, we needed a *getSearchOptions* function which return 
 
 .. code-block:: php
 
+   <?php
    function getSearchOptions() {
       $tab                       = array();
       $tab['common']             = __('Characteristics');
@@ -86,6 +87,7 @@ Here is the new format (the options are identical):
 
 .. code-block:: php
 
+   <?php
    function getSearchOptionsNew() {
       $tab = [];
 
