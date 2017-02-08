@@ -8,6 +8,7 @@ Apart from the current documentation, you can also check the `full PHP documenta
 
    mainobjects
    querydb
+   search
    dbiterator
    dbmodel
    rules
