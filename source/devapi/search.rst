@@ -20,12 +20,16 @@ For showList function, theses `parameters <#get-parameters>`_ can be passed in t
 GET Parameters
 ^^^^^^^^^^^^^^
 
+.. image:: /_static/images/search_criteria.png
+   :alt: Search criteria
+   :align: center
+
 Here is the list of possible keys which could be passed to control the search engine.
 All are optionals.
 
 - **criteria**: array of criterion arrays to filter the search. Each criterion array must provide:
 
-   - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for 1st element.
+   - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for first element.
    - *field*: id of the `searchoption <#search-options>`_.
    - *searchtype*: type of search with one of theses values:
 
@@ -41,7 +45,7 @@ All are optionals.
 
 - **metacriteria**: is very similar to *criteria* parameter but permits to search in the `search options`_ of an itemtype linked to the current (Ex: the softwares of a computer).
 
-  Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know wich ones could be.
+  Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know which ones could be.
 
   The parameter need the same keys as criteria plus one additional:
 
@@ -50,7 +54,8 @@ All are optionals.
 - **sort**: id of the searchoption to sort by.
 - **order**: **ASC** ending sorting / **DESC** ending sorting.
 - **start**: integer for indicating the start point of pagination.
-- **reset=reset**: optional option to fully reset the saved parameters.
+- **is_deleted**: boolean for display trash-bin.
+- **reset=reset**: optional key to fully reset the saved parameters.
 
 For this last option, GLPI save in $_SESSION['glpisearch'][$itemtype] the last set of parameters for the current itemtype for each search query and automatically restore them on a new search (for the same itemtype) without *reset* and *[meta]criteria* options.
 
@@ -118,124 +123,171 @@ Each option must define the following keys:
 
 And optionally the following keys:
 
-- **linkfield**: foreign key used to join to the current itemtype table.
-                 if not empty, standard massive action (update option) for this option will be impossible
+- **linkfield**: foreign key used to join to the current itemtype table. if not empty, standard massive action (update option) for this option will be impossible
 
 - **searchtype**: string or array containing forced search type:
-   - equals (may force use of field instead of id adding searchequalsonfield option)
+
+   - equals (may force use of field instead of id when adding searchequalsonfield option)
    - contains
 
 - **forcegroupby**: boolean to force group by on this *option*
 
-- **splititems**: instead of using simple <br> to split grouped items : used <hr>
+- **splititems**: instead of using simple '<br>' to split grouped items : used '<hr>'
 
-- **usehaving**: use having instead of WHERE in SQL query.
+- **usehaving**: use HAVING instead of WHERE in SQL query.
 
 - **massiveaction**: set to false to disable the massive actions for this option.
 
-- **nosort**: set to true to disable sorting this option.
+- **nosort**: set to true to disable sorting with this *option*.
 
-- **nosearch**: set to true to disable search ([meta]criteria) on this option.
+- **nosearch**: set to true to disable searching in this *option*.
 
-- **nodisplay**: set to true to disable displaying this option.
+- **nodisplay**: set to true to disable displaying this *option*.
 
-- **joinparams**: define how the join must be done (if complex)
-                  array may contain :
-   - *beforejoin* : array define which tables must be join before. array contains table key (may contain additional joinparams).
-                    Do an array of array if several beforejoin, both are valid.
-                    Example : array("beforejoin"=>array('table'=>mytable,'joinparams'=>array('jointype'=>'child'...
+- **joinparams**: define how the SQL join must be done. Array may contain:
 
-   - *jointype*: string define the join type :
+   - *beforejoin* : define which tables must be joined to access the field. The array contains **table** key and may contain an additional **joinparams**. In case of nested *beforejoin*, we start the SQL join from the last dimension. Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
+
+   - *jointype*: string define the join type:
+
       - 'empty' for a standard join
-      - 'child' for a child table (standard foreign key usage)
+         (REFTABLE.`#linkfield#` = NEWTABLE.`id`)
+      - 'child' for a child table
+         (REFTABLE.`id` = NEWTABLE.`#linkfield#`)
       - 'itemtype_item' for links using itemtype and items_id fields
+         (REFTABLE.`id` = NEWTABLE.`items_id` AND NEWTABLE.`itemtype` = '#new_table_itemtype#')
+      - 'mainitemtype_mainitem', same as itemtype_item but using mainitemtype and mainitems_id fields
+         (REFTABLE.`id` = NEWTABLE.`mainitems_id` AND NEWTABLE.`mainitemtype` = 'new table itemtype')
+      - 'itemtypeonly', same as itemtype_item jointype but without linking id
+         (NEWTABLE.`itemtype` = '#new_table_itemtype#')
       - 'item_item' for table used to link 2 similar items : glpi_tickets_tickets for example : link fields are standardfk_1 and standardfk_2
+         (REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_1` OR REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_2`)
+      - 'item_item_revert', same as item_item and child jointypes
+         (NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`)
 
-   - *condition*: additional condition to add to the standard link.
-                   use NEWTABLE or REFTABLE tag to use the table names.
+   - *condition*: additional condition to add to the standard link. use NEWTABLE or REFTABLE tag to use the table names.
 
-   - *nolink*: set to true to define an additional join not used to join the initial table
+   - *nolink*: set to true to  indicate the current join doesn't link to the previous join (nested joinsparams)
 
+- **additionalfields**: an array for additional fields to add in the SELECT part of the query. Ex: 'additionalfields' => ['id', 'content', 'status']
 
-- **additionalfields**: is array of additionalfields need to display or define value
+- **datatype**: define how the option will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. *optional parameters* are added to the base array of the option to control more exactly the datatype.
 
-- **datatype**:
-   - 'date'
+   - 'date'.
+
       *optional parameters*:
-         - **searchunit**: SEARCH_UNIT (DAY or MONTH default)
-         - **maybefuture**: set to true if date may be in future
-         - **emptylabel**: string to display if null is selected
 
-   - 'datetime'
-      *optional parameters*:
-         - **searchunit**: SEARCH_UNIT (DAY or MONTH default)
-         - **maybefuture**: set to true if date may be in future
-         - **emptylabel**: string to display if null is selected
+      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+      - **maybefuture**: display datepicker with future date selection, default false
+      - **emptylabel**: string to display in case of null value
 
-   - 'date_delay': date with a delay in month (end_warranty, end_date)
-      *optional parameters*:
-         - **datafields**: [1]=DATE_FIELD, ['datafields'][2]=DELAY_ADD_FIELD, ['datafields'][3]=DELAY_MINUS_FIELD
-         - **searchunit**: SEARCH_UNIT (DAY or MONTH default)
-         - **delay_unit**: DELAY_UNIT (DAY or MONTH default)
-         - **maybefuture**: set to true if date may be in future
-         - **emptylabel**: string to display if null is selected
+   - 'datetime'.
 
-   - 'timestamp': time in seconds
       *optional parameters*:
-         - **withseconds**: true/false (false by default)
+
+      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+      - **maybefuture**: display datepicker with future date selection, default false
+      - **emptylabel**: string to display in case of null value
+
+   - 'date_delay': date with a delay in month (end_warranty, end_date).
+
+      *optional parameters*:
+
+      - **datafields**: [1]=DATE_FIELD, ['datafields'][2]=DELAY_ADD_FIELD, ['datafields'][3]=DELAY_MINUS_FIELD
+      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+      - **delay_unit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+      - **maybefuture**: display datepicker with future date selection, default false
+      - **emptylabel**: string to display in case of null value
+
+   - 'timestamp': use Dropdown::showTimeStamp() for modification
+
+      *optional parameters*:
+
+      - **withseconds**: boolean (false by default)
 
    - 'weblink'
 
    - 'email'
 
+   - 'color': use Html::showColorField() for modification
+
    - 'text'
 
-   - 'string'
+   - 'string': use a rich text editor for modification
 
    - 'ip'
 
-   - 'mac'
-      *optional parameters*:
-         - **htmltext**: true/false (false by default)
+   - 'mac'.
 
-   - 'number':
       *optional parameters*:
-         - **width**: for width search
-         - **min**: minimum value (default 0)
-         - **max**: maximum value (default 100)
-         - **step**: step for select (default 1)
-         - **toadd**: array of values to add (default empty)
+
+      - **htmltext**: boolean, escape the value (false by default)
+
+   - 'number'. use a Dropdown::showNumber() for modification (in case of 'equals' searchtype). For 'contains' searchtype, you can use < and > prefix in 'value'.
+
+      *optional parameters*:
+
+      - **width**: html attribute passed to Dropdown::showNumber()
+      - **min**: minimum value (default 0)
+      - **max**: maximum value (default 100)
+      - **step**: step for select (default 1)
+      - **toadd**: array of values to add a the beginning of the dropdown
+
+   - 'integer': alias for number.
 
    - 'count': same as number but count the number of item in the table
 
    - 'decimal': idem that number but formatted with decimal
 
-   - 'bool'
+   - 'bool': use Dropdown::showYesNo() for modification
 
-   - 'itemlink': link to the item
+   - 'itemlink': create a link to the item
 
-   - 'itemtypename'
+   - 'itemtypename': use Dropdown::showItemTypes() for modification
+
+      *optional parameters*, to define available itemtypes:
+
+      - **itemtype_list**: list in $CFG_GLPI (see https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166)
+      - **types**: array containing available types
+
+   - 'language'. use Dropdown::showLanguages() for modification
+
       *optional parameters*:
-         defined itemtypes available : 'itemtype_list' : list in $CFG_GLPI or 'types' array containing available types
 
-   - 'language':
+      - **display_emptychoice**: display an empty choice (-------)
+
+   - 'right': use Profile::dropdownRights() for modification
+
       *optional parameters*:
-         - **display_emptychoice**: 'emptylabel'
 
-   - 'right': for No Access / Read / Right
-      *optional parameters*:
-         - **nonone**: 
-         - **noread**: 
-         - **nowrite**: 
+      - **nonone**: hide none choice ? (default false)
+      - **noread**: hide read choice ? (default false)
+      - **nowrite**: hide write choice ? (default false)
 
-   - 'dropdown': dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
+   - 'dropdown': use Itemtype::dropdown() for modification. Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
+
+
+Field number in search constant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See `the document </_static/documents/GLPI-SearchEngine.ods>`_.
+
+S => STATE_TYPE, R => RESERVATION_TYPE
+
 
 Bookmarks
 ^^^^^^^^^
 
+The *glpi_boomarks* table stores a list of search queries for the users and permit to retrieve them.
+The 'query' field contains an url query construct from `parameters`_ with *http_build_query* php function.
+
+
 
 Display Preferences
 ^^^^^^^^^^^^^^^^^^^
+
+The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype.
+A set of preferences can be personnal or global (*users_id* = 0). If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
 
 
 Examples
@@ -264,5 +316,26 @@ If you want to display only the multi-criteria form (with some additional option
    ];
    Search::showGenericSearch($itemtype, $p);
 
+If you want to display only a list without the criteria form:
 
+.. code-block:: php
 
+   <?php
+
+   // display a list of users with entity = 'Root entity'
+   $itemtype = 'User';
+   $p = [
+      'start'      => 0,
+      'is_deleted' => 0,
+      'sort'       => 1, // sort by name
+      'order'      => 'DESC'
+      'reset'      => 'reset',
+      'criteria'   => [
+         [
+            'field'      => 80,
+            'searchtype' => 'equals',
+            'value'      => 0,
+         ],
+      ],
+   ];
+   Search::showList($itemtype, $p);
