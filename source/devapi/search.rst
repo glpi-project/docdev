@@ -1,6 +1,9 @@
 Search Engine
 -------------
 
+Goal
+^^^^
+
 The `Search class <https://forge.glpi-project.org/apidoc/class-Search.html>`_ aims to provide a multi-criteria Search engine for GLPI Itemtypes.
 
 The itemtype classes can define a set of `search options`_ to configure which columns could be queried, how they can be accessed and displayed, etc..
@@ -15,6 +18,56 @@ It include some short-cuts functions:
 
 The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query.
 For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
+
+Examples
+~~~~~~~~
+
+To display the search engine with its default options (criteria form, pager, list):
+
+.. code-block:: php
+
+   <?php
+   $itemtype = 'Computer';
+   Search::show($itemtype);
+
+If you want to display only the multi-criteria form (with some additional options):
+
+.. code-block:: php
+
+   <?php
+   $itemtype = 'Computer';
+   $p = [
+      'addhidden'   => [ // some hidden inputs added to the criteria form
+         'hidden_input' => "OK"
+      ],
+      'actionname'  => 'preview', //change the submit button name
+      'actionvalue' => __('Preview'), //change the submit button label
+   ];
+   Search::showGenericSearch($itemtype, $p);
+
+If you want to display only a list without the criteria form:
+
+.. code-block:: php
+
+   <?php
+
+   // display a list of users with entity = 'Root entity'
+   $itemtype = 'User';
+   $p = [
+      'start'      => 0,
+      'is_deleted' => 0,
+      'sort'       => 1, // sort by name
+      'order'      => 'DESC'
+      'reset'      => 'reset',
+      'criteria'   => [
+         [
+            'field'      => 80,
+            'searchtype' => 'equals',
+            'value'      => 0,
+         ],
+      ],
+   ];
+   Search::showList($itemtype, $p);
 
 TODO
 ^^^^
@@ -455,53 +508,3 @@ Display Preferences
 The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype.
 A set of preferences can be personal or global (*users_id* = 0). If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
 
-
-Examples
-^^^^^^^^
-
-To display the search engine with its default options (criteria form, pager, list):
-
-.. code-block:: php
-
-   <?php
-   $itemtype = 'Computer';
-   Search::show($itemtype);
-
-If you want to display only the multi-criteria form (with some additional options):
-
-.. code-block:: php
-
-   <?php
-   $itemtype = 'Computer';
-   $p = [
-      'addhidden'   => [ // some hidden inputs added to the criteria form
-         'hidden_input' => "OK"
-      ],
-      'actionname'  => 'preview', //change the submit button name
-      'actionvalue' => __('Preview'), //change the submit button label
-   ];
-   Search::showGenericSearch($itemtype, $p);
-
-If you want to display only a list without the criteria form:
-
-.. code-block:: php
-
-   <?php
-
-   // display a list of users with entity = 'Root entity'
-   $itemtype = 'User';
-   $p = [
-      'start'      => 0,
-      'is_deleted' => 0,
-      'sort'       => 1, // sort by name
-      'order'      => 'DESC'
-      'reset'      => 'reset',
-      'criteria'   => [
-         [
-            'field'      => 80,
-            'searchtype' => 'equals',
-            'value'      => 0,
-         ],
-      ],
-   ];
-   Search::showList($itemtype, $p);
