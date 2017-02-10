@@ -151,7 +151,7 @@ Prior to GLPI 9.2 version, we needed a *getSearchOptions* method which return th
 
 Since GLPI 9.2, a new method exist to avoid conflict of id.
 An `unit test <https://github.com/glpi-project/glpi/blob/71174f45/tests/SearchTest.php#L216>`_ is present on the repository to check potential conflicts.
-Here is the new format (the options are identical):
+Here is the new format (the others keys/values are identical):
 
 .. code-block:: php
 
@@ -182,34 +182,37 @@ Each option must define the following keys:
 
 - **table**: the SQL table where the *field* key can be found.
 - **field**: the SQL column to query.
-- **name**: a label used to display the option in the search pages (like header for example).
+- **name**: a label used to display the *searchoption* in the search pages (like header for example).
 
 And optionally the following keys:
 
-- **linkfield**: foreign key used to join to the current itemtype table. if not empty, standard massive action (update option) for this option will be impossible
+- **linkfield**: foreign key used to join to the current itemtype table. if not empty, standard massive action (update feature) for this *searchoption* will be impossible
 
 - **searchtype**: string or array containing forced search type:
 
    - equals (may force use of field instead of id when adding searchequalsonfield option)
    - contains
 
-- **forcegroupby**: boolean to force group by on this *option*
+- **forcegroupby**: boolean to force group by on this *searchoption*
 
 - **splititems**: instead of using simple '<br>' to split grouped items : used '<hr>'
 
 - **usehaving**: use HAVING instead of WHERE in SQL query.
 
-- **massiveaction**: set to false to disable the massive actions for this option.
+- **massiveaction**: set to false to disable the massive actions for this *searchoption*.
 
-- **nosort**: set to true to disable sorting with this *option*.
+- **nosort**: set to true to disable sorting with this *searchoption*.
 
-- **nosearch**: set to true to disable searching in this *option*.
+- **nosearch**: set to true to disable searching in this *searchoption*.
 
-- **nodisplay**: set to true to disable displaying this *option*.
+- **nodisplay**: set to true to disable displaying this *searchoption*.
 
 - **joinparams**: define how the SQL join must be done. Array may contain:
 
-   - *beforejoin* : define which tables must be joined to access the field. The array contains **table** key and may contain an additional **joinparams**. In case of nested *beforejoin*, we start the SQL join from the last dimension. Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
+   - *beforejoin* : define which tables must be joined to access the field.
+   The array contains **table** key and may contain an additional **joinparams**.
+   In case of nested *beforejoin*, we start the SQL join from the last dimension.
+   Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
 
    - *jointype*: string define the join type:
 
@@ -228,13 +231,15 @@ And optionally the following keys:
       - 'item_item_revert', same as item_item and child jointypes
          (NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`)
 
-   - *condition*: additional condition to add to the standard link. use NEWTABLE or REFTABLE tag to use the table names.
+   - *condition*: additional condition to add to the standard link.
+   Use NEWTABLE or REFTABLE tag to use the table names.
 
-   - *nolink*: set to true to  indicate the current join doesn't link to the previous join (nested joinsparams)
+   - *nolink*: set to true to indicate the current join doesn't link to the previous join/from (nested joinsparams)
 
 - **additionalfields**: an array for additional fields to add in the SELECT part of the query. Ex: 'additionalfields' => ['id', 'content', 'status']
 
-- **datatype**: define how the option will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. *optional parameters* are added to the base array of the option to control more exactly the datatype.
+- **datatype**: define how the *searchoption* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown.
+*optional parameters* are added to the base array of the *searchoption* to control more exactly the datatype.
 
    - 'date'.
 
