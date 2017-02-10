@@ -1,3 +1,7 @@
+.. |br| raw:: html
+
+   <br />
+
 Search Engine
 -------------
 
@@ -16,7 +20,7 @@ It include some short-cuts functions:
 - **getDatas**:          return an array of raw data.
 - **manageParams**:      complete the $_GET values with the $_SESSION values.
 
-The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query.
+The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query. |br|
 For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
 
 Examples
@@ -87,7 +91,7 @@ GET Parameters
    :alt: Search criteria
    :align: center
 
-Here is the list of possible keys which could be passed to control the search engine.
+Here is the list of possible keys which could be passed to control the search engine. |br|
 All are optionals.
 
 - **criteria**: array of criterion arrays to filter the search. Each criterion array must provide:
@@ -126,7 +130,7 @@ For this last option, GLPI save in $_SESSION['glpisearch'][$itemtype] the last s
 Search options
 ^^^^^^^^^^^^^^
 
-Each itemtype can define a set of options to represent the columns which can be queried/displayed by the search engine.
+Each itemtype can define a set of options to represent the columns which can be queried/displayed by the search engine. |br|
 Each option is identified by an unique integer (we must avoid conflict).
 
 Prior to GLPI 9.2 version, we needed a *getSearchOptions* method which return the array of options:
@@ -186,7 +190,8 @@ Each option must define the following keys:
 
 And optionally the following keys:
 
-- **linkfield**: foreign key used to join to the current itemtype table. if not empty, standard massive action (update feature) for this *searchoption* will be impossible
+- **linkfield**: foreign key used to join to the current itemtype table. |br|
+   if not empty, standard massive action (update feature) for this *searchoption* will be impossible
 
 - **searchtype**: string or array containing forced search type:
 
@@ -209,10 +214,10 @@ And optionally the following keys:
 
 - **joinparams**: define how the SQL join must be done. Array may contain:
 
-   - *beforejoin* : define which tables must be joined to access the field.
-   The array contains **table** key and may contain an additional **joinparams**.
-   In case of nested *beforejoin*, we start the SQL join from the last dimension.
-   Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
+   - *beforejoin* : define which tables must be joined to access the field. |br|
+      The array contains **table** key and may contain an additional **joinparams**. |br|
+      In case of nested *beforejoin*, we start the SQL join from the last dimension. |br|
+      Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
 
    - *jointype*: string define the join type:
 
@@ -231,15 +236,15 @@ And optionally the following keys:
       - 'item_item_revert', same as item_item and child jointypes
          (NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`)
 
-   - *condition*: additional condition to add to the standard link.
-   Use NEWTABLE or REFTABLE tag to use the table names.
+   - *condition*: additional condition to add to the standard link. |br|
+      Use NEWTABLE or REFTABLE tag to use the table names.
 
    - *nolink*: set to true to indicate the current join doesn't link to the previous join/from (nested joinsparams)
 
 - **additionalfields**: an array for additional fields to add in the SELECT part of the query. Ex: 'additionalfields' => ['id', 'content', 'status']
 
-- **datatype**: define how the *searchoption* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown.
-*optional parameters* are added to the base array of the *searchoption* to control more exactly the datatype.
+- **datatype**: define how the *searchoption* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. |br|
+   *optional parameters* are added to the base array of the *searchoption* to control more exactly the datatype.
 
    - 'date'.
 
@@ -291,7 +296,8 @@ And optionally the following keys:
 
       - **htmltext**: boolean, escape the value (false by default)
 
-   - 'number'. use a Dropdown::showNumber() for modification (in case of 'equals' searchtype). For 'contains' searchtype, you can use < and > prefix in 'value'.
+   - 'number'. use a Dropdown::showNumber() for modification (in case of 'equals' searchtype). |br|
+      For 'contains' searchtype, you can use < and > prefix in 'value'.
 
       *optional parameters*:
 
@@ -332,15 +338,17 @@ And optionally the following keys:
       - **noread**: hide read choice ? (default false)
       - **nowrite**: hide write choice ? (default false)
 
-   - 'dropdown': use Itemtype::dropdown() for modification. Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
+   - 'dropdown': use Itemtype::dropdown() for modification. |br|
+      Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
 
-   - 'specific': if not any of the previous options matches the way you want to display your field, you can use this datatype. See `Specific search options`_ paragraph below for implementation.
+   - 'specific': if not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
+      See `Specific search options`_ paragraph below for implementation.
 
 
 Specific search options
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-You may want to control how to select and display your field in a searchoption.
+You may want to control how to select and display your field in a searchoption. |br|
 You need to set 'datatype' => 'specific' in your search option and declare theses methods in your class:
 
    - **getSpecificValueToDisplay**: define how to display the field in the list.
@@ -434,11 +442,11 @@ S => STATE_TYPE, R => RESERVATION_TYPE
 Default Select/Where/Join
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The search class implements 3 methods which add some stuff to SQL queries before the searchoptions computation.
-For some itemtype, we need to filter the query or additional fields to it.
+The search class implements 3 methods which add some stuff to SQL queries before the searchoptions computation. |br|
+For some itemtype, we need to filter the query or additional fields to it. |br|
 For example, filtering the tickets you cannot view if you don't have the proper rights.
 
-You can add the needed case(s) for your feature in theses methods.
+You can add the needed case(s) for your feature in theses methods. |br|
 We have hooks for the plugins to define their own set of default conditions in their hook.php file.
 
 addDefaultSelect
@@ -502,7 +510,7 @@ See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a5
 Bookmarks
 ^^^^^^^^^
 
-The *glpi_boomarks* table stores a list of search queries for the users and permit to retrieve them.
+The *glpi_boomarks* table stores a list of search queries for the users and permit to retrieve them. |br|
 The 'query' field contains an url query construct from `parameters`_ with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ php function.
 
 
@@ -510,6 +518,7 @@ The 'query' field contains an url query construct from `parameters`_ with `http_
 Display Preferences
 ^^^^^^^^^^^^^^^^^^^
 
-The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype.
-A set of preferences can be personal or global (*users_id* = 0). If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
+The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype. |br|
+A set of preferences can be personal or global (*users_id* = 0). |br|
+If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
 
