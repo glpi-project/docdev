@@ -25,7 +25,6 @@ TODO
 - giveItem
 - export
 - fulltext search
-- default select/where/join
 
 
 GET Parameters
@@ -277,7 +276,7 @@ And optionally the following keys:
 
    - 'dropdown': use Itemtype::dropdown() for modification. Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
 
-   - 'specific': if not any of the previous options match the way you want to display your field, you can use this datatype. See `Specific search options`_ paragraph below for implementation.
+   - 'specific': if not any of the previous options matches the way you want to display your field, you can use this datatype. See `Specific search options`_ paragraph below for implementation.
 
 
 Specific search options
@@ -373,6 +372,75 @@ See `the document </_static/documents/GLPI-SearchEngine.ods>`_.
 S => STATE_TYPE, R => RESERVATION_TYPE
 
 
+
+Default Select/Where/Join
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The search class implements 3 methods which add some stuff to SQL queries before the searchoptions computation.
+For some itemtype, we need to filter the query or additional fields to it.
+For example, filtering the tickets you cannot view if you don't have the proper rights.
+
+You can add the needed case(s) for your feature in theses methods.
+We have hooks for the plugins to define their own set of default conditions in their hook.php file.
+
+addDefaultSelect
+~~~~~~~~~~~~~~~~
+
+See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2202>`_
+
+Plugin hook:
+
+.. code-block:: php
+
+   <?php
+
+   function plugin_mypluginname_addDefaultSelect($itemtype) {
+      switch ($type) {
+         case "MyItemtype" :
+            return "`mytable`.`myfield` = 'myvalue' AS MYNAME, ";
+      }
+      return "";
+   }
+
+
+addDefaultWhere
+~~~~~~~~~~~~~~~
+
+See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2580>`_
+
+Plugin hook:
+
+.. code-block:: php
+
+   <?php
+
+   function plugin_mypluginname_addDefaultJoin($itemtype, $ref_table, &$already_link_tables) {
+      switch ($itemtype) {
+         case "MyItemtype" :
+            return Search::addLeftJoin($itemtype, $ref_table, $already_link_tables,
+                                       "newtable", "linkfield");
+      }
+      return "";
+   }
+
+addDefaultJoin
+~~~~~~~~~~~~~~
+
+See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L3381>`_
+
+.. code-block:: php
+
+   <?php
+
+   function plugin_mypluginname_addDefaultWhere($itemtype) {
+      switch ($itemtype) {
+         case "MyItemtype" :
+            return " `mytable`.`myfield` = 'myvalue' ";
+      }
+      return "";
+   }
+
+
 Bookmarks
 ^^^^^^^^^
 
@@ -385,7 +453,7 @@ Display Preferences
 ^^^^^^^^^^^^^^^^^^^
 
 The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype.
-A set of preferences can be personnal or global (*users_id* = 0). If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
+A set of preferences can be personal or global (*users_id* = 0). If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
 
 
 Examples
