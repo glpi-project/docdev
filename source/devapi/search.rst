@@ -16,6 +16,17 @@ It include some short-cuts functions:
 The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query.
 For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
 
+TODO
+^^^^
+
+- datafields option
+- difference between searchunit and delay_unit
+- dropdown translations
+- giveItem
+- export
+- fulltext search
+- default select/where/join
+
 
 GET Parameters
 ^^^^^^^^^^^^^^
@@ -66,7 +77,7 @@ Search options
 Each itemtype can define a set of options to represent the columns which can be queried/displayed by the search engine.
 Each option is identified by an unique integer (we must avoid conflict).
 
-Prior to GLPI 9.2 version, we needed a *getSearchOptions* function which return the array of options:
+Prior to GLPI 9.2 version, we needed a *getSearchOptions* method which return the array of options:
 
 .. code-block:: php
 
@@ -86,7 +97,7 @@ Prior to GLPI 9.2 version, we needed a *getSearchOptions* function which return 
       return $tab;
    }
 
-Since GLPI 9.2, a new function exist to avoid conflict of id.
+Since GLPI 9.2, a new method exist to avoid conflict of id.
 An `unit test <https://github.com/glpi-project/glpi/blob/71174f45/tests/SearchTest.php#L216>`_ is present on the repository to check potential conflicts.
 Here is the new format (the options are identical):
 
@@ -266,6 +277,93 @@ And optionally the following keys:
 
    - 'dropdown': use Itemtype::dropdown() for modification. Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
 
+   - 'specific': if not any of the previous options match the way you want to display your field, you can use this datatype. See `Specific search options`_ paragraph below for implementation.
+
+
+Specific search options
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You may want to control how to select and display your field in a searchoption.
+You need to set 'datatype' => 'specific' in your search option and declare theses methods in your class:
+
+   - **getSpecificValueToDisplay**: define how to display the field in the list.
+      Parameters:
+
+         - *$field*: column name, it matches the 'field' key of your searchoptions
+         - *$values*: all the values of the current row (for select)
+         - *$options*: will contains theses keys:
+            - 'html'
+            - 'searchopt': the current full searchoption
+
+   - **getSpecificValueToSelect**: define how to display the field input in the criteria form and massive action.
+      Parameters:
+
+         - *$field*: column name, it matches the 'field' key of your searchoptions
+         - *$values*: the current criteria value passed in $_GET parameters
+         - *$name*: the html attribute name for the input to display
+         - *$options*: this array may vary strongly in function of the searchoption or from the massiveaction or criteria display. Check the corresponding files:
+            - `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
+            - `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
+
+
+Simplified example extracted from `CommonItilObject Class <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/commonitilobject.class.php#L2366>`_ for glpi_tickets.status field:
+
+.. code-block:: php
+
+   <?php
+
+   function getSearchOptionsMain() {
+      $tab = [];
+
+      ...
+
+      $tab[] = [
+         'id'          => '12',
+         'table'       => $this->getTable(),
+         'field'       => 'status',
+         'name'        => __('Status'),
+         'searchtype'  => 'equals',
+         'datatype'    => 'specific'
+      ];
+
+      ...
+
+      return $tab;
+   }
+
+   static function getSpecificValueToDisplay($field, $values, array $options=array()) {
+
+      if (!is_array($values)) {
+         $values = array($field => $values);
+      }
+      switch ($field) {
+         case 'status':
+            return self::getStatus($values[$field]);
+
+         ...
+
+      }
+      return parent::getSpecificValueToDisplay($field, $values, $options);
+   }
+
+   static function getSpecificValueToSelect($field, $name='', $values='', array $options=array()) {
+
+      if (!is_array($values)) {
+         $values = array($field => $values);
+      }
+      $options['display'] = false;
+
+      switch ($field) {
+         case 'status' :
+            $options['name']  = $name;
+            $options['value'] = $values[$field];
+            return self::dropdownStatus($options);
+
+         ...
+      }
+      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+   }
+
 
 Field number in search constant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -279,7 +377,7 @@ Bookmarks
 ^^^^^^^^^
 
 The *glpi_boomarks* table stores a list of search queries for the users and permit to retrieve them.
-The 'query' field contains an url query construct from `parameters`_ with *http_build_query* php function.
+The 'query' field contains an url query construct from `parameters`_ with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ php function.
 
 
 
