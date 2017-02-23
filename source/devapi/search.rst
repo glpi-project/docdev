@@ -351,25 +351,31 @@ Specific search options
 You may want to control how to select and display your field in a searchoption. |br|
 You need to set 'datatype' => 'specific' in your search option and declare theses methods in your class:
 
-   - **getSpecificValueToDisplay**: define how to display the field in the list.
-      Parameters:
+**getSpecificValueToDisplay**
+   Define how to display the field in the list.
 
-         - *$field*: column name, it matches the 'field' key of your searchoptions
-         - *$values*: all the values of the current row (for select)
-         - *$options*: will contains theses keys:
-            - 'html'
-            - 'searchopt': the current full searchoption
+   Parameters:
 
-   - **getSpecificValueToSelect**: define how to display the field input in the criteria form and massive action.
-      Parameters:
+   - ``$field``: column name, it matches the 'field' key of your searchoptions
+   - ``$values``: all the values of the current row (for select)
+   - ``$options``: will contains theses keys:
 
-         - *$field*: column name, it matches the 'field' key of your searchoptions
-         - *$values*: the current criteria value passed in $_GET parameters
-         - *$name*: the html attribute name for the input to display
-         - *$options*: this array may vary strongly in function of the searchoption or from the massiveaction or criteria display. Check the corresponding files:
-            - `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
-            - `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
+      - ``html``,
+      - ``searchopt``: the current full searchoption
 
+**getSpecificValueToSelect**
+
+   Define how to display the field input in the criteria form and massive action.
+
+   Parameters:
+
+   - ``$field``: column name, it matches the 'field' key of your searchoptions
+   - ``$values``: the current criteria value passed in $_GET parameters
+   - ``$name``: the html attribute name for the input to display
+   - ``$options``: this array may vary strongly in function of the searchoption or from the massiveaction or criteria display. Check the corresponding files:
+
+      - `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
+      - `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
 
 Simplified example extracted from `CommonItilObject Class <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/commonitilobject.class.php#L2366>`_ for glpi_tickets.status field:
 
