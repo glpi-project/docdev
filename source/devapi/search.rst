@@ -433,10 +433,9 @@ Simplified example extracted from `CommonItilObject Class <https://github.com/gl
 Field number in search constant
 +++++++++++++++++++++++++++++++
 
-See `the document </_static/documents/GLPI-SearchEngine.ods>`_.
+See :download:`the document </_static/documents/GLPI-SearchEngine.ods>`.
 
 S => STATE_TYPE, R => RESERVATION_TYPE
-
 
 
 Default Select/Where/Join
