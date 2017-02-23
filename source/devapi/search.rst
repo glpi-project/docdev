@@ -24,7 +24,7 @@ The show function parse the $_GET values (by calling manageParams) passed by the
 For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
 
 Examples
-~~~~~~~~
+++++++++
 
 To display the search engine with its default options (criteria form, pager, list):
 
@@ -346,7 +346,7 @@ And optionally the following keys:
 
 
 Specific search options
-~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++
 
 You may want to control how to select and display your field in a searchoption. |br|
 You need to set 'datatype' => 'specific' in your search option and declare theses methods in your class:
@@ -431,7 +431,7 @@ Simplified example extracted from `CommonItilObject Class <https://github.com/gl
 
 
 Field number in search constant
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++++++++++
 
 See `the document </_static/documents/GLPI-SearchEngine.ods>`_.
 
@@ -450,7 +450,7 @@ You can add the needed case(s) for your feature in theses methods. |br|
 We have hooks for the plugins to define their own set of default conditions in their hook.php file.
 
 addDefaultSelect
-~~~~~~~~~~~~~~~~
+++++++++++++++++
 
 See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2202>`_
 
@@ -470,7 +470,7 @@ Plugin hook:
 
 
 addDefaultWhere
-~~~~~~~~~~~~~~~
++++++++++++++++
 
 See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2580>`_
 
@@ -490,7 +490,7 @@ Plugin hook:
    }
 
 addDefaultJoin
-~~~~~~~~~~~~~~
+++++++++++++++
 
 See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L3381>`_
 
