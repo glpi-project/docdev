@@ -142,7 +142,7 @@ Prior to GLPI 9.2 version, we needed a *getSearchOptions* method which return th
       $tab                       = array();
       $tab['common']             = __('Characteristics');
 
-      $tab[1]['table']           = $this->getTable();
+      $tab[1]['table']           = self::getTable();
       $tab[1]['field']           = 'name';
       $tab[1]['name']            = __('Name');
       $tab[1]['datatype']        = 'itemlink';
@@ -170,7 +170,7 @@ Here is the new format (the others keys/values are identical):
 
       $tab[] = [
          'id'                 => '1',
-         'table'              => $this->getTable(),
+         'table'              => self::getTable(),
          'field'              => 'name',
          'name'               => __('Name'),
          'datatype'           => 'itemlink',
@@ -214,7 +214,7 @@ And optionally the following keys:
 
 - **joinparams**: define how the SQL join must be done. Array may contain:
 
-   - *beforejoin* : define which tables must be joined to access the field. |br|
+   - *beforejoin*: define which tables must be joined to access the field. |br|
       The array contains **table** key and may contain an additional **joinparams**. |br|
       In case of nested *beforejoin*, we start the SQL join from the last dimension. |br|
       Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
