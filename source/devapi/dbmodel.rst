@@ -68,6 +68,8 @@ Table name                        Foreign key field name
 ``glpi_plugin_example_profiles``  ``plugin_example_profiles_id``
 ================================  ==============================
 
+.. _complex-relations:
+
 Make relations
 ++++++++++++++
 
