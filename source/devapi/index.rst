@@ -6,6 +6,7 @@ Apart from the current documentation, you can also check the `full PHP documenta
 .. toctree::
    :maxdepth: 2
 
+   mainobjects
    querydb
    dbiterator
    dbmodel
