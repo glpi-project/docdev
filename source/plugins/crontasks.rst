@@ -10,7 +10,7 @@ Plugins may need to run tasks in backgroupd, or at regular interval. GLPI provid
 Register a task
 ^^^^^^^^^^^^^^^
 
-The plugin must register tasks to make GLPI know about them.
+The plugin must register tasks to make GLPI know about them. This is done in the plugin's installer.
 
 
 .. code-block:: php
@@ -57,9 +57,6 @@ Implement a task
       }
    }
 
-Arguments
-^^^^^^^^^
-
 The ``register`` method takes four arguments:
 
 * `itemtype`: a `string` containing an itemtype name
@@ -67,6 +64,43 @@ The ``register`` method takes four arguments:
 * `frequency` the period of time between two executions in seconds (see inc/define.php for convenient constants)
 * `options` an array of options
 
+Provide task data
+^^^^^^^^^^^^^^^^^
+
+GLPI expects additional data to display the list of tasks. The plugin should implement the methods `getTypeName()` and `cronInfo()`.
+
+.. code-block:: php
+
+   <?php
+   class PluginExampleAutopurge extends CommonDBTM
+   {
+      /**
+       * name of the itemtype
+       *
+       * @param integer $nb quantity
+       * @return string
+       */
+      public static function getTypeName($nb) {
+         return _n('Purge', 'Purges', $nb);
+      }
+
+     /**
+      * get Cron description parameter for this class
+      *
+      * @param $name string name of the task
+      *
+      * @return array of string
+      */
+      static function cronInfo($name) {
+         // an itemtype may implement several cron tasks
+         // $name is the task name as defined on the call of CronTask::register()
+
+         switch ($name) {
+            case 'PurgeComputers':
+               return array('description' => __('Purges deleted computers'));
+         }
+      }
+   }
 
 
 Unregister a task
