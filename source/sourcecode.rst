@@ -1,3 +1,5 @@
+.. include:: /globals.rst
+
 Source Code management
 ======================
 
@@ -26,6 +28,87 @@ Testing
 Unfortunately, tests in GLPI are not numerous... But that's willing to change, and we'd like - as far as possible - that proposals contains unit tests for the bug/feature they're related.
 
 Anyways, existing unit tests may never be broken, if you made a change that breaks something, check your code, or change the unit tests, but fix that! ;)
+
+File Hierarchy System
+---------------------
+
+.. note::
+
+   This lists current files and directories listed in the source code of GLPI. Some files are not part of distribued archives.
+
+This is a brieve description of GLPI main folders and files:
+
+* |folder| `.tx`: Transifex configuration
+* |folder| `ajax`
+
+  * |phpfile| `*.php`: Ajax components
+
+* |folder| `files` Files written by GLPI or plugins (documents, session files, log files, ...)
+* |folder| `front`
+
+  * |phpfile| `*.php`: Front components (all displayed pages)
+
+* |folder| `config` (only populated once installed)
+
+  * |phpfile| `config_db.php`: Database configuration file
+  * |phpfile| `local_define.php`: Optional file to override some constants definitions (see ``inc/define.php``)
+
+* |folder| `css`
+
+  * |folder| `...`: CSS stylesheets
+  * |file| `*.css`: CSS stylesheets
+
+* |folder| `inc`
+
+  * |phpfile| `*.php`: Classes, functions and definitions
+
+* |folder| `install`
+
+  * |folder| `mysql`: MariaDB/MySQL schemas
+  * |phpfile| `*.php`: upgrades scripts and installer
+
+* |folder| `js`
+
+  * |file| `*.js`: Javascript files
+
+* |folder| `lib`
+
+  * |folder| `...`: external Javascript libraries
+
+* |folder| `locales`
+
+  * |file| `glpi.pot`: Gettext's POT file
+  * |file| `*.po`: Gettext's translations
+  * |file| `*.mo`: Gettext's compiled translations
+
+* |folder| `pics`
+
+  * |file| `*.*`: pictures and icons
+
+* |folder| `plugins`:
+
+  * |folder| `...`: where all plugins lends
+
+* |folder| `scripts`: various scripts which can be used in crontabs for example
+* |folder| `tests`: unit and integration tests
+* |folder| `tools`: a bunch of tools
+* |folder| `vendor`: third party libs installed from composer (see composer.json below)
+* |file| `.gitignore`: Git ignore list
+* |file| `.htaccess`: Some convenient apache rules (all are commented)
+* |file| `.travis.yml`: Travis-CI configuration file
+* |phpfile| `apirest.php`: REST API main entry point
+* |file| `apirest.md`: REST API documentation
+* |phpfile| `apixmlrpc.php`: XMLRPC API main entry point
+* |file| `AUTHORS.txt`: list of GLPI authors
+* |file| `CHANGELOG.md`: Changes
+* |file| `composer.json`: Definition of third party libraries (`see composer website <https://getcomposer.org>`_)
+* |file| `COPYING.txt`: Licence
+* |phpfile| `index.php`: main application entry point
+* |file| `phpunit.xml.dist`: unit testing configuration file
+* |file| `README.md`: well... a README ;)
+* |file| `status.php`: get GLPI status for monitoring purposes
+
+
 
 Workflow
 --------
