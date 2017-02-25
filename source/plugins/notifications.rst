@@ -1,334 +1,193 @@
-Notification modes
-------------------
+Notifications
+-------------
 
-Core GLPI provides two notifications modes as of today:
+Goals
+^^^^^
 
-* email (sends email),
-* ajax (send browser notifications if/when user is logged)
+Send email notifications to users when some event occurs
 
-It is possible to extends this mechanism in order to create another mode to use. Let's take a tour... We'll take example of a plugin designed to send SMS to the users.
 
-Required configuration
-^^^^^^^^^^^^^^^^^^^^^^
+Add events on a notification in GLPI core
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A few steps are required to setup the mode. In the ``init`` method (``setup.php`` file); register the mode:
+This is needed when the plugin needs to create a new event for an itemtype which belongs to GLPI core.
+
+The folowing example creates an event `plugin_exemple` for Tickets.
+
+In setup.php, hook the function `plugin_example_get_events()`.
 
 .. code-block:: php
 
    <?php
-   public function plugin_init_sms {
-      //[...]
+   // File setup.php
+   function plugin_init_example() {
+      if ($plugin->isActivated('example')) {
+         // ...
 
-      if ($plugin->isActivated('sms')) {
-         Notification_NotificationTemplate::registerMode(
-            Notification_NotificationTemplate::MODE_SMS, //mode itself
-            __('SMS', 'plugin_sms'),                //label
-            'sms'                                   //plugin name
+         $PLUGIN_HOOKS['item_get_events']['example'] = array('NotificationTargetTicket' => 'plugin_example_add_events');
+
+         // ...
+      }
+   }
+
+In hook.php
+
+.. code-block:: php
+
+   <?php
+   // File hook.php
+   function plugin_example_add_events(NotificationTargetTicket $target) {
+      $target->events['plugin_example'] = __("Example event", 'example');
+   }
+
+.. note::
+
+   GLPI also supports hook methods.
+
+
+Add data on a event in GLPI core
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is needed when the plugin needs to create new placeholders in a notification which belongs to GLPI core.
+
+The following example defines new data placeholders for Tickets.
+
+In setup.php, hook the function `plugin_example_get_datas()`.
+
+.. code-block:: php
+
+   <?php
+   // File setup.php
+   function plugin_init_example() {
+      if ($plugin->isActivated('example')) {
+         // ...
+
+         $PLUGIN_HOOKS['item_get_datas']['example'] = array('NotificationTargetTicket' => 'plugin_example_get_datas');
+
+         // ...
+      }
+   }
+
+In hook.php
+
+.. code-block:: php
+
+   <?php
+   // File hook.php
+   function plugin_example_get_datas(NotificationTargetTicket $target) {
+      $target->datas['##ticket.example##'] = __("Example datas", 'example');
+   }
+
+.. note::
+
+   GLPI also supports hook methods.
+
+Create a new notification
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If a plugin needs to create a notification for its own itemtype, it needs to create a notification and a notification template.
+
+In the installation or upgrade code
+
+Let's assume the plugin features SSL certificate management. When a SSL certificate comes to its end, the plugin should alert someone to renew it.
+
+.. code-block:: php
+
+   <?php
+   // File hook.php
+
+   function plugin_example_install() {
+      // plain text version of the notification
+      $contentText = 'The SSL certificate ##certificate.name## will expire soon.';
+      $contentText.= 'Please, consider renew it quickly.';
+
+      // HTML version of the notification
+      $contentHtml = '<p>The SSL certificate <strong>##certificate.name##</strong> will expire soon.</p>';
+      $contentHtml.= '<p>Please, consider renew it quickly.</p>';
+
+      // Create the notification template
+      $template = new NotificationTemplate();
+      $templateId = $template->add([
+            'name'      => 'SSL Certificates',
+            'comment'   => 'Alert when a certificate comes to its end',
+            'itemtype'  => 'PluginExampleCertificate',
+      ]);
+
+      // Create the default translation for the notification
+      $translation = new NotificationTemplateTranslation();
+      $translation->add([
+            'notificationtemplates_id' => $templateId,
+            'language'                 => '',                               // this is the default translation
+            'subject'                  => 'A certificate comes to its end', // Sublect of the notification
+            'content_text'             => $contentText,                     // text for plain text email
+            'content_html'             => $contentHtml                      // text for HTML email
+      ]);
+
+      // Create the notification
+      $notification = new Notification();
+      $notificationId = $notification->add([
+            'name'                     => 'SSL Certificates',
+            'comment'                  => 'Notifications about SSL certificates',
+            'entities_id'              => 0,
+            'is_recursive'             => 1,
+            'is_active'                => 1,
+            'itemtype'                 => 'PluginExampleCertificate,
+            'notificationtemplates_id' => $templateId,
+            'event'                    => PluginExampleNotificationTargetCertificate::EVENT_EXPIRATION,
+            'mode'                     => 'mail'
+      ]);
+
+      $notificationTarget = new PluginExampleNotificationTargetCertificate();
+   }
+
+.. Note::
+
+   In the notification creation, the code uses ther constant `PluginExampleNotificationTargetCertificate::EVENT_EXPIRATION`. Don't forget to define it.
+
+.. code-block:: php
+
+   <?php
+   // File inc/notificationtargetcertificate.class.php
+   class PluginExampleNotificationTargetCertificate extends CommonDBTM
+   {
+      const EVENT_EXPIRATION = 'certificate expiration';
+   }
+
+The plugin uses hooks to define events supported by the notification, and data available in the message.
+
+.. code-block:: php
+
+   <?php
+   // File setup.php
+   function plugin_init_example() {
+      if ($plugin->isActivated('example')) {
+         // ...
+
+         // Hook the static method PluginExampleNotificationTargetCertificate::getData()
+         $PLUGIN_HOOKS['item_get_datas']['example'] = array(
+               'NotificationTargetTicket' => array('PluginExampleNotificationTargetCertificate', 'getData')
+         );
+
+         // ...
+      }
+   }
+
+.. Note::
+
+   It is probably more convenient to use methods in `PluginExampleNotificationTargetCertificate` for notifications on itemtypes provided by the plugin itself.
+
+.. code-block:: php
+
+   <?php
+   // File inc/notificationtargetcertificate.class.php
+   class PluginExampleNotificationTargetCertificate extends CommonDBTM
+   {
+      // ...
+
+      public static function getEvents($target) {
+         return array(
+               self::EVENT_GUEST_INVITATION => __('Invitation', 'exemple')
          );
       }
 
-      //[...]
-   }
-
-.. note::
-
-   GLPI will look for classes named like ``Plugin{NAME}Notification{MODE}``.
-
-   In the above example; we have used one the the `provided (but not yet used) modes from the core <https://forge.glpi-project.org/apidoc/class-Notification_NotificationTemplate.html#constants>`_. If you need a mode that does not exists, you can of course create yours!
-
-In order to make you new notification active, you will have to declare a ``notifications_{MODE}`` variable in the main configuration: You will add it at install time, and remove it on uninstall... In the ``hook.php`` file:
-
-.. code-block:: php
-
-   <?php
-
-   function plugin_sms_install() {
-      Config::setConfigurationValues('core', ['notifications_sms' => 0]);
-      return true;
-   }
-
-   function plugin_sms_uninstall() {
-      $config = new Config();
-      $config->deleteConfigurationValues('core', ['notifications_sms']);
-      return true;
-   }
-
-Settings
-^^^^^^^^
-
-You will probably need some configuration settings to get your notifications mode to work. You can register and retrieve additional configuration values using core ``Config`` object:
-
-.. code-block:: php
-
-   <?php
-   //set configuration
-   Config::setConfigurationValues(
-      'plugin:sms', //context
-      [ //values
-         'server' => '',
-         'port'   => ''
-      ]
-   );
-
-   //get configuration
-   $conf = Config::getConfigurationValues('plugin:sms');
-   //$conf will be ['server' => '', 'port' => '']
-
-That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``PluginSmsNotificationSmsSetting`` and must be in the ``inc/notificationsmssetting.class.php``. It have to extends the `NotificationSetting <https://forge.glpi-project.org/apidoc/class-NotificationSetting.html>`_ core class :
-
-.. code-block:: php
-
-   <?php
-   if (!defined('GLPI_ROOT')) {
-      die("Sorry. You can't access this file directly");
-   }
-
-   /**
-   *  This class manages the sms notifications settings
-   */
-   class PluginSmsNotificationSmsSetting extends NotificationSetting {
-
-
-      static function getTypeName($nb=0) {
-         return __('SMS followups configuration', 'sms');
-      }
-
-
-      public function getEnableLabel() {
-         return __('Enable followups via SMS', 'sms');
-      }
-
-
-      static public function getMode() {
-         return Notification_NotificationTemplate::MODE_SMS;
-      }
-
-
-      function showFormConfig($options = []) {
-         global $CFG_GLPI;
-
-         $conf = Config::getConfigurationValues('plugin:sms');
-         $params = [
-            'display'   => true
-         ];
-         $params = array_merge($params, $options);
-
-         $out = "<form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
-         $out .= Html::hidden('config_context', ['value' => 'plugin:sms']);
-         $out .= "<div>";
-         $out .= "<input type='hidden' name='id' value='1'>";
-         $out .= "<table class='tab_cadre_fixe'>";
-         $out .= "<tr class='tab_bg_1'><th colspan='4'>"._n('SMS notification', 'SMS notifications', Session::getPluralNumber(), 'sms')."</th></tr>";
-
-         if ($CFG_GLPI['notifications_sms']) {
-            //TODO
-            $out .= "<tr><td colspan='4'>" . __('SMS notifications are not implemented yet.', 'sms') .  "</td></tr>";
-         } else {
-            $out .= "<tr><td colspan='4'>" . __('Notifications are disabled.')  . " <a href='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>" . _('See configuration') .  "</td></tr>";
-         }
-         $options['candel']     = false;
-         if ($CFG_GLPI['notifications_sms']) {
-            $options['addbuttons'] = array('test_sms_send' => __('Send a test SMS to you', 'sms'));
-         }
-
-         //Ignore display parameter since showFormButtons is now ready :/ (from all but tests)
-         echo $out;
-
-         $this->showFormButtons($options);
-      }
-   }
-
-The front form file, located at ``front/notificationsmssetting.form.php`` will be quite simple. It handles the display of the configuration form, update of the values, and test send (if any):
-
-.. code-block:: php
-
-   <?php
-   include ('../../../inc/includes.php');
-
-   Session::checkRight("config", UPDATE);
-   $notificationsms = new PluginSmsNotificationSmsSetting();
-
-   if (!empty($_POST["test_sms_send"])) {
-      PluginSmsNotificationSms::testNotification();
-      Html::back();
-   } else if (!empty($_POST["update"])) {
-      $config = new Config();
-      $config->update($_POST);
-      Html::back();
-   }
-
-   Html::header(Notification::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "config", "notification", "config");
-
-   $notificationsms->display(array('id' => 1));
-
-   Html::footer();
-
-Event
-^^^^^
-
-Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``PluginSmsNotificationEventSms`` that implements `NotificationEventInterface <https://forge.glpi-project.org/apidoc/class-NotificationEventInterface.html>`_ and extends `NotificationEventAbstract <https://forge.glpi-project.org/apidoc/class-NotificationEventAbstract.html>` in the ``inc/notificationeventsms.php``.
-
-Methods to implement are:
-
-* ``getTargetFieldName``: defines the name of the target field;
-* ``getTargetField``: populates if needed the target field to use. For a SMS plugin, it would retrieve the phone number from users table for example;
-* ``canCron``: whether notification can be called from a crontask. For the SMS plugins, it would be true. It is set to false for ajax based events; because notifications are requested from user browser;
-* ``getAdminData``: as global admin is not a real user; you can define here the data used to send the notification;
-* ``getEntityAdminData``: same as the above, but for entities admins rather than global admin;
-* ``send``: method that will really send data.
-
-The ``raise`` method declared in the interface is implemented in the abstract class; since it should be used as it for every mode. If you want to do extra process in the ``raise`` method, you should override the ``extraRaise`` method. This is done in the core to add signatures in the mailing for example.
-
-.. note::
-
-   Notifications uses the ``QueueNotification`` to store its data. Each notification about to be sent will be stored in the relevant table. Rows are updated once the notification has really be send (set ``is_deleted`` to 1 and update ``sent_time``.
-
-En example class for SMS Events would look like the following:
-
-.. code-block:: php
-
-   <?php
-   class PluginSmsNotificationEventSms implements NotificationEventInterface {
-
-      static public function getTargetFieldName() {
-         return 'phone';
-      }
-
-
-      static public function getTargetField(&$data) {
-         $field = self::getTargetFieldName();
-
-         if (!isset($data[$field])
-            && isset($data['users_id'])) {
-            // No phone set: get one for user
-            $user = new user();
-            $user->getFromDB($data['users_id']);
-
-            $phone_fields = ['mobile', 'phone', 'phone2'];
-            foreach ($phone_fields as $phone_field) {
-               if (isset($user->fields[$phone_field]) && !empty($user->fields[$phone_field])) {
-                  $data[$field] = $user->fields[$phone_field];
-                  break;
-               }
-            }
-         }
-
-         if (!isset($data[$field])) {
-            //Missing field; set to null
-            $data[$field] = null;
-         }
-
-         return $field;
-      }
-
-
-      static public function canCron() {
-         return true;
-      }
-
-
-      static public function getAdminData() {
-         //no phone available for global admin right now
-         return false;
-      }
-
-
-      static public function getEntityAdminsData($entity) {
-         global $DB, $CFG_GLPI;
-
-         $iterator = $DB->request([
-            'FROM'   => 'glpi_entities',
-            'WHERE'  => ['id' => $entity]
-         ]);
-
-         $admins = [];
-
-         while ($row = $iterator->next()) {
-            $admins[] = [
-               'language'  => $CFG_GLPI['language'],
-               'phone'     => $row['phone_number']
-            ];
-         }
-
-         return $admins;
-      }
-
-
-      static public function send(array $data) {
-         //data is an array of notifications to send. Process the array and send real SMS here!
-         throw new \RuntimeException('Not yet implemented!');
-      }
-   }
-
-Notification
-^^^^^^^^^^^^
-
-Finally, create a ``NotificationSms`` class that implements the `NotificationInterface <https://forge.glpi-project.org/apidoc/class-NotificationInterface.html>`_ in the ``inc/notificationsms.php`` file.
-
-Methods to implement are:
-
-* ``check``: to validate data (checking if a mail address is well formed, ...);
-* ``sendNotification``: to store raised event notification in the ``QueueNotification``;
-* ``testNotification``: used from settings to send a test notification.
-
-Again, the SMS example:
-
-.. code-block:: php
-
-   <?php
-   class PluginSmsNotificationSms implements NotificationInterface {
-
-      static function check($value, $options = []) {
-         //Does nothing, but we could check if $value is actually what we expect as a phone number to send SMS.
-         return true;
-      }
-
-      static function testNotification() {
-         $instance = new self();
-         //send a notification to current loged in user
-         $instance->sendNotification([
-            '_itemtype'                   => 'NotificationSms',
-            '_items_id'                   => 1,
-            '_notificationtemplates_id'   => 0,
-            '_entities_id'                => 0,
-            'fromname'                    => 'TEST',
-            'subject'                     => 'Test notification',
-            'content_text'                => "Hello, this is a test notification.",
-            'to'                          => Session::getLoginUserID()
-         ]);
-      }
-
-
-      function sendNotification($options=array()) {
-
-         $data = array();
-         $data['itemtype']                             = $options['_itemtype'];
-         $data['items_id']                             = $options['_items_id'];
-         $data['notificationtemplates_id']             = $options['_notificationtemplates_id'];
-         $data['entities_id']                          = $options['_entities_id'];
-
-         $data['sendername']                           = $options['fromname'];
-
-         $data['name']                                 = $options['subject'];
-         $data['body_text']                            = $options['content_text'];
-         $data['recipient']                            = $options['to'];
-
-         $data['mode'] = Notification_NotificationTemplate::MODE_SMS;
-
-         $mailqueue = new QueuedMail();
-
-         if (!$mailqueue->add(Toolbox::addslashes_deep($data))) {
-            Session::addMessageAfterRedirect(__('Error inserting sms notification to queue', 'sms'), true, ERROR);
-            return false;
-         } else {
-            //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
-            Toolbox::logInFile("notification",
-                              sprintf(__('%1$s: %2$s'),
-                                       sprintf(__('An SMS notification to %s was added to queue', 'sms'),
-                                             $options['to']),
-                                       $options['subject']."\n"));
-         }
-
-         return true;
-      }
    }
