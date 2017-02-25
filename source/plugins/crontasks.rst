@@ -35,7 +35,8 @@ Implement a task
       /**
        * purge deleted computers
        *
-       * @param CronTask $task instance of CronTask 
+       * @param CronTask $task instance of CronTask
+       *
        * @return void
        */
       public static function cronPurgeComputers(CronTask $task) {
