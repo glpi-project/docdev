@@ -29,7 +29,12 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
     * @return void
     */
    function plugin_init_myexample() {
-      //some code here, like call to Plugin::registerClass(), populating PLUGIN_HOOKS? ...
+      global $PLUGIN_HOOKS;
+
+      //required!
+      $PLUGIN_HOOKS['csrf_compliant']['myexample'] = true;
+
+      //some code here, like call to Plugin::registerClass(), populating PLUGIN_HOOKS, ...
    }
 
    /**
@@ -92,6 +97,8 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
 
    On the same model, you can use ``Plugin::messageMissingRequirement()`` to display internationalized message if any extension, plugin or GLPI parameter is missing.
 
+Plugin informations provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
+
 .. _plugins_hookphp:
 
 hook.php
@@ -142,7 +149,7 @@ You can then for example add a line in your ``.travis.yml`` file to automate che
 .. code-block:: yaml
 
    script:
-     - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
+     - vendor/bin/phpcs -p --ignore=vendor --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
 
 .. note::
 
