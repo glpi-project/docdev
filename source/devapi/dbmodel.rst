@@ -21,6 +21,8 @@ What we can see here:
 
 As stated in the above note, this is far from complete; but this is quite representative of the whole database schema.
 
+.. _dbnaming_conventions:
+
 Naming conventions
 ^^^^^^^^^^^^^^^^^^
 

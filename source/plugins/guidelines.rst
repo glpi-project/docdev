@@ -6,7 +6,11 @@ Guidelines
 Directories structure
 ^^^^^^^^^^^^^^^^^^^^^
 
-Real structure will depend of what your plugin propose. See :doc:`requirements <requirements>` to find out what is needed.
+Real structure will depend of what your plugin propose. See :doc:`requirements <requirements>` to find out what is needed. You may also want to :ref:`take a look at GLPI File Hierarchy Standard <fhs>`.
+
+.. warning::
+
+   The main directory name of your plugin may contain only alphanumeric characters (no ``-`` or ``_`` or accentued characters or else).
 
 The plugin directory structure should look like the following:
 
@@ -45,6 +49,17 @@ The plugin directory structure should look like the following:
 * a `LICENSE` file contaiing the license,
 * `MyPlugin.xml` and `MyPlugin.png` can be used to reference your plugin on the `plugins directory website <http://plugins.glpi-project.org>`_,
 * the required `setup.php` and `hook.php` files.
+
+Where to write files?
++++++++++++++++++++++
+
+.. warning::
+
+   Plugins my never ask user to give them write access on their own directory!
+
+The GLPI installation already ask for administrator to get write access on its ``files`` directory; just use ``GLPI_PLUGIN_DOC_DIR/{plugin_name}`` (that would resolve to ``glpi_dir/files/_plugins/{plugin_name}`` in default basic installations).
+
+Make sure to create the plugin directory at install time, and to remove it on uninstall.
 
 Versionning
 ^^^^^^^^^^^

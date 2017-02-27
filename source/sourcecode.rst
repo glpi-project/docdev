@@ -29,6 +29,8 @@ Unfortunately, tests in GLPI are not numerous... But that's willing to change, a
 
 Anyways, existing unit tests may never be broken, if you made a change that breaks something, check your code, or change the unit tests, but fix that! ;)
 
+.. _fhs:
+
 File Hierarchy System
 ---------------------
 
