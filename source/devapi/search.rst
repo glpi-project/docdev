@@ -426,35 +426,35 @@ Specific search options
 +++++++++++++++++++++++
 
 You may want to control how to select and display your field in a searchoption. |br|
-You need to set 'datatype' => 'specific' in your search option and declare theses methods in your class:
+You need to set 'datatype' => 'specific' in your search option and declare these methods in your class:
 
-**getSpecificValueToDisplay**
+``getSpecificValueToDisplay``
    Define how to display the field in the list.
 
    Parameters:
 
-   - ``$field``: column name, it matches the 'field' key of your searchoptions
-   - ``$values``: all the values of the current row (for select)
-   - ``$options``: will contains theses keys:
+   * ``$field``: column name, it matches the 'field' key of your searchoptions
+   * ``$values``: all the values of the current row (for select)
+   * ``$options``: will contains these keys:
 
-      - ``html``,
-      - ``searchopt``: the current full searchoption
+      * ``html``,
+      * ``searchopt``: the current full searchoption
 
-**getSpecificValueToSelect**
+``getSpecificValueToSelect``
 
    Define how to display the field input in the criteria form and massive action.
 
    Parameters:
 
-   - ``$field``: column name, it matches the 'field' key of your searchoptions
-   - ``$values``: the current criteria value passed in $_GET parameters
-   - ``$name``: the html attribute name for the input to display
-   - ``$options``: this array may vary strongly in function of the searchoption or from the massiveaction or criteria display. Check the corresponding files:
+   * ``$field``: column name, it matches the 'field' key of your searchoptions
+   * ``$values``: the current criteria value passed in $_GET parameters
+   * ``$name``: the html attribute name for the input to display
+   * ``$options``: this array may vary strongly in function of the searchoption or from the massiveaction or criteria display. Check the corresponding files:
 
-      - `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
-      - `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
+      * `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
+      * `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
 
-Simplified example extracted from `CommonItilObject Class <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/commonitilobject.class.php#L2366>`_ for glpi_tickets.status field:
+Simplified example extracted from `CommonItilObject Class <https://forge.glpi-project.org/apidoc/class-CommonITILObject.html>`_ for ``glpi_tickets.status`` field:
 
 .. code-block:: php
 
@@ -515,80 +515,84 @@ Simplified example extracted from `CommonItilObject Class <https://github.com/gl
 Default Select/Where/Join
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The search class implements 3 methods which add some stuff to SQL queries before the searchoptions computation. |br|
+The search class implements three methods which add some stuff to SQL queries before the searchoptions computation. |br|
 For some itemtype, we need to filter the query or additional fields to it. |br|
-For example, filtering the tickets you cannot view if you don't have the proper rights.
+For example, filtering the tickets you cannot view if you do not have the proper rights.
 
-You can add the needed case(s) for your feature in theses methods. |br|
-We have hooks for the plugins to define their own set of default conditions in their hook.php file.
+GLPI will automatically call predefined methods you can rely on from your plugin ``hook.php`` file.
 
 addDefaultSelect
 ++++++++++++++++
 
-See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2202>`_
+See `addDefaultSelect() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultSelect>`_
 
-Plugin hook:
+And in the plugin ``hook.php`` file:
 
 .. code-block:: php
 
    <?php
-
    function plugin_mypluginname_addDefaultSelect($itemtype) {
       switch ($type) {
-         case "MyItemtype" :
+         case 'MyItemtype':
             return "`mytable`.`myfield` = 'myvalue' AS MYNAME, ";
       }
-      return "";
+      return '';
    }
 
 
 addDefaultWhere
 +++++++++++++++
 
-See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L2580>`_
+See `addDefaultWhere() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultWhere>`_
 
-Plugin hook:
+And in the plugin ``hook.php`` file:
 
 .. code-block:: php
 
    <?php
-
    function plugin_mypluginname_addDefaultJoin($itemtype, $ref_table, &$already_link_tables) {
       switch ($itemtype) {
-         case "MyItemtype" :
-            return Search::addLeftJoin($itemtype, $ref_table, $already_link_tables,
-                                       "newtable", "linkfield");
+         case 'MyItemtype':
+            return Search::addLeftJoin(
+               $itemtype,
+               $ref_table,
+               $already_link_tables,
+               'newtable',
+               'linkfield'
+            );
       }
-      return "";
+      return '';
    }
 
 addDefaultJoin
 ++++++++++++++
 
-See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/search.class.php#L3381>`_
+See `addDefaultJoin() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultJoin>`_
+
+And in the plugin ``hook.php`` file:
 
 .. code-block:: php
 
    <?php
-
    function plugin_mypluginname_addDefaultWhere($itemtype) {
       switch ($itemtype) {
-         case "MyItemtype" :
+         case 'MyItemtype':
             return " `mytable`.`myfield` = 'myvalue' ";
       }
-      return "";
+      return '';
    }
 
 Bookmarks
 ^^^^^^^^^
 
-The ``glpi_boomarks`` table stores a list of search queries for the users and permit to retrieve them. |br|
-The 'query' field contains an url query construct from :ref:`parameters <search_parameters>` with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ php function.
+The ``glpi_boomarks`` table stores a list of search queries for the users and permit to retrieve them.
+
+The ``query`` field contains an url query construct from :ref:`parameters <search_parameters>` with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ PHP function.
 
 Display Preferences
 ^^^^^^^^^^^^^^^^^^^
 
-The *glpi_displaypreferences* table stores the list of default columns which need to be displayed to a user for an itemtype. |br|
-A set of preferences can be personal or global (*users_id* = 0). |br|
-If a user doesn't have any personal preferences for an itemtype, the search engine will use the global preferences
+The ``glpi_displaypreferences`` table stores the list of default columns which need to be displayed to a user for an itemtype.
 
+A set of preferences can be *personal* or *global* (``users_id = 0``). |br|
+If a user does not have any personal preferences for an itemtype, the search engine will use the global preferences.
