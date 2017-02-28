@@ -254,32 +254,47 @@ Optionally, it can defined the following keys:
 ``joinparams``
    Defines how the SQL join must be done. The array may contain:
 
-   - *beforejoin*: define which tables must be joined to access the field. |br|
-      The array contains **table** key and may contain an additional **joinparams**. |br|
-      In case of nested *beforejoin*, we start the SQL join from the last dimension. |br|
-      Example : ['beforejoin' => ['table' => 'mytable', 'joinparams' => ['beforejoin' => [...
+   * ``beforejoin``: define which tables must be joined to access the field.
 
-   - *jointype*: string define the join type:
+      The array contains ``table`` key and may contain an additional ``joinparams``. |br|
+      In case of nested ``beforejoin``, we start the SQL join from the last dimension.
 
-      - 'empty' for a standard join
-         (REFTABLE.`#linkfield#` = NEWTABLE.`id`)
-      - 'child' for a child table
-         (REFTABLE.`id` = NEWTABLE.`#linkfield#`)
-      - 'itemtype_item' for links using itemtype and items_id fields
-         (REFTABLE.`id` = NEWTABLE.`items_id` AND NEWTABLE.`itemtype` = '#new_table_itemtype#')
-      - 'mainitemtype_mainitem', same as itemtype_item but using mainitemtype and mainitems_id fields
-         (REFTABLE.`id` = NEWTABLE.`mainitems_id` AND NEWTABLE.`mainitemtype` = 'new table itemtype')
-      - 'itemtypeonly', same as itemtype_item jointype but without linking id
-         (NEWTABLE.`itemtype` = '#new_table_itemtype#')
-      - 'item_item' for table used to link 2 similar items : glpi_tickets_tickets for example : link fields are standardfk_1 and standardfk_2
-         (REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_1` OR REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_2`)
-      - 'item_item_revert', same as item_item and child jointypes
-         (NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`)
+      Example:
 
-   - *condition*: additional condition to add to the standard link. |br|
-      Use NEWTABLE or REFTABLE tag to use the table names.
+      .. code-block:: php
 
-   - *nolink*: set to true to indicate the current join doesn't link to the previous join/from (nested joinsparams)
+         <?php
+         [
+            'beforejoin' => [
+               'table'        => 'mytable',
+               'joinparams'   => [
+                  'beforejoin' => [...]
+               ]
+            ]
+         ]
+
+   * ``jointype``: string define the join type:
+
+      * ``empty`` for a standard jointype
+         ``REFTABLE.`#linkfield#` = NEWTABLE.`id```
+      * ``child`` for a child table
+         ``REFTABLE.`id` = NEWTABLE.`#linkfield#```
+      * ``itemtype_item`` for links using ``itemtype`` and ``items_id`` fields
+         ``REFTABLE.`id` = NEWTABLE.`items_id` AND NEWTABLE.`itemtype` = '#new_table_itemtype#'``
+      * ``mainitemtype_mainitem`` same as ``itemtype_item`` but using mainitemtype and mainitems_id fields
+         ``REFTABLE.`id` = NEWTABLE.`mainitems_id` AND NEWTABLE.`mainitemtype` = 'new table itemtype'``
+      * ``itemtypeonly`` same as ``itemtype_item`` jointype but without linking id
+         ``NEWTABLE.`itemtype` = '#new_table_itemtype#'``
+      * ``item_item`` for table used to link two similar items: ``glpi_tickets_tickets`` for example: link fields are ``standardfk_1`` and ``standardfk_2``
+         ``REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_1` OR REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_2```
+      * ``item_item_revert`` same as ``item_item`` and child jointypes
+         ``NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2```
+
+   * ``condition``: additional condition to add to the standard link.
+
+      Use ``NEWTABLE`` or ``REFTABLE`` tag to use the table names.
+
+   * ``nolink``: set to true to indicate the current join doesn't link to the previous join/from (nested ``joinparams``)
 
 ``additionalfields``
    An array for additional fields to add in the ``SELECT`` clause. For example: ``'additionalfields' => ['id', 'content', 'status']``
