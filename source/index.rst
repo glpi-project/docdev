@@ -19,3 +19,9 @@ GLPI Developer Documentation
    checklists/index
    plugins/index
    packaging
+
+If you want to help us improve the current documentation, feel free to open pull requests! You can `see open issues <https://github.com/glpi-project/docdev/issues>`_ and `join the documentation mailing list <https://mail.gna.org/listinfo/glpi-doc>`_.
+
+Here is a list of things to be done:
+
+.. todolist::
