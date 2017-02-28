@@ -84,6 +84,8 @@ modify_headers.pl
 
 Update copyright header based on the contents of the ``HEADER`` file.
 
+.. _getsearchoptions_php:
+
 getsearchoptions.php
 --------------------
 

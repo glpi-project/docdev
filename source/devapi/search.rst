@@ -13,14 +13,14 @@ The `Search class <https://forge.glpi-project.org/apidoc/class-Search.html>`_ ai
 
 It include some short-cuts functions:
 
-- ``show()``:              displays the complete search page.
-- ``showGenericSearch()``: displays only the multi-criteria form.
-- ``showList()``:          displays only the resulting list.
-- ``getDatas()``:          return an array of raw data.
-- ``manageParams()``:      complete the ``$_GET`` values with the ``$_SESSION`` values.
+* ``show()``:              displays the complete search page.
+* ``showGenericSearch()``: displays only the multi-criteria form.
+* ``showList()``:          displays only the resulting list.
+* ``getDatas()``:          return an array of raw data.
+* ``manageParams()``:      complete the ``$_GET`` values with the ``$_SESSION`` values.
 
 The show function parse the ``$_GET`` values (calling ``manageParams()``) passed by the page to retrieve the criteria and construct the SQL query. |br|
-For showList function, theses :ref:`parameters <search_parameters>` can be passed in the second argument.
+For showList function, :ref:`parameters <search_parameters>` can be passed in the second argument.
 
 The itemtype classes can define a set of :ref:`search options <search_options>` to configure which columns could be queried, how they can be accessed and displayed, etc..
 
@@ -52,7 +52,7 @@ If you want to display only the multi-criteria form (with some additional option
    $itemtype = 'Computer';
    $p = [
       'addhidden'   => [ // some hidden inputs added to the criteria form
-         'hidden_input' => "OK"
+         'hidden_input' => 'OK'
       ],
       'actionname'  => 'preview', //change the submit button name
       'actionvalue' => __('Preview'), //change the submit button label
@@ -64,20 +64,19 @@ If you want to display only a list without the criteria form:
 .. code-block:: php
 
    <?php
-
    // display a list of users with entity = 'Root entity'
    $itemtype = 'User';
    $p = [
-      'start'      => 0,
-      'is_deleted' => 0,
-      'sort'       => 1, // sort by name
-      'order'      => 'DESC'
-      'reset'      => 'reset',
+      'start'      => 0,      // start with first item (index 0)
+      'is_deleted' => 0,      // item is not deleted
+      'sort'       => 1,      // sort by name
+      'order'      => 'DESC'  // sort direction
+      'reset'      => 'reset',// reset search flag
       'criteria'   => [
          [
-            'field'      => 80,
-            'searchtype' => 'equals',
-            'value'      => 0,
+            'field'      => 80,        // field index in search options
+            'searchtype' => 'equals',  // type of search
+            'value'      => 0,         // value to search
          ],
       ],
    ];
@@ -92,72 +91,73 @@ GET Parameters
    :alt: Search criteria
    :align: center
 
+.. note::
+
+   GLPI save in ``$_SESSION['glpisearch'][$itemtype]`` the last set of parameters for the current itemtype for each search query. It is automatically restored on a new search if no ``reset``, ``criteria`` or ``metacriteria`` is defined.
+
 Here is the list of possible keys which could be passed to control the search engine. |br|
 All are optionals.
 
-- **criteria**: array of criterion arrays to filter the search. Each criterion array must provide:
+.. _search_criteria:
 
-   - *link*: logical operator in [AND, OR, AND NOT, AND NOT], optional for first element.
-   - *field*: id of the `searchoption <#search-options>`_.
-   - *searchtype*: type of search with one of theses values:
+``criteria``
+   An multi-dimensional array of criterion to filter the search. Each criterion array must provide:
 
-      - 'contains'
-      - 'equals'
-      - 'notequals'
-      - 'lessthan'
-      - 'morethan'
-      - 'under'
-      - 'notunder'
+      * ``link``: one of `AND`, `OR`, `AND NOT` or `OR NOT` logical operators, optional for first element,
+      * ``field``: id of the :ref:`searchoption <search_options>`,
+      * ``searchtype``: type of search, one of:
 
-   - *value*: the value to search
+         * ``contains``
+         * ``equals``
+         * ``notequals``
+         * ``lessthan``
+         * ``morethan``
+         * ``under``
+         * ``notunder``
 
-- **metacriteria**: is very similar to *criteria* parameter but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (Ex: the softwares of a computer).
+      * ``value``: the value to search
 
-  Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know which ones could be.
+.. note::
 
-  The parameter need the same keys as criteria plus one additional:
+   In order to find the ``field`` id you want, you may take a loook at the :ref:`getsearchoptions.php tool script <getsearchoptions_php>`.
+
+``metacriteria``
+   Very similar to :ref:`criteria parameter <search_criteria>` but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (the softwares of a computer, for example).
+
+   Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know which ones could be.
+
+   The parameter need the same keys as criteria plus one additional:
 
    - *itemtype*: second itemtype to link.
 
-- **sort**: id of the searchoption to sort by.
-- **order**: **ASC** ending sorting / **DESC** ending sorting.
-- **start**: integer for indicating the start point of pagination.
-- **is_deleted**: boolean for display trash-bin.
-- **reset=reset**: optional key to fully reset the saved parameters.
+``sort``
+   id of the searchoption to sort by.
 
-For this last option, GLPI save in $_SESSION['glpisearch'][$itemtype] the last set of parameters for the current itemtype for each search query and automatically restore them on a new search (for the same itemtype) without *reset* and *[meta]criteria* options.
+``order``
+   Either ``ASC`` for ending sorting or ``DESC`` for ending sorting.
+
+``start``
+   An integer to indicate the start point of pagination (SQL ``OFFSET``).
+
+``is_deleted``
+   A boolean for display trash-bin.
+
+``reset``
+   A boolean to reset saved search parameters, see note below.
 
 .. _search_options:
 
 Search options
 ^^^^^^^^^^^^^^
 
-Each itemtype can define a set of options to represent the columns which can be queried/displayed by the search engine. |br|
-Each option is identified by an unique integer (we must avoid conflict).
+Each itemtype can define a set of options to represent the columns which can be queried/displayed by the search engine. Each option is identified by an unique integer (we must avoid conflict).
 
-Prior to GLPI 9.2 version, we needed a *getSearchOptions* method which return the array of options:
+.. versionchanged:: 9.2
+   Searchoptions array has been completely rewritten; mainly to catch duplicates and add a unit test to prevent future issues.
 
-.. code-block:: php
+   To permit the use of both old and new syntaxes; a new method has been created, ``getSearchOptionsNew()``. Old syntax is still valid (but do not permit to catch dups).
 
-   <?php
-   function getSearchOptions() {
-      $tab                       = array();
-      $tab['common']             = __('Characteristics');
-
-      $tab[1]['table']           = self::getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['massiveaction']   = false;
-
-      ...
-
-      return $tab;
-   }
-
-Since GLPI 9.2, a new method exist to avoid conflict of id.
-An `unit test <https://github.com/glpi-project/glpi/blob/71174f45/tests/SearchTest.php#L216>`_ is present on the repository to check potential conflicts.
-Here is the new format (the others keys/values are identical):
+   The format has changed, but not the possible options and their values!
 
 .. code-block:: php
 
@@ -184,37 +184,75 @@ Here is the new format (the others keys/values are identical):
       return $tab;
    }
 
-Each option must define the following keys:
+.. note::
 
-- **table**: the SQL table where the *field* key can be found.
-- **field**: the SQL column to query.
-- **name**: a label used to display the *searchoption* in the search pages (like header for example).
+   For reference, the old way to write the same search options was:
 
-And optionally the following keys:
+   .. code-block:: php
 
-- **linkfield**: foreign key used to join to the current itemtype table. |br|
-   if not empty, standard massive action (update feature) for this *searchoption* will be impossible
+      <?php
+      function getSearchOptions() {
+         $tab                       = array();
+         $tab['common']             = __('Characteristics');
 
-- **searchtype**: string or array containing forced search type:
+         $tab[1]['table']           = self::getTable();
+         $tab[1]['field']           = 'name';
+         $tab[1]['name']            = __('Name');
+         $tab[1]['datatype']        = 'itemlink';
+         $tab[1]['massiveaction']   = false;
 
-   - equals (may force use of field instead of id when adding searchequalsonfield option)
-   - contains
+         ...
 
-- **forcegroupby**: boolean to force group by on this *searchoption*
+         return $tab;
+      }
 
-- **splititems**: instead of using simple '<br>' to split grouped items : used '<hr>'
+Each option **must** define the following keys:
 
-- **usehaving**: use HAVING instead of WHERE in SQL query.
+``table``
+   The SQL table where the ``field`` key can be found.
 
-- **massiveaction**: set to false to disable the massive actions for this *searchoption*.
+``field``
+   The SQL column to query.
 
-- **nosort**: set to true to disable sorting with this *searchoption*.
+``name``
+   A label used to display the *search option* in the search pages (like header for example).
 
-- **nosearch**: set to true to disable searching in this *searchoption*.
+Optionally, it can defined the following keys:
 
-- **nodisplay**: set to true to disable displaying this *searchoption*.
+``linkfield``
+   Foreign key used to join to the current itemtype table. |br|
+   If not empty, standard massive action (update feature) for this *search option* will be impossible
 
-- **joinparams**: define how the SQL join must be done. Array may contain:
+``searchtype``
+
+   A string or an array containing forced search type:
+
+      * ``equals`` (may force use of field instead of id when adding ``searchequalsonfield`` option)
+      * ``contains``
+
+``forcegroupby``
+   A boolean to force group by on this *search option*
+
+``splititems``
+   Use ``<hr>`` instead of ``<br>`` to split grouped items
+
+``usehaving``
+   Use ``HAVING`` SQL clause instead of ``WHERE`` in SQL query
+
+``massiveaction``
+   Set to false to disable the massive actions for this *search option*.
+
+``nosort``
+   Set to true to disable sorting with this *search option*.
+
+``nosearch``
+   Set to true to disable searching in this *search option*.
+
+``nodisplay``
+   Set to true to disable displaying this *search option*.
+
+``joinparams``
+   Defines how the SQL join must be done. The array may contain:
 
    - *beforejoin*: define which tables must be joined to access the field. |br|
       The array contains **table** key and may contain an additional **joinparams**. |br|
@@ -243,10 +281,12 @@ And optionally the following keys:
 
    - *nolink*: set to true to indicate the current join doesn't link to the previous join/from (nested joinsparams)
 
-- **additionalfields**: an array for additional fields to add in the SELECT part of the query. Ex: 'additionalfields' => ['id', 'content', 'status']
+``additionalfields``
+   An array for additional fields to add in the ``SELECT`` clause. For example: ``'additionalfields' => ['id', 'content', 'status']``
 
-- **datatype**: define how the *searchoption* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. |br|
-   *optional parameters* are added to the base array of the *searchoption* to control more exactly the datatype.
+``datatype``
+   Define how the *search option* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. |br|
+   *optional parameters* are added to the base array of the *search option* to control more exactly the datatype.
 
    - 'date'.
 
