@@ -73,21 +73,10 @@ If you want to display only a list without the criteria form:
    ];
    Search::showList($itemtype, $p);
 
-TODO
-^^^^
-
-- datafields option
-- difference between searchunit and delay_unit
-- dropdown translations
-- giveItem
-- export
-- fulltext search
-
-
 GET Parameters
 ^^^^^^^^^^^^^^
 
-.. image:: /_static/images/search_criteria.png
+.. image:: images/search_criteria.png
    :alt: Search criteria
    :align: center
 
@@ -434,15 +423,6 @@ Simplified example extracted from `CommonItilObject Class <https://github.com/gl
       }
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }
-
-
-Field number in search constant
-+++++++++++++++++++++++++++++++
-
-See :download:`the document </_static/documents/GLPI-SearchEngine.ods>`.
-
-S => STATE_TYPE, R => RESERVATION_TYPE
-
 
 Default Select/Where/Join
 ^^^^^^^^^^^^^^^^^^^^^^^^^
