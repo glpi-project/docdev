@@ -10,18 +10,28 @@ Goal
 
 The `Search class <https://forge.glpi-project.org/apidoc/class-Search.html>`_ aims to provide a multi-criteria Search engine for GLPI Itemtypes.
 
-The itemtype classes can define a set of `search options`_ to configure which columns could be queried, how they can be accessed and displayed, etc..
 
 It include some short-cuts functions:
 
-- **show**:              displays the complete search page.
-- **showGenericSearch**: displays only the multi-criteria form.
-- **showList**:          displays only the resulting list.
-- **getDatas**:          return an array of raw data.
-- **manageParams**:      complete the $_GET values with the $_SESSION values.
+- ``show()``:              displays the complete search page.
+- ``showGenericSearch()``: displays only the multi-criteria form.
+- ``showList()``:          displays only the resulting list.
+- ``getDatas()``:          return an array of raw data.
+- ``manageParams()``:      complete the ``$_GET`` values with the ``$_SESSION`` values.
 
-The show function parse the $_GET values (by calling manageParams) passed by the page to retrieve the criteria and construct the SQL query. |br|
-For showList function, theses `parameters <#get-parameters>`_ can be passed in the second argument.
+The show function parse the ``$_GET`` values (calling ``manageParams()``) passed by the page to retrieve the criteria and construct the SQL query. |br|
+For showList function, theses :ref:`parameters <search_parameters>` can be passed in the second argument.
+
+The itemtype classes can define a set of :ref:`search options <search_options>` to configure which columns could be queried, how they can be accessed and displayed, etc..
+
+.. todo::
+
+   * datafields option
+   * difference between searchunit and delay_unit
+   * dropdown translations
+   * giveItem
+   * export
+   * fulltext search
 
 Examples
 ++++++++
@@ -73,6 +83,8 @@ If you want to display only a list without the criteria form:
    ];
    Search::showList($itemtype, $p);
 
+.. _search_parameters:
+
 GET Parameters
 ^^^^^^^^^^^^^^
 
@@ -99,7 +111,7 @@ All are optionals.
 
    - *value*: the value to search
 
-- **metacriteria**: is very similar to *criteria* parameter but permits to search in the `search options`_ of an itemtype linked to the current (Ex: the softwares of a computer).
+- **metacriteria**: is very similar to *criteria* parameter but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (Ex: the softwares of a computer).
 
   Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know which ones could be.
 
@@ -115,6 +127,7 @@ All are optionals.
 
 For this last option, GLPI save in $_SESSION['glpisearch'][$itemtype] the last set of parameters for the current itemtype for each search query and automatically restore them on a new search (for the same itemtype) without *reset* and *[meta]criteria* options.
 
+.. _search_options:
 
 Search options
 ^^^^^^^^^^^^^^
@@ -331,8 +344,9 @@ And optionally the following keys:
       Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
 
    - 'specific': if not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
-      See `Specific search options`_ paragraph below for implementation.
+      See :ref:`specific search options <specific_search_options>` paragraph below for implementation.
 
+.. _specific_search_options:
 
 Specific search options
 +++++++++++++++++++++++
@@ -491,14 +505,11 @@ See `core definition <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a5
       return "";
    }
 
-
 Bookmarks
 ^^^^^^^^^
 
-The *glpi_boomarks* table stores a list of search queries for the users and permit to retrieve them. |br|
-The 'query' field contains an url query construct from `parameters`_ with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ php function.
-
-
+The ``glpi_boomarks`` table stores a list of search queries for the users and permit to retrieve them. |br|
+The 'query' field contains an url query construct from :ref:`parameters <search_parameters>` with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ php function.
 
 Display Preferences
 ^^^^^^^^^^^^^^^^^^^
