@@ -80,9 +80,15 @@ Update copyright header based on the contents of the ``HEADER`` file.
 getsearchoptions.php
 --------------------
 
-This script is designed to be called from a browser, not from the command line. It will display existing search options for an item specified with the ``type`` argument.
+This script is designed to be called from a browser, or from the command line. It will display existing search options for an item specified with the ``type`` argument.
 
 For example, open ``http://localhost/glpi/tools/getsearchoptions.php?type=Computer``, and you will see search options for `Computer` type.
+
+On command line, you can get the exact same result entering:
+
+.. code-block:: bash
+
+   $ php tools/getsearchoptions.php --type=Computer
 
 Not yet documented...
 ---------------------
