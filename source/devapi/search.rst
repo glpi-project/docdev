@@ -124,7 +124,7 @@ All are optionals.
 ``metacriteria``
    Very similar to :ref:`criteria parameter <search_criteria>` but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (the softwares of a computer, for example).
 
-   Not all itemtype can be linked, see this `part of code <https://github.com/glpi-project/glpi/blob/9.1.2/inc/search.class.php#L1740>`_ to know which ones could be.
+   Not all itemtype can be linked, see `the getMetaItemtypeAvailable() method of the Search class <https://forge.glpi-project.org/apidoc/class-Search.html#_getMetaItemtypeAvailable>`_ to know which ones could be.
 
    The parameter need the same keys as criteria plus one additional:
 
@@ -294,7 +294,7 @@ Optionally, it can defined the following keys:
 
       Use ``NEWTABLE`` or ``REFTABLE`` tag to use the table names.
 
-   * ``nolink``: set to true to indicate the current join doesn't link to the previous join/from (nested ``joinparams``)
+   * ``nolink``: set to true to indicate the current join does not link to the previous join/from (nested ``joinparams``)
 
 ``additionalfields``
    An array for additional fields to add in the ``SELECT`` clause. For example: ``'additionalfields' => ['id', 'content', 'status']``
@@ -303,103 +303,122 @@ Optionally, it can defined the following keys:
    Define how the *search option* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. |br|
    *optional parameters* are added to the base array of the *search option* to control more exactly the datatype.
 
-   - 'date'.
+   * ``date``
 
-      *optional parameters*:
+      Available parameters (all optional):
 
-      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
-      - **maybefuture**: display datepicker with future date selection, default false
-      - **emptylabel**: string to display in case of null value
+      * ``searchunit``: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+      * ``maybefuture``: display datepicker with future date selection, defaults to ``false``
+      * ``emptylabel``: string to display in case of ``null`` value
 
-   - 'datetime'.
+   * ``datetime``
 
-      *optional parameters*:
+      Available parameters (all optional) are the same as ``date``.
 
-      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
-      - **maybefuture**: display datepicker with future date selection, default false
-      - **emptylabel**: string to display in case of null value
+   * ``date_delay``
 
-   - 'date_delay': date with a delay in month (end_warranty, end_date).
+      Date with a delay in month (``end_warranty``, ``end_date``).
 
-      *optional parameters*:
+      Available parameters (all optional) are the same as ``date`` and:
 
-      - **datafields**: [1]=DATE_FIELD, ['datafields'][2]=DELAY_ADD_FIELD, ['datafields'][3]=DELAY_MINUS_FIELD
-      - **searchunit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
-      - **delay_unit**: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
-      - **maybefuture**: display datepicker with future date selection, default false
-      - **emptylabel**: string to display in case of null value
+      * ``datafields``: ``[1]=DATE_FIELD, ['datafields'][2]=DELAY_ADD_FIELD, ['datafields'][3]=DELAY_MINUS_FIELD``
+      * ``delay_unit``: MySQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
 
-   - 'timestamp': use Dropdown::showTimeStamp() for modification
+   * ``timestamp``
 
-      *optional parameters*:
+      Use ``Dropdown::showTimeStamp()`` for modification
 
-      - **withseconds**: boolean (false by default)
+      Available parameters (all optional):
 
-   - 'weblink'
+      * ``withseconds``: boolean (``false`` by default)
 
-   - 'email'
+   * ``weblink``
+   * ``email``
+   * ``color``
 
-   - 'color': use Html::showColorField() for modification
+      Use ``Html::showColorField()`` for modification
 
-   - 'text'
+   * ``text``
+   * ``string``
 
-   - 'string': use a rich text editor for modification
+      Use a rich text editor for modification
 
-   - 'ip'
+   * ``ip``
+   * ``mac``.
 
-   - 'mac'.
+      Available parameters (all optional):
 
-      *optional parameters*:
+      * ``htmltext``: boolean, escape the value (``false`` by default)
 
-      - **htmltext**: boolean, escape the value (false by default)
+   * ``number``
 
-   - 'number'. use a Dropdown::showNumber() for modification (in case of 'equals' searchtype). |br|
-      For 'contains' searchtype, you can use < and > prefix in 'value'.
+      Use a ``Dropdown::showNumber()`` for modification (in case of ``equals`` ``searchtype``). |br|
+      For ``contains`` ``searchtype``, you can use `<` and `>` prefix in ``value``.
 
-      *optional parameters*:
+      Available parameters (all optional):
 
-      - **width**: html attribute passed to Dropdown::showNumber()
-      - **min**: minimum value (default 0)
-      - **max**: maximum value (default 100)
-      - **step**: step for select (default 1)
-      - **toadd**: array of values to add a the beginning of the dropdown
+      * ``width``: html attribute passed to Dropdown::showNumber()
+      * ``min``: minimum value (default ``0``)
+      * ``max``: maximum value (default ``100``)
+      * ``step``: step for select (default ``1``)
+      * ``toadd``: array of values to add a the beginning of the dropdown
 
-   - 'integer': alias for number.
+   * ``integer``
 
-   - 'count': same as number but count the number of item in the table
+      Alias for ``numbe``
 
-   - 'decimal': idem that number but formatted with decimal
+   * ``count``
 
-   - 'bool': use Dropdown::showYesNo() for modification
+      Same as ``number`` but count the number of item in the table
 
-   - 'itemlink': create a link to the item
+   * ``decimal``
 
-   - 'itemtypename': use Dropdown::showItemTypes() for modification
+      Same as ``number`` but formatted with decimal
 
-      *optional parameters*, to define available itemtypes:
+   * ``bool``
 
-      - **itemtype_list**: list in $CFG_GLPI (see https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166)
-      - **types**: array containing available types
+      Use ``Dropdown::showYesNo()`` for modification
 
-   - 'language'. use Dropdown::showLanguages() for modification
+   * ``itemlink``
 
-      *optional parameters*:
+      Create a link to the item
 
-      - **display_emptychoice**: display an empty choice (-------)
+   * ``itemtypename``
 
-   - 'right': use Profile::dropdownRights() for modification
+      Use ``Dropdown::showItemTypes()`` for modification
 
-      *optional parameters*:
+      Available parameters (all optional) to define available itemtypes:
 
-      - **nonone**: hide none choice ? (default false)
-      - **noread**: hide read choice ? (default false)
-      - **nowrite**: hide write choice ? (default false)
+      * ``itemtype_list``: list in ``$CFG_GLPI`` (see https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166)
+      * ``types``: array containing available types
 
-   - 'dropdown': use Itemtype::dropdown() for modification. |br|
-      Dropdown may have several additional parameters depending of dropdown type : **right** for user one for example
+   * ``language``
 
-   - 'specific': if not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
-      See :ref:`specific search options <specific_search_options>` paragraph below for implementation.
+      Use ``Dropdown::showLanguages()`` for modification
+
+      Available parameters (all optional):
+
+      * ``display_emptychoice``: display an empty choice (``-------``)
+
+   * ``right``
+
+      Use ``Profile::dropdownRights()`` for modification
+
+      Available parameters (all optional):
+
+      * ``nonone``: hide none choice ? (defaults to ``false``)
+      * ``noread``: hide read choice ? (defaults to ``false``)
+      * ``nowrite``: hide write choice ? (defaults to ``false``)
+
+   * ``dropdown``
+
+      Use ``Itemtype::dropdown()`` for modification. |br|
+      Dropdown may have several additional parameters depending of dropdown type : ``right`` for user one for example
+
+   * ``specific``
+
+      If not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
+      See :ref:`specific search options <specific_search_options>` paragraph for implementation.
 
 .. _specific_search_options:
 
