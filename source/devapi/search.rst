@@ -321,7 +321,12 @@ Optionally, it can defined the following keys:
 
       Available parameters (all optional) are the same as ``date`` and:
 
-      * ``datafields``: ``[1]=DATE_FIELD, ['datafields'][2]=DELAY_ADD_FIELD, ['datafields'][3]=DELAY_MINUS_FIELD``
+      * ``datafields``: array of data fields that would be used.
+
+         * ``datafields[1]``: the date field,
+         * ``datafields[2]``: the delay field,
+         * ``datafields[2]``: ?
+
       * ``delay_unit``: MySQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
 
    * ``timestamp``
@@ -389,7 +394,7 @@ Optionally, it can defined the following keys:
 
       Available parameters (all optional) to define available itemtypes:
 
-      * ``itemtype_list``: list in ``$CFG_GLPI`` (see https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166)
+      * ``itemtype_list``: one of `$CFG_GLPI["unicity_types"] <https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166>`_
       * ``types``: array containing available types
 
    * ``language``
