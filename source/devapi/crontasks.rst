@@ -97,4 +97,4 @@ Example of implemtation from the class ``QueuedMail``:
 
    }
 
-If the argument $task is a CronTask object, the automatic action must increment the quantoty of actions done. In this example, each email actually sent increments the volume by 1.
+If the argument $task is a CronTask object, the automatic action must increment the quantity of actions done. In this example, each email actually sent increments the volume by 1.
