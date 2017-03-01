@@ -34,7 +34,7 @@ The ``register`` method takes four arguments:
 Implement an automatic action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A plugin must implement its automatic actions the same way as GLPI does, except the method is located in a plugin's itemtype. See :doc:`crontasks <../devapi/crontasks>`
+A plugin must implement its automatic actions the same way as GLPI does, except the method is located in a plugin's itemtype. See :doc:`crontasks <../devapi/crontasks>`.
 
 
 Unregister a task
