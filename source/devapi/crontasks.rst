@@ -4,7 +4,7 @@ Automatic actions
 Goals
 ^^^^^
 
-Provide a scheduler for background tasks used by GLPI and its plugins. 
+Provide a scheduler for background tasks used by GLPI and its plugins.
 
 Implementation overview
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -15,17 +15,12 @@ The entry point of automatic actions is the file front/cron.php. It is called fr
 
 The automatic actions are defined by the class CronTask. GLPI defines a lot of them for its own needs. They are created in the installation or upgrade process.
 
-Register an automatic actions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Automatic actions are defined in the empty schema located in ``install/mysql/``. To handle upgrade from a previous version, the new automatic actions must be added in the appropriate update file in ``install/``.
-
 Implementation
 ^^^^^^^^^^^^^^
 
 Automatic actions are implemented in static methods of itemtypes. The itemtype containing the automatic action should be an itemtype related to the action. However some automatic actions are related to themselves or cannot be related to an itemtype. Such automatic actions are implemented in CronTask.
 
-When GLPI shows a list of automatic actions, it shows a short description for each item. The description is gathered in the static method ``cronInfo()`` in the itemtype containing the automatic actions.
+When GLPI shows a list of automatic actions, it shows a short description for each item. The description is gathered in the static method ``cronInfo()`` in the itemtype containing the reltaed automatic action.
 
 .. Note::
 
@@ -43,7 +38,7 @@ Example of implemtation from the class ``QueuedMail``:
       /**
        * Give cron information
        *
-       * @param $name : task's name
+       * @param $name : automatic action's name
        *
        * @return arrray of information
       **/
@@ -98,3 +93,31 @@ Example of implemtation from the class ``QueuedMail``:
    }
 
 If the argument $task is a CronTask object, the automatic action must increment the quantity of actions done. In this example, each email actually sent increments the volume by 1.
+
+Register an automatic actions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Automatic actions are defined in the empty schema located in ``install/mysql/``. Use  the existing sql queries creating rows in the table ``glpi_crontasks`` as template for a new automatic action.
+
+To handle upgrade from a previous version, the new automatic actions must be added in the appropriate update file in ``install/``.
+
+.. code-block:: php
+
+   <?php
+   // Register an automatic action
+   CronTask::register('QueuedMail', 'QueuedMail', HOUR_TIMESTAMP,
+         array(
+         'comment'   => '',
+         'mode'      => CronTask::MODE_EXTERNAL
+   ));
+
+The ``register`` method takes four arguments:
+
+* `itemtype`: a `string` containing an itemtype name containing the automatic action implementation
+* `name`: a `string` containing the name of the automatic action
+* `frequency` the period of time between two executions in seconds (see inc/define.php for convenient constants)
+* `options` an array of options
+
+.. Note::
+
+   The name of an automatic action is actually the method's name without the prefix cron. In the example, the method ``cronQueuedMail`` implements the automatic action named ``QueudMail``.

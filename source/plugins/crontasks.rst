@@ -4,14 +4,17 @@ Automatic actions
 Goals
 ^^^^^
 
-Plugins may need to run tasks in backgroupd, or at regular interval. GLPI provides a task scheduler for itself and its plugins.
+Plugins may need to run automatic actions in backgroupd, or at regular interval. GLPI provides a task scheduler for itself and its plugins.
 
+Implement an automatic action
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A plugin must implement its automatic action the same way as GLPI does, except the method is located in a plugin's itemtype. See :doc:`crontasks <../devapi/crontasks>`.
 
 Register an automatic action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The plugin must register tasks to make GLPI know about them. This is done in the plugin's installer.
-
 
 .. code-block:: php
 
@@ -26,16 +29,10 @@ GLPI will call once per hour the static method PluginExampleAutopurge::cronPurge
 
 The ``register`` method takes four arguments:
 
-* `itemtype`: a `string` containing an itemtype name
+* `itemtype`: a `string` containing an itemtype name containing the automatic action implementation
 * `name`: a `string` containing the name of a method
 * `frequency` the period of time between two executions in seconds (see inc/define.php for convenient constants)
 * `options` an array of options
-
-Implement an automatic action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A plugin must implement its automatic action the same way as GLPI does, except the method is located in a plugin's itemtype. See :doc:`crontasks <../devapi/crontasks>`.
-
 
 Unregister a task
 ^^^^^^^^^^^^^^^^^
