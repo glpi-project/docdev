@@ -17,6 +17,7 @@ A profile have a set of base fields independent of sub rights and, so, could:
 - be defined as default for new users (``is_default`` field).
 - force the ticket creation form at the login (``create_ticket_on_login`` field).
 - define the interface used (``interface`` field):
+
    - helpdesk (self-service users)
    - central (technician view)
 
@@ -36,7 +37,8 @@ The keys match the static property ``$rightname`` in the GLPI itemtypes.
 Ex: In Computer class, we have a ``static $rightname = 'computer';``
 
 Value is a numeric sum of integer constants.
-Bases right values can be in inc/define.php:
+
+Bases right values can be found in inc/define.php:
 
 .. code-block:: php
 
@@ -55,6 +57,7 @@ Bases right values can be in inc/define.php:
    define("UNLOCK", 128);
 
 So, for example, to have the right to READ and UPDATE an itemtype, we'll have a ``right`` value of 3.
+
 As defined in this above block, we have a computation of all standards right = 31:
 
 READ (1)
