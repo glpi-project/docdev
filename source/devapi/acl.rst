@@ -12,7 +12,7 @@ Profiles
 
 The `Profile class <https://forge.glpi-project.org/apidoc/class-Profile.html>`_ (corresponding to ``glpi_profiles`` table) stores each set of rights.
 
-A profile have a set of base fields independent of sub rights and, so, could:
+A profile has a set of base fields independent of sub rights and, so, could:
 
 - be defined as default for new users (``is_default`` field).
 - force the ticket creation form at the login (``create_ticket_on_login`` field).
