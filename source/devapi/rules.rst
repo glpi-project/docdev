@@ -28,7 +28,7 @@ A rules system is represented by these base classes:
 
     Parent class for all ``Rule*Collection`` classes.
 
-    This class represents the while collection of rules for a ``sub_type`` (matching all line in ``glpi_rules`` table for this ``sub_type``) and includes some method to process, duplicate, test and display the full collection.
+    This class represents the whole collection of rules for a ``sub_type`` (matching all line in ``glpi_rules`` table for this ``sub_type``) and includes some method to process, duplicate, test and display the full collection.
 
 * `RuleCriteria class <https://forge.glpi-project.org/apidoc/class-RuleCriteria.html>`_
 
