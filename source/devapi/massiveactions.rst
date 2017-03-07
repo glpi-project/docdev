@@ -9,7 +9,7 @@ Massive Actions
 Goals
 ^^^^^
 
-Add to itemtypes :doc:`search lists <../devapi/search>`_:
+Add to itemtypes :doc:`search lists <../devapi/search>`:
 
 - a checkbox before each item,
 - a checkbox to select all items checkboxes,
@@ -130,7 +130,7 @@ Finally, to process our definition, we need a ``processMassiveActionsForOneItemt
       parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
    }
 
-Besides an instance of MassiveAction class ``$ma``, we have also an instance of the current ``itemtype`` ``$item and the list of selected id ``$ids``.
+Besides an instance of `MassiveAction <https://forge.glpi-project.org/apidoc/class-MassiveAction.html>`_ class ``$ma``, we have also an instance of the current ``itemtype`` ``$item and the list of selected id ``$ids``.
 
 In this method, we could use some optional utility functions from the ``MassiveAction $ma`` object supplied in parameter :
 
