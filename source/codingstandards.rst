@@ -142,10 +142,11 @@ It may be different calling static classes. In that case; you can either:
 * call statically the method from the object; like ``MyObject::staticMethod()``,
 * call statically the method from an object instance; like ``$object::staticMethod()``,
 * call non statically the method from an object instance; like ``$object->staticMethod()``.
+* use `late static building <http://php.net/manual/en/language.oop5.late-static-bindings.php>`_; like ``static::staticMethod()``.
 
 When you do not have any object instance yet; the first solution is probably the best one. No need to instanciate an object to just call a static method from it.
 
-On the other hand; if you already have an object instance; youo should use a non statc call to the method. That way; you will save performances since calling statitcally do have a cost.
+On the other hand; if you already have an object instance; you should better use any of the solution but the late static binding. That way; you will save performances since this way to go do have a cost.
 
 Classes
 -------
