@@ -1,5 +1,7 @@
 .. _searchoptions: ../devapi/search#search-options
 
+.. _massiveactions
+
 Massive Actions
 ---------------
 
