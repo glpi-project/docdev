@@ -164,10 +164,12 @@ You need to add the following classes for describing you new ``sub_type``.
     <?php
 
     class RuleMytypeCollection extends RuleCollection {
-        // a rule collection can process all rules for the input or stop after a single match with its criteria (default false)
+        // a rule collection can process all rules for the input or stop
+        //after a single match with its criteria (default false)
         public $stop_on_first_match = true;
 
-        // optional right to apply to this rule type (default: 'config'), see Rights management.
+        // optional right to apply to this rule type (default: 'config'),
+        //see Rights management.
         static $rightname = 'rule_mytype';
 
         // menu key to use with Html::header in front page.
@@ -178,8 +180,10 @@ You need to add the following classes for describing you new ``sub_type``.
             return return __('My rule type name');
         }
 
-        // if we need to change the input of the object before passing it to the criteria.
-        // Example if the input couldn't directly contains a criteria and we need to compute it before (GROUP)
+        // if we need to change the input of the object before passing
+        //it to the criteria.
+        // Example if the input couldn't directly contains a criteria
+        //and we need to compute it before (GROUP)
         function prepareInputDataForProcess($input, $params) {
             $input['_users_id_requester'] = $params['_users_id_requester'];
             $fields = $this->getFieldsToLookFor();
@@ -266,22 +270,26 @@ To call your rules collection and alter the data:
 
 .. code-block:: php
 
-    <?php
+   <?php
 
-    ...
+   ...
 
-    $rules  = new PluginMypluginRuleMytypeCollection();
+   $rules  = new PluginMypluginRuleMytypeCollection();
 
-    $input  = [...]; // data send by a form (which will be compared to criteria)
-    $output = [...]; // usually = $input, but it could differ if you want to avoid comparison of some fields with the criteria.
-    $params = []; // array passed to the prepareInputDataForProcess function of the collection class (if you need to add conditions)
+   // data send by a form (which will be compared to criteria)
+   $input  = [...];
+   // usually = $input, but it could differ if you want to avoid comparison of
+   //some fields with the criteria.
+   $output = [...];
+   // array passed to the prepareInputDataForProcess function of the collection
+   //class (if you need to add conditions)
+   $params = [];
 
-    $output = $rules->processAllRules(
-        $input,
-        $output,
-        $params
-    );
-
+   $output = $rules->processAllRules(
+      $input,
+      $output,
+      $params
+   );
 
 Dictionaries
 ^^^^^^^^^^^^
