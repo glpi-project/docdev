@@ -11,6 +11,7 @@ Apart from the current documentation, you can also check the `full PHP documenta
    search
    dbiterator
    dbmodel
+   massiveactions
    rules
    translations
    acl
