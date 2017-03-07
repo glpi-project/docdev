@@ -67,7 +67,7 @@ As defined in this above block, we have a computation of all standards right = 3
    \+ PURGE (16)
    = 31
 
-If you need to extends the possible values of rights, you need to declare these part into your itemtype, simplified example for Ticket class:
+If you need to extends the possible values of rights, you need to declare these part into your itemtype, simplified example from Ticket class:
 
 .. code-block:: php
 
@@ -143,13 +143,13 @@ See methods definition:
 * `haveRightsAnd <https://forge.glpi-project.org/apidoc/class-Session.html#_haveRightsAnd>`_
 * `haveRightsOr <https://forge.glpi-project.org/apidoc/class-Session.html#_haveRightsOr>`_
 
-All above functions return a boolean. If we want a graceful die of the page we have equivalent function but with a ``check`` prefix instead ``have``:
+All above functions return a boolean. If we want a graceful die of your pages, we have equivalent function but with a ``check`` prefix instead ``have``:
 
 * `checkRight <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRight>`_
 * `checkRightsAnd <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsAnd>`_
 * `checkRightsOr <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsOr>`_
 
-If you need to check a right directly in a SQL query, use a logical `& <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ and `| <http://php.net/manual/fr/language.operators.bitwise.php>`_ operators, ex for users:
+If you need to check a right directly in a SQL query, use bitwise `& <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ and `| <http://php.net/manual/fr/language.operators.bitwise.php>`_ operators, ex for users:
 
 .. code-block:: php
 
