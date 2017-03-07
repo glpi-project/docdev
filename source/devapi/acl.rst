@@ -38,7 +38,7 @@ Ex: In Computer class, we have a ``static $rightname = 'computer';``
 
 Value is a numeric sum of integer constants.
 
-Bases right values can be found in inc/define.php:
+Values of standard rights can be found in inc/define.php:
 
 .. code-block:: php
 
@@ -58,16 +58,16 @@ Bases right values can be found in inc/define.php:
 
 So, for example, to have the right to READ and UPDATE an itemtype, we'll have a ``right`` value of 3.
 
-As defined in this above block, we have a computation of all standards right = 31:
+As defined in this above block, we have a computation of all standards right = 31: ::
 
-READ (1)
-\+ UPDATE (2)
-\+ CREATE (4)
-\+ DELETE (8)
-\+ PURGE (16)
-= 31
+   READ (1)
+   \+ UPDATE (2)
+   \+ CREATE (4)
+   \+ DELETE (8)
+   \+ PURGE (16)
+   = 31
 
-If you need to extends the possible values of rights, you need to declare theses part into your itemtype, simplified example for Ticket class:
+If you need to extends the possible values of rights, you need to declare these part into your itemtype, simplified example for Ticket class:
 
 .. code-block:: php
 
@@ -96,13 +96,14 @@ If you need to extends the possible values of rights, you need to declare theses
 
       ...
 
-The new rights need to be checked by your own functions, see checkrights__
+The new rights need to be checked by your own functions, see :ref:`check rights <checkrights>`
 
+.. _checkrights:
 
 Check rights
 ^^^^^^^^^^^^
 
-Each itemtype class which inherits from CommonDBTM will benefit from standard right checks.
+Each itemtype class which inherits from `CommonDBTM <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html>`_ will benefit from standard right checks.
 See the following methods:
 
 - `canView <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canView>`_
@@ -148,7 +149,7 @@ All above functions return a boolean. If we want a graceful die of the page we h
 * `checkRightsAnd <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsAnd>`_
 * `checkRightsOr <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsOr>`_
 
-If you need to check a right directly in a SQL query, use a logical ``&`` and ``|`` operators, ex for users:
+If you need to check a right directly in a SQL query, use a logical `& <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ and `| <http://php.net/manual/fr/language.operators.bitwise.php>`_ operators, ex for users:
 
 .. code-block:: php
 
@@ -164,7 +165,7 @@ If you need to check a right directly in a SQL query, use a logical ``&`` and ``
          AND `glpi_profilerights`.`rights` & ". (READ | CREATE);
    $result = $DB->query($query);
 
-In this snippet, the ``READ | CREATE`` do a binary operation to get the sum of these rights and the ``&`` SQL operator do a logical comparison with the current value in the DB.
+In this snippet, the ``READ | CREATE`` do a `bitwise operation <http://php.net/manual/fr/language.operators.bitwise.php>`_ to get the sum of these rights and the ``&`` `SQL operator <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ do a logical comparison with the current value in the DB.
 
 
 CommonDBRelation and CommonDBChild specificities
@@ -189,8 +190,8 @@ These classes permits to manage the relation between items and so have propertie
       ...
    }
 
-possible values for theses properties are:
+possible values for these properties are:
 
-* ``DONT_CHECK_ITEM_RIGHTS``:  Don't check the parent, we always have all rights regardless of parent's rights.
+* ``DONT_CHECK_ITEM_RIGHTS``:  don't check the parent, we always have all rights regardless of parent's rights.
 * ``HAVE_VIEW_RIGHT_ON_ITEM``: we have all rights (CREATE, UPDATE), if we can view the parent.
-* ``HAVE_SAME_RIGHT_ON_ITEM``: We have the same rights as the parent class.
+* ``HAVE_SAME_RIGHT_ON_ITEM``: we have the same rights as the parent class.
