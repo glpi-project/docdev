@@ -36,7 +36,7 @@ You can get the usage by simply calling the script:
 cliupdate.php
 -------------
 
-Let you update your GLPI database from command line. The script does not take any argument, just call it and you're done:
+Let you update your GLPI database from command line. The script does not need any argument, just call it and you're done:
 
 .. code-block:: bash
 
@@ -45,6 +45,13 @@ Let you update your GLPI database from command line. The script does not take an
    Current GLPI Code version: 9.2
    Default GLPI Language: en_GB
    No migration needed.
+
+You can also add extra parameters:
+
+* ``--force`` will force the latest update even if database is already up to date, **this may cause issues**,
+* ``--optimize`` will optimize database tables after the update,
+* ``--lang`` let you specify language that will be used. It defaults to ``en_GB``,
+* ``--config-dir`` let you specify the configuration directory. This is mainly used for tests; default config file may be the best choice in almost every case.
 
 genapidoc.sh
 ------------
