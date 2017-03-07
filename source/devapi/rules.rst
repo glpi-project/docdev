@@ -5,12 +5,12 @@ GLPI provide a set of tools to implements a rule engine which take ``criteria`` 
 
 Here is the list of base rules set provided in a staple GLPI:
 
-* **ruleimportentity**: Rules for assigning an item to an entity
-* **ruleimportcomputer**: Rules for import and link computers
-* **rulemailcollector**: Rules for assigning a ticket created through a mails receiver
-* **ruleright**: Authorizations assignment rules
-* **rulesoftwarecategory**: Rules for assigning a category to software
-* **ruleticket**: Business rules for ticket
+* **ruleimportentity**: rules for assigning an item to an entity,
+* **ruleimportcomputer**: rules for import and link computers,
+* **rulemailcollector**: rules for assigning a ticket created through a mails receiver,
+* **ruleright**: authorizations assignment rules,
+* **rulesoftwarecategory**: rules for assigning a category to software,
+* **ruleticket**: business rules for ticket.
 
 Plugin could add their own set of rules.
 
@@ -19,37 +19,37 @@ Classes
 
 A rules system is represented by these base classes:
 
-* ``class Rule extends CommonDBTM`` (inc/rule.class.php)
+* `Rule class <https://forge.glpi-project.org/apidoc/class-Rule.html>`_
 
     Parent class for all Rule* classes.
     This class represents a single rule (matching a line in ``glpi_rules`` table) and include test, process, display for an instance.
 
-* ``class RuleCollection extends CommonDBTM`` (inc/rulecollection.class.php)
+* `RuleCollection class <https://forge.glpi-project.org/apidoc/class-RuleCollection.html>`_
 
-    Parent class for all Rule*Collection classes.
-    This class represents the while collection of rules for a ``sub_type`` (matching all line in ``glpi_rules`` table for this ``sub_type``) and includes some method to process,duplicate,test and display the full collection.
+    Parent class for all ``Rule*Collection`` classes.
 
-* ``class RuleCriteria extends CommonDBChild`` (inc/rulecriteria.class.php)
+    This class represents the while collection of rules for a ``sub_type`` (matching all line in ``glpi_rules`` table for this ``sub_type``) and includes some method to process, duplicate, test and display the full collection.
+
+* `RuleCriteria class <https://forge.glpi-project.org/apidoc/class-RuleCriteria.html>`_
 
     This class permits to manipulate a single criteria (matching a line in ``glpi_rulecriterias`` table) and include methods to display and match input values.
 
-* ``class RuleAction extends CommonDBChild`` (inc/ruleaction.class.php)
+* `RuleAction class <https://forge.glpi-project.org/apidoc/class-RuleAction.html>`_
 
     This class permits to manipulate a single action (matching a line in ``glpi_ruleactions`` table) and include methods to display and process output values.
 
 And for each ``sub_type`` of rule:
 
-* ``class RuleSubtype extends Rule`` (inc/rulesubtype.class.php)
+* `RuleSubtype class <https://forge.glpi-project.org/apidoc/class-RuleSubtype.html>`_
 
     Define the specificity of the ``sub_type`` rule like list of criteria and actions or how to display specific parts.
 
-* ``class RuleSubtypeCollection extends RuleCollection`` (inc/rulesubtypecollection.class.php)
+* `RuleSubtypeCollection class <https://forge.glpi-project.org/apidoc/class-RuleSubtypeCollection.html>`_
 
     Define the specificity of the ``sub_type`` rule collection like the preparation of input and the tests results.
 
-
-DB Model
-^^^^^^^^
+Database Model
+^^^^^^^^^^^^^^
 
 Here is the list of important tables / fields for rules:
 
@@ -57,28 +57,28 @@ Here is the list of important tables / fields for rules:
 
     All rules for all ``sub_types`` are inserted here.
 
-    - **sub_type**: the type of the rule (ruleticket, ruleright, etc).
-    - **ranking**: the order of execution in the collection.
-    - **match**: define the link between the rule's criteria. Can be AND or OR.
-    - **uuid**: unique id for the rule, useful for import/export in xml.
+    - **sub_type**: the type of the rule (ruleticket, ruleright, etc),
+    - **ranking**: the order of execution in the collection,
+    - **match**: define the link between the rule's criteria. Can be AND or OR,
+    - **uuid**: unique id for the rule, useful for import/export in xml,
     - **condition**: addition condition for the ``sub_type`` (only used by ruleticket for defining the trigger of the collection on add and/or update of a ticket).
 
 * ``glpi_rulecriterias``:
 
     Store all criteria for all rules.
 
-    - **rules_id**: the foreign key for glpi_rules.
-    - **criteria**: one the key defined in the getCriteria function of the `RuleSubtype <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getCriterias>`_ class
-    - **condition**: an integer matching the constant set in `rule.class.php https://forge.glpi-project.org/apidoc/class-Rule.html#constants>`_.
-    - **pattern**: the direct value or regex to compare to the criteria
+    - **rules_id**: the foreign key for glpi_rules,
+    - **criteria**: one of the key defined in the `RuleSubtype::getCriterias() <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getCriterias>`_ method,
+    - **condition**: an integer matching the constant set in `Rule class constants <https://forge.glpi-project.org/apidoc/class-Rule.html#constants>`_,
+    - **pattern**: the direct value or regex to compare to the criteria.
 
 * ``glpi_ruleactions``:
 
     Store all actions for all rules.
 
-    - **rules_id**: the foreign key for glpi_rules.
-    - **action_type**: the type of action to apply on the input. See `RuleAction::getActions() <https://forge.glpi-project.org/apidoc/class-RuleAction.html#_getActions>`_
-    - **field**: the field to alter by the current action. See keys definition in `RuleSubtype::getActions() <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getActions>`_.
+    - **rules_id**: the foreign key for glpi_rules,
+    - **action_type**: the type of action to apply on the input. See `RuleAction::getActions() <https://forge.glpi-project.org/apidoc/class-RuleAction.html#_getActions>`_,
+    - **field**: the field to alter by the current action. See keys definition in `RuleSubtype::getActions() <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getActions>`_,
     - **value**: the value to apply in the field.
 
 Add a new Rule class
@@ -229,17 +229,18 @@ And add the rulecollection in ``$CFG_GLPI`` (Only for **Core** rules):
 
     ...
 
-    $CFG_GLPI["rulecollections_types"] = array('RuleImportEntityCollection',
-                                               'RuleImportComputerCollection',
-                                               'RuleMailCollectorCollection',
-                                               'RuleRightCollection',
-                                               'RuleSoftwareCategoryCollection',
-                                               'RuleTicketCollection'
-                                               'RuleMytypeCollection' // <-- My type is added here
-                                               );
+    $CFG_GLPI["rulecollections_types"] = [
+      'RuleImportEntityCollection',
+      'RuleImportComputerCollection',
+      'RuleMailCollectorCollection',
+      'RuleRightCollection',
+      'RuleSoftwareCategoryCollection',
+      'RuleTicketCollection',
+      'RuleMytypeCollection' // <-- My type is added here
+   ];
 
 
-Plugin instead must declare it in their init function (setup.php):
+Plugin instead must declare it in :ref:`their init function <plugins_setupphp>`:
 
 * ``plugin/myplugin/setup.php``
 
@@ -249,8 +250,10 @@ Plugin instead must declare it in their init function (setup.php):
         function plugin_init_myplugin() {
             ...
 
-            $Plugin->registerClass('PluginMypluginRuleMytypeCollection',
-                                    ['rulecollections_types' => true]);
+            $Plugin->registerClass(
+               'PluginMypluginRuleMytypeCollection',
+               ['rulecollections_types' => true]
+            );
 
             ...
 
@@ -283,11 +286,12 @@ To call your rules collection and alter the data:
 Dictionaries
 ^^^^^^^^^^^^
 
-They inherits Rule* classes but have some specificities.
+They inherits ``Rule*`` classes but have some specificities.
 
-A dictionary aims to modify on the fly data coming from an external source (csv file, inventory tools, etc.). It applies on an itemtype, as defined in the ``sub_type`` field of the ``glpi_rules`` table.
+A dictionary aims to modify on the fly data coming from an external source (CSV file, inventory tools, etc.). It applies on an itemtype, as defined in the ``sub_type`` field of the ``glpi_rules`` table.
 
-As the classic rules aim to apply additional and multiple data to input, dictionaries generally used to alter a single field (relative to the their ``sub_type``). Ex, ``RuleDictionnaryComputerModel`` aims to alter ``model`` field of ``glpi_computers``.
+As the classic rules aim to apply additional and multiple data to input, dictionaries generally used to alter a single field (relative to the their ``sub_type``). Ex, ``RuleDictionnaryComputerModel`` alters ``model`` field of ``glpi_computers``.
+
 Some exceptions exists and provide multiple actions (Ex: ``RuleDictionnarySoftware``).
 
 As they are shown in a separate menu, you should define they in a separate ``$CFG_GLPI`` entry in ``inc/define.php``:
