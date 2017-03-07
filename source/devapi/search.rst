@@ -252,49 +252,7 @@ Optionally, it can defined the following keys:
    Set to true to disable displaying this *search option*.
 
 ``joinparams``
-   Defines how the SQL join must be done. The array may contain:
-
-   * ``beforejoin``: define which tables must be joined to access the field.
-
-      The array contains ``table`` key and may contain an additional ``joinparams``. |br|
-      In case of nested ``beforejoin``, we start the SQL join from the last dimension.
-
-      Example:
-
-      .. code-block:: php
-
-         <?php
-         [
-            'beforejoin' => [
-               'table'        => 'mytable',
-               'joinparams'   => [
-                  'beforejoin' => [...]
-               ]
-            ]
-         ]
-
-   * ``jointype``: string define the join type:
-
-      * ``empty`` for a standard jointype
-         ``REFTABLE.`#linkfield#` = NEWTABLE.`id```
-      * ``child`` for a child table
-         ``REFTABLE.`id` = NEWTABLE.`#linkfield#```
-      * ``itemtype_item`` for links using ``itemtype`` and ``items_id`` fields
-         ``REFTABLE.`id` = NEWTABLE.`items_id` AND NEWTABLE.`itemtype` = '#new_table_itemtype#'``
-      * ``mainitemtype_mainitem`` same as ``itemtype_item`` but using mainitemtype and mainitems_id fields
-         ``REFTABLE.`id` = NEWTABLE.`mainitems_id` AND NEWTABLE.`mainitemtype` = 'new table itemtype'``
-      * ``itemtypeonly`` same as ``itemtype_item`` jointype but without linking id
-         ``NEWTABLE.`itemtype` = '#new_table_itemtype#'``
-      * ``item_item`` for table used to link two similar items: ``glpi_tickets_tickets`` for example: link fields are ``standardfk_1`` and ``standardfk_2``
-         ``REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_1` OR REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_2```
-      * ``item_item_revert`` same as ``item_item`` and child jointypes
-         ``NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1` OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2```
-
-   * ``condition``: additional condition to add to the standard link.
-
-      Use ``NEWTABLE`` or ``REFTABLE`` tag to use the table names.
-
-   * ``nolink``: set to true to indicate the current join does not link to the previous join/from (nested ``joinparams``)
+   Defines how the SQL join must be done. See :ref:`paragraph on joinparams <search_joinparams>` below.
 
 ``additionalfields``
    An array for additional fields to add in the ``SELECT`` clause. For example: ``'additionalfields' => ['id', 'content', 'status']``
@@ -303,127 +261,222 @@ Optionally, it can defined the following keys:
    Define how the *search option* will be displayed and if a control need to be used for modification (ex: datepicker for date) and affect the *searchtype* dropdown. |br|
    *optional parameters* are added to the base array of the *search option* to control more exactly the datatype.
 
-   * ``date``
+   See the :ref:`datatype paragraph <search_datatype>` below.
 
-      Available parameters (all optional):
+.. _search_joinparams:
 
-      * ``searchunit``: MYSQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
-      * ``maybefuture``: display datepicker with future date selection, defaults to ``false``
-      * ``emptylabel``: string to display in case of ``null`` value
+Join parameters
++++++++++++++++
 
-   * ``datetime``
+To define join parameters, you can use one or more of the following:
 
-      Available parameters (all optional) are the same as ``date``.
+``beforejoin``
 
-   * ``date_delay``
+   Define which tables must be joined to access the field.
 
-      Date with a delay in month (``end_warranty``, ``end_date``).
+   The array contains ``table`` key and may contain an additional ``joinparams``. |br|
+   In case of nested ``beforejoin``, we start the SQL join from the last dimension.
 
-      Available parameters (all optional) are the same as ``date`` and:
+   Example:
 
-      * ``datafields``: array of data fields that would be used.
+   .. code-block:: php
 
-         * ``datafields[1]``: the date field,
-         * ``datafields[2]``: the delay field,
-         * ``datafields[2]``: ?
+      <?php
+      [
+         'beforejoin' => [
+            'table'        => 'mytable',
+            'joinparams'   => [
+               'beforejoin' => [...]
+            ]
+         ]
+      ]
 
-      * ``delay_unit``: MySQL DATE_ADD unit, default MONTH (see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add)
+``jointype``
 
-   * ``timestamp``
+   Define the join type:
 
-      Use ``Dropdown::showTimeStamp()`` for modification
+   * ``empty`` for a standard jointype:::
 
-      Available parameters (all optional):
+      REFTABLE.`#linkfield#` = NEWTABLE.`id`
 
-      * ``withseconds``: boolean (``false`` by default)
+   * ``child`` for a child table:::
 
-   * ``weblink``
-   * ``email``
-   * ``color``
+      REFTABLE.`id` = NEWTABLE.`#linkfield#`
 
-      Use ``Html::showColorField()`` for modification
+   * ``itemtype_item`` for links using ``itemtype`` and ``items_id`` fields:::
 
-   * ``text``
-   * ``string``
+         REFTABLE.`id` = NEWTABLE.`items_id`
+         AND NEWTABLE.`itemtype` = '#new_table_itemtype#'
 
-      Use a rich text editor for modification
+   * ``mainitemtype_mainitem`` same as ``itemtype_item`` but using mainitemtype and mainitems_id fields:::
 
-   * ``ip``
-   * ``mac``.
+      REFTABLE.`id` = NEWTABLE.`mainitems_id`
+      AND NEWTABLE.`mainitemtype` = 'new table itemtype'
 
-      Available parameters (all optional):
+   * ``itemtypeonly`` same as ``itemtype_item`` jointype but without linking id:::
 
-      * ``htmltext``: boolean, escape the value (``false`` by default)
+      NEWTABLE.`itemtype` = '#new_table_itemtype#'
 
-   * ``number``
+   * ``item_item`` for table used to link two similar items: ``glpi_tickets_tickets`` for example: link fields are ``standardfk_1`` and ``standardfk_2``:::
 
-      Use a ``Dropdown::showNumber()`` for modification (in case of ``equals`` ``searchtype``). |br|
-      For ``contains`` ``searchtype``, you can use `<` and `>` prefix in ``value``.
+      REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_1`
+      OR REFTABLE.`id` = NEWTABLE.`#fk_for_new_table#_2`
 
-      Available parameters (all optional):
+   * ``item_item_revert`` same as ``item_item`` and child jointypes:::
 
-      * ``width``: html attribute passed to Dropdown::showNumber()
-      * ``min``: minimum value (default ``0``)
-      * ``max``: maximum value (default ``100``)
-      * ``step``: step for select (default ``1``)
-      * ``toadd``: array of values to add a the beginning of the dropdown
+      NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1`
+      OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`
 
-   * ``integer``
+``condition``
 
-      Alias for ``numbe``
+   Additional condition to add to the standard link.
 
-   * ``count``
+   Use ``NEWTABLE`` or ``REFTABLE`` tag to use the table names.
 
-      Same as ``number`` but count the number of item in the table
+``nolink``
 
-   * ``decimal``
+   Set to true to indicate the current join does not link to the previous join/from (nested ``joinparams``)
 
-      Same as ``number`` but formatted with decimal
+.. _search_datatype:
 
-   * ``bool``
+Data types
+++++++++++
 
-      Use ``Dropdown::showYesNo()`` for modification
+Available datatypes for search are:
 
-   * ``itemlink``
+``date``
 
-      Create a link to the item
+   Available parameters (all optional):
 
-   * ``itemtypename``
+   * ``searchunit``: one of `MySQL DATE_ADD unit`_, default to ``MONTH``
+   * ``maybefuture``: display datepicker with future date selection, defaults to ``false``
+   * ``emptylabel``: string to display in case of ``null`` value
 
-      Use ``Dropdown::showItemTypes()`` for modification
+``datetime``
 
-      Available parameters (all optional) to define available itemtypes:
+   Available parameters (all optional) are the same as ``date``.
 
-      * ``itemtype_list``: one of `$CFG_GLPI["unicity_types"] <https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166>`_
-      * ``types``: array containing available types
+``date_delay``
 
-   * ``language``
+   Date with a delay in month (``end_warranty``, ``end_date``).
 
-      Use ``Dropdown::showLanguages()`` for modification
+   Available parameters (all optional) are the same as ``date`` and:
 
-      Available parameters (all optional):
+   * ``datafields``: array of data fields that would be used.
 
-      * ``display_emptychoice``: display an empty choice (``-------``)
+      * ``datafields[1]``: the date field,
+      * ``datafields[2]``: the delay field,
+      * ``datafields[2]``: ?
 
-   * ``right``
+   * ``delay_unit``: one of `MySQL DATE_ADD unit`_, default to ``MONTH``
 
-      Use ``Profile::dropdownRights()`` for modification
+``timestamp``
 
-      Available parameters (all optional):
+   Use ``Dropdown::showTimeStamp()`` for modification
 
-      * ``nonone``: hide none choice ? (defaults to ``false``)
-      * ``noread``: hide read choice ? (defaults to ``false``)
-      * ``nowrite``: hide write choice ? (defaults to ``false``)
+   Available parameters (all optional):
 
-   * ``dropdown``
+   * ``withseconds``: boolean (``false`` by default)
 
-      Use ``Itemtype::dropdown()`` for modification. |br|
-      Dropdown may have several additional parameters depending of dropdown type : ``right`` for user one for example
+``weblink``
 
-   * ``specific``
+   Any URL
 
-      If not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
-      See :ref:`specific search options <specific_search_options>` paragraph for implementation.
+``email``
+
+   Any email adress
+
+``color``
+
+   Use ``Html::showColorField()`` for modification
+
+``text``
+
+   Simple text
+
+``string``
+
+   Use a rich text editor for modification
+
+``ip``
+
+   Any IP adress
+
+``mac``
+
+   Available parameters (all optional):
+
+   * ``htmltext``: boolean, escape the value (``false`` by default)
+
+``number``
+
+   Use a ``Dropdown::showNumber()`` for modification (in case of ``equals`` ``searchtype``). |br|
+   For ``contains`` ``searchtype``, you can use `<` and `>` prefix in ``value``.
+
+   Available parameters (all optional):
+
+   * ``width``: html attribute passed to Dropdown::showNumber()
+   * ``min``: minimum value (default ``0``)
+   * ``max``: maximum value (default ``100``)
+   * ``step``: step for select (default ``1``)
+   * ``toadd``: array of values to add a the beginning of the dropdown
+
+``integer``
+
+   Alias for ``numbe``
+
+``count``
+
+   Same as ``number`` but count the number of item in the table
+
+``decimal``
+
+   Same as ``number`` but formatted with decimal
+
+``bool``
+
+   Use ``Dropdown::showYesNo()`` for modification
+
+``itemlink``
+
+   Create a link to the item
+
+``itemtypename``
+
+   Use ``Dropdown::showItemTypes()`` for modification
+
+   Available parameters (all optional) to define available itemtypes:
+
+   * ``itemtype_list``: one of `$CFG_GLPI["unicity_types"] <https://github.com/glpi-project/glpi/blob/9.1.2/config/define.php#L166>`_
+   * ``types``: array containing available types
+
+``language``
+
+   Use ``Dropdown::showLanguages()`` for modification
+
+   Available parameters (all optional):
+
+   * ``display_emptychoice``: display an empty choice (``-------``)
+
+``right``
+
+   Use ``Profile::dropdownRights()`` for modification
+
+   Available parameters (all optional):
+
+   * ``nonone``: hide none choice ? (defaults to ``false``)
+   * ``noread``: hide read choice ? (defaults to ``false``)
+   * ``nowrite``: hide write choice ? (defaults to ``false``)
+
+``dropdown``
+
+   Use ``Itemtype::dropdown()`` for modification. |br|
+   Dropdown may have several additional parameters depending of dropdown type : ``right`` for user one for example
+
+``specific``
+
+   If not any of the previous options matches the way you want to display your field, you can use this datatype. |br|
+   See :ref:`specific search options <specific_search_options>` paragraph for implementation.
 
 .. _specific_search_options:
 
@@ -601,3 +654,5 @@ The ``glpi_displaypreferences`` table stores the list of default columns which n
 
 A set of preferences can be *personal* or *global* (``users_id = 0``). |br|
 If a user does not have any personal preferences for an itemtype, the search engine will use the global preferences.
+
+.. _MySQL DATE_ADD unit: https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-add
