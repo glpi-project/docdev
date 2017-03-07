@@ -1,4 +1,4 @@
-.. _searchoptions: http://glpi-developer-documentation.readthedocs.io/en/master/devapi/search.html#search-options
+.. _searchoptions: ../devapi/search#search-options
 
 Massive Actions
 ---------------
@@ -9,10 +9,10 @@ Massive Actions
 Goals
 ^^^^^
 
-Add to itemtypes `search lists <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/search.html>`_:
+Add to itemtypes :doc:`search lists <../devapi/search>`_:
 
 - a checkbox before each item,
-- a checkbox for select all items checkboxes,
+- a checkbox to select all items checkboxes,
 - an `Actions` button to apply modifications to each selected items.
 
 Update item's fields
@@ -23,7 +23,7 @@ It permits to modify the fields content of the selected items.
 
 The list of fields displayed in the sub list depends on the searchoptions_ of the current itemtype.
 By default, all searchoptions_ are automatically displayed in this list.
-To forbid this display for one field, you must define the key `massiveaction`` to false in the searchoptions_ declaration, ex:
+To forbid this display for one field, you must define the key ``massiveaction`` to false in the searchoptions_ declaration, example:
 
 .. code-block:: php
 
@@ -38,7 +38,7 @@ To forbid this display for one field, you must define the key `massiveaction`` t
       'massiveaction' => false // <- NO MASSIVE ACTION
    ];
 
-.. _specific:
+.. _massiveactions_specific:
 
 Specific massive actions
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -74,7 +74,7 @@ A single declaration is defined by these parts:
 
 We can have multiple actions for the same class, and we may target different class from our current object.
 
-.. _specificsubform:
+.. _massiveactions_specific_subform:
 
 Next, to display the form of our definitions, we need to declare a ``showMassiveActionsSubForm`` method:
 
@@ -97,7 +97,7 @@ Next, to display the form of our definitions, we need to declare a ``showMassive
       return parent::showMassiveActionsSubForm($ma);
    }
 
-.. _specificprocess:
+.. _massiveactions_specific_process:
 
 Finally, to process our definition, we need a ``processMassiveActionsForOneItemtype`` method:
 
@@ -134,5 +134,5 @@ Besides an instance of MassiveAction class ``$ma``, we have also an instance of 
 
 In this method, we could use some optional utility functions from the ``MassiveAction $ma`` object supplied in parameter :
 
-- ``itemDone``, indicates the result of the current ``$id``, see constants of `MassiveAction class <https://forge.glpi-project.org/apidoc/class-MassiveAction.html#constants>`_. If we miss this call, the current ``$id`` will still be considered as OK.
+- ``itemDone``, indicates the result of the current ``$id``, see `constants of MassiveAction class <https://forge.glpi-project.org/apidoc/class-MassiveAction.html#constants>`_. If we miss this call, the current ``$id`` will still be considered as OK.
 - ``addMessage``, a string to send to the user for explaining the result when processing the current ``$id``

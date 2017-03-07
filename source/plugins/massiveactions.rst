@@ -1,7 +1,7 @@
 Massive Actions
 ---------------
 
-Plugins can use the core's `massive actions <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/massiveactions.html>`_ for its own itemtypes.
+Plugins can use the core's :doc:`massive actions <../devapi/massiveactions>` for its own itemtypes.
 
 They just need to aditionnaly define a hook in their init function (setup.php):
 
@@ -37,7 +37,7 @@ First, in their ``hook.php`` file, they must declare a new definition into a ``p
    return $actions;
 }
 
-Next, in the class defined int the definition, we can use the ``showMassiveActionsSubForm`` and ``processMassiveActionsForOneItemtype`` in the same way as `core documentation <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/massiveactions.html#specificsubform>`_:
+Next, in the class defined int the definition, we can use the ``showMassiveActionsSubForm`` and ``processMassiveActionsForOneItemtype`` in the same way as :doc:`core documentation <../devapi/massiveactions#specificsubform>`
 
 .. code-block:: php
 
