@@ -1,7 +1,3 @@
-.. _searchoptions: ../devapi/search#search-options
-
-.. _massiveactions
-
 Massive Actions
 ---------------
 
@@ -23,9 +19,9 @@ Update item's fields
 The first option of the ``Actions`` button is ``Update``.
 It permits to modify the fields content of the selected items.
 
-The list of fields displayed in the sub list depends on the searchoptions_ of the current itemtype.
-By default, all searchoptions_ are automatically displayed in this list.
-To forbid this display for one field, you must define the key ``massiveaction`` to false in the searchoptions_ declaration, example:
+The list of fields displayed in the sub list depends on the :ref:`search_options` of the current itemtype.
+By default, all :ref:`search_options` are automatically displayed in this list.
+To forbid this display for one field, you must define the key ``massiveaction`` to false in the :ref:`search_options` declaration, example:
 
 .. code-block:: php
 
