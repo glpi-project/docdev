@@ -9,7 +9,7 @@ Provide a scheduler for background tasks used by GLPI and its plugins.
 Implementation overview
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The entry point of automatic actions is the file front/cron.php. On each execution, it executes a limited number of automatic actions.
+The entry point of automatic actions is the file ``front/cron.php``. On each execution, it executes a limited number of automatic actions.
 
 There are two ways to wake up the scheduler :
  - when a user browses in GLPI (the internal mode)
@@ -96,7 +96,7 @@ Example of implemtation from the class ``QueuedMail``:
 
    }
 
-If the argument $task is a CronTask object, the method must increment the quantity of actions done. In this example, each email actually sent increments the volume by 1.
+If the argument ``$task`` is a CronTask object, the method must increment the quantity of actions done. In this example, each email actually sent increments the volume by 1.
 
 Register an automatic actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -117,10 +117,10 @@ To handle upgrade from a previous version, the new automatic actions must be add
 
 The ``register`` method takes four arguments:
 
-* `itemtype`: a `string` containing an itemtype name containing the automatic action implementation
-* `name`: a `string` containing the name of the automatic action
-* `frequency` the period of time between two executions in seconds (see inc/define.php for convenient constants)
-* `options` an array of options
+* ``itemtype``: a ``string`` containing an itemtype name containing the automatic action implementation
+* ``name``: a ``string`` containing the name of the automatic action
+* ``frequency`` the period of time between two executions in seconds (see ``inc/define.php`` for convenient constants)
+* ``options`` an array of options
 
 .. Note::
 
