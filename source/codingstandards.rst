@@ -123,6 +123,30 @@ parent class      ``parent::theMethod()``
 another class     ``ClassName::theMethod()``
 ================= ===========
 
+Static or Non static?
+^^^^^^^^^^^^^^^^^^^^^
+
+Some methods in the source code as `declared as static <http://php.net/manual/fr/language.oop5.static.php>`_; some are not.
+
+For sure, you cannot make static calls on a non static method. In order to call such a method, you will have to get an object instance, and the call the method on it:
+
+.. code-block:: php
+
+   <?php
+
+   $object = new MyObject();
+   $object->nonStaticMethod();
+
+It may be different calling static classes. In that case; you can either:
+
+* call statically the method from the object; like ``MyObject::staticMethod()``,
+* call statically the method from an object instance; like ``$object::staticMethod()``,
+* call non statically the method from an object instance; like ``$object->staticMethod()``.
+
+When you do not have any object instance yet; the first solution is probably the best one. No need to instanciate an object to just call a static method from it.
+
+On the other hand; if you already have an object instance; youo should use a non statc call to the method. That way; you will save performances since calling statitcally do have a cost.
+
 Classes
 -------
 
