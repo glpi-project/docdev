@@ -21,6 +21,11 @@ What we can see here:
 
 As stated in the above note, this is far from complete; but this is quite representative of the whole database schema.
 
+Resultsets
+^^^^^^^^^^
+
+All resultsets sent back from GLPI database should always be associative arrays.
+
 .. _dbnaming_conventions:
 
 Naming conventions
