@@ -25,7 +25,9 @@ Those branches are created when any major version is released. At the time I wro
 Testing
 -------
 
-Unfortunately, tests in GLPI are not numerous... But that's willing to change, and we'd like - as far as possible - that proposals contains unit tests for the bug/feature they're related.
+There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`.
+
+Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet.
 
 Anyways, existing unit tests may never be broken, if you made a change that breaks something, check your code, or change the unit tests, but fix that! ;)
 
