@@ -88,7 +88,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
       }
    }
 
-The hooks that are called with item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``, ``can``.
+The hooks that are called with item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``.
 
 With array of parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -235,19 +235,18 @@ Hooks that can do some busines stuff on items.
 ``item_transfer``
    When an item is transfered from an entity to another
 
-``can``
+``item_can``
    .. versionadded:: 9.2
 
    Allow to restrict user rights (can't grant more right).
    If ``right`` property is set (called during CommonDBTM::can) changing it allow to
    deny evaluated access. Else (called from Search::addDefaultWhere) ``add_where``
    property can be set to filter search results.
-   
- ``add_plugin_where``
+
+``add_plugin_where``
    .. versionadded:: 9.2
 
    Permit to filter search results.
-
 
 Items display related
 +++++++++++++++++++++
