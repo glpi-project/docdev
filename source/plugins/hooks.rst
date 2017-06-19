@@ -48,7 +48,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
       echo "That line will appear on the login page!";
    }
 
-The hooks that are called without parameters are: ``display_central``, ``post_init init_session``, ``change_entity``, ``change_profile`` and ``display_login``.
+The hooks that are called without parameters are: ``display_central``, ``post_init init_session``, ``change_entity``, ``change_profile```, ``display_login`` and ``add_plugin_where``.
 
 .. _hook_item_parameter:
 
@@ -88,7 +88,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
       }
    }
 
-The hooks that are called wit item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``.
+The hooks that are called with item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``.
 
 With array of parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,7 +124,7 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
       //)
    }
 
-The hooks that are called wit an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``item_transfer``.
+The hooks that are called with an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``item_transfer``.
 
 Some hooks will receive a specific array as parameter, they will be detailled below.
 
@@ -243,6 +243,10 @@ Hooks that can do some busines stuff on items.
    deny evaluated access. Else (called from Search::addDefaultWhere) ``add_where``
    property can be set to filter search results.
 
+``add_plugin_where``
+   .. versionadded:: 9.2
+
+   Permit to filter search results.
 
 Items display related
 +++++++++++++++++++++
