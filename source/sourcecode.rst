@@ -157,6 +157,12 @@ A basic good practice using Git is to create a branch for everything you want to
 
 When you open a new pull request, it will be reviewed by one or more member of the community. If you're asked to make some changes, just commit again on your local branch, push it, and you're done; the pull request will be automatically updated.
 
+.. note::
+
+   It's up to you to manage your fork; and keep it up to date. I'll advice you to keep original branches (such as ``master`` or ``x.y/bugfixes``) pointing on the upstream repository.
+
+   Tha way, you'll just have to update the branch from the main repository before doing anything.
+
 Bugs
 ^^^^
 
