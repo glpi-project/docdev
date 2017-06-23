@@ -32,10 +32,8 @@ First, in their ``hook.php`` file, they must declare a new definition into a ``p
 
             break;
       }
-
+      return $actions;
    }
-   return $actions;
-}
 
 Next, in the class defined int the definition, we can use the ``showMassiveActionsSubForm`` and ``processMassiveActionsForOneItemtype`` in the same way as :ref:`core documentation for massive actions <massiveactions_specific_subform>`:
 
