@@ -25,7 +25,7 @@ Those branches are created when any major version is released. At the time I wro
 Testing
 -------
 
-There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`.
+There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`_.
 
 Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet.
 
@@ -151,7 +151,7 @@ Add your fork as a remote from the cloned directory:
 
    $ git remote add my_fork https://github.com/{your user name}/glpi.git
 
-You can replace `my_fork` with what you want but `origin` (just remember it); and you will find you fork URL from the Github UI.
+You can replace `my_fork` with what you want but `origin` (just remember it); and you will find your fork URL from the Github UI.
 
 A basic good practice using Git is to create a branch for everything you want to do; we'll talk about that in the sections below. Just keep in mind that you will publish your branches on you fork, so you can propose your changes.
 
