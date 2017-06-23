@@ -27,7 +27,7 @@ Testing
 
 There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`_.
 
-Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet.
+Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet. See the :ref:`unit testing section <unittests>` at the bottom of the page.
 
 Anyways, existing unit tests may never be broken, if you made a change that breaks something, check your code, or change the unit tests, but fix that! ;)
 
@@ -244,3 +244,101 @@ To add a new library, you will probably found the command line on the library do
 .. code-block:: bash
 
    $ composer require libauthor/libname
+
+.. _unittests:
+
+Unit testing (and functionnal testing)
+--------------------------------------
+
+.. note::
+
+   A note for the purists... In GLPI, there are both unit and functional tests; without real distinction ;-)
+
+We use the `atoum unit tests framework <http://atoum.org>`_; see `GLPI website if you wonder why <http://glpi-project.org/spip.php?breve375>`_.
+
+`atoum`'s documentation in available at: http://docs.atoum.org
+
+.. warning::
+
+   With `atoum`, test class **must** refer to an existing class of the project!
+
+Tests isolation
+^^^^^^^^^^^^^^^
+
+Tests must be run in an isolated environment. By default, `atoum` use a concurrent mode; that launches tests in a multi-threaded environment. While it is possible to bypass this; this should not be done See http://docs.atoum.org/en/latest/engine.html.
+
+For technical reasons (mainly because of the huge session usage), GLPI unit tests are actually limited to one only thread while running the whole suite; but while developing, the behavior should only be changed if this is really needed.
+
+Type hitting
+^^^^^^^^^^^^
+
+Unlike PHPUnit, `atoum` is very strict on type hitting. This really makes sense; but often in GLPI types are not what we should expect (for example, we often get a string and not an integer from counting methods).
+
+Database
+^^^^^^^^
+
+Each class that tests something in database **must** inherit from ``\DbTestCase``. This class provides some helpers (like ``login()`` or ``setEntity()`` method); and it also does some preparation and cleanup.
+
+Each ``CommonDBTM`` object added in the database with its ``add()`` method will be automatically deleted after the test method. If you always want to get a new object type created, you can use ``beforeTestMethod()`` or ``setUp()`` methods.
+
+.. warning::
+
+   If you use ``setUp()`` method, do not forget to call ``parent::setUp()``!
+
+Some bootstrapped data are provided (will be inserted on the first test run); they can be used to check defaults behaviors or make queries, but you should **never change those data!** This lend to unpredictable further tests results.
+
+Variables declaration
+^^^^^^^^^^^^^^^^^^^^^
+
+When you use a property that has not been declared, you will have errors that may be quite difficult to understand. Just remember to always declare property you use!
+
+.. code-block:: php
+
+   <?php
+
+   class MyClass extends atoum {
+      private $myprop;
+
+      public function testMethod() {
+         $this->myprop = 'foo'; //<-- error here if missing "private $myprop"
+      }
+   }
+
+Launch tests
+^^^^^^^^^^^^
+
+You can install `atoum` from composer (just run ``composer install`` from GLPI directory) or even system wide.
+
+There are two directories for tests:
+
+* ``tests/units`` for main core tests;
+* ``tests/api`` for API tests.
+
+You can choose to run tests on a whole directory, or on any file. You have to specify a bootstrap file each time:
+
+.. code-block:: bash
+
+   $ atoum -bf tests/bootstrap.php -mcn 1 -d tests/units/
+   [...]
+   $ atoum -bf tests/bootstrap.php -f tests/units/Html.php
+
+
+If you want to run the API tests suite, you need to run a development server:
+
+.. code-block:: bash
+
+   php -S localhost:8088 tests/router.php &>/dev/null &
+
+
+Running `atoum` without any arguments will show you the possible options. Most important are:
+
+* ``-bf`` to set bootstrap file,
+* ``-d`` to run tests located in a whole directory,
+* ``-f`` to run tests on a standalone file,
+* ``--debug`` to get extra informations when something goes wrong,
+* ``-mcn`` limit number of concurrent runs. This is unfortunately mandatory running the whole test suite right now :/,
+* ``-ncc`` do not generate code coverage,
+* ``--php`` to change PHP executable to use,
+* ``-l`` loop mode.
+
+Note that if you do not use the `-ncc` switch; coverage will be generated in the `tests/code-coverage/` directory.
