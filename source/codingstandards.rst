@@ -62,6 +62,15 @@ Multiple conditions in several idented lines
          echo "Default Case";
    }
 
+Arrays
+------
+
+Arrays must be declared using the short notation syntax (``[]``), long notation (``array()``) is forbidden.
+
+true, false and null
+--------------------
+
+``true``, ``false`` and ``null`` constants mut be lowercase.
 
 Including files
 ---------------
@@ -93,9 +102,11 @@ Function names must be written in *camelCaps*:
 .. code-block:: php
 
    <?php
-   function userName($a, $b) {
+   function userName($a, $b = 'foo') {
       //do something here!
    }
+
+Space after opening parenthesis and before closing parenthesis are forbidden. For parematers which have a default value; add a space before and after the equel sign.
 
 If parameters add block doc for these parameters, please see the `Comments`_ section for any example.
 
