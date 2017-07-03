@@ -7,10 +7,8 @@ Apart from the current documentation, you can also check the `full PHP documenta
    :maxdepth: 2
 
    mainobjects
-   querydb
+   database/index
    search
-   dbiterator
-   dbmodel
    massiveactions
    rules
    translations
