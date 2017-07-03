@@ -105,17 +105,33 @@ You need to use criteria, usually a ``FKEY``, to describe howto join the tables:
 Left join
 ^^^^^^^^^
 
-Using the ``JOIN`` option, with some criteria, usually a ``FKEY``:
+Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY``:
 
 .. code-block:: php
 
    <?php
-   $DB->request(['FROM' => 'glpi_computers',
-                 'JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'=>'id',
-                                                                'glpi_computerdisks'=>'computer_id']]]]);
+   $DB->request(['FROM'      => 'glpi_computers',
+                 'LEFT JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
+                                                                     'glpi_computerdisks' => 'computer_id']]]]);
    // => SELECT * FROM `glpi_computers`
    //       LEFT JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
+
+Inner join
+^^^^^^^^^^
+
+Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY``:
+
+.. code-block:: php
+
+   <?php
+   $DB->request(['FROM'       => 'glpi_computers',
+                 'INNER JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
+                                                                      'glpi_computerdisks' => 'computer_id']]]]);
+   // => SELECT * FROM `glpi_computers`
+   //       INNER JOIN `glpi_computerdisks`
+   //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
+
 
 Counting
 ^^^^^^^^
