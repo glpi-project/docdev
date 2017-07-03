@@ -1,3 +1,5 @@
+.. _dbmodel:
+
 Database model
 --------------
 
@@ -5,7 +7,7 @@ Current GLPI database contains more than 250 tables; the goal of the current doc
 
 As on every database, there are tables, relations between them (more or less complex), some relations have descriptions stored in a another table, some tables way be linked with themselves... Well, it's quite common :) Let's start with a simple example:
 
-.. image:: images/db_model_computer.png
+.. image:: ../images/db_model_computer.png
    :alt: Computer model part
    :align: center
 
