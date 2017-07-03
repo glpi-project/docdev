@@ -5,7 +5,7 @@ Database
 
    A plugin should **never** change core's database! It just add its own tables to manage its own data.
 
-Of course, plugins relies on :ref:`GLPI database model <dbmodel>` and must therefore respect :ref:`database naming conventions <dbnaming_conventions>`.
+Of course, plugins rely on :ref:`GLPI database model <dbmodel>` and must therefore respect :ref:`database naming conventions <dbnaming_conventions>`.
 
 Creating, updating or removing tables is done by the plugin, at installation, update or uninstallation; functions added in the ``hook.php`` file will be used for that; and you will rely on the `Migration class <https://forge.glpi-project.org/apidoc/class-Migration.html>`_ provided from GLPI core. Please refer to this documentation do know more about various `Migration` possibilities.
 
