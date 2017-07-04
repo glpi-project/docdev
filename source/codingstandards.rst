@@ -164,7 +164,7 @@ Classes
 
 Class names must be written in `CamelCase`:
 
-GLPI do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.php>`_ right now; so be carefull when creating new classes to take a name that does not exists yet.
+GLPI do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.php>`_ right now; so be careful when creating new classes to take a name that does not exists yet.
 
 .. code-block:: php
 
