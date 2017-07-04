@@ -49,7 +49,11 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
          'author'         => 'John Doe and <a href="http://foobar.com">Foo Bar</a>',
          'license'        => 'GLPv3',
          'homepage'       => 'http://perdu.com',
-         'minGlpiVersion' => '9.1'
+         'requirements'   => [
+            'glpi'   => [
+               'min' => '9.1'
+            ]
+         ]
       ];
    }
 
@@ -59,16 +63,7 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
     * @return boolean
     */
    function plugin_myexample_check_prerequisites() {
-      // Version check
-      if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-         if (method_exists('Plugin', 'messageIncompatible')) {
-            //since GLPI 9.2
-            Plugin::messageIncompatible('core', 9.1, 9.2);
-         } else {
-            echo "This plugin requires GLPI >= 9.1 and < 9.2";
-         }
-         return false;
-      }
+      //do what the checks you want
       return true;
    }
 
@@ -91,13 +86,121 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
       return false;
    }
 
+Plugin informations provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
+
+.. _plugins_checks:
+
+Requirements checking
+~~~~~~~~~~~~~~~~~~~~~
+
+Since GLPI 9.2; it is possible to provide some requirement informations along with the informations array. Those informations are not mandatory, but we encourage you to migrate :)
+
+.. warning::
+
+   Even if this has been deprecated for a wile, many plugins continue to provide a ``minGlpiVersion`` entry in the informations array. If this value is set; it will be automatically used as minimal GLPI version.
+
+In order to set your requirements, add a ``requirements`` entry in the ``plugin_version_myexample`` informations array. Let's say your plugin is compatible with a version of GLPI comprised between 0.90 and 9.2; with a minimal version of PHP set to 7.0. The method would look like:
+
+.. code-block:: php
+
+   <?php
+
+   function plugin_version_myexample() {
+      return [
+         'name'           => 'Plugin name that will be displayed',
+         'version'        => MYEXAMPLE_VERSION,
+         'author'         => 'John Doe and <a href="http://foobar.com">Foo Bar</a>',
+         'license'        => 'GLPv3',
+         'homepage'       => 'http://perdu.com',
+         'requirements'   => [
+            'glpi'   => [
+               'min' => '0.90',
+               'max' => '9.2'
+            ],
+            'php'    => [
+               'min' => '7.0'
+            ]
+         ]
+      ];
+   }
+
+``requirements`` array may take the following values:
+
+* ``glpi``
+
+   * ``min``: minimal GLPI version required,
+   * ``max``: maximal supported GLPI version,
+   * ``dev``: whether the plugin is supported on development versions (`9.2-dev` for example),
+   * ``params``: an array of GLPI parameters names that must be set (not empty, not null, not false),
+   * ``plugins``: an array of plugins name your plugin depends on (must be installed and active).
+
+* ``php``
+
+   * ``min``: minimal PHP version required,
+   * ``max``: maximal PHP version supported (discouraged),
+   * ``params``: an array of parameters name that must be set (retrieved from ``ini_get()``),
+   * ``exts``: array of used extensions (see below).
+
+PHP extensions checks rely on core capabilities. You have to provide a multi dimensionnal array with extension name as key. For each of those entries; you can define if the extension is required or not, and optionnally a class or a function to check.
+
+The following example is from the core:
+
+.. code-block:: php
+
+   <?php
+   $extensions = [
+      'mysqli'    => [
+         'required'  => true
+      ],
+      'fileinfo'  => [
+         'required'  => true,
+         'class'     => 'finfo'
+      ],
+      'json'      => [
+         'required'  => true,
+         'function'  => 'json_encode'
+      ],
+      'imap'      => [
+         'required'  => false
+      ]
+   ];
+
+* the ``mysqli`` extension is mandatory; ``extension_loaded()`` function will be used for check;
+* the ``fileinfo`` extension is mandatory; ``class_exists()`` function will be used for check;
+* the ``json`` extension is madatory; ``function_exists()`` function will be used for check;
+* the ``imap`` extension is not mandatory.
+
+.. note::
+
+   Optionnal extensions are not yet handled in the checks function; but will probably be in the future. You can add them to the configuration right now :)
+
+Without using automatic requirements; it's up to you to check with something like the following in the ``plugin_myexample_check_prerequisites``:
+
+.. warning::
+
+   Automatic requirements and manual checks are not exclusive. Both will be played! If you want to use automatic requirements with GLPI >= 9.2 and still provide manual checks for older versions; be carefull not to indicate different versions.
+
+.. code-bloc:: php
+
+   <?php
+      // Version check
+      if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
+         if (method_exists('Plugin', 'messageIncompatible')) {
+            //since GLPI 9.2
+            Plugin::messageIncompatible('core', 9.1, 9.2);
+         } else {
+            echo "This plugin requires GLPI >= 9.1 and < 9.2";
+         }
+         return false;
+      }
+
+
 .. note::
 
    Since GLPI 9.2, you can rely on ``Plugin::messageIncompatible()`` to display internationalized messages when GLPI or PHP versions are not met.
 
    On the same model, you can use ``Plugin::messageMissingRequirement()`` to display internationalized message if any extension, plugin or GLPI parameter is missing.
 
-Plugin informations provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
 
 .. _plugins_hookphp:
 
