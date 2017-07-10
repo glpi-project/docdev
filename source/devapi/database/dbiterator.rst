@@ -10,6 +10,7 @@ Provide a simple request generator:
 * without having to quote table and field name
 * without having to take care of freeing resources
 * iterable
+* countable
 
 Basic usage
 ^^^^^^^^^^^
@@ -24,6 +25,11 @@ Basic usage
    $req = $DB->request(...);
    if ($row = $req->next()) {
      // ... work on a single row
+   }
+
+   $req = $DB->request(...);
+   if (count($req)) {
+     // ... work on result
    }
 
 Arguments
