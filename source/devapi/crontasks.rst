@@ -30,12 +30,12 @@ When GLPI shows a list of automatic actions, it shows a short description for ea
 
    An itemtype may contain several automatic actions.
 
-Example of implementation from the `QueuedMail class <https://forge.glpi-project.org/apidoc/class-QueuedMail.html>`_ :
+Example of implementation from the `QueuedNotification class <https://forge.glpi-project.org/apidoc/class-QueuedNotification.html>`_ :
 
 .. code-block:: php
 
    <?php
-   class QueuedMail extends CommonDBTM {
+   class QueuedNotification extends CommonDBTM {
 
       // ...
 
@@ -49,46 +49,53 @@ Example of implementation from the `QueuedMail class <https://forge.glpi-project
       static function cronInfo($name) {
 
          switch ($name) {
-            case 'queuedmail' :
+            case 'queuednotification' :
                return array('description' => __('Send mails in queue'),
                             'parameter'   => __('Maximum emails to send at once'));
          }
-         return array();
+         return [];
       }
 
       /**
-       * Cron action on queued mails : send mails in queue
+       * Cron action on notification queue: send notifications in queue
        *
-       * @param CronTask $task for log, if NULL display (default NULL)
+       * @param CommonDBTM $task for log (default NULL)
        *
-       * @return integer 1 if an action was done, 0 if not
+       * @return integer either 0 or 1
       **/
-      static function cronQueuedMail($task=NULL) {
+      static function cronQueuedNotification($task=NULL) {
          global $DB, $CFG_GLPI;
 
-         if (!$CFG_GLPI["use_mailing"]) {
+         if (!$CFG_GLPI["notifications_mailing"]) {
             return 0;
          }
          $cron_status = 0;
 
          // Send mail at least 1 minute after adding in queue to be sure that process on it is finished
          $send_time = date("Y-m-d H:i:s", strtotime("+1 minutes"));
-         $query       = "SELECT `glpi_queuedmails`.*
-                         FROM `glpi_queuedmails`
-                         WHERE NOT `glpi_queuedmails`.`is_deleted`
-                               AND `glpi_queuedmails`.`send_time` < '".$send_time."'
-                         ORDER BY `glpi_queuedmails`.`send_time` ASC
-                         LIMIT 0, ".$task->fields['param'];
 
          $mail = new self();
-         foreach ($DB->request($query) as $data) {
-            if ($mail->sendMailById($data['id'])) {
+         $pendings = self::getPendings(
+            $send_time,
+            $task->fields['param']
+         );
+
+         foreach ($pendings as $mode => $data) {
+            $eventclass = 'NotificationEvent' . ucfirst($mode);
+            $conf = Notification_NotificationTemplate::getMode($mode);
+            if ($conf['from'] != 'core') {
+               $eventclass = 'Plugin' . ucfirst($conf['from']) . $eventclass;
+            }
+   
+            $result = $eventclass::send($data);
+            if ($result !== false && count($result)) {
                $cron_status = 1;
                if (!is_null($task)) {
-                  $task->addVolume(1);
+                  $task->addVolume($result);
                }
             }
          }
+
          return $cron_status;
       }
 
@@ -96,7 +103,7 @@ Example of implementation from the `QueuedMail class <https://forge.glpi-project
 
    }
 
-If the argument ``$task`` is a `CronTask <https://forge.glpi-project.org/apidoc/class-CronTask.html>`_ object, the method must increment the quantity of actions done. In this example, each email actually sent increments the volume by 1.
+If the argument ``$task`` is a `CronTask <https://forge.glpi-project.org/apidoc/class-CronTask.html>`_ object, the method must increment the quantity of actions done. In this example, each notification type reports the wuantity of notification processed and is added to the task's volume.
 
 Register an automatic actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -109,7 +116,7 @@ To handle upgrade from a previous version, the new automatic actions must be add
 
    <?php
    // Register an automatic action
-   CronTask::register('QueuedMail', 'QueuedMail', HOUR_TIMESTAMP,
+   CronTask::register('QueuedNotification', 'QueuedNotification', MINUTE_TIMESTAMP,
          array(
          'comment'   => '',
          'mode'      => CronTask::MODE_EXTERNAL
@@ -124,4 +131,4 @@ The ``register`` method takes four arguments:
 
 .. Note::
 
-   The name of an automatic action is actually the method's name without the prefix cron. In the example, the method ``cronQueuedMail`` implements the automatic action named ``QueudMail``.
+   The name of an automatic action is actually the method's name without the prefix cron. In the example, the method ``cronQueuedNotification`` implements the automatic action named ``QueuedNotification``.
