@@ -150,10 +150,26 @@ Using the ``COUNT`` option:
    $DB->request(['FROM' => 'glpi_computers', 'COUNT' => 'cpt']);
    // => SELECT COUNT(*) AS cpt FROM `glpi_computers`
 
+
+Grouping
+^^^^^^^^
+
+   Using the ``GROUPBY`` option, which contains a field name or an array of field names.
+
+   .. code-block:: php
+
+      <?php
+      $DB->request(['FROM' => 'glpi_computers', 'GROUPBY' => 'name']);
+      // => SELECT * FROM `glpi_computers` GROUP BY `name`
+
+      $DB->request('glpi_computers', ['GROUPBY' => ['name', 'states_id']]);
+      // => SELECT * FROM `glpi_computers` GROUP BY `name`, `states_id`
+
+
 Order
 ^^^^^
 
-Using the ``ORDER`` option, with value a field or an array of field. Field name can also contains ASC or DESC suffix.
+Using the ``ORDER`` option, with value a field or an array of fields. Field name can also contains ASC or DESC suffix.
 
 .. code-block:: php
 
@@ -231,4 +247,3 @@ Default operator is ``=``, but other operators can be used, by giving an array c
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
 Know operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE`` and ``NOT REGEX``.
-
