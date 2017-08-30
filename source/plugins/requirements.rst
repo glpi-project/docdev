@@ -180,7 +180,7 @@ Without using automatic requirements; it's up to you to check with something lik
 
    Automatic requirements and manual checks are not exclusive. Both will be played! If you want to use automatic requirements with GLPI >= 9.2 and still provide manual checks for older versions; be careful not to indicate different versions.
 
-.. code-bloc:: php
+.. code-block:: php
 
    <?php
       // Version check
