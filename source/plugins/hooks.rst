@@ -444,3 +444,9 @@ Some hooks are automated; they'll be called if the relevant function exists in y
       )
 
    Is expected to return the input array modified.
+
+``getAddSearchOptions``
+   Adds :ref:`search options <search_options>`, using "old" method. Will receive item type as string, is expected to return an array of search options.
+
+``getAddSearchOptionsNew``
+   Adds :ref:`search options <search_options>`, using "new" method. Will receive item type as string, is expected to return an **indexed** array of search options.
