@@ -93,7 +93,7 @@ GET Parameters
 
 .. note::
 
-   GLPI save in ``$_SESSION['glpisearch'][$itemtype]`` the last set of parameters for the current itemtype for each search query. It is automatically restored on a new search if no ``reset``, ``criteria`` or ``metacriteria`` is defined.
+   GLPI saves in ``$_SESSION['glpisearch'][$itemtype]`` the last set of parameters for the current itemtype for each search query. It is automatically restored on a new search if no ``reset``, ``criteria`` or ``metacriteria`` is defined.
 
 Here is the list of possible keys which could be passed to control the search engine. |br|
 All are optionals.
