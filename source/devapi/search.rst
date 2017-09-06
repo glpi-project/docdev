@@ -11,7 +11,7 @@ Goal
 The `Search class <https://forge.glpi-project.org/apidoc/class-Search.html>`_ aims to provide a multi-criteria Search engine for GLPI Itemtypes.
 
 
-It include some short-cuts functions:
+It includes some short-cuts functions:
 
 * ``show()``:              displays the complete search page.
 * ``showGenericSearch()``: displays only the multi-criteria form.
