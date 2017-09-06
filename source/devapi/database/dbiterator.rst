@@ -246,4 +246,4 @@ Default operator is ``=``, but other operators can be used, by giving an array c
    $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
-Know operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE`` and ``NOT REGEX``.
+Known operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE`` and ``NOT REGEX``.
