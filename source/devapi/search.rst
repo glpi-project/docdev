@@ -303,10 +303,15 @@ To define join parameters, you can use one or more of the following:
 
       REFTABLE.`id` = NEWTABLE.`#linkfield#`
 
-   * ``itemtype_item`` for links using ``itemtype`` and ``items_id`` fields:::
+   * ``itemtype_item`` for links using ``itemtype`` and ``items_id`` fields in new table:::
 
          REFTABLE.`id` = NEWTABLE.`items_id`
-         AND NEWTABLE.`itemtype` = '#new_table_itemtype#'
+         AND NEWTABLE.`itemtype` = '#ref_table_itemtype#'
+
+   * ``itemtype_item_revert`` (since 9.2.1) for links using ``itemtype`` and ``items_id`` fields in ref table:::
+
+         NEWTABLE.`id` = REFTABLE.`items_id`
+         AND REFTABLE.`itemtype` = '#new_table_itemtype#'
 
    * ``mainitemtype_mainitem`` same as ``itemtype_item`` but using mainitemtype and mainitems_id fields:::
 
