@@ -277,6 +277,9 @@ Hooks that permits to add display on items.
 ``post_show_tab``
    After a tab has been displayed
 
+``item_stats``
+   Add display from staistics tab of a item like ticket
+
 Notifications
 +++++++++++++
 Hooks that are called from notifications
