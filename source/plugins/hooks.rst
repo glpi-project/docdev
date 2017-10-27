@@ -278,7 +278,10 @@ Hooks that permits to add display on items.
    After a tab has been displayed
 
 ``item_stats``
-   Add display from staistics tab of a item like ticket
+
+   .. versionadded:: 9.2.1
+
+   Add display from statstics tab of a item like ticket
 
 Notifications
 +++++++++++++
