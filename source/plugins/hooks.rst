@@ -277,11 +277,11 @@ Hooks that permits to add display on items.
 ``post_show_tab``
    After a tab has been displayed
 
-``item_stats``
+``show_item_stats``
 
    .. versionadded:: 9.2.1
 
-   Add display from statstics tab of a item like ticket
+   Add display from statistics tab of a item like ticket
 
 Notifications
 +++++++++++++
