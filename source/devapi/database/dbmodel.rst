@@ -50,6 +50,14 @@ PHP class name            Table name
 ``ITILCategory``          ``glpi_itilcategories``
 ``PluginExampleProfile``  ``glpi_plugin_example_profiles``
 ========================  ================================
+if a table is a relation between two objects of GLPI, the name of this table must include two name of the two tables, in alphabetic order, separated by _
+
+========================= ========================  =========================
+Relation                   PHP class name            Table name
+========================  ======================== ==========================
+``Item and ticket``        ``Item_Ticket``          ``glpi_items_tickets``
+``User and ticket``        ``Ticket_User``          ``glpi_tickets_users``
+========================  ========================= =========================
 
 Fields
 ++++++
