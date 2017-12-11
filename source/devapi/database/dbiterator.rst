@@ -1,16 +1,20 @@
-DBIterator
-----------
+Querying
+--------
 
-Goals
-^^^^^
-
-Provide a simple request generator:
+GLPI framework provides a simple request generator:
 
 * without having to write SQL
 * without having to quote table and field name
 * without having to take care of freeing resources
 * iterable
 * countable
+
+.. warning::
+
+   The request generator does not currently support:
+
+   * SQL functions (``NOW()``, ``ADD_DATE()``, ...),
+   * alias in queries.
 
 Basic usage
 ^^^^^^^^^^^
@@ -47,6 +51,15 @@ Giving full SQL statement
 
 If the only option is a full SQL statement, it will be used.
 This usage is deprecated, and should be avoid when possible.
+
+.. note::
+
+   To make a database query that could not be done using recommanded way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
+
+   .. code-block:: php
+
+      <?php
+      $DB->request('SELECT id FROM glpi_users WHERE end_date > NOW()');
 
 Without option
 ^^^^^^^^^^^^^^
@@ -190,6 +203,8 @@ Using the ``START`` and ``LIMIT`` options:
    <?php
    $DB->request('glpi_computers', ['START' => 5, 'LIMIT' => 10]);
    // => SELECT * FROM `glpi_computers` LIMIT 10 OFFSET 5"
+
+.. _query_criteria:
 
 Criteria
 ^^^^^^^^
