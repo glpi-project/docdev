@@ -82,3 +82,52 @@ You can remove rows from the database using the `delete() method <https://forge.
       ]
    );
    // => DELETE FROM `glpi_my_table` WHERE `id` = 42
+
+Use prepared statements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+On some cases, you may want to use prepared statements to improve performances. In order to achieve that, you will have to create a query with some parameters (not named, since mysqli does not supports named parameters), then to prepare it, and finally to bind parameters and execute the statement.
+
+Let's see an example with an insert statement:
+
+.. code-block:: php
+
+   <?php
+   $insert_query = $DB->buildInsert(
+      'my_table', [
+         'field'  => new Queryparam(),
+         'other'  => new Queryparam()
+      ]
+   );
+   // => INSERT INTO `glpi_my_table` (`field`, `other`) VALUES (?, ?)
+   $insert_stmt = $DB->prepare($insert_query);
+
+   foreach ($data as $row) {
+      $stmt->bind_params(
+         'ss',
+         $row['field'],
+         $row['other']
+      );
+      $stmt->execute();
+   }
+
+Just like the `buildInsert()` method used here, `buildInsert` and `buildDelete` methods are available. They take exactly the same arguments as non build methods.
+
+.. note::
+
+   Note the use of the `Queryparam` object. This is used for the builder to be aware you are not passing a value, but a parameter (that must not be escaped nor quoted).
+
+Preparing a `SELECT` query is a bit different:
+
+.. code-block:: php
+
+   <?php
+   $it = new DBmysqlIterator();
+   $it->buildQuery([
+      'FROM'   => 'my_table',
+      'WHERE'  => [
+         'something' => new Queryparam(),
+         'foo'       => 'bar'
+   ]);
+   // => SELECT FROM `my_table` WHERE `something` = ? AND `foo` = 'bar'
+   // [...]
