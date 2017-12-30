@@ -426,7 +426,7 @@ Files
 
 * Name in lower case.
 * Maximum line length: 100 characters
-* Indenttion: 3 spaces
+* Indentation: 3 spaces
 
 Database queries
 ----------------
