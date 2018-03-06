@@ -12,7 +12,7 @@ Creating, updating or removing tables is done by the plugin, at installation, up
 Creating and updating tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating and updating tables must be done in the plugin installation process. You will add the required code to the ``plugin_{myplugin}_install``. As the same fucntion is used for both installation and update, you'll have to make tests to know what to do.
+Creating and updating tables must be done in the plugin installation process. You will add the required code to the ``plugin_{myplugin}_install``. As the same function is used for both installation and update, you'll have to make tests to know what to do.
 
 For example, we will create a basic table to store some configuration for our plugin:
 
