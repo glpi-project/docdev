@@ -262,3 +262,17 @@ Default operator is ``=``, but other operators can be used, by giving an array c
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
 Known operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE`` and ``NOT REGEX``.
+
+Aliases
++++++++
+
+You can use SQL aliases (SQL ``AS`` keyword). To achieve that, just write the alias you want on the table name or the field name; then use it in your parameters:
+
+.. code-block:: php
+
+   <?php
+   $DB->request('glpi_computers AS c');
+   // => SELECT * FROM `glpi_computers` AS `c`
+
+   $DB->request(['SELECT' => 'field AS f', 'FROM' => 'glpi_computers AS c']);
+   // => SELECT `field` AS `f` FROM `glpi_computers` AS `c`
