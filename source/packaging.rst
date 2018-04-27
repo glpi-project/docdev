@@ -46,7 +46,8 @@ The magic file ``/usr/share/glpi/config/config_path.php`` (not provided in the t
    define('GLPI_RSS_DIR',        GLPI_DOC_DIR . '/_rss');
    define('GLPI_SESSION_DIR',    GLPI_DOC_DIR . '/_sessions');
    define('GLPI_TMP_DIR',        GLPI_DOC_DIR . '/_tmp');
-   define('oGLPI_UPLOAD_DIR',     GLPI_DOC_DIR . '/_uploads');
+   define('GLPI_UPLOAD_DIR',     GLPI_DOC_DIR . '/_uploads');
+   define('GLPI_CACHE_DIR',     GLPI_DOC_DIR . '/_cache');
 
    // Log
    define('GLPI_LOG_DIR',        '/var/log/glpi');
