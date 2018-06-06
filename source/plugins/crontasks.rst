@@ -4,7 +4,7 @@ Automatic actions
 Goals
 ^^^^^
 
-Plugins may need to run automatic actions in backgroud, or at regular interval. GLPI provides a task scheduler for itself and its plugins.
+Plugins may need to run automatic actions in background, or at regular interval. GLPI provides a task scheduler for itself and its plugins.
 
 Implement an automatic action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
