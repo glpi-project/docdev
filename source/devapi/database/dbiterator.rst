@@ -14,7 +14,6 @@ GLPI framework provides a simple request generator:
    The request generator does not currently support:
 
    * SQL functions (``NOW()``, ``ADD_DATE()``, ...),
-   * alias in queries.
 
 Basic usage
 ^^^^^^^^^^^
@@ -104,10 +103,21 @@ The fields array can also contain per table sub-array:
    $DB->request('glpi_computers', ['FIELDS' => ['glpi_computers' => ['id', 'name']]]);
    // => SELECT `glpi_computers`.`id`, `glpi_computers`.`name` FROM `glpi_computers`"
 
-Multiple tables, native join
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Using JOINs
+^^^^^^^^^^^
 
-You need to use criteria, usually a ``FKEY``, to describe howto join the tables:
+You need to use criteria, usually a ``FKEY`` to describe how to join the tables.
+
+.. note::
+
+   .. versionadded:: 9.3.1
+
+   The ``ON`` keyword can aslo be used as an alias of ``FKEY``.
+
+Multiple tables, native join
+++++++++++++++++++++++++++++
+
+You need to use criteria, usually a ``FKEY`` (or the ``ON`` equivalent), to describe how to join the tables:
 
 .. code-block:: php
 
@@ -122,9 +132,9 @@ You need to use criteria, usually a ``FKEY``, to describe howto join the tables:
    //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
 
 Left join
-^^^^^^^^^
++++++++++
 
-Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY``:
+Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
 
 .. code-block:: php
 
@@ -137,9 +147,9 @@ Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY``:
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
 
 Inner join
-^^^^^^^^^^
+++++++++++
 
-Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY``:
+Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
 
 .. code-block:: php
 
@@ -151,6 +161,20 @@ Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY``:
    //       INNER JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
 
+Right join
+++++++++++
+
+Using the ``RIGHT JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
+
+.. code-block:: php
+
+   <?php
+   $DB->request(['FROM'       => 'glpi_computers',
+                 'RIGHT JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
+                                                                      'glpi_computerdisks' => 'computer_id']]]]);
+   // => SELECT * FROM `glpi_computers`
+   //       RIGHT JOIN `glpi_computerdisks`
+   //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
 
 Counting
 ^^^^^^^^
@@ -167,17 +191,16 @@ Using the ``COUNT`` option:
 Grouping
 ^^^^^^^^
 
-   Using the ``GROUPBY`` option, which contains a field name or an array of field names.
+Using the ``GROUPBY`` option, which contains a field name or an array of field names.
 
-   .. code-block:: php
+.. code-block:: php
 
-      <?php
-      $DB->request(['FROM' => 'glpi_computers', 'GROUPBY' => 'name']);
-      // => SELECT * FROM `glpi_computers` GROUP BY `name`
+   <?php
+   $DB->request(['FROM' => 'glpi_computers', 'GROUPBY' => 'name']);
+   // => SELECT * FROM `glpi_computers` GROUP BY `name`
 
-      $DB->request('glpi_computers', ['GROUPBY' => ['name', 'states_id']]);
-      // => SELECT * FROM `glpi_computers` GROUP BY `name`, `states_id`
-
+   $DB->request('glpi_computers', ['GROUPBY' => ['name', 'states_id']]);
+   // => SELECT * FROM `glpi_computers` GROUP BY `name`, `states_id`
 
 Order
 ^^^^^
@@ -276,3 +299,19 @@ You can use SQL aliases (SQL ``AS`` keyword). To achieve that, just write the al
 
    $DB->request(['SELECT' => 'field AS f', 'FROM' => 'glpi_computers AS c']);
    // => SELECT `field` AS `f` FROM `glpi_computers` AS `c`
+
+Aggregate functions
++++++++++++++++++++
+
+.. versionadded:: 9.3.1
+
+You can use some aggregation SQL functions on fields: ``COUNT``, ``SUM``, ``AVG``, ``MIN`` and ``MAX`` are supported. Just set the function as the key in your fields array:
+
+.. code-block:: php
+
+   <?php
+   $DB->request(['SELECT' => ['COUNT' => 'field', 'bar'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'field']);
+   // => SELECT COUNT(`field`), `bar` FROM `glpi_computers` GROUP BY `field`
+
+   $DB->request(['SELECT' => ['bar', 'SUM' => 'amount AS total'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'amount']);
+   // => SELECT `bar`, SUM(`amount`) AS `total` FROM `glpi_computers` GROUP BY `amount`
