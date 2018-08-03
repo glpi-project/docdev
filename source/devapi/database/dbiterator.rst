@@ -284,7 +284,7 @@ Default operator is ``=``, but other operators can be used, by giving an array c
    $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
-Known operators are ``=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE``, ``NOT REGEX`` and ``&`` (BITWISE AND).
+Known operators are ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE``, ``NOT REGEX``, ``&`` (BITWISE AND), and ``|`` (BITWISE OR).
 
 Aliases
 +++++++
@@ -315,3 +315,87 @@ You can use some aggregation SQL functions on fields: ``COUNT``, ``SUM``, ``AVG`
 
    $DB->request(['SELECT' => ['bar', 'SUM' => 'amount AS total'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'amount']);
    // => SELECT `bar`, SUM(`amount`) AS `total` FROM `glpi_computers` GROUP BY `amount`
+
+Sub queries
++++++++++++
+
+.. versionadded:: 9.3.1
+
+You can use subqueries, using the specific `QuerySubQuery` class. It takes two arguments: the first is an array of criteria to get the query built, and the second is an optional operator to use. Allowed operators are the same than documented below plus `IN` and `NOT IN`. Default operator is `IN`.
+
+.. code-block:: php
+
+   <?php
+   $sub_query = new \QuerySubQuery([
+      'SELECT' => 'id',
+      'FROM'   => 'subtable',
+      'WHERE'  => [
+         'subfield' => 'subvalue'
+      ]
+   ]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['field' => $sub_query]]);
+   // => SELECT * FROM `glpi_computers` WHERE `field` IN (SELECT `id` FROM `subtable` WHERE `subfield` = 'subvalue')
+
+   $sub_query = new \QuerySubQuery([
+      'SELECT' => 'id',
+      'FROM'   => 'subtable',
+      'WHERE'  => [
+         'subfield' => 'subvalue'
+      ]
+   ], 'NOT IN');
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['field' => $sub_query]]);
+   // => SELECT * FROM `glpi_computers` WHERE `field` NOT IN (SELECT `id` FROM `subtable` WHERE `subfield` = 'subvalue')
+
+What if iterator does not provide what I'm looking for?
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Even if we do our best to get as many things as possible implemented in the iterator, there are several things that are missing... Consider for example you want to use the SQL `NOW()` function, or want to use a value based on another field: there is no native way to achieve that.
+
+Right now, there is a `QueryExpression` class that would permit to do such things on values (an not on fields since it is not possible to use a class instance as an array key).
+
+.. warning::
+
+   The `QueryExpression` class will pass raw SQL. You are in charge to escape name and values you use into it!
+
+For example, to use the SQL `NOW()` function:
+
+.. code-block:: php
+
+   <?php
+   $DB->request([
+      'FROM'   => 'my_table',
+      'WHERE'  => [
+         'date_end'  => ['>', new \QueryExpression('NOW()')]
+      ]
+   ]);
+   // SELECT * FROM `my_table` WHERE `date_end` > NOW()
+
+Another example with a field value:
+
+.. code-block:: php
+
+   <?php
+   $DB->request([
+      'FROM'   => 'my_table',
+      'WHERE'  => [
+         'field'  => new \QueryExpression(DBmysql::quoteName('other_field'))
+      ]
+   ]);
+   // SELECT * FROM `my_table` WHERE `field` = `other_field`
+
+.. versionadded:: 9.3.1
+
+You can also use some function or non supported stuff on field part by using a `RAW` entry in the query:
+
+.. code-block:: php
+
+   <?php
+   $DB->request([
+      'FROM'   => 'my_table',
+      'WHERE'  => [
+        'RAW'  => [
+            'LOWER(' . DBmysql::quoteName('field') . ')' => strtolower('Value')
+        ]
+      ]
+   ]);
+   // SELECT * FROM `my_table` WHERE LOWER(`field`) = 'value'
