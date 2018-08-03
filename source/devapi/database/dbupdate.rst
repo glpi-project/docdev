@@ -5,17 +5,6 @@ Updating
 
 Just as SQL `SELECT` queries, you should avoid plain SQL and use methods provided by the famework from the `DB object <https://forge.glpi-project.org/apidoc/class-DBmysql.html>`_.
 
-.. note::
-
-   To make a database query that could not be done using recommanded way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
-
-   .. code-block:: php
-
-      <?php
-      $DB->query('UPDATE glpi_users SET date_mod = NOW()');
-
-   Just like :doc:`querying database <dbiterator>`; you will have to rely on plain SQL when using not supported features, like SQL functions.
-
 General
 ^^^^^^^
 
@@ -63,9 +52,22 @@ You can update rows in the database using the `update() method <https://forge.gl
 
 An `updateOrDie() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_updateOrDie>`_ is also provided.
 
-.. note::
+.. versionadded:: 9.3.1
 
-   The ``update()`` method does not currently support using another field in set. You will therefore have to run queries like ``UPDATE glpi_my_table` SET `ranking` = ranking+1`` using the legacy way.
+When issuing an `UPDATE` query, you can use an `ORDER` and/or a `LIMIT` clause along with the where (which remains **mandatory**). In order to achieve that, use an indexed array with appropriate keys:
+
+.. code-block:: php
+
+   <?php
+   $DB->update(
+      'my_table', [
+         'my_field'  => 'my value'
+      ], [
+         'WHERE'  => ['field' => 'value'],
+         'ORDER'  => ['date DESC', 'id ASC'],
+         'LIMIT'  => 1
+      ]
+   );
 
 Removing a row
 ^^^^^^^^^^^^^^
@@ -111,7 +113,7 @@ Let's see an example with an insert statement:
       $stmt->execute();
    }
 
-Just like the `buildInsert()` method used here, `buildInsert` and `buildDelete` methods are available. They take exactly the same arguments as non build methods.
+Just like the `buildInsert()` method used here, `buildUpdate` and `buildDelete` methods are available. They take exactly the same arguments as "non build" methods.
 
 .. note::
 
