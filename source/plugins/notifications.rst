@@ -12,7 +12,7 @@ Add events on a notification in GLPI core
 
 This is needed when the plugin needs to create a new event for an itemtype which belongs to GLPI core.
 
-The folowing example creates an event `plugin_exemple` for Tickets.
+The folowing example creates an event `plugin_example` for Tickets.
 
 In setup.php, hook the function `plugin_example_get_events()`.
 
@@ -52,7 +52,7 @@ Add data on a event in GLPI core
 
 If the plugin needs to create new placeholders in a notification which belongs to GLPI core.
 
-The following example defines new data placeholders for Ticket notrifications.
+The following example defines new data placeholders for Ticket notifications.
 
 In setup.php, hook the function `plugin_example_get_datas()`.
 
@@ -152,7 +152,7 @@ Let's assume the plugin features SSL certificate management. When a SSL certific
 
    <?php
    // File inc/notificationtargetcertificate.class.php
-   class PluginExampleNotificationTargetCertificate extends CommonDBTM
+   class PluginExampleNotificationTargetCertificate extends NotificationTarget
    {
       const EVENT_EXPIRATION = 'expiration';
    }
@@ -161,7 +161,7 @@ Let's assume the plugin features SSL certificate management. When a SSL certific
 
    <?php
    // File inc/notificationtargetcertificate.class.php
-   class PluginExampleNotificationTargetCertificate extends CommonDBTM
+   class PluginExampleNotificationTargetCertificate extends NotificationTarget
    {
       // ...
 
@@ -189,5 +189,4 @@ Let's assume the plugin features SSL certificate management. When a SSL certific
                break;
          }
       }
-
    }
