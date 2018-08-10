@@ -176,6 +176,38 @@ Using the ``RIGHT JOIN`` option, with some criteria, usually a ``FKEY`` (or the 
    //       RIGHT JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
 
+Join criterion
+++++++++++++++
+
+.. versionadded:: 9.3.1
+
+It is also possible to add an extra criterion for any `JOIN` clause. You have to pass an array with first key equal to ``AND`` or ``OR`` and any iterator valid crieterion:
+
+..code-block:: php
+
+   <?php
+   $DB->request([
+      'FROM'       => 'glpi_computers',
+      'INNER JOIN' => [
+         'glpi_computerdisks' => [
+            'FKEY' => [
+               'glpi_computers'     => 'id',
+               'glpi_computerdisks' => 'computer_id',
+               ['OR' => ['glpi_computers.field' => ['>', 42]]]
+            ]
+         ]
+      ]
+   ]);
+
+   // => SELECT * FROM `glpi_computers`
+   //       INNER JOIN `glpi_computerdisks`
+   //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id` OR 
+   //              `glpi_computers`.`field` > '42'
+   //            )
+
+
+
+
 Counting
 ^^^^^^^^
 
