@@ -1,7 +1,7 @@
 Packaging
 =========
 
-Various Linux distributions provides packages (`deb`, `rpm`, ...) for GLPI (Debian, Mandriva, Fedora, Redhat/CentOS, ...) and for some plugins.
+Various Linux distributions provides packages (`deb`, `rpm`, ...) for GLPI (Debian, Mandriva, Fedora, Redhat/CentOS, ...) and for some plugins. You may want to take a look at `Remi's package for Fedora/RHEL <https://git.remirepo.net/cgit/rpms/glpi/glpi.git/>`_ to rely on a concrete example.
 
 Here is some information about using and creating package:
 
@@ -27,39 +27,7 @@ Most distributions requires that packages follows the  `FHS (Filesystem Hierarch
  * ``/var/lib/glpi/files`` for GLPI data and state information (session, uploaded documents, cache, cron, plugins, ...);
  * ``/var/log/glpi`` for various GLPI log files.
 
-The magic file ``/usr/share/glpi/config/config_path.php`` (not provided in the tarball) allows to configure various paths. The following example is the file used by `Remi <https://blog.remirepo.net/>`_ on its Fedora/Redhat repository:
-
-.. code-block:: php
-
-   <?php
-   // Config
-   define('GLPI_CONFIG_DIR',     '/etc/glpi');
-
-   // Runtime Data
-   define('GLPI_DOC_DIR',        '/var/lib/glpi/files');
-   define('GLPI_CRON_DIR',       GLPI_DOC_DIR . '/_cron');
-   define('GLPI_DUMP_DIR',       GLPI_DOC_DIR . '/_dumps');
-   define('GLPI_GRAPH_DIR',      GLPI_DOC_DIR . '/_graphs');
-   define('GLPI_LOCK_DIR',       GLPI_DOC_DIR . '/_lock');
-   define('GLPI_PICTURE_DIR',    GLPI_DOC_DIR . '/_pictures');
-   define('GLPI_PLUGIN_DOC_DIR', GLPI_DOC_DIR . '/_plugins');
-   define('GLPI_RSS_DIR',        GLPI_DOC_DIR . '/_rss');
-   define('GLPI_SESSION_DIR',    GLPI_DOC_DIR . '/_sessions');
-   define('GLPI_TMP_DIR',        GLPI_DOC_DIR . '/_tmp');
-   define('GLPI_UPLOAD_DIR',     GLPI_DOC_DIR . '/_uploads');
-   define('GLPI_CACHE_DIR',     GLPI_DOC_DIR . '/_cache');
-
-   // Log
-   define('GLPI_LOG_DIR',        '/var/log/glpi');
-
-   // System libraries
-   define('GLPI_HTMLAWED',       '/usr/share/php/htmLawed/htmLawed.php');
-
-   // Fonts
-   define('GLPI_FONT_FREESANS',  '/usr/share/fonts/gnu-free/FreeSans.ttf');
-
-   //Use system cron
-   define('GLPI_SYSTEM_CRON', true);
+Please refer to GLPI installation documentation in order to `get GLPI paths configured <https://glpi-install.readthedocs.io/en/latest/install/index.html#files-and-directories-locations>`_.
 
 Apache Configuration File
 -------------------------
