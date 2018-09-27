@@ -11,48 +11,6 @@ The locale directory contains several scripts used to maintain :doc:`translation
 * ``extract_template.sh`` is used to extract translated string to the POT file (before sending it to Transifex),
 * ``locale\update_mo.pl`` compiles MO files from PO file (after they've been updated from transifex).
 
-cliinstall.php
---------------
-
-Installs a GLPI database from command line.
-
-You have to specify both user and database name at last, using ``--user`` and ``--db`` parameters.
-
-You can also add extra parameters:
-
-* ``--host`` let you specify database host. It defaults to `localhost`,
-* ``--pass`` let you specify database user's password. It defaults to no password,
-* ``--lang`` let you specify language that will be used. It defaults to ``en_GB``,
-* ``--tests``
-* ``--force`` will force the installation even if database is already populated, **all existing data will be lost**.
-
-You can get the usage by simply calling the script:
-
-.. code-block:: bash
-
-   $ php tools/cliinstall.php
-   usage: tools/cliinstall.php [ --host=<dbhost> ] --db=<dbname> --user=<dbuser> [ --pass=<dbpassword> ] [ --lang=xx_XX] [ --tests ] [ --force ]
-
-cliupdate.php
--------------
-
-Let you update your GLPI database from command line. The script does not need any argument, just call it and you're done:
-
-.. code-block:: bash
-
-   $ php tools/cliupdate.php
-   Current GLPI Data version: 9.2
-   Current GLPI Code version: 9.2
-   Default GLPI Language: en_GB
-   No migration needed.
-
-You can also add extra parameters:
-
-* ``--force`` will force the latest update even if database is already up to date, **this may cause issues**,
-* ``--optimize`` will optimize database tables after the update,
-* ``--lang`` let you specify language that will be used. It defaults to ``en_GB``,
-* ``--config-dir`` let you specify the configuration directory. This is mainly used for tests; default config file may be the best choice in almost every case.
-
 genapidoc.sh
 ------------
 
