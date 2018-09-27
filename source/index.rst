@@ -6,7 +6,7 @@
 GLPI Developer Documentation
 ============================
 
-.. image:: /_static/images/glpi.png
+.. image:: /_static/images/logo-GLPI-300-blue.png
    :alt: GLPI
    :align: center
 
