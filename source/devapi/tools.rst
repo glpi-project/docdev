@@ -99,6 +99,11 @@ On command line, you can get the exact same result entering:
 
    $ php tools/getsearchoptions.php --type=Computer
 
+generate_bigdump.php
+--------------------
+
+This script is designed to generate many data in your GLPI instance. It relies on the ``generate_bigdump.function.php`` file.
+
 Not yet documented...
 ---------------------
 
@@ -144,8 +149,3 @@ php.vim
 ^^^^^^^
 
 A vimfile for autocompletion and highlithing in VIM. This one is very outaded; it should be replaced with a most recent version, or being removed.
-
-generate_bigdump.php
-^^^^^^^^^^^^^^^^^^^^
-
-This script is designed to generate many data in your GLPI instance. It relies on the ``generate_bigdump.function.php`` file.
