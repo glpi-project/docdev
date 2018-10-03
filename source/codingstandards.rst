@@ -460,7 +460,7 @@ In order to check some stabdards are respected, we provide some custom `PHP Code
 
 .. code-block:: bash
 
-   phpcs --standard=tools/phpcs-rules.xml inc/ front/ ajax/ tests/
+   phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ inc/ front/ ajax/ tests/
 
 If the above command does not provide any output, then, all is OK :)
 
@@ -468,7 +468,7 @@ An example error output would looks like:
 
 .. code-block:: bash
 
-   phpcs --standard=tools/phpcs-rules.xml inc/ front/ ajax/ tests/
+   phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ inc/ front/ ajax/ tests/
    
    FILE: /var/www/webapps/glpi/tests/HtmlTest.php
    ----------------------------------------------------------------------
