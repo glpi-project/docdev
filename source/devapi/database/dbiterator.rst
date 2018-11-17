@@ -206,7 +206,50 @@ It is also possible to add an extra criterion for any `JOIN` clause. You have to
    //            )
 
 
+UNION queries
+^^^^^^^^^^^^^
 
+An union query is an object, wich contains an array of :ref:`sub_queries`. You just have to give a list of Subqueries
+you have already prepare, or arrays of parameters that will be used to build them.
+
+.. code-block:: php
+
+   <?php
+   $sub1 = new \QuerySubQuery([
+      'SELECT' => 'field1 AS myfield',
+      'FROM'   => 'table1'
+   ]);
+   $sub2 = new \QuerySubQuery([
+      'SELECT' => 'field2 AS myfield',
+      'FROM'   => 'table2'
+   ]);
+   $union = \QueryUnion([$sub1, $sub2]);
+   $DB->request([
+      'FROM'       => $union
+   ]);
+
+   // => SELECT * FROM (
+   //       SELECT `field1` AS `myfield` FROM `table1`
+   //       UNION ALL
+   //       SELECT `field2` AS `myfield` FROM `table2`
+   //    )
+
+As you can see on the above example, a ``UNION ALL`` query is built. If you want your results to be deduplicated,
+(standard ``UNION``):
+
+.. code-block:: php
+
+  <?php
+   //...
+   //passing true as second argument will activate deduplication.
+   $union = \QueryUnion([$sub1, $sub2], true);
+   //...
+
+.. warning::
+
+   Keep in mind that deduplicate a UNION query may have a huge cost on database server.
+
+   Most of the time, you can issue a ``UNION ALL`` and dedup in the code.
 
 Counting
 ^^^^^^^^
@@ -347,6 +390,8 @@ You can use some aggregation SQL functions on fields: ``COUNT``, ``SUM``, ``AVG`
 
    $DB->request(['SELECT' => ['bar', 'SUM' => 'amount AS total'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'amount']);
    // => SELECT `bar`, SUM(`amount`) AS `total` FROM `glpi_computers` GROUP BY `amount`
+
+.. _sub_queries:
 
 Sub queries
 +++++++++++
