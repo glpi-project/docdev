@@ -209,8 +209,8 @@ It is also possible to add an extra criterion for any `JOIN` clause. You have to
 UNION queries
 ^^^^^^^^^^^^^
 
-An union query is an object, wich contains an array of :ref:`sub_queries`. You just have to give a list of Subqueries
-you have already prepare, or arrays of parameters that will be used to build them.
+An union query is an object, which contains an array of :ref:`sub_queries`. You just have to give a list of Subqueries
+you have already prepared, or arrays of parameters that will be used to build them.
 
 .. code-block:: php
 
@@ -223,7 +223,7 @@ you have already prepare, or arrays of parameters that will be used to build the
       'SELECT' => 'field2 AS myfield',
       'FROM'   => 'table2'
    ]);
-   $union = \QueryUnion([$sub1, $sub2]);
+   $union = new \QueryUnion([$sub1, $sub2]);
    $DB->request([
       'FROM'       => $union
    ]);
@@ -242,7 +242,7 @@ As you can see on the above example, a ``UNION ALL`` query is built. If you want
   <?php
    //...
    //passing true as second argument will activate deduplication.
-   $union = \QueryUnion([$sub1, $sub2], true);
+   $union = new \QueryUnion([$sub1, $sub2], true);
    //...
 
 .. warning::
