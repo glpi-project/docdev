@@ -209,6 +209,8 @@ It is also possible to add an extra criterion for any `JOIN` clause. You have to
 UNION queries
 ^^^^^^^^^^^^^
 
+.. versionadded:: 9.4.0
+
 An union query is an object, which contains an array of :ref:`sub_queries`. You just have to give a list of Subqueries
 you have already prepared, or arrays of parameters that will be used to build them.
 
