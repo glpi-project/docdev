@@ -298,6 +298,14 @@ Hooks that are called from notifications
 ``item_get_datas``
    After data for template have been retrieved
 
+``add_recipient_to_target``
+   .. versionadded:: 9.4.0
+
+   When a recipient is added to targets.
+
+   The object passed as hook method parameter will contain a property ``recipient_data`` which will
+   be an array containing `itemtype` and `items_id` fields corresponding to the added target.
+
 Functions hooks
 ^^^^^^^^^^^^^^^
 
