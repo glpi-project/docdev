@@ -338,6 +338,9 @@ To define join parameters, you can use one or more of the following:
 
    Use ``NEWTABLE`` or ``REFTABLE`` tag to use the table names.
 
+   .. versionchanged:: 9.4
+   An array of parameters used to build a `WHERE` clause from :doc:`GLPI querying facilities <database/dbiterator>`. Was previously only a string.
+
 ``nolink``
 
    Set to true to indicate the current join does not link to the previous join/from (nested ``joinparams``)
