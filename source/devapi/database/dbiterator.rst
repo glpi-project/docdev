@@ -9,12 +9,6 @@ GLPI framework provides a simple request generator:
 * iterable
 * countable
 
-.. warning::
-
-   The request generator does not currently support:
-
-   * SQL functions (``NOW()``, ``ADD_DATE()``, ...),
-
 Basic usage
 ^^^^^^^^^^^
 
@@ -421,9 +415,19 @@ You can use subqueries, using the specific `QuerySubQuery` class. It takes two a
       'WHERE'  => [
          'subfield' => 'subvalue'
       ]
-   ], 'NOT IN');
-   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['field' => $sub_query]]);
-   // => SELECT * FROM `glpi_computers` WHERE `field` NOT IN (SELECT `id` FROM `subtable` WHERE `subfield` = 'subvalue')
+   ]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['NOT' => ['field' => $sub_query]]]);
+   // => SELECT * FROM `glpi_computers` WHERE NOT `field` IN (SELECT `id` FROM `subtable` WHERE `subfield` = 'subvalue')
+
+   $sub_query = new \QuerySubQuery([
+      'SELECT' => 'id',
+      'FROM'   => 'subtable',
+      'WHERE'  => [
+         'subfield' => 'subvalue'
+      ]
+   ], 'myalias');
+   $DB->request(['FROM' => 'glpi_computers', 'SELECT' => [$sub_query, 'id']]);
+   // => SELECT (SELECT `id` FROM `subtable` WHERE `subfield` = 'subvalue') AS `myalias`, id FROM `glpi_computers`
 
 What if iterator does not provide what I'm looking for?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
