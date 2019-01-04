@@ -71,8 +71,13 @@ In this case, all the data from the selected table is iterated:
 Fields selection
 ^^^^^^^^^^^^^^^^
 
-Using one of the ``SELECT``, ``FIELDS``, ``DISTINCT FIELDS``
-or ``SELECT DISTINCT`` options
+You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINCT`` option might be specified.
+
+.. note::
+   
+   .. versionchanged:: 10.0.0
+   
+   Using ``DISTINCT FIELDS`` or ``SELECT DISTINCT`` options is deprecated.
 
 .. code-block:: php
 
@@ -83,10 +88,10 @@ or ``SELECT DISTINCT`` options
    $DB->request('glpi_computers', ['FIELDS' => 'id']);
    // => SELECT `id` FROM `glpi_computers`
 
-   $DB->request(['SELECT DISTINCT' => 'name', 'FROM' => 'glpi_computers']);
+   $DB->request(['SELECT' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['DISTINCT FIELDS' => 'name']);
+   $DB->request('glpi_computers', ['FIELDS' => 'name', 'DISTINCT' => true]);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
 The fields array can also contain per table sub-array:
