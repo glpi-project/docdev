@@ -71,8 +71,7 @@ In this case, all the data from the selected table is iterated:
 Fields selection
 ^^^^^^^^^^^^^^^^
 
-You can use either the ``SELECT`` or ``FIELDS`` options.  
-You might add an additional ``DISTINCT`` option if needed.
+You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINCT`` option might be specified.
 
 .. code-block:: php
 
