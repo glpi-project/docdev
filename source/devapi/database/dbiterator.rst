@@ -73,6 +73,12 @@ Fields selection
 
 You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINCT`` option might be specified.
 
+.. note::
+   
+   .. versionchanged:: 10.0.0
+   
+   Using ``DISTINCT FIELDS`` or ``SELECT DISTINCT`` options is deprecated.
+
 .. code-block:: php
 
    <?php
