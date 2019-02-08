@@ -346,6 +346,17 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
    $DB->request('glpi_computers', ['NOT' => ['id' => [1,2,7]]]);
    // => SELECT * FROM `glpi_computers` WHERE NOT (`id` IN (1, 2, 7))
 
+
+Using a more complex expression with ``AND`` and ``OR``:
+
+.. code-block:: php
+    <?php
+    $DB->request('glpi_computers', ['is_deleted' => 0,
+        ['OR' => ['name' => 'foo', 'otherserial' => 'otherunique']],
+        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]
+    ]);
+    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = '0' AND ((`name` = 'foo' OR `otherserial` = 'otherunique')) AND ((`locations_id` = '1' OR `serial` = 'unique'))
+
 Operators
 +++++++++
 
