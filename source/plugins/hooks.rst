@@ -282,6 +282,11 @@ Hooks that permits to add display on items.
 
    Add display from statistics tab of a item like ticket
 
+``timeline_actions``
+   .. versionadded:: 9.4.1
+
+   Display new actions in ITIL object's timeline
+
 Notifications
 +++++++++++++
 Hooks that are called from notifications
