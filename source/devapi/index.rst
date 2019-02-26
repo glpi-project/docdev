@@ -7,6 +7,7 @@ Apart from the current documentation, you can also check the `full PHP documenta
    :maxdepth: 2
 
    mainobjects
+   forms
    database/index
    search
    massiveactions
