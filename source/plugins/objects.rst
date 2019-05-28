@@ -78,7 +78,7 @@ First, create the ``inc/myobject.class.php`` file that looks like:
       }
    }
 
-The ``inc/myobject.php`` file will be in charge to list objects. It should look like:
+The ``front/myobject.php`` file will be in charge to list objects. It should look like:
 
 .. code-block:: php
 
