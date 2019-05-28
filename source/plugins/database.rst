@@ -32,7 +32,7 @@ For example, we will create a basic table to store some configuration for our pl
       $migration = new Migration(100);
 
       //Create table only if it does not exists yet!
-      if (!TableExists('glpi_plugin_myexample_configs')) {
+      if (!$DB->tableExists('glpi_plugin_myexample_configs')) {
          //table creation query
          $query = "CREATE TABLE `glpi_plugin_myexample_config` (
                      `id` INT(11) NOT NULL autoincrement,
@@ -65,7 +65,7 @@ The update part is quite the same. Considering our previous example, we missed t
       $migration = new Migration(100);
 
       //Create table only if it does not exists yet!
-      if (!TableExists('glpi_plugin_myexample_configs')) {
+      if (!$DB->tableExists('glpi_plugin_myexample_configs')) {
          //table creation query
          $query = "CREATE TABLE `glpi_plugin_myexample_configs` (
                      `id` INT(11) NOT NULL autoincrement,
@@ -111,6 +111,8 @@ You will have to drop all plugins tables when it will be uninstalled. Just put y
     * @return boolean
     */
    function plugin_myexample_uninstall() {
+      global $DB;
+      
       $tables = [
          'configs'
       ];
@@ -118,7 +120,7 @@ You will have to drop all plugins tables when it will be uninstalled. Just put y
       foreach ($tables as $table) {
          $tablename = 'glpi_plugin_myexample_' . $table;
          //Create table only if it does not exists yet!
-         if (TableExists($tablename)) {
+         if ($DB->tableExists($tablename)) {
             $DB->queryOrDie(
                "DROP TABLE `$tablename`",
                $DB->error()
