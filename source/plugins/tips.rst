@@ -47,10 +47,10 @@ Then, in your ``inc/myclass.php`` (in which ``PluginMyExampleMyClass`` is define
       switch ($item::getType()) {
          case Computer::getType():
             //display form for computers
-            $this->displayTabContentForComputer($item);
+            self::displayTabContentForComputer($item);
             break;
          case Phone::getType():
-            $this->displayTabContentForPhone($item);
+            self::displayTabContentForPhone($item);
             break;
       }
       if ($item->getType() == 'ObjetDuCoeur') {
@@ -62,11 +62,11 @@ Then, in your ``inc/myclass.php`` (in which ``PluginMyExampleMyClass`` is define
       return true;
    }
 
-   private function displayTabContentForComputer(Computer $item) {
+   private static function displayTabContentForComputer(Computer $item) {
       //...
    }
 
-   private function displayTabContentForPhone(Phone $item) {
+   private static function displayTabContentForPhone(Phone $item) {
       //...
    }
 
@@ -133,7 +133,7 @@ On the same model you create one tab, you may add several tabs.
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       $ong = [
          __('My first tab', 'myexampleplugin'),
-         ___('My second tab', 'myexampleplugin')
+         __('My second tab', 'myexampleplugin')
          ];
       return $ong;
    }
