@@ -98,7 +98,7 @@ The ``inc/myobject.php`` file will be in charge to list objects. It should look 
       //Add page header
       Html::header(
          __('My example plugin', 'myexampleplugin'),
-         $_SERVER['PHP_SELF'],,
+         $_SERVER['PHP_SELF'],
          'assets',
          'pluginmyexamplemyobject',
          'myobject'
@@ -157,7 +157,7 @@ And finally, the ``front/myobject.form.php`` will be in charge of CRUD operation
       Html::redirect("{$CFG_GLPI['root_doc']}/plugins/front/myobject.php");
    } else {
       //per default, display object
-      $withtemplate = (isset($_GET['withtemplate']) ? $_GET['withtemplate'] : 0;
+      $withtemplate = (isset($_GET['withtemplate']) ? $_GET['withtemplate'] : 0);
       $object->display(
          [
             'id'           => $_GET['id'],
