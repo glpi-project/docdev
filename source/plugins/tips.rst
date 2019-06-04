@@ -138,12 +138,12 @@ On the same model you create one tab, you may add several tabs.
       return $ong;
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=0, $withtemplate=0) {
       switch ($tabnum) {
-         case 1 : //"My first tab"
+         case 0 : //"My first tab"
             //do something
             break;
-         case 2 : //"My second tab""
+         case 1 : //"My second tab""
             //do something else
             break;
       }
