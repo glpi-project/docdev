@@ -75,7 +75,7 @@ The update part is quite the same. Considering our previous example, we missed t
          $DB->queryOrDie($query, $DB->error());
       }
 
-      if (TableExists('glpi_plugin_myexample_configs')) {
+      if ($DB->tableExists('glpi_plugin_myexample_configs')) {
          //missed value for configuration
          $migration->addField(
             'glpi_plugin_myexample_configs',
@@ -100,7 +100,7 @@ Of course, we can also add or remove tables in our upgrade process, drop fields,
 Deleting tables
 ^^^^^^^^^^^^^^^
 
-You will have to drop all plugins tables when it will be uninstalled. Just put your code into the ``plugin_{myplugin]_uninstall`` function:
+You will have to drop all plugins tables when it will be uninstalled. Just put your code into the ``plugin_{myplugin}_uninstall`` function:
 
 .. code-block:: php
 
