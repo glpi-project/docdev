@@ -314,13 +314,15 @@ There are two directories for tests:
 * ``tests/units`` for main core tests;
 * ``tests/api`` for API tests.
 
-You can choose to run tests on a whole directory, or on any file. You have to specify a bootstrap file each time:
+You can choose to run tests on a whole directory, or on any file (+ on a specific method). You have to specify a bootstrap file each time:
 
 .. code-block:: bash
 
    $ atoum -bf tests/bootstrap.php -mcn 1 -d tests/units/
    [...]
    $ atoum -bf tests/bootstrap.php -f tests/units/Html.php
+   [...]
+   $ atoum -bf tests/bootstrap.php -f tests/functionnal/Ticket.php -m tests\units\Ticket::testTechAcls
 
 
 If you want to run the API tests suite, you need to run a development server:
@@ -335,6 +337,7 @@ Running `atoum` without any arguments will show you the possible options. Most i
 * ``-bf`` to set bootstrap file,
 * ``-d`` to run tests located in a whole directory,
 * ``-f`` to run tests on a standalone file,
+* ``-m`` to run tests on a specific method (-f must also be defined),
 * ``--debug`` to get extra informations when something goes wrong,
 * ``-mcn`` limit number of concurrent runs. This is unfortunately mandatory running the whole test suite right now :/,
 * ``-ncc`` do not generate code coverage,
