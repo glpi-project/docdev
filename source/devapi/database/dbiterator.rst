@@ -75,7 +75,7 @@ You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINC
 
 .. note::
    
-   .. versionchanged:: 10.0.0
+   .. versionchanged:: 9.5.0
    
    Using ``DISTINCT FIELDS`` or ``SELECT DISTINCT`` options is deprecated.
 
