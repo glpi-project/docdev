@@ -21,8 +21,8 @@ Here is the workflow used for translations:
 #. Developers pull new translations from Transifex,
 #. MO files used by GLPI are generated.
 
-Functions
-^^^^^^^^^
+PHP Functions
+^^^^^^^^^^^^^
 
 There are several standard functions you will have to use in order to get translations. Remember the tranlsation domain will be `glpi` if not defined; so, for plugins specific translations, do not forget to set it!
 
@@ -72,3 +72,15 @@ In the above example, ``%1$s`` will always be replaced by ``2``; even if places 
 .. warning::
 
    You may sometimes see the use of ``printf()`` which is an equivalent that directly output (echo) the result. This should be avoided!
+
+Javascript Functions
+^^^^^^^^^^^^^^^^^^^^
+
+.. versionadded:: 9.5.0
+
+Translation functions ``__()``, ``_x()``, ``_n()``, ``_nx()`` are also available in javascript in browser context.
+They have same signatures as PHP functions.
+
+.. code-block:: js
+
+   alert(__('Test successful'));
