@@ -189,6 +189,8 @@ Hooks that cannot be classified in above categories :)
    When profile is changed
 
 ``pre_kanban_content``
+   .. versionadded:: 9.5
+
    Set or modify the content that shows before the main content in a Kanban card.
 
    This hook will receive a specific array that looks like:
@@ -203,6 +205,8 @@ Hooks that cannot be classified in above categories :)
       ];
 
 ``post_kanban_content``
+   .. versionadded:: 9.5
+
    Set or modify the content that shows after the main content in a Kanban card.
 
    This hook will receive a specific array that looks like:
