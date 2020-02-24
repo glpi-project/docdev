@@ -288,7 +288,7 @@ Override method: @inheritDoc? @see? docblock? no docblock?
 
 There are many question regarding the way to document a child method in a child class.
 
-Many editors use the ``{@inheritDoc}`` tag without anything else. **This is wrong**. This *inline* tag is confusing for many users; for more details, see the `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/guides/inheritance.html#the-inheritdoc-tag>`_.
+Many editors use the ``{@inheritDoc}`` tag without anything else. **This is wrong**. This *inline* tag is confusing for many users; for more details, see the `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/guides/inheritance.html#the-inheritdoc-tag>`__.
 This tag usage is not forbidden, but make sure to use it properly, or just avoid it. An usage exemple:
 
 .. code-block:: php
@@ -319,7 +319,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
          [...]
       }
 
-Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`_. While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
+Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__. While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
 An usage example:
 
 .. code-block:: php
