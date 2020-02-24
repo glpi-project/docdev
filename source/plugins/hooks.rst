@@ -133,6 +133,30 @@ Unclassified
 
 Hooks that cannot be classified in above categories :)
 
+``secured_fields``
+   .. versionadded:: 9.4.6
+
+   An array of fields names (with table like ``glpi_mytable.myfield``) that are stored using GLPI crypting methods.
+   This allows pluins to add some fields to the ``glpi:security:changekey`` command.
+
+   .. warning::
+
+       Plugins have to ensure crypt migration on their side is OK; and once using it, they **must** properly declare fields.
+
+       All fields that would use the key file without being listed would be unreadable after key has been changed (and stored data would stay potentially unsecure).
+
+``secured_configs``
+   .. versionadded:: 9.4.6
+
+   An array of configuration entries that are stored using GLPI crypting methods.
+   This allows pluins to add some entries to the ``glpi:security:changekey`` command.
+
+   .. warning::
+
+       Plugins have to ensure crypt migration on their side is OK; and once using it, they **must** properly declare fields.
+
+       All configuration entries that would use the key file without being listed would be unreadable after key has been changed (and stored data would stay potentially unsecure).
+
 ``add_javascript``
    Add javascript in **all** pages headers
 
