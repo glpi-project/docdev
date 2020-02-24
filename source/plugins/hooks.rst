@@ -188,6 +188,38 @@ Hooks that cannot be classified in above categories :)
 ``change_profile``
    When profile is changed
 
+``pre_kanban_content``
+   .. versionadded:: 9.5
+
+   Set or modify the content that shows before the main content in a Kanban card.
+
+   This hook will receive a specific array that looks like:
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'itemtype'  => string, //item type that is showing the Kanban
+         'items_id'  => int, //ID of itemtype showing the Kanban
+         'content'   => string //current content shown before main content
+      ];
+
+``post_kanban_content``
+   .. versionadded:: 9.5
+
+   Set or modify the content that shows after the main content in a Kanban card.
+
+   This hook will receive a specific array that looks like:
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'itemtype'  => string, //item type that is showing the Kanban
+         'items_id'  => int, //ID of itemtype showing the Kanban
+         'content'   => string //current content shown after main content
+      ];
+
 Items business related
 ++++++++++++++++++++++
 
