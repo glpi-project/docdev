@@ -117,7 +117,7 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
       //      (
       //            [_target] => /front/computer.form.php
       //            [id] => 1
-      //            [withtemplate] => 
+      //            [withtemplate] =>
       //            [tabnum] => 1
       //            [itemtype] => Computer
       //      )
@@ -178,6 +178,12 @@ Hooks that cannot be classified in above categories :)
          'input'     => array(), //original input
          'output'    => array()  //output modified by rule
       ];
+
+``redefine_menus``
+   Add, edit or remove items from the GLPI menus.
+
+   This hook will receive the current GLPI menus definition as an argument and must return the new definition.
+
 
 ``init_session``
    At session initialization
