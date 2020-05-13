@@ -243,9 +243,9 @@ This informations are taken from the Fedora/EPEL spec file.
 
 See latest version of the files:
 
- * `config_path.path <http://pkgs.fedoraproject.org/cgit/rpms/glpi.git/plain/glpi-9.1-config_path.php>`_
- * `nginx/glpi.conf <http://pkgs.fedoraproject.org/cgit/rpms/glpi.git/plain/glpi-nginx.conf>`_
- * `httpd/glpi.conf <http://pkgs.fedoraproject.org/cgit/rpms/glpi.git/plain/glpi-httpd.conf>`_
- * `fedora-autoloader.php <http://pkgs.fedoraproject.org/cgit/rpms/glpi.git/plain/glpi-fedora-autoloader.php>`_
+ * `glpi-downstream.path <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-downstream.php>`_
+ * `nginx/glpi.conf <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-nginx.conf>`_
+ * `httpd/glpi.conf <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-httpd.conf>`_
+ * `fedora-autoloader.php <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-fedora-autoloader.php>`_
 
 Feel free to add information about other specific distribution tips.
