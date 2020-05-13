@@ -20,7 +20,7 @@ The `master` branch is where new features are added. This code is reputed as **n
 
 The `xx/bugfixes` branches is where bugs are fixed. This code is reputed as *stable*.
 
-Those branches are created when any major version is released. At the time I wrote these lines, latest stable version is `9.1` so the current bugfix branch is `9.1/bugfixes`. As old versions are not supported, old bugfixes branches will not be changed at all; while they're still existing.
+Those branches are created when any major version is released. At the time I wrote these lines, latest stable version is `9.4` so the current bugfix branch is `9.4/bugfixes`. As old versions are not supported, old bugfixes branches will not be changed at all; while they're still existing.
 
 Testing
 -------
@@ -201,7 +201,7 @@ From the clone directory:
 
 .. code-block:: bash
 
-   $ git branch feautre/my-killer-feature
+   $ git branch feature/my-killer-feature
    $ git co feature/my-killler feature
 
 
@@ -231,19 +231,13 @@ There are several good practices regarding commit messages, but this is quite si
 Third party libraries
 ^^^^^^^^^^^^^^^^^^^^^
 
-Third party libraries are handled using the `composer tool <http://getcomposer.org>`_.
+Third party PHP libraries are handled using the `composer tool <http://getcomposer.org>`_ and Javascript ones using `npmjs <https://www.npmjs.com/>`_.
 
-To install existing dependencies, just install composer from their website or from your distribution repositories and then run:
-
-.. code-block:: bash
-
-   $ composer install
-
-To add a new library, you will probably found the command line on the library documentation, something like:
+To install existing dependencies, just install from their website or from your distribution repositories and then run:
 
 .. code-block:: bash
 
-   $ composer require libauthor/libname
+   $ bin/console dependencies install
 
 .. _unittests:
 
