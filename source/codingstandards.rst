@@ -368,8 +368,11 @@ boolean   Logical type (true or false)
 string    String type (any value in ``""`` or ``' '``)
 array     Array type
 object    Object type
-ressource Resource type (as returned from ``mysql_connect`` function)
+resource  Resource type (as returned from ``mysql_connect`` function)
 ========= ===========
+
+You may also use a specific class for the type as a replacement for `object` when you know the exact type of data being used. This is recommended if you use typehints.
+Since PHP 7.1, you can have nullable typehints for method parameters and return types. You should prepend a `?` to the above types if they are nullable.
 
 Inserting comment in source code for doxygen.
 Result : full doc for variables, functions, classes...
