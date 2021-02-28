@@ -250,6 +250,19 @@ Hooks that cannot be classified in above categories :)
          'content'   => string //current content shown after main content
       ];
 
+``vcard_data``
+   .. versionadded 9.5
+
+   Add or modify data in vCards such as IM contact information
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'item'   => CommonDBTM, //The item the vCard is for such as a User or Contact
+         'data'   => array, //The current vCard data for the item
+      ];
+
 Items business related
 ++++++++++++++++++++++
 
