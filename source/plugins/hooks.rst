@@ -137,7 +137,7 @@ Hooks that cannot be classified in above categories :)
    .. versionadded:: 9.4.6
 
    An array of fields names (with table like ``glpi_mytable.myfield``) that are stored using GLPI crypting methods.
-   This allows pluins to add some fields to the ``glpi:security:changekey`` command.
+   This allows plugins to add some fields to the ``glpi:security:changekey`` command.
 
    .. warning::
 
@@ -149,7 +149,7 @@ Hooks that cannot be classified in above categories :)
    .. versionadded:: 9.4.6
 
    An array of configuration entries that are stored using GLPI crypting methods.
-   This allows pluins to add some entries to the ``glpi:security:changekey`` command.
+   This allows plugins to add some entries to the ``glpi:security:changekey`` command.
 
    .. warning::
 
