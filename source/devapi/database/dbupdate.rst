@@ -102,7 +102,7 @@ Let's see an example with an insert statement:
       ]
    );
    // => INSERT INTO `glpi_my_table` (`field`, `other`) VALUES (?, ?)
-   $insert_stmt = $DB->prepare($insert_query);
+   $stmt = $DB->prepare($insert_query);
 
    foreach ($data as $row) {
       $stmt->bind_params(
@@ -131,5 +131,7 @@ Preparing a `SELECT` query is a bit different:
          'something' => new Queryparam(),
          'foo'       => 'bar'
    ]);
+   $it->getSql();
    // => SELECT FROM `my_table` WHERE `something` = ? AND `foo` = 'bar'
+   $stmt = $DB->prepare($query);
    // [...]
