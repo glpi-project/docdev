@@ -32,6 +32,10 @@ When GLPI shows a list of automatic actions, it shows a short description for ea
 
 Example of implementation from the `QueuedNotification class <https://forge.glpi-project.org/apidoc/class-QueuedNotification.html>`_ :
 
+PS: If it's in the plugin the class name is the name of the plugin with the prefix 'Plugin' and the sufix the name of the action.
+  (exemple with the plugin name 'testvide' and action name 'QueuedNotification' : class PluginTestvideQueuedNotification )
+  The name of the file is the name of the action (QueuedNotification.class.php)
+
 .. code-block:: php
 
    <?php
