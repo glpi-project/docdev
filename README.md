@@ -32,4 +32,17 @@ Results will be avaiable in the `build/html` directory :)
 
 Note that it actually uses the default theme, which differs locally and on readthedocs system.
 
+## Autobuild
+
+Autobuild automatically rebuild and refresh the current page on edit.
+To use it, you need the `sphinx-autobuild` module:
+```
+$ pip install sphinx-autobuild
+```
+
+You can then use the `livehtml` command:
+```
+$ make livehtml
+```
+
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
