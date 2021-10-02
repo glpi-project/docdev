@@ -3,7 +3,6 @@ Coding standards
 
 As of GLPI 10, we rely on `PSR-12 <https://www.php-fig.org/psr/psr-12/>`_ for coding standards.
 
-
 Call static methods
 -------------------
 
@@ -39,7 +38,6 @@ It may be different calling static classes. In that case; you can either:
 When you do not have any object instance yet; the first solution is probably the best one. No need to instanciate an object to just call a static method from it.
 
 On the other hand; if you already have an object instance; you should better use any of the solution but the late static binding. That way; you will save performances since this way to go do have a cost.
-
 
 Comments
 --------
