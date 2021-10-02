@@ -13,12 +13,28 @@ if NOT "%PAPER%" == "" (
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
 )
 
+set ALLSPHINXLIVEOPTS = %SPHINXOPTS% -q ^
+    -B ^
+    --delay 1 ^
+    --ignore "*.swp" ^
+    --ignore "*.pdf" ^
+    --ignore "*.log" ^
+    --ignore "*.out" ^
+    --ignore "*.toc" ^
+    --ignore "*.aux" ^
+    --ignore "*.idx" ^
+    --ignore "*.ind" ^
+    --ignore "*.ilg" ^
+    --ignore "*.tex" ^
+    --watch source
+
 if "%1" == "" goto help
 
 if "%1" == "help" (
 	:help
 	echo.Please use `make ^<target^>` where ^<target^> is one of
 	echo.  html       to make standalone HTML files
+	echo.  livehtml   to make standalone HTML files automatically on changes
 	echo.  dirhtml    to make HTML files named index.html in directories
 	echo.  singlehtml to make a single large HTML file
 	echo.  pickle     to make pickle files
@@ -62,6 +78,14 @@ if errorlevel 9009 (
 
 if "%1" == "html" (
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
+	if errorlevel 1 exit /b 1
+	echo.
+	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
+	goto end
+)
+
+if "%1" == "livehtml" (
+	%SPHINXAUTOBUILD% -b html %ALLSPHINXLIVEOPTS% %BUILDDIR%/html
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
