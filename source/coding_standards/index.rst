@@ -8,3 +8,4 @@ GLPI has a general set of coding standards and then additional requirements for 
 
    global.rst
    php.rst
+   javascript.rst
