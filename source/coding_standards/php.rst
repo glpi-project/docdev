@@ -72,7 +72,7 @@ For each method or function documentation, you'll need at least to have a descri
       //[...]
    }
 
-Some other informations way be added; if the function requires it.
+Some other information may be added if the function requires it.
 
 Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation.
 
@@ -95,7 +95,7 @@ Parameters documentation
 Each parameter must be documented in its own line, begining with the ``@param`` tag, followed by the `Variables types`_, followed by the param name (``$param``), and finally with the description itself.
 If your parameter can be of different types, you can list them separated with a ``|`` or you can use the ``mixed`` type; it's up to you!
 
-All parameters names and description must be aligned vertically on the longest (plu one character); see the above example.
+All parameters names and description must be aligned vertically on the longest (plus one character); see the above example.
 
 Override method: @inheritDoc? @see? docblock? no docblock?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -13,7 +13,7 @@ Starting with GLPI 9.5.0, the target version was bumped to 6 (2015).
 Functions
 ---------
 
-Function names must be written in *camelCaps*:
+Function names must be written in *camelCase*:
 
 .. code-block:: JavaScript
 
@@ -37,7 +37,7 @@ Classes
 
 If you are writing code for versions of GLPI before 9.5.0, you may not use classes as class support was added in EMCAScript 6.
 
-Class names must be written in `PascalCase`.
+Class names must be written in *PascalCase*.
 
 ..code-block:: JavaScript
 
