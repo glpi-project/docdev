@@ -131,7 +131,7 @@ Preparing a `SELECT` query is a bit different:
          'something' => new Queryparam(),
          'foo'       => 'bar'
    ]);
-   $it->getSql();
+   $query = $it->getSql();
    // => SELECT FROM `my_table` WHERE `something` = ? AND `foo` = 'bar'
    $stmt = $DB->prepare($query);
    // [...]
