@@ -359,8 +359,14 @@ Hooks that permits to add display on items.
 
 ``timeline_actions``
    .. versionadded:: 9.4.1
+   .. versionchanged:: 10.0.0 The timeline action buttons were moved to the timeline footer. Some previous actions may no longer be compatible with the new timeline and will need adjusted.
 
-   Display new actions in ITIL object's timeline
+   Display new actions in the ITIL object's timeline
+
+``timeline_answer_actions``
+   .. versionadded:: 10.0.0
+
+   Display new actions in the ITIL object's answer dropdown
 
 Notifications
 +++++++++++++
