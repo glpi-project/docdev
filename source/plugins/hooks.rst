@@ -446,6 +446,11 @@ Hooks that permits to add display on items.
 
    Display new actions in the ITIL object's answer dropdown
 
+``show_in_timeline``
+   .. versionadded:: 10.0.0
+
+   Display forms in the ITIL object's timeline
+
 Notifications
 +++++++++++++
 Hooks that are called from notifications
