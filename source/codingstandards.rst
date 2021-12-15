@@ -1,130 +1,11 @@
 Coding standards
 ================
 
-Indentation
------------
+As of GLPI 10, we rely on `PSR-12 <https://www.php-fig.org/psr/psr-12/>`_ for coding standards.
 
-- 3 spaces
-- Max line width: 100
-
-.. code-block:: php
-
-   <?php
-   // base level
-       // level 1
-           // level 2
-       // level 1
-   // base level
-
-Spacing
--------
-
-We've adopted "french spacing" rules in the code. The rule is:
-
-* for *simple* punctuation (``,``, ``.``): use *one space after* the punctuation sign
-* for *double* punctuation (``!``, ``?``, ``:``): use *one space after and one space before* the punctuation sign
-* for *opening* punctuation (``(``, ``{``, ``[``): use *one space before* the punctuation sign
-* for *closing* punctuation ( ``)``, ``}``, ``]``): use *one space after* the punctuation sign, excepted for line end, when followed by a semi-colon (``;``)
-
-Of course, this rules only aplies on the source code, not on the strings (translatable strings, comments, ...)!
-
-Control structures
-------------------
-
-Multiple conditions in several idented lines
-
-.. code-block:: php
-
-   <?php
-   if ($test1) {
-      for ($i=0 ; $i<$end ; $i++) {
-         echo "test ".( $i<10 ? "0$i" : $i )."<br>";
-      }
-   }
-   
-   if ($a==$b
-      || ($c==$d && $e==$f)) {
-     ...
-   } else if {
-     ...
-   }
-   
-   switch ($test2) {
-      case 1 :
-         echo "Case 1";
-         break;
-   
-      case 2 :
-         echo "Case 2";
-         // No break here : because...
-   
-      default :
-         echo "Default Case";
-   }
-
-Arrays
-------
-
-Arrays must be declared using the short notation syntax (``[]``), long notation (``array()``) is forbidden.
-
-true, false and null
---------------------
-
-``true``, ``false`` and ``null`` constants mut be lowercase.
-
-Including files
----------------
-
-Use ``include_once`` in order to include the file once and to raise warning if file does not exists:
-
-.. code-block:: php
-
-   include_once GLPI_ROOT."/inc/includes.php";
-
-
-PHP tags
---------
-
-Short tag (``<?``) is not allowed; use complete tags (``<?php``).
-
-.. code-block:: php
-
-   <?php
-   // code
-
-The PHP closing tag ``?>`` must be avoided on full PHP files (so in most of GLPI's files!).
-
-Functions
----------
-
-Function names must be written in *camelCaps*:
-
-.. code-block:: php
-
-   <?php
-   function userName($a, $b = 'foo') {
-      //do something here!
-   }
-
-Space after opening parenthesis and before closing parenthesis are forbidden. For parematers which have a default value; add a space before and after the equel sign.
-
-If parameters add block doc for these parameters, please see the `Comments`_ section for any example.
-
-If function from parent add
-
-.. code-block:: php
-
-   <?php
-   function getMenuContent()
-
-If it's a new function, add in block doc (see the `Comments`_ section):
-
-.. code-block:: php
-
-   @since version 9.1
 
 Call static methods
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 ================= ===========
 Function location How to call
@@ -135,7 +16,7 @@ another class     ``ClassName::theMethod()``
 ================= ===========
 
 Static or Non static?
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 Some methods in the source code as `declared as static <http://php.net/manual/fr/language.oop5.static.php>`_; some are not.
 
@@ -159,71 +40,6 @@ When you do not have any object instance yet; the first solution is probably the
 
 On the other hand; if you already have an object instance; you should better use any of the solution but the late static binding. That way; you will save performances since this way to go do have a cost.
 
-Classes
--------
-
-Class names must be written in `CamelCase`:
-
-GLPI do not use `PHP namespaces <http://php.net/manual/en/language.namespaces.php>`_ right now; so be careful when creating new classes to take a name that does not exists yet.
-
-.. code-block:: php
-
-   <?php
-   class MyExampleClass estends AnotherClass {
-      // do something
-   }
-
-
-Note: even if GLPI does not use namespaces, some libs does, you will have to take care of that. You can also if you wish use namespaces for PHP objects call.
-
-For example, the folloging code:
-
-.. code-block:: php
-
-   <?php
-   try {
-      ...
-      $something = new stdClass();
-      ...
-   } catch (Exception $e{
-      ...
-   }
-
-
-Could also be written as (see the ``\``):
-
-.. code-block:: php
-
-   <?php
-   try {
-      ...
-      $something = new \stdClass();
-      ...
-   } catch (\Exception $e{
-      ...
-   }
-
-Variables and Constants
------------------------
-
-* Variable names must be as descriptive and as short as possible, stay clear and concise.
-* In case of multiple words, use the ``_`` separator,
-* Variables must be **lower case**,
-* Global variables and constants must be **UPPER case**.
-
-.. code-block:: php
-
-   <?php
-   $user         = 'glpi';
-   // put elements in alphabetic order
-   $users        = array('glpi', 'glpi2', 'glpi3');
-   $users        = array('glpi1'   => 'valeur1',
-                         'nexglpi' => array('down' => '1',
-                                            'up'   => array('firstfield' => 'newvalue')),
-                         'glpi2'   => 'valeur2');
-   $users_groups = array('glpi', 'glpi2', 'glpi3');
-   
-   $CFG_GLPI = array();
 
 Comments
 --------
@@ -260,7 +76,7 @@ For each method or function documentation, you'll need at least to have a descri
 
 Some other informations way be added; if the function requires it.
 
-Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation. The `latest GLPI API documentation <https://forge.glpi-project.org/projects/glpi/embedded/index.html>`_ is also available online.
+Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation.
 
 Please follow the order defined below:
 
@@ -319,7 +135,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
          [...]
       }
 
-Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__. While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
+Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__). While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
 An usage example:
 
 .. code-block:: php
@@ -421,46 +237,14 @@ Examples:
    }
 
 
-Files
------
-
-* Name in lower case.
-* Maximum line length: 100 characters
-* Indentation: 3 spaces
-
-Database queries
-----------------
-
-* Queries must be written onto several lines, one statement item by line.
-* All SQL words must be **UPPER case**.
-* For MySQL, all item based must be slash protected (table name, field name, condition),
-* All values from variable, even integer should be single quoted
-
-.. code-block:: php
-
-   <?php
-   $query = "SELECT *
-             FROM `glpi_computers`
-             LEFT JOIN `xyzt` ON (`glpi_computers`.`fk_xyzt` = `xyzt`.`id`
-                                  AND `xyzt`.`toto` = 'jk')
-             WHERE @id@ = '32'
-                   AND ( `glpi_computers`.`name` LIKE '%toto%'
-                         OR `glpi_computers`.`name` LIKE '%tata%' )
-             ORDER BY `glpi_computers`.`date_mod` ASC
-             LIMIT 1";
-   
-   $query = "INSERT INTO `glpi_alerts`
-                   (`itemtype`, `items_id`, `type`, `date`) // put field's names to avoid mistakes when names of fields change
-             VALUE ('contract', '5', '2', NOW())";
-
 Checking standards
 ------------------
 
-In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
+In order to check standards are respected, we provide a defaut configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
 
-.. code-block:: bash
+.. code-block::
 
-   phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ inc/ front/ ajax/ tests/
+   phpcs .
 
 If the above command does not provide any output, then, all is OK :)
 
@@ -468,15 +252,21 @@ An example error output would looks like:
 
 .. code-block:: bash
 
-   phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ inc/ front/ ajax/ tests/
+   phpcs .
    
    FILE: /var/www/webapps/glpi/tests/HtmlTest.php
    ----------------------------------------------------------------------
    FOUND 3 ERRORS AFFECTING 3 LINES
    ----------------------------------------------------------------------
-    40 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
-    59 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
-    64 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
+    40 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
+    59 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
+    64 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
+
+To automatically fix most of the issues, use `phpcbf`, it will per default rely on default configuration:
+
+.. code-block::
+
+   phpcbf .
