@@ -135,7 +135,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
          [...]
       }
 
-Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__. While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
+Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__). While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
 An usage example:
 
 .. code-block:: php
