@@ -242,7 +242,7 @@ Checking standards
 
 In order to check standards are respected, we provide a defaut configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
 
-.. code-block:: bash
+.. code-block::
 
    phpcs .
 
@@ -264,3 +264,9 @@ An example error output would looks like:
        |       |     3
     64 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
        |       |     3
+
+To automatically fix most of the issues, use `phpcbf`, it will per default rely on default configuration:
+
+.. code-block::
+
+   phpcbf .
