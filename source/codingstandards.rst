@@ -240,7 +240,7 @@ Examples:
 Checking standards
 ------------------
 
-In order to check some stabdards are respected, we provide some custom `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
+In order to check standards are respected, we provide a defaut configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
 
 .. code-block:: bash
 
@@ -258,9 +258,9 @@ An example error output would looks like:
    ----------------------------------------------------------------------
    FOUND 3 ERRORS AFFECTING 3 LINES
    ----------------------------------------------------------------------
-    40 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
-    59 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
-    64 | ERROR | [x] Line indented incorrectly; expected 3 spaces, found
-       |       |     4
+    40 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
+    59 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
+    64 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
+       |       |     3
