@@ -76,7 +76,7 @@ For each method or function documentation, you'll need at least to have a descri
 
 Some other informations way be added; if the function requires it.
 
-Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation. The `latest GLPI API documentation <https://forge.glpi-project.org/projects/glpi/embedded/index.html>`_ is also available online.
+Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation.
 
 Please follow the order defined below:
 
