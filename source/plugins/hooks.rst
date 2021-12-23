@@ -263,6 +263,20 @@ Hooks that cannot be classified in above categories :)
          'data'   => array, //The current vCard data for the item
       ];
 
+
+``filter_actors``
+   .. versionadded 9.5
+
+   Add or modify data actor fields provided in the right panel of ITIL objects
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'actors' => array, // actors array send to select2 field
+         'params' => array, // actor field param
+      ];
+
 Items business related
 ++++++++++++++++++++++
 
