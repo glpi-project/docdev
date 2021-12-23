@@ -250,6 +250,54 @@ Hooks that cannot be classified in above categories :)
          'content'   => string //current content shown after main content
       ];
 
+``kanban_filters``
+   .. versionadded 10.0
+
+   Add new filter definitions for Kanban by itemtype.
+
+   This data is set directly in $PLUGIN_HOOKS like:
+
+   .. code-block:: php
+
+      <?php
+      $PLUGIN_HOOKS['kanban_filters']['tag'] = [
+         'Ticket' => [
+            'tag' => [
+               'description' => _x('filters', 'If the item has a tag'),
+               'supported_prefixes' => ['!']
+            ],
+            'tagged' => [
+               'description' => _x('filters', 'If the item is tagged'),
+               'supported_prefixes' => ['!']
+            ]
+         ],
+         'Project' => [
+            'tag' => [
+               'description' => _x('filters', 'If the item has a tag'),
+               'supported_prefixes' => ['!']
+            ],
+            'tagged' => [
+               'description' => _x('filters', 'If the item is tagged'),
+               'supported_prefixes' => ['!']
+            ]
+         ];
+      ]
+
+``kanban_item_metadata``
+   .. versionadded 10.0
+
+   Set or modify the metadata for a Kanban card. This metadata isn't displayed directly but will be used by the filtering system.
+
+   This hook will receive a specific array that looks like:
+
+   .. code-block:: php
+
+      <?php
+      $hook_params = [
+         'itemtype'  => string, //item type that is showing the Kanban
+         'items_id'  => int, //ID of itemtype showing the Kanban
+         'metadata'  => array //current metadata array
+      ];
 ``vcard_data``
    .. versionadded 9.5
 
