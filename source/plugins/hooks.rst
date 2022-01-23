@@ -325,6 +325,22 @@ Hooks that cannot be classified in above categories :)
          'params' => array, // actor field param
       ];
 
+``helpdesk_menu_entry``
+  Add a link to the menu for users with the simplified interface
+
+  .. code-block:: php
+
+      <?php
+      $PLUGIN_HOOKS['helpdesk_menu_entry']['example'] = 'MY_CUSTOM_LINK';
+
+``helpdesk_menu_entry_icon``
+  Add an icon for the link specified by the `helpdesk_menu_entry` hook
+
+  .. code-block:: php
+
+      <?php
+      $PLUGIN_HOOKS['helpdesk_menu_entry_icon']['example'] = 'fas fa-tools';
+
 Items business related
 ++++++++++++++++++++++
 
