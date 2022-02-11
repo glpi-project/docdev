@@ -183,7 +183,8 @@ float     Float type (point number)
 boolean   Logical type (true or false)
 string    String type (any value in ``""`` or ``' '``)
 array     Array type
-object    Object type
+objectClass    Type defined object
+object    Undefined type object (can be different classes, ...)
 ressource Resource type (as returned from ``mysql_connect`` function)
 ========= ===========
 
