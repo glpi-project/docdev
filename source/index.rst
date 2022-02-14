@@ -14,7 +14,7 @@ GLPI Developer Documentation
    :maxdepth: 2
 
    sourcecode
-   codingstandards
+   coding_standards/index
    devapi/index
    checklists/index
    plugins/index
