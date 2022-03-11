@@ -86,6 +86,17 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
       return false;
    }
 
+   /**
+    * Optional: defines plugin options.
+    *
+    * @return array
+    */
+   function plugin_myexample_options() {
+      return [
+         Plugin::OPTION_AUTOINSTALL_DISABLED => true,
+      ];
+   }
+
 Plugin informations provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
 
 .. _plugins_checks:
@@ -201,6 +212,16 @@ Without using automatic requirements; it's up to you to check with something lik
 
    On the same model, you can use ``Plugin::messageMissingRequirement()`` to display internationalized message if any extension, plugin or GLPI parameter is missing.
 
+Plugin options
+~~~~~~~~~~~~~~
+
+Since GLPI 10.0, it is possible to define some plugin options.
+
+``autoinstall_disabled``
+   .. versionadded:: 10.0.0
+
+   Disable automatic call of plugin install hook function.
+   For instance, when the plugin will be downloaded from GLPI marketplace, `plugin_myexample_install` will not be executed automatically. Administrator will have to use the "Install" or "Update" button to trigger this hook.
 
 .. _plugins_hookphp:
 
