@@ -247,27 +247,33 @@ To add a new library, you will probably found the command line on the library do
 
 .. _unittests:
 
-Unit testing (and functionnal testing)
+Unit testing (and functional testing)
 --------------------------------------
 
 .. note::
 
    A note for the purists... In GLPI, there are both unit and functional tests; without real distinction ;-)
 
-We use the `atoum unit tests framework <http://atoum.org>`_; see `GLPI website if you wonder why <http://glpi-project.org/spip.php?breve375>`_.
-
+We use the `atoum unit tests framework <http://atoum.org>`_ for PHP tests; see `GLPI website if you wonder why <http://glpi-project.org/spip.php?breve375>`_.
 `atoum`'s documentation in available at: http://docs.atoum.org
+
+For JavaScript tests, GLPI uses the Jest testing framework.
+It's documentation can be found at: https://devdocs.io/jest/.
 
 .. warning::
 
    With `atoum`, test class **must** refer to an existing class of the project!
+   This means that your test class must have the same name and relative namespace as an existing class.]
 
 Tests isolation
 ^^^^^^^^^^^^^^^
 
-Tests must be run in an isolated environment. By default, `atoum` use a concurrent mode; that launches tests in a multi-threaded environment. While it is possible to bypass this; this should not be done See http://docs.atoum.org/en/latest/engine.html.
+PHP tests must be run in an isolated environment. By default, `atoum` use a concurrent mode; that launches tests in a multi-threaded environment. While it is possible to bypass this; this should not be done See http://docs.atoum.org/en/latest/engine.html.
 
-For technical reasons (mainly because of the huge session usage), GLPI unit tests are actually limited to one only thread while running the whole suite; but while developing, the behavior should only be changed if this is really needed.
+For technical reasons (mainly because of the huge session usage), GLPI PHP unit tests are actually limited to one only thread while running the whole suite; but while developing, the behavior should only be changed if this is really needed.
+
+For JavaScript tests, Jest is able to run multiple tests in parallel as long as they are in different *spec* files since they don't interact with database data or a server.
+This behavior is the default.
 
 Type hitting
 ^^^^^^^^^^^^
@@ -276,6 +282,8 @@ Unlike PHPUnit, `atoum` is very strict on type hitting. This really makes sense;
 
 Database
 ^^^^^^^^
+
+This section is in reference to PHP tests only. JavaScript tests do not interact with a database or a GLPI server.
 
 Each class that tests something in database **must** inherit from ``\DbTestCase``. This class provides some helpers (like ``login()`` or ``setEntity()`` method); and it also does some preparation and cleanup.
 
@@ -345,3 +353,6 @@ Running `atoum` without any arguments will show you the possible options. Most i
 * ``-l`` loop mode.
 
 Note that if you do not use the `-ncc` switch; coverage will be generated in the `tests/code-coverage/` directory.
+
+To run the JavaScript unit tests, simply run `npm test` in a terminal from the root of the GLPI folder.
+Currently, there is only a single "project" set up for Jest so this command will run all tests.
