@@ -341,6 +341,20 @@ Hooks that cannot be classified in above categories :)
       <?php
       $PLUGIN_HOOKS['helpdesk_menu_entry_icon']['example'] = 'fas fa-tools';
 
+``debug_tabs``
+  Add one or more new tabs to the GLPI debug panel.
+  Each tab must define a `title` and `display_callable` which is what will be called to print the tab contents.
+
+  .. code-block:: php
+
+     <?php
+     $PLUGIN_HOOKS['debug_tabs']['example'] = [
+       [
+          'title' => 'ExampleTab',
+          'display_callable' => 'ExampleClass::displayDebugTab'
+       ]
+     ];
+
 Items business related
 ++++++++++++++++++++++
 
