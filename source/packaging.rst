@@ -235,17 +235,3 @@ GLPI use the `FreeSans.ttf <http://www.nongnu.org/freefont/>`_ font you can conf
    //[...]
 
    define('GLPI_FONT_FREESANS',  '/path/to/FreeSans.ttf');
-
-Notes
------
-
-This informations are taken from the Fedora/EPEL spec file.
-
-See latest version of the files:
-
- * `glpi-downstream.path <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-downstream.php>`_
- * `nginx/glpi.conf <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-nginx.conf>`_
- * `httpd/glpi.conf <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-httpd.conf>`_
- * `fedora-autoloader.php <https://src.fedoraproject.org/rpms/glpi/blob/master/f/glpi-fedora-autoloader.php>`_
-
-Feel free to add information about other specific distribution tips.
