@@ -17,7 +17,7 @@ For example, this tarball bundle a lot of third party libraries, it does not shi
 
 **A better candidate would be to retrieve directly a tarball from github as package source.**
 
-Filesystem Hirerarchie Standard
+Filesystem Hirerarchy Standard
 -------------------------------
 
 Most distributions requires that packages follows the  `FHS (Filesystem Hierarchy Standard) <http://www.pathname.com/fhs/>`_:
