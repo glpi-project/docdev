@@ -12,11 +12,11 @@ Branches
 
 On the Git repository, you will  find several existing branches:
 
-* `master` contains the next major release source code,
+* `main` (Previously named `master`) contains the next major release source code,
 * `xx/bugfixes` contains the next minor release source code,
 * you should not care about all other branches that may exists, they should have been deleted right now.
 
-The `master` branch is where new features are added. This code is reputed as **non stable**.
+The `main` branch is where new features are added. This code is reputed as **non stable**.
 
 The `xx/bugfixes` branches is where bugs are fixed. This code is reputed as *stable*.
 
@@ -126,9 +126,9 @@ In a short form, here is the workflow we'll follow:
 * fork, create a specific branch, and hack
 * open a :abbr:`PR (Pull Request)`
 
-Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged into the requested branch, developper must report the fixes in the `master`; with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
+Each bug will be fixed in a branch that came from the correct `bugfixes` branch. Once merged into the requested branch, developer must report the fixes in the `main`; with a simple cherry-pick for simple cases, or opening another pull request if changes are huge.
 
-Each feature will be hacked in a branch that came from `master`, and will be merged back to `master`.
+Each feature will be hacked in a branch that came from `main`, and will be merged back to `main`.
 
 General
 ^^^^^^^
@@ -159,7 +159,7 @@ When you open a new pull request, it will be reviewed by one or more member of t
 
 .. note::
 
-   It's up to you to manage your fork; and keep it up to date. I'll advice you to keep original branches (such as ``master`` or ``x.y/bugfixes``) pointing on the upstream repository.
+   It's up to you to manage your fork; and keep it up to date. I'll advice you to keep original branches (such as ``main`` or ``x.y/bugfixes``) pointing on the upstream repository.
 
    Tha way, you'll just have to update the branch from the main repository before doing anything.
 
@@ -188,14 +188,14 @@ At the end, you will want to get your changes back to the project. So, just push
 
 Last step is to create a PR to get your changes back to the project. You'll find the button to do this visiting your fork or even main project github page.
 
-Just remember here we're working on some bugfix, that should reach the `bugfixes` branch; the PR creation will probably propose you to merge against the `master` branch; and maybe will tell you they are conflicts, or many commits you do not know about... Just set the base branch to the correct bugfixes and that should be good.
+Just remember here we're working on some bugfix, that should reach the `bugfixes` branch; the PR creation will probably propose you to merge against the `main` branch; and maybe will tell you they are conflicts, or many commits you do not know about... Just set the base branch to the correct bugfixes and that should be good.
 
 Features
 ^^^^^^^^
 
 Before doing any work on any feature, mays sure it has been discussed by the community. Open - if it does not exists yet - a ticket with your detailled proposition. Fo technical features, you can work directly on github; but for work proposals, you should take a look at our `feature proposal platform <http://glpi.userecho.com/>`_.
 
-If you want to add a new feature, you will have to work on the `master` branch, and create a local branch with the name you want, prefixed with `feature/`.
+If you want to add a new feature, you will have to work on the `main` branch, and create a local branch with the name you want, prefixed with `feature/`.
 
 From the clone directory:
 
@@ -205,7 +205,7 @@ From the clone directory:
    $ git co feature/my-killler feature
 
 
-You'll notice we do no change branch on the first step; that is just because `master` is the default branch, and therefore the one you'll be set on just fafter cloning. At this point, you're working on an only local branch named `feature/my-killer-feature`. You can now work and commit (as frequently as you want).
+You'll notice we do no change branch on the first step; that is just because `main` is the default branch, and therefore the one you'll be set on just after cloning. At this point, you're working on an only local branch named `feature/my-killer-feature`. You can now work and commit (as frequently as you want).
 
 At the end, you will want to get your changes back to the project. So, just push the branch on your fork remote:
 
