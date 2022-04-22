@@ -355,6 +355,21 @@ Hooks that cannot be classified in above categories :)
        ]
      ];
 
+``post_plugin_install``
+  Called after a plugin is installed
+
+``post_plugin_enable``
+  Called after a plugin is enabled
+
+``post_plugin_disable``
+  Called after a plugin is disabled
+
+``post_plugin_uninstall``
+  Called after a plugin is uninstalled
+
+``post_plugin_clean``
+  Called after a plugin is cleaned (removed from the database after the folder is deleted)
+
 Items business related
 ++++++++++++++++++++++
 
