@@ -174,18 +174,19 @@ Variables types
 
 Variables types for use in DocBlocks for Doxygen:
 
-========= ===========
- Type     Description
-========= ===========
-mixed     A variable with undefined (or multiple) type
-integer   Integer type variable (whole number)
-float     Float type (point number)
-boolean   Logical type (true or false)
-string    String type (any value in ``""`` or ``' '``)
-array     Array type
-object    Object type
-ressource Resource type (as returned from ``mysql_connect`` function)
-========= ===========
+=============== ===========
+ Type           Description
+=============== ===========
+mixed           A variable with undefined (or multiple) type
+integer         Integer type variable (whole number)
+float           Float type (point number)
+boolean         Logical type (true or false)
+string          String type (any value in ``""`` or ``' '``)
+array           Array type
+object          Object type
+resource        Resource type (as returned from ``mysql_connect`` function)
+class-string<T> A string that represents a class name where T is the class (or a common parent class)
+=============== ===========
 
 Inserting comment in source code for doxygen.
 Result : full doc for variables, functions, classes...
