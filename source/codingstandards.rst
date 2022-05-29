@@ -185,8 +185,9 @@ string          String type (any value in ``""`` or ``' '``)
 array           Array type
 object          Object type
 resource        Resource type (as returned from ``mysql_connect`` function)
-class-string<T> A string that represents a class name where T is the class (or a common parent class)
 =============== ===========
+
+In addition to the above, you may use any valid types from `PHPStan <https://phpstan.org/writing-php-code/phpdoc-types>`_.
 
 Inserting comment in source code for doxygen.
 Result : full doc for variables, functions, classes...
