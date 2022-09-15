@@ -7,6 +7,18 @@ GLPI source code management is handled by `GIT <https://en.wikipedia.org/wiki/Gi
 
 In order to contribute to the source code, you will have to know a few things about Git and the development model we follow.
 
+Versionning
+-----------
+
+Version numbers follow the `x.y.z` nomenclature, where `x` is a major release, `y` is an intermediate release, and `z` is a bugfix release.
+
+Backward compatibility
+----------------------
+
+Wherever possible, bugfix releases should not make any non-backwards compatible changes to our source code, so a plugin that has been made compatible with a `10.0.0` release should therefore be compatible, barring exceptions, with all `10.0.x` versions. In the event that an incompatibility is introduced in a bugfix version, please let us know, so that we can correct the problem.
+
+In the context of intermediate or major versions, we do not prevent ourselves from breaking the backward compatibility of our source code. Indeed, although we try to make the maintenance of the plugins as easy as possible, some parts of our source code are not intended to be used or extended in them, and maintaining backward compatibility would be too costly in terms of time. However, the elements destined to disappear, as soon as they are intended to be used by plugins, are maintained for at least one intermediate version, and noted as being deprecated.
+
 Branches
 --------
 
@@ -16,11 +28,11 @@ On the Git repository, you will  find several existing branches:
 * `xx/bugfixes` contains the next minor release source code,
 * you should not care about all other branches that may exists, they should have been deleted right now.
 
-The `master` branch is where new features are added. This code is reputed as **non stable**.
+The `main` branch is where new features are added. This code is reputed as **non stable**.
 
-The `xx/bugfixes` branches is where bugs are fixed. This code is reputed as *stable*.
+The `x.y/bugfixes` branches is where bugs are fixed. This code is reputed as *stable*.
 
-Those branches are created when any major version is released. At the time I wrote these lines, latest stable version is `9.4` so the current bugfix branch is `9.4/bugfixes`. As old versions are not supported, old bugfixes branches will not be changed at all; while they're still existing.
+Those branches are created when a new major or intermediate version is released. At the time I wrote these lines, latest stable version is `10.0` so the current bugfix branch is `10.0/bugfixes`. We do not maintain previous stable versions, unless when critical bug or security issues are found, so old bugfixes branches are likely to not change; while they are still existing.
 
 Testing
 -------
