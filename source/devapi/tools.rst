@@ -16,7 +16,7 @@ genapidoc.sh
 
 Generate GLPI phpdoc using `apigen <http://www.apigen.org/>`_. ``apigen`` command must be available in your path.
 
-Generated documentation will be available in the ``api`` directory. Note that you can also look at the `online version <https://forge.glpi-project.org/apidoc/>`_.
+Generated documentation will be available in the ``api`` directory.
 
 convert_search_options.php
 --------------------------

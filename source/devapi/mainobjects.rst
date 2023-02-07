@@ -3,6 +3,10 @@ Main framework objects
 
 GLPI contains numerous classes; but there are a few common objects you'd have to know about. All GLPI classes are in the ``inc`` directory.
 
+.. note::
+
+   See the full API documentation for related object for a complete list of methods provided.
+
 CommonGLPI
 ^^^^^^^^^^
 
@@ -17,7 +21,6 @@ This object will help you to:
 * get URLs (form, search, ...),
 * ...
 
-See the `full API documentation for CommonGLPI object <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html>`_ for a complete list of methods provided.
 
 CommonDBTM
 ^^^^^^^^^^
@@ -33,8 +36,6 @@ It aims to manage database persistence and tables for all objects; and will help
 
 The CommonDBTM object provides several of the :doc:`available hooks <../plugins/hooks>`.
 
-See the `full API documentation for CommonDBTM object <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html>`_ for a complete list of methods provided.
-
 CommonDropdown
 ^^^^^^^^^^^^^^
 
@@ -46,8 +47,6 @@ It will help you to:
 * import data,
 * ...
 
-See the `full API documentation for CommonDropdown object <https://forge.glpi-project.org/apidoc/class-CommonDropdown.html>`_ for a complete list of methods provided.
-
 CommonTreeDropdown
 ^^^^^^^^^^^^^^^^^^
 
@@ -55,14 +54,10 @@ This class aims to manage tree lists database stuff. It inherits from `CommonDro
 
 It will mainly help you to manage the tree apsect of a dropdown (parents, children, and so on).
 
-See the `full API documentation for CommonTreeDropdown object <https://forge.glpi-project.org/apidoc/class-CommonTreeDropdown.html>`_ for a complete list of methods provided.
-
 CommonImplicitTreeDropdown
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This class manages tree lists that cannot be managed by the user. It inherits from `CommonTreeDropdown`_. The class is in the ``inc/commonimplicittreedropdown.class.php`` file.
-
-See the `full API documentation for CommonTreeDropdown object <https://forge.glpi-project.org/apidoc/class-CommonTreeDropdown.html>`_ for a complete list of methods provided.
 
 CommonDBVisible
 ^^^^^^^^^^^^^^^
@@ -75,8 +70,6 @@ It provides methods to:
 * get dropdown parameters,
 * ...
 
-See the `full API documentation for CommonDBVisible object <https://forge.glpi-project.org/apidoc/class-CommonDBVisible.html>`_ for a complete list of methods provided.
-
 CommonDBConnexity
 ^^^^^^^^^^^^^^^^^
 
@@ -84,16 +77,12 @@ This class factorizes database relation and inheritance stuff. It inherits from 
 
 It is not designed to be used directly, see `CommonDBChild`_ and `CommonDBRelation`_.
 
-See the `full API documentation for CommonDBConnexity object <https://forge.glpi-project.org/apidoc/class-CommonDBConnexity.html>`_ for a complete list of methods provided.
-
 CommonDBChild
 ^^^^^^^^^^^^^
 
 This class manages simple relations. It inherits from `CommonDBConnexity`_. The class is in the ``inc/commondbchild.class.php`` file.
 
 This object will help you to define and manage parent/child relations.
-
-See the `full API documentation for CommonDBChild object <https://forge.glpi-project.org/apidoc/class-CommonDBChild.html>`_ for a complete list of methods provided.
 
 CommonDBRelation
 ^^^^^^^^^^^^^^^^
@@ -116,8 +105,6 @@ The object will also help you to:
 * handle massive actions,
 * ...
 
-See the `full API documentation for CommonDBRelation object <https://forge.glpi-project.org/apidoc/class-CommonDBRelation.html>`_ for a complete list of methods provided.
-
 CommonDevice
 ^^^^^^^^^^^^
 
@@ -129,8 +116,6 @@ It will help you to:
 * handle menus,
 * do some display,
 * ...
-
-See the `full API documentation for CommonDevice object <https://forge.glpi-project.org/apidoc/class-CommonDevice.html>`_ for a complete list of methods provided.
 
 Common ITIL objects
 ^^^^^^^^^^^^^^^^^^^
@@ -149,8 +134,6 @@ It will help you to:
 * get status,
 * ...
 
-See the `full API documentation for CommonITILObject object <https://forge.glpi-project.org/apidoc/class-CommonITILObject.html>`_ for a complete list of methods provided.
-
 CommonITILActor
 +++++++++++++++
 
@@ -163,8 +146,6 @@ It will help you to:
 * get ACLs,
 * ...
 
-See the `full API documentation for CommonITILActor object <https://forge.glpi-project.org/apidoc/class-CommonITILActor.html>`_ for a complete list of methods provided.
-
 CommonITILCost
 ++++++++++++++
 
@@ -175,8 +156,6 @@ It will help you to:
 * get item cost,
 * do some display,
 * ...
-
-See the `full API documentation for CommonITILCost object <https://forge.glpi-project.org/apidoc/class-CommonITILCost.html>`_ for a complete list of methods provided.
 
 CommonITILTask
 ++++++++++++++
@@ -190,8 +169,6 @@ It will help you to:
 * get search options,
 * ...
 
-See the `full API documentation for CommonITILTask object <https://forge.glpi-project.org/apidoc/class-CommonITILTask.html>`_ for a complete list of methods provided.
-
 CommonITILValidation
 ++++++++++++++++++++
 
@@ -204,5 +181,3 @@ It will help you to:
 * get counts,
 * do some display,
 * ...
-
-See the `full API documentation for CommonITILValidation object <https://forge.glpi-project.org/apidoc/class-CommonITILValidation.html>`_ for a complete list of methods provided.

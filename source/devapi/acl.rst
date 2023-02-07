@@ -10,7 +10,7 @@ Provide a way for administrator to segment usages into profiles of users.
 Profiles
 ^^^^^^^^
 
-The `Profile class <https://forge.glpi-project.org/apidoc/class-Profile.html>`_ (corresponding to ``glpi_profiles`` table) stores each set of rights.
+The ``Profile`` (corresponding to ``glpi_profiles`` table) stores each set of rights.
 
 A profile has a set of base fields independent of sub rights and, so, could:
 
@@ -25,7 +25,7 @@ A profile has a set of base fields independent of sub rights and, so, could:
 Rights definition
 ^^^^^^^^^^^^^^^^^
 
-They are defined by the `ProfileRight class <https://forge.glpi-project.org/apidoc/class-ProfileRight.html>`_ (corresponding to ``glpi_profilerights`` table)
+They are defined by the ``ProfileRight`` class (corresponding to ``glpi_profilerights`` table)
 
 Each consists of:
 
@@ -103,14 +103,14 @@ The new rights need to be checked by your own functions, see :ref:`check rights 
 Check rights
 ^^^^^^^^^^^^
 
-Each itemtype class which inherits from `CommonDBTM <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html>`_ will benefit from standard right checks.
+Each itemtype class which inherits from ``CommonDBTM`` will benefit from standard right checks.
 See the following methods:
 
-- `canView <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canView>`_
-- `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_
-- `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_
-- `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_
-- `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_
+- ``canView``
+- ``canUpdate``
+- ``canCreate``
+- ``canDelete``
+- ``canPurge``
 
 If you need to test a specific ``rightname`` against a possible right, here is how to do:
 
@@ -139,15 +139,15 @@ If you need to test a specific ``rightname`` against a possible right, here is h
 
 See methods definition:
 
-* `haveRight <https://forge.glpi-project.org/apidoc/class-Session.html#_haveRight>`_
-* `haveRightsAnd <https://forge.glpi-project.org/apidoc/class-Session.html#_haveRightsAnd>`_
-* `haveRightsOr <https://forge.glpi-project.org/apidoc/class-Session.html#_haveRightsOr>`_
+* ``haveRight``
+* ``haveRightsAnd``
+* ``haveRightsOr``
 
 All above functions return a boolean. If we want a graceful die of your pages, we have equivalent function but with a ``check`` prefix instead ``have``:
 
-* `checkRight <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRight>`_
-* `checkRightsAnd <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsAnd>`_
-* `checkRightsOr <https://forge.glpi-project.org/apidoc/class-Session.html#_checkRightsOr>`_
+* ``checkRight``
+* ``checkRightsAnd``
+* ``checkRightsOr``
 
 If you need to check a right directly in a SQL query, use bitwise `& <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ and `| <http://php.net/manual/fr/language.operators.bitwise.php>`_ operators, ex for users:
 
