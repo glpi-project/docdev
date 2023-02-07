@@ -34,7 +34,7 @@ A few steps are required to setup the mode. In the ``init`` method (``setup.php`
 
    GLPI will look for classes named like ``Plugin{NAME}Notification{MODE}``.
 
-   In the above example; we have used one the the `provided (but not yet used) modes from the core <https://forge.glpi-project.org/apidoc/class-Notification_NotificationTemplate.html#constants>`_. If you need a mode that does not exists, you can of course create yours!
+   In the above example; we have used one the the provided (but not yet used) modes from the core. If you need a mode that does not exists, you can of course create yours!
 
 In order to make you new notification active, you will have to declare a ``notifications_{MODE}`` variable in the main configuration: You will add it at install time, and remove it on uninstall... In the ``hook.php`` file:
 
@@ -74,7 +74,7 @@ You will probably need some configuration settings to get your notifications mod
    $conf = Config::getConfigurationValues('plugin:sms');
    //$conf will be ['server' => '', 'port' => '']
 
-That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``PluginSmsNotificationSmsSetting`` and must be in the ``inc/notificationsmssetting.class.php``. It have to extends the `NotificationSetting <https://forge.glpi-project.org/apidoc/class-NotificationSetting.html>`_ core class :
+That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``PluginSmsNotificationSmsSetting`` and must be in the ``inc/notificationsmssetting.class.php``. It have to extends the ``NotificationSetting`` core class :
 
 .. code-block:: php
 
@@ -166,7 +166,7 @@ The front form file, located at ``front/notificationsmssetting.form.php`` will b
 Event
 ^^^^^
 
-Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``PluginSmsNotificationEventSms`` that implements `NotificationEventInterface <https://forge.glpi-project.org/apidoc/class-NotificationEventInterface.html>`_ and extends `NotificationEventAbstract <https://forge.glpi-project.org/apidoc/class-NotificationEventAbstract.html>` in the ``inc/notificationeventsms.php``.
+Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``PluginSmsNotificationEventSms`` that implements ``NotificationEventInterface`` and extends ``NotificationEventAbstract`` in the ``inc/notificationeventsms.php``.
 
 Methods to implement are:
 
@@ -263,7 +263,7 @@ En example class for SMS Events would look like the following:
 Notification
 ^^^^^^^^^^^^
 
-Finally, create a ``NotificationSms`` class that implements the `NotificationInterface <https://forge.glpi-project.org/apidoc/class-NotificationInterface.html>`_ in the ``inc/notificationsms.php`` file.
+Finally, create a ``NotificationSms`` class that implements the ``NotificationInterface`` in the ``inc/notificationsms.php`` file.
 
 Methods to implement are:
 

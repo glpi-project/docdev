@@ -19,32 +19,32 @@ Classes
 
 A rules system is represented by these base classes:
 
-* `Rule class <https://forge.glpi-project.org/apidoc/class-Rule.html>`_
+* ``Rule`` class
 
     Parent class for all Rule* classes.
     This class represents a single rule (matching a line in ``glpi_rules`` table) and include test, process, display for an instance.
 
-* `RuleCollection class <https://forge.glpi-project.org/apidoc/class-RuleCollection.html>`_
+* ``RuleCollection`` class
 
     Parent class for all ``Rule*Collection`` classes.
 
     This class represents the whole collection of rules for a ``sub_type`` (matching all line in ``glpi_rules`` table for this ``sub_type``) and includes some method to process, duplicate, test and display the full collection.
 
-* `RuleCriteria class <https://forge.glpi-project.org/apidoc/class-RuleCriteria.html>`_
+* ``RuleCriteria`` class
 
     This class permits to manipulate a single criteria (matching a line in ``glpi_rulecriterias`` table) and include methods to display and match input values.
 
-* `RuleAction class <https://forge.glpi-project.org/apidoc/class-RuleAction.html>`_
+* ``RuleAction`` class
 
     This class permits to manipulate a single action (matching a line in ``glpi_ruleactions`` table) and include methods to display and process output values.
 
 And for each ``sub_type`` of rule:
 
-* `RuleSubtype class <https://forge.glpi-project.org/apidoc/class-RuleSubtype.html>`_
+* ``RuleSubtype`` class
 
     Define the specificity of the ``sub_type`` rule like list of criteria and actions or how to display specific parts.
 
-* `RuleSubtypeCollection class <https://forge.glpi-project.org/apidoc/class-RuleSubtypeCollection.html>`_
+* ``RuleSubtypeCollection`` class
 
     Define the specificity of the ``sub_type`` rule collection like the preparation of input and the tests results.
 
@@ -68,8 +68,8 @@ Here is the list of important tables / fields for rules:
     Store all criteria for all rules.
 
     - **rules_id**: the foreign key for glpi_rules,
-    - **criteria**: one of the key defined in the `RuleSubtype::getCriterias() <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getCriterias>`_ method,
-    - **condition**: an integer matching the constant set in `Rule class constants <https://forge.glpi-project.org/apidoc/class-Rule.html#constants>`_,
+    - **criteria**: one of the key defined in the ``RuleSubtype::getCriterias()`` method,
+    - **condition**: an integer matching the constant set in ``Rule`` class constants,
     - **pattern**: the direct value or regex to compare to the criteria.
 
 * ``glpi_ruleactions``:
@@ -77,8 +77,8 @@ Here is the list of important tables / fields for rules:
     Store all actions for all rules.
 
     - **rules_id**: the foreign key for glpi_rules,
-    - **action_type**: the type of action to apply on the input. See `RuleAction::getActions() <https://forge.glpi-project.org/apidoc/class-RuleAction.html#_getActions>`_,
-    - **field**: the field to alter by the current action. See keys definition in `RuleSubtype::getActions() <https://forge.glpi-project.org/apidoc/class-RuleTicket.html#_getActions>`_,
+    - **action_type**: the type of action to apply on the input. See ``RuleAction::getActions()``,
+    - **field**: the field to alter by the current action. See keys definition in ``RuleSubtype::getActions()``,
     - **value**: the value to apply in the field.
 
 Add a new Rule class

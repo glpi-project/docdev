@@ -7,8 +7,8 @@ Add a tab on a core object
 In order to add a new tab on a core object, you will have to:
 
 * register your class against core object(s) telling it you will add a tab,
-* use `getTabNameForItem() <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_getTabNameForItem>`_ to give tab a name,
-* use `displayTabContentForItem() <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_displayTabContentForItem>`_ to display tab contents.
+* use ``getTabNameForItem()`` to give tab a name,
+* use ``displayTabContentForItem()`` to display tab contents.
 
 First, in the ``plugin_init_{plugin_name}`` function, add the following:
 
@@ -77,9 +77,9 @@ Add a tab on one of my plugin objects
 
 In order to add a new tab on your plugin object, you will have to:
 
-* use `defineTabs() <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_defineTabs>`_ to register the new tab,
-* use `getTabNameForItem() <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_getTabNameForItem>`_ to give tab a name,
-* use `displayTabContentForItem() <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_displayTabContentForItem>`_ to display tab contents.
+* use ``defineTabs()`` to register the new tab,
+* use ``getTabNameForItem()`` to give tab a name,
+* use ``displayTabContentForItem()`` to display tab contents.
 
 
 Then, in your ``inc/myclass.php``:

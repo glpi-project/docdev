@@ -8,7 +8,7 @@ Search Engine
 Goal
 ^^^^
 
-The `Search class <https://forge.glpi-project.org/apidoc/class-Search.html>`_ aims to provide a multi-criteria Search engine for GLPI Itemtypes.
+The ``Search`` class aims to provide a multi-criteria Search engine for GLPI Itemtypes.
 
 
 It includes some short-cuts functions:
@@ -124,7 +124,7 @@ All are optionals.
 ``metacriteria``
    Very similar to :ref:`criteria parameter <search_criteria>` but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (the softwares of a computer, for example).
 
-   Not all itemtype can be linked, see `the getMetaItemtypeAvailable() method of the Search class <https://forge.glpi-project.org/apidoc/class-Search.html#_getMetaItemtypeAvailable>`_ to know which ones could be.
+   Not all itemtype can be linked, see the ``getMetaItemtypeAvailable()`` method of the ``Search`` class to know which ones could be.
 
    The parameter need the same keys as criteria plus one additional:
 
@@ -521,7 +521,7 @@ You need to set 'datatype' => 'specific' in your search option and declare these
       * `searchoptionvalue.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/ajax/searchoptionvalue.php#L128>`_
       * `massiveaction.class.php <https://github.com/glpi-project/glpi/blob/ee667a059eb9c9a57c6b3ae8309e51ca99a5eeaf/inc/massiveaction.class.php#L881>`_
 
-Simplified example extracted from `CommonItilObject Class <https://forge.glpi-project.org/apidoc/class-CommonITILObject.html>`_ for ``glpi_tickets.status`` field:
+Simplified example extracted from ``CommonItilObject`` Class for ``glpi_tickets.status`` field:
 
 .. code-block:: php
 
@@ -591,7 +591,7 @@ GLPI will automatically call predefined methods you can rely on from your plugin
 addDefaultSelect
 ++++++++++++++++
 
-See `addDefaultSelect() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultSelect>`_
+See ``addDefaultSelect()`` method documentation
 
 And in the plugin ``hook.php`` file:
 
@@ -610,7 +610,7 @@ And in the plugin ``hook.php`` file:
 addDefaultWhere
 +++++++++++++++
 
-See `addDefaultWhere() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultWhere>`_
+See ``addDefaultWhere()`` method documentation
 
 And in the plugin ``hook.php`` file:
 
@@ -634,7 +634,7 @@ And in the plugin ``hook.php`` file:
 addDefaultJoin
 ++++++++++++++
 
-See `addDefaultJoin() method documentation <https://forge.glpi-project.org/apidoc/class-Search.html#_addDefaultJoin>`_
+See ``addDefaultJoin()``
 
 And in the plugin ``hook.php`` file:
 

@@ -3,7 +3,7 @@ Updating
 
 .. versionadded:: 9.3
 
-Just as SQL `SELECT` queries, you should avoid plain SQL and use methods provided by the famework from the `DB object <https://forge.glpi-project.org/apidoc/class-DBmysql.html>`_.
+Just as SQL `SELECT` queries, you should avoid plain SQL and use methods provided by the famework from the ``DB`` object.
 
 General
 ^^^^^^^
@@ -15,7 +15,7 @@ The `WHERE` part of `UPDATE` and `DELETE` methods uses the same :ref:`criteria c
 Inserting a row
 ^^^^^^^^^^^^^^^
 
-You can insert a row in the database using the `insert() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_insert>`_:
+You can insert a row in the database using the ``insert()``:
 
 .. code-block:: php
 
@@ -29,12 +29,12 @@ You can insert a row in the database using the `insert() method <https://forge.g
    );
    // => INSERT INTO `glpi_my_table` (`a_field`, `other_field`) VALUES ('My value', Other value)
 
-An `insertOrDie() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_insertOrDie>`_ is also provided.
+An ``insertOrDie()`` method is also provided.
 
 Updating a row
 ^^^^^^^^^^^^^^
 
-You can update rows in the database using the `update() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_update>`_:
+You can update rows in the database using the ``update()`` method:
 
 .. code-block:: php
 
@@ -50,7 +50,7 @@ You can update rows in the database using the `update() method <https://forge.gl
    );
    // => UPDATE `glpi_my_table` SET `a_field` = 'My value', `other_field` = 'Other value' WHERE `id` = 42
 
-An `updateOrDie() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_updateOrDie>`_ is also provided.
+An ``updateOrDie()`` method is also provided.
 
 .. versionadded:: 9.3.1
 
@@ -72,7 +72,7 @@ When issuing an `UPDATE` query, you can use an `ORDER` and/or a `LIMIT` clause a
 Removing a row
 ^^^^^^^^^^^^^^
 
-You can remove rows from the database using the `delete() method <https://forge.glpi-project.org/apidoc/class-DBmysql.html#_delete>`_:
+You can remove rows from the database using the ``delete()`` method:
 
 .. code-block:: php
 
