@@ -500,36 +500,36 @@ You can also use some function or non supported stuff on field part by using a `
    ]);
    // SELECT * FROM `my_table` WHERE LOWER(`field`) = 'value'
 
-   .. versionadded:: 9.5.0
+.. versionadded:: 9.5.0
 
-  You can use a QueryExpression object in the FIELDS statement:
+You can use a QueryExpression object in the FIELDS statement:
 
-   .. code-block:: php
+.. code-block:: php
 
-      <?php
-      $DB->request([
-         'FIELDS'    => [
-            'glpi_computers' => ['id'],
-            new QueryExpression("CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname`")
-         ],
-         'FROM'      => 'glpi_computers',
-         'LEFT JOIN' => [
-            'glpi_domains' => [
-               'FKEY' => [
-                  'glpi_computers' => 'domains_id',
-                  'glpi_domains' => 'id',
-               ]
+   <?php
+   $DB->request([
+      'FIELDS'    => [
+         'glpi_computers' => ['id'],
+         new QueryExpression("CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname`")
+      ],
+      'FROM'      => 'glpi_computers',
+      'LEFT JOIN' => [
+         'glpi_domains' => [
+            'FKEY' => [
+               'glpi_computers' => 'domains_id',
+               'glpi_domains' => 'id',
             ]
          ]
-      ]);
-      // => SELECT `glpi_computers`.`id`, CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname` FROM `glpi_computers` LEFT JOIN `glpi_domains` ON (`glpi_computers`.`domains_id` = `glpi_domains`.`id`)
+      ]
+   ]);
+   // => SELECT `glpi_computers`.`id`, CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname` FROM `glpi_computers` LEFT JOIN `glpi_domains` ON (`glpi_computers`.`domains_id` = `glpi_domains`.`id`)
 
-  You can use a QueryExpression object in the FROM statement:
+You can use a QueryExpression object in the FROM statement:
 
-     .. code-block:: php
+.. code-block:: php
 
-      <?php
-      $DB->request([
-         'FROM'      => new QueryExpression('(SELECT * FROM glpi_computers) as computers'),
-      ]);
-      // => SELECT * FROM (SELECT * FROM glpi_computers) as computers
+   <?php
+   $DB->request([
+      'FROM'      => new QueryExpression('(SELECT * FROM glpi_computers) as computers'),
+   ]);
+   // => SELECT * FROM (SELECT * FROM glpi_computers) as computers
