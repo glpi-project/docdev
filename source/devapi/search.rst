@@ -401,11 +401,11 @@ Available datatypes for search are:
 
 ``text``
 
-   Simple text
+   Use text area input for modification (optionally rich-text)
 
 ``string``
 
-   Use a rich text editor for modification
+   Simple, single-line text
 
 ``ip``
 
