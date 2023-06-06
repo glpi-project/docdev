@@ -32,7 +32,7 @@ You will need:
 * a front file to handle display (``front/myobject.php``),
 * a front file to handle form display (``front/myobject.form.php``).
 
-First, create the ``src/MyObject.class.php`` file that looks like:
+First, create the ``src/MyObject.php`` file that looks like:
 
 .. code-block:: php
 

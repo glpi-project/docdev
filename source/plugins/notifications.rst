@@ -74,7 +74,7 @@ You will probably need some configuration settings to get your notifications mod
    $conf = Config::getConfigurationValues('plugin:sms');
    //$conf will be ['server' => '', 'port' => '']
 
-That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``GlpiPlugin\Sms\NotificationSmsSetting`` and must be in the ``src/NotificationSmsSetting.class.php``. It have to extends the ``NotificationSetting`` core class :
+That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``GlpiPlugin\Sms\NotificationSmsSetting`` and must be in the ``src/NotificationSmsSetting.php`` file. It have to extends the ``NotificationSetting`` core class :
 
 .. code-block:: php
 
@@ -168,7 +168,7 @@ The front form file, located at ``front/notificationsmssetting.form.php`` will b
 Event
 ^^^^^
 
-Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``GlpiPlugin\Sms\NotificationEventSms`` that implements ``NotificationEventInterface`` and extends ``NotificationEventAbstract`` in the ``inc/notificationeventsms.php``.
+Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``GlpiPlugin\Sms\NotificationEventSms`` that implements ``NotificationEventInterface`` and extends ``NotificationEventAbstract`` in the ``src/NotificationEventSms.php`` file.
 
 Methods to implement are:
 
