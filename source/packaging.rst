@@ -17,12 +17,12 @@ For example, this tarball bundle a lot of third party libraries, it does not shi
 
 **A better candidate would be to retrieve directly a tarball from github as package source.**
 
-Filesystem Hirerarchy Standard
+Filesystem Hierarchy Standard
 -------------------------------
 
 Most distributions requires that packages follows the  `FHS (Filesystem Hierarchy Standard) <http://www.pathname.com/fhs/>`_:
 
- * ``/etc/glpi`` for configuration files: ``config_db.php`` and ``config_db_slave.php``. Prior to 9.2 release, other files stay in ``glpi/config``; begining with 9.2, those files have been moved;
+ * ``/etc/glpi`` for configuration files: ``config_db.php`` and ``config_db_slave.php``. Prior to 9.2 release, other files stay in ``glpi/config``; beginning with 9.2, those files have been moved;
  * ``/usr/share/glpi`` for the web pages (read only dir);
  * ``/var/lib/glpi/files`` for GLPI data and state information (session, uploaded documents, cache, cron, plugins, ...);
  * ``/var/log/glpi`` for various GLPI log files.
@@ -49,7 +49,7 @@ Here is a configuration file sample for the Apache web server:
        Options None
        AllowOverride None
 
-       # to overwrite default configuration which could be less than recommanded value
+       # to overwrite default configuration which could be less than recommended value
        php_value memory_limit 64M
 
       <IfModule mod_authz_core.c>
@@ -69,7 +69,7 @@ Here is a configuration file sample for the Apache web server:
        php_value memory_limit 128M
    </Directory>
 
-   # This sections remplace the .htaccess files provided in the tarball 
+   # This sections replace the .htaccess files provided in the tarball
    <Directory /usr/share/glpi/config>
       <IfModule mod_authz_core.c>
          # Apache 2.4

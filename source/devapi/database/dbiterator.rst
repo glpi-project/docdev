@@ -47,7 +47,7 @@ This usage is deprecated, and should be avoid when possible.
 
 .. note::
 
-   To make a database query that could not be done using recommanded way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
+   To make a database query that could not be done using recommended way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
 
    .. code-block:: php
 
@@ -111,7 +111,7 @@ You need to use criteria, usually a ``FKEY`` to describe how to join the tables.
 
    .. versionadded:: 9.3.1
 
-   The ``ON`` keyword can aslo be used as an alias of ``FKEY``.
+   The ``ON`` keyword can also be used as an alias of ``FKEY``.
 
 Multiple tables, native join
 ++++++++++++++++++++++++++++
@@ -248,9 +248,9 @@ As you can see on the above example, a ``UNION ALL`` query is built. If you want
 
 .. warning::
 
-   Keep in mind that deduplicate a UNION query may have a huge cost on database server.
+   Keep in mind that deduplicating a UNION query may have a huge cost on database server.
 
-   Most of the time, you can issue a ``UNION ALL`` and dedup in the code.
+   Most of the time, you can issue a ``UNION ALL`` and deduplicate the results in the code.
 
 Counting
 ^^^^^^^^
@@ -308,7 +308,7 @@ Using the ``START`` and ``LIMIT`` options:
 Criteria
 ^^^^^^^^
 
-Other option are considered as an array of criteria (implicit logicical ``AND``)
+Other option are considered as an array of criteria (implicit logical ``AND``)
 
 The ``WHERE`` can also be used for legibility.
 

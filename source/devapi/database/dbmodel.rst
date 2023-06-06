@@ -33,7 +33,7 @@ All resultsets sent back from GLPI database should always be associative arrays.
 Naming conventions
 ^^^^^^^^^^^^^^^^^^
 
-All tables and fields names are lower case and follows the same logic. If you do not respect that; GLPI will fail to find relevant informations.
+All tables and fields names are lower case and follows the same logic. If you do not respect that; GLPI will fail to find relevant information.
 
 Tables
 ++++++
@@ -58,7 +58,7 @@ Fields
 
    Each table **must** have an auto-incremented primary key named ``id``.
 
-Field naming is mostly up to you; exept for identifiers and foreign keys. Just keep clear and concise!
+Field naming is mostly up to you; except for identifiers and foreign keys. Just keep clear and concise!
 
 To add a foreign key field; just use the foreign table name without ``glpi_`` prefix, and add ``_id`` suffix.
 

@@ -6,7 +6,7 @@ In most of the cases; your plugin will have to manage several objects
 Define an object
 ++++++++++++++++
 
-Objects definitions will be stored into the ``inc/`` directory of your plugin. File name will be the name of your class, lowercased; the class name will be the concatenation of your plugin name and your class name.
+Objects definitions will be stored into the ``inc/`` directory of your plugin. File name will be the name of your class in lowercase; the class name will be the concatenation of your plugin name and your class name.
 
 For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
 

@@ -97,20 +97,20 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
       ];
    }
 
-Plugin informations provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
+Plugin information provided in ``plugin_version_myexample`` method will be displayed in the GLPI plugins user interface.
 
 .. _plugins_checks:
 
 Requirements checking
 ~~~~~~~~~~~~~~~~~~~~~
 
-Since GLPI 9.2; it is possible to provide some requirement informations along with the informations array. Those informations are not mandatory, but we encourage you to migrate :)
+Since GLPI 9.2; it is possible to provide some requirement information along with the information array. Those information are not mandatory, but we encourage you to migrate :)
 
 .. warning::
 
-   Even if this has been deprecated for a wile, many plugins continue to provide a ``minGlpiVersion`` entry in the informations array. If this value is set; it will be automatically used as minimal GLPI version.
+   Even if this has been deprecated for a wile, many plugins continue to provide a ``minGlpiVersion`` entry in the information array. If this value is set; it will be automatically used as minimal GLPI version.
 
-In order to set your requirements, add a ``requirements`` entry in the ``plugin_version_myexample`` informations array. Let's say your plugin is compatible with a version of GLPI comprised between 0.90 and 9.2; with a minimal version of PHP set to 7.0. The method would look like:
+In order to set your requirements, add a ``requirements`` entry in the ``plugin_version_myexample`` information array. Let's say your plugin is compatible with a version of GLPI comprised between 0.90 and 9.2; with a minimal version of PHP set to 7.0. The method would look like:
 
 .. code-block:: php
 
@@ -152,7 +152,7 @@ In order to set your requirements, add a ``requirements`` entry in the ``plugin_
    * ``params``: an array of parameters name that must be set (retrieved from ``ini_get()``),
    * ``exts``: array of used extensions (see below).
 
-PHP extensions checks rely on core capabilities. You have to provide a multi dimensionnal array with extension name as key. For each of those entries; you can define if the extension is required or not, and optionnally a class or a function to check.
+PHP extensions checks rely on core capabilities. You have to provide a multidimensional array with extension name as key. For each of those entries; you can define if the extension is required or not, and optionally a class or a function to check.
 
 The following example is from the core:
 
@@ -178,12 +178,12 @@ The following example is from the core:
 
 * the ``mysqli`` extension is mandatory; ``extension_loaded()`` function will be used for check;
 * the ``fileinfo`` extension is mandatory; ``class_exists()`` function will be used for check;
-* the ``json`` extension is madatory; ``function_exists()`` function will be used for check;
+* the ``json`` extension is mandatory; ``function_exists()`` function will be used for check;
 * the ``imap`` extension is not mandatory.
 
 .. note::
 
-   Optionnal extensions are not yet handled in the checks function; but will probably be in the future. You can add them to the configuration right now :)
+   Optional extensions are not yet handled in the checks function; but will probably be in the future. You can add them to the configuration right now :)
 
 Without using automatic requirements; it's up to you to check with something like the following in the ``plugin_myexample_check_prerequisites``:
 
@@ -241,7 +241,7 @@ For instance, a plugin need both an install and an uninstall hook calls. Here is
     * @return boolean
     */
    function plugin_myexample_install() {
-      //do some stuff like instanciating databases, default values, ...
+      //do some stuff like instantiating databases, default values, ...
       return true;
    }
 
@@ -266,7 +266,7 @@ In order to check for coding standards compliance, you can add the `glpi-project
 
    $ composer require --dev glpi-project/coding-standard
 
-This will install the latest version of the coding-standard used in GLPI core. If you want to use an loder version of the checks (for example if you have a huge amount of work to fix!), you can specify a version in the above command like ``glpi-project/coding-standard:0.5``. Refer to the `coding-standard project changelog <https://github.com/glpi-project/coding-standard/blob/master/CHANGELOG.md>`_ to know more ;)
+This will install the latest version of the coding-standard used in GLPI core. If you want to use an older version of the checks (for example if you have a huge amount of work to fix!), you can specify a version in the above command like ``glpi-project/coding-standard:0.5``. Refer to the `coding-standard project changelog <https://github.com/glpi-project/coding-standard/blob/master/CHANGELOG.md>`_ to know more ;)
 
 You can then for example add a line in your ``.travis.yml`` file to automate checking:
 

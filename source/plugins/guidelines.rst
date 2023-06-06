@@ -10,7 +10,7 @@ Real structure will depend of what your plugin propose. See :doc:`requirements <
 
 .. warning::
 
-   The main directory name of your plugin may contain only alphanumeric characters (no ``-`` or ``_`` or accentued characters or else).
+   The main directory name of your plugin may contain only alphanumeric characters (no ``-`` or ``_`` or accented characters or else).
 
 The plugin directory structure should look like the following:
 
@@ -46,7 +46,7 @@ The plugin directory structure should look like the following:
 * if you internationalize your plugin, localization files will be found under the `locale` directory,
 * if you need any scripting tool (like something to extract or update your translatable strings), you can put them in the `tools` directory
 * a `README.md` file describing the plugin features, how to install it, and so on,
-* a `LICENSE` file contaiing the license,
+* a `LICENSE` file containing the license,
 * `MyPlugin.xml` and `MyPlugin.png` can be used to reference your plugin on the `plugins directory website <http://plugins.glpi-project.org>`_,
 * the required `setup.php` and `hook.php` files.
 
@@ -64,16 +64,16 @@ Make sure to create the plugin directory at install time, and to remove it on un
 Versionning
 ^^^^^^^^^^^
 
-We recommand you to use `semantic versionning <http://semver.org/>`_ for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
+We recommend you to use `semantic versionning <http://semver.org/>`_ for you plugins. You may find existing plugins that have adopted another logic; some have reasons, others don't... Well, it is up to you finally :-)
 
-Whatever the versionning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
+Whatever the versioning logic you adopt, you'll have to be consistent, it is not easy to change it without breaking things, once you've released something.
 
 ChangeLog
 ^^^^^^^^^
 
-Many projects make releases without providing any changlog file. It is not simple for any end user (whether a developer or not) to read a repository log or a list of tickets to know what have changed between two releases.
+Many projects make releases without providing any changelog file. It is not simple for any end user (whether a developer or not) to read a repository log or a list of tickets to know what have changed between two releases.
 
-Keep in mind it could help users to know what have been changed. To achieve this, take a look at `Keep an ChangeLog <http://keepachangelog.com/>`_, it will exaplin you some basics and give you guidelines to maintain sug a thing.
+Keep in mind it could help users to know what have been changed. To achieve this, take a look at `Keep an ChangeLog <http://keepachangelog.com/>`_, it will explain you some basics and give you guidelines to maintain sug a thing.
 
 Third party libraries
 ^^^^^^^^^^^^^^^^^^^^^

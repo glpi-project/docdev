@@ -96,7 +96,7 @@ In order to setup a complex relation, you'll have to define several properties, 
 * ``$itemtype_1`` and ``$itemtype_2``; to set both itm types used;
 * ``$items_id_1`` and ``$items_id_2``; to set field id name.
 
-Other properties let you configure how to deal with entites inheritance, ACLs; what to log on each part on several actions, and so on.
+Other properties let you configure how to deal with entities inheritance, ACLs; what to log on each part on several actions, and so on.
 
 The object will also help you to:
 

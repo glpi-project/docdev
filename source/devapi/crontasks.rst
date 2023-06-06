@@ -22,7 +22,7 @@ The automatic actions are defined by the ``CronTask`` class. GLPI defines a lot 
 Implementation
 ^^^^^^^^^^^^^^
 
-Automatic actions could be related to an itemtype and the implemention is defined in its class or haven't any itemtype relation and are implemented directly into ``CronTask`` class.
+Automatic actions could be related to an itemtype and the implementation is defined in its class or haven't any itemtype relation and are implemented directly into ``CronTask`` class.
 
 When GLPI shows a list of automatic actions, it shows a short description for each item. The description is gathered in the static method ``cronInfo()`` of the itemtype.
 
@@ -44,7 +44,7 @@ Example of implementation from the ``QueuedNotification``:
        *
        * @param $name : automatic action's name
        *
-       * @return arrray of information
+       * @return array of information
       **/
       static function cronInfo($name) {
 
@@ -103,7 +103,7 @@ Example of implementation from the ``QueuedNotification``:
 
    }
 
-If the argument ``$task`` is a ``CronTask`` object, the method must increment the quantity of actions done. In this example, each notification type reports the wuantity of notification processed and is added to the task's volume.
+If the argument ``$task`` is a ``CronTask`` object, the method must increment the quantity of actions done. In this example, each notification type reports the quantity of notification processed and is added to the task's volume.
 
 Register an automatic actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

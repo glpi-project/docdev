@@ -106,4 +106,4 @@ This directory contains a set of unit tests that have not really been integrated
 php.vim
 ^^^^^^^
 
-A vimfile for autocompletion and highlithing in VIM. This one is very outaded; it should be replaced with a most recent version, or being removed.
+A vimfile for autocompletion and highlighting in VIM. This one is very outdated; it should be replaced with a most recent version, or being removed.

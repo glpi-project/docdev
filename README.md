@@ -1,11 +1,11 @@
-# GLPI's developper documentation
+# GLPI's developer documentation
 
 [![Build Status](https://readthedocs.org/projects/glpi-developer-documentation/badge/?version=latest)](http://glpi-developer-documentation.readthedocs.io/en/latest/?badge=latest)
 
 Current documentation is built on top of [Sphinx documentation generator](http://sphinx-doc.org/). It is released under the terms of the <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons BY-NC-ND 4.0 International License</a>.
 
-We're folllowing [GitFlow](http://git-flow.readthedocs.io/):
-- ``master`` branch for the curent major stable release,
+We're following [GitFlow](http://git-flow.readthedocs.io/):
+- ``master`` branch for the current major stable release,
 - ``develop`` branch for next major release.
 
 ## View it online!
@@ -28,7 +28,7 @@ Once all has been successfully installed, just run the following to build the do
 $ make html
 ```
 
-Results will be avaiable in the `build/html` directory :)
+Results will be available in the `build/html` directory :)
 
 Note that it actually uses the default theme, which differs locally and on readthedocs system.
 

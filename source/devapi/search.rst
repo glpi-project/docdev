@@ -119,10 +119,10 @@ All are optionals.
 
 .. note::
 
-   In order to find the ``field`` id you want, you may take a loook at the :ref:`getsearchoptions.php tool script <getsearchoptions_php>`.
+   In order to find the ``field`` id you want, you may take a look at the :ref:`getsearchoptions.php tool script <getsearchoptions_php>`.
 
 ``metacriteria``
-   Very similar to :ref:`criteria parameter <search_criteria>` but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (the softwares of a computer, for example).
+   Very similar to :ref:`criteria parameter <search_criteria>` but permits to search in the :ref:`search options <search_options>` of an itemtype linked to the current (the software of a computer, for example).
 
    Not all itemtype can be linked, see the ``getMetaItemtypeAvailable()`` method of the ``Search`` class to know which ones could be.
 
@@ -155,7 +155,7 @@ Each itemtype can define a set of options to represent the columns which can be 
 .. versionchanged:: 9.2
    Searchoptions array has been completely rewritten; mainly to catch duplicates and add a unit test to prevent future issues.
 
-   To permit the use of both old and new syntaxes; a new method has been created, ``getSearchOptionsNew()``. Old syntax is still valid (but do not permit to catch dups).
+   To permit the use of both old and new syntax; a new method has been created, ``getSearchOptionsNew()``. Old syntax is still valid (but do not permit to catch duplicates).
 
    The format has changed, but not the possible options and their values!
 
@@ -393,7 +393,7 @@ Available datatypes for search are:
 
 ``email``
 
-   Any email adress
+   Any email address
 
 ``color``
 
@@ -409,7 +409,7 @@ Available datatypes for search are:
 
 ``ip``
 
-   Any IP adress
+   Any IP address
 
 ``mac``
 
@@ -432,7 +432,7 @@ Available datatypes for search are:
 
 ``integer``
 
-   Alias for ``numbe``
+   Alias for ``number``
 
 ``count``
 
@@ -652,7 +652,7 @@ And in the plugin ``hook.php`` file:
 Bookmarks
 ^^^^^^^^^
 
-The ``glpi_boomarks`` table stores a list of search queries for the users and permit to retrieve them.
+The ``glpi_bookmarks`` table stores a list of search queries for the users and permit to retrieve them.
 
 The ``query`` field contains an url query construct from :ref:`parameters <search_parameters>` with `http_build_query <http://php.net/manual/en/function.http-build-query.php>`_ PHP function.
 

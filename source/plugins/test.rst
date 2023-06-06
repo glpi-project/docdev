@@ -10,7 +10,7 @@ Bootstrap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Next, you need to create a bootstrap file to prepare the testing environment. This file should be located at ``tests/bootstrap.php``.
-In the bootstrap file, you need to import a few required files and set a few constants, as well as loading your plugin. Note that you must manually cheeck prerequisites since this check is not called automatically.
+In the bootstrap file, you need to import a few required files and set a few constants, as well as loading your plugin. Note that you must manually check prerequisites since this check is not called automatically.
 For example:
 
 .. code-block:: php

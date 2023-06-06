@@ -3,7 +3,7 @@ Updating
 
 .. versionadded:: 9.3
 
-Just as SQL `SELECT` queries, you should avoid plain SQL and use methods provided by the famework from the ``DB`` object.
+Just as SQL `SELECT` queries, you should avoid plain SQL and use methods provided by the framework from the ``DB`` object.
 
 General
 ^^^^^^^
@@ -97,8 +97,8 @@ Let's see an example with an insert statement:
    <?php
    $insert_query = $DB->buildInsert(
       'my_table', [
-         'field'  => new Queryparam(),
-         'other'  => new Queryparam()
+         'field'  => new QueryParam(),
+         'other'  => new QueryParam()
       ]
    );
    // => INSERT INTO `glpi_my_table` (`field`, `other`) VALUES (?, ?)
@@ -117,7 +117,7 @@ Just like the `buildInsert()` method used here, `buildUpdate` and `buildDelete` 
 
 .. note::
 
-   Note the use of the `Queryparam` object. This is used for the builder to be aware you are not passing a value, but a parameter (that must not be escaped nor quoted).
+   Note the use of the `QueryParam` object. This is used for the builder to be aware you are not passing a value, but a parameter (that must not be escaped nor quoted).
 
 Preparing a `SELECT` query is a bit different:
 
@@ -128,7 +128,7 @@ Preparing a `SELECT` query is a bit different:
    $it->buildQuery([
       'FROM'   => 'my_table',
       'WHERE'  => [
-         'something' => new Queryparam(),
+         'something' => new QueryParam(),
          'foo'       => 'bar'
    ]);
    $query = $it->getSql();
