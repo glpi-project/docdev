@@ -154,7 +154,7 @@ On the same model you create one tab, you may add several tabs.
 Add an object in dropdowns
 ++++++++++++++++++++++++++
 
-Just add the following to your object class (``src/MyObject.class.php``):
+Just add the following to your object class (``src/MyObject.php``):
 
 .. code-block:: php
 

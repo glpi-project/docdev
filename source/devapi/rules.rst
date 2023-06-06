@@ -157,7 +157,7 @@ You need to add the following classes for describing you new ``sub_type``.
         }
     }
 
-* ``src/RuleMytypeCollection.class.php``
+* ``src/RuleMytypeCollection.php``
 
 .. code-block:: php
 
