@@ -6,9 +6,16 @@ In most of the cases; your plugin will have to manage several objects
 Define an object
 ++++++++++++++++
 
-Objects definitions will be stored into the ``inc/`` directory of your plugin. File name will be the name of your class in lowercase; the class name will be the concatenation of your plugin name and your class name.
+Objects definitions will be stored into the ``inc/`` or ``src/`` directory of your plugin.
+It is recommended to place all class files in the ``src`` if possible.
+As of GLPI 10.0, namespaces should be supported in almost all cases. Therefore, it is recommended to use namespaces for your plugin classes.
+For example, if your plugin is ``MyExamplePlugin``, you should use the ``GlpiPlugin\MyExamplePlugin`` namespace.
 
-For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
+Depending on where your class files are stored, the naming convention will be different:
+- inc: File name will be the name of your class, lowercase; the class name will be the concatenation of your plugin name and your class name.
+  For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
+- src: File name will match the name of your class exactly. The class name should not be prefixed by your plugin name when using namespaces. Namespaces are supported and can be reflected as subfolders.
+  For example, if your class is ``GlpiPlugin\MyExamplePlugin\NS\MyObject``, the file will be ``src/NS/MyObject.php``.
 
 Your object will extends one of the :doc:`common core types <../devapi/mainobjects>` (``CommonDBTM`` in our example).
 
@@ -21,17 +28,19 @@ The goal is to build CRUD (Create, Read, Update, Delete) and list views for your
 
 You will need:
 
-* a class for your object (``inc/myobject.class.php``),
+* a class for your object (``src/MyObject.php``),
 * a front file to handle display (``front/myobject.php``),
 * a front file to handle form display (``front/myobject.form.php``).
 
-First, create the ``inc/myobject.class.php`` file that looks like:
+First, create the ``src/MyObject.class.php`` file that looks like:
 
 .. code-block:: php
 
    <?php
-   class PluginMyExampleMyObject extends CommonDBTM {
-      public function showForm($ID, $options = []) {
+   namespace GlpiPlugin\MyExamplePlugin;
+
+   class MyObject extends CommonDBTM {
+      public function showForm($ID, array $options = []) {
          global $CFG_GLPI;
 
          $this->initForm($ID, $options);
@@ -83,6 +92,7 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
 .. code-block:: php
 
    <?php
+   use GlpiPlugin\MyExamplePlugin\MyObject;
    include ("../../../inc/includes.php");
 
    // Check if plugin is activated...
@@ -92,7 +102,7 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
    }
 
    //check for ACLs
-   if (PluginMyExampleMyObject::canView()) {
+   if (MyObject::canView()) {
       //View is granted: display the list.
 
       //Add page header
@@ -100,11 +110,11 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
          __('My example plugin', 'myexampleplugin'),
          $_SERVER['PHP_SELF'],
          'assets',
-         'pluginmyexamplemyobject',
+         MyObject::class,
          'myobject'
       );
 
-      Search::show('PluginMyExampleMyObject');
+      Search::show(MyObject::class);
 
       Html::footer();
    } else {
@@ -117,6 +127,7 @@ And finally, the ``front/myobject.form.php`` will be in charge of CRUD operation
 .. code-block:: php
 
    <?php
+   use GlpiPlugin\MyExamplePlugin\MyObject;
    include ("../../../inc/includes.php");
 
    // Check if plugin is activated...
@@ -125,7 +136,7 @@ And finally, the ``front/myobject.form.php`` will be in charge of CRUD operation
       Html::displayNotFoundError();
    }
 
-   $object = new PluginMyExampleMyObject();
+   $object = new MyObject();
 
    if (isset($_POST['add'])) {
       //Check CREATE ACL

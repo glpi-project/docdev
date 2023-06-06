@@ -87,7 +87,7 @@ Add a new Rule class
 Here is the minimal setup to have a working set.
 You need to add the following classes for describing you new ``sub_type``.
 
-* ``inc/rulemytype.class.php``
+* ``src/RuleMytype.php``
 
 .. code-block:: php
 
@@ -157,7 +157,7 @@ You need to add the following classes for describing you new ``sub_type``.
         }
     }
 
-* ``inc/rulemytypecollection.class.php``
+* ``src/RuleMytypeCollection.class.php``
 
 .. code-block:: php
 

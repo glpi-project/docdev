@@ -17,7 +17,7 @@ First, in the ``plugin_init_{plugin_name}`` function, add the following:
    <?php
    //[...]
    Plugin::registerClass(
-      'PluginMyExampleMyClass', [
+      GlpiPlugin\MyExample\MyClass::class, [
          'addtabon' => [
             'Computer',
             'Phone'
@@ -28,7 +28,7 @@ First, in the ``plugin_init_{plugin_name}`` function, add the following:
 
 Here, we request to add a tab on `Computer` and `Phone` objects.
 
-Then, in your ``inc/myclass.php`` (in which ``PluginMyExampleMyClass`` is defined):
+Then, in your ``src/MyClass.php`` (in which ``MyClass`` is defined):
 
 .. code-block:: php
 
@@ -82,7 +82,7 @@ In order to add a new tab on your plugin object, you will have to:
 * use ``displayTabContentForItem()`` to display tab contents.
 
 
-Then, in your ``inc/myclass.php``:
+Then, in your ``src/MyClass.php``:
 
 .. code-block:: php
 
@@ -154,11 +154,11 @@ On the same model you create one tab, you may add several tabs.
 Add an object in dropdowns
 ++++++++++++++++++++++++++
 
-Just add the following to your object class (``inc/myobject.class.php``):
+Just add the following to your object class (``src/MyObject.class.php``):
 
 .. code-block:: php
 
    <?php
    function plugin_myexampleplugin_getDropdown() {
-      return ['PluginMyExampleMyObject' => PluginMyExampleMyObject::getTypeName(2)];
+      return [MyObject::class => MyObject::getTypeName(2)];
    }

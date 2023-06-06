@@ -74,11 +74,12 @@ You will probably need some configuration settings to get your notifications mod
    $conf = Config::getConfigurationValues('plugin:sms');
    //$conf will be ['server' => '', 'port' => '']
 
-That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``PluginSmsNotificationSmsSetting`` and must be in the ``inc/notificationsmssetting.class.php``. It have to extends the ``NotificationSetting`` core class :
+That said, we need to create a class to handle the settings, and a front file to display them. The class must be named ``GlpiPlugin\Sms\NotificationSmsSetting`` and must be in the ``src/NotificationSmsSetting.class.php``. It have to extends the ``NotificationSetting`` core class :
 
 .. code-block:: php
 
    <?php
+   namespace GlpiPlugin\Sms;
    if (!defined('GLPI_ROOT')) {
       die("Sorry. You can't access this file directly");
    }
@@ -86,7 +87,7 @@ That said, we need to create a class to handle the settings, and a front file to
    /**
    *  This class manages the sms notifications settings
    */
-   class PluginSmsNotificationSmsSetting extends NotificationSetting {
+   class NotificationSmsSetting extends NotificationSetting {
 
 
       static function getTypeName($nb=0) {
@@ -143,13 +144,14 @@ The front form file, located at ``front/notificationsmssetting.form.php`` will b
 .. code-block:: php
 
    <?php
+   use Glpi\Plugin\Sms\NotificationSmsSetting;
    include ('../../../inc/includes.php');
 
    Session::checkRight("config", UPDATE);
-   $notificationsms = new PluginSmsNotificationSmsSetting();
+   $notificationsms = new NotificationSmsSetting();
 
    if (!empty($_POST["test_sms_send"])) {
-      PluginSmsNotificationSms::testNotification();
+      NotificationSmsSetting::testNotification();
       Html::back();
    } else if (!empty($_POST["update"])) {
       $config = new Config();
@@ -166,7 +168,7 @@ The front form file, located at ``front/notificationsmssetting.form.php`` will b
 Event
 ^^^^^
 
-Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``PluginSmsNotificationEventSms`` that implements ``NotificationEventInterface`` and extends ``NotificationEventAbstract`` in the ``inc/notificationeventsms.php``.
+Once the new mode has been enabled; it will try to raise core events. You will need to create an event class named ``GlpiPlugin\Sms\NotificationEventSms`` that implements ``NotificationEventInterface`` and extends ``NotificationEventAbstract`` in the ``inc/notificationeventsms.php``.
 
 Methods to implement are:
 
@@ -188,7 +190,8 @@ En example class for SMS Events would look like the following:
 .. code-block:: php
 
    <?php
-   class PluginSmsNotificationEventSms implements NotificationEventInterface {
+   namespace GlpiPlugin\Sms;
+   class NotificationEventSms implements NotificationEventInterface {
 
       static public function getTargetFieldName() {
          return 'phone';
@@ -263,7 +266,7 @@ En example class for SMS Events would look like the following:
 Notification
 ^^^^^^^^^^^^
 
-Finally, create a ``NotificationSms`` class that implements the ``NotificationInterface`` in the ``inc/notificationsms.php`` file.
+Finally, create a ``GlpiPlugin\Sms\NotificationSms`` class that implements the ``NotificationInterface`` in the ``src/NotificationSms.php`` file.
 
 Methods to implement are:
 
@@ -276,7 +279,8 @@ Again, the SMS example:
 .. code-block:: php
 
    <?php
-   class PluginSmsNotificationSms implements NotificationInterface {
+   namespace GlpiPlugin\Sms;
+   class NotificationSms implements NotificationInterface {
 
       static function check($value, $options = []) {
          //Does nothing, but we could check if $value is actually what we expect as a phone number to send SMS.
