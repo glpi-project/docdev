@@ -36,7 +36,7 @@ It may be different calling static classes. In that case; you can either:
 * call non statically the method from an object instance; like ``$object->staticMethod()``.
 * use `late static building <http://php.net/manual/en/language.oop5.late-static-bindings.php>`_; like ``static::staticMethod()``.
 
-When you do not have any object instance yet; the first solution is probably the best one. No need to instanciate an object to just call a static method from it.
+When you do not have any object instance yet; the first solution is probably the best one. No need to instantiate an object to just call a static method from it.
 
 On the other hand; if you already have an object instance; you should better use any of the solution but the late static binding. That way; you will save performances since this way to go do have a cost.
 
@@ -57,7 +57,7 @@ For each method or function documentation, you'll need at least to have a descri
     * Describe what the method does. Be concise :)
     *
     * You may want to add some more words about what the function
-    * does, if needed. This is optionnal, but you can be more
+    * does, if needed. This is optional, but you can be more
     * descriptive here:
     * - it does something
     * - and also something else
@@ -74,9 +74,9 @@ For each method or function documentation, you'll need at least to have a descri
       //[...]
    }
 
-Some other informations way be added; if the function requires it.
+Some other information way be added; if the function requires it.
 
-Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more informations on documentation.
+Refer to the `PHPDocumentor website <https://phpdoc.org/docs/latest>`_ to get more information on documentation.
 
 Please follow the order defined below:
 
@@ -94,7 +94,7 @@ Please follow the order defined below:
 Parameters documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Each parameter must be documented in its own line, begining with the ``@param`` tag, followed by the `Variables types`_, followed by the param name (``$param``), and finally with the description itself.
+Each parameter must be documented in its own line, beginning with the ``@param`` tag, followed by the `Variables types`_, followed by the param name (``$param``), and finally with the description itself.
 If your parameter can be of different types, you can list them separated with a ``|`` or you can use the ``mixed`` type; it's up to you!
 
 All parameters names and description must be aligned vertically on the longest (plu one character); see the above example.
@@ -105,7 +105,7 @@ Override method: @inheritDoc? @see? docblock? no docblock?
 There are many question regarding the way to document a child method in a child class.
 
 Many editors use the ``{@inheritDoc}`` tag without anything else. **This is wrong**. This *inline* tag is confusing for many users; for more details, see the `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/guides/inheritance.html#the-inheritdoc-tag>`__.
-This tag usage is not forbidden, but make sure to use it properly, or just avoid it. An usage exemple:
+This tag usage is not forbidden, but make sure to use it properly, or just avoid it. An usage example:
 
 .. code-block:: php
 
@@ -113,7 +113,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
 
    abstract class MyClass {
       /**
-       * This is the documentation block for the curent method.
+       * This is the documentation block for the current method.
        * It does something.
        *
        * @param string $sthing Something to send to the method
@@ -135,7 +135,7 @@ This tag usage is not forbidden, but make sure to use it properly, or just avoid
          [...]
       }
 
-Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__). While generating, parent class and methods are automaticaly discovered; a link to the parent will be automatically added.
+Something we can see quite often is just the usage of the ``@see`` tag to make reference to the parent method. **This is wrong**. The ``@see`` tag is designed to reference another method that would help to understand this one; not to make a reference to its parent (you can also take a look at `PHPDocumentor documentation about it <https://www.phpdoc.org/docs/latest/references/phpdoc/tags/see.html>`__). While generating, parent class and methods are automatically discovered; a link to the parent will be automatically added.
 An usage example:
 
 .. code-block:: php
@@ -245,7 +245,7 @@ Examples:
 Checking standards
 ------------------
 
-In order to check standards are respected, we provide a defaut configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
+In order to check standards are respected, we provide a default configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
 
 .. code-block::
 

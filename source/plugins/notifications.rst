@@ -285,7 +285,7 @@ Again, the SMS example:
 
       static function testNotification() {
          $instance = new self();
-         //send a notification to current loged in user
+         //send a notification to current logged in user
          $instance->sendNotification([
             '_itemtype'                   => 'NotificationSms',
             '_items_id'                   => 1,

@@ -27,7 +27,7 @@ Without parameters
 ~~~~~~~~~~~~~~~~~~
 
 
-Those hooks are called without any parameters; you cannot attach them to any itemtype; basically they'll permit youi to display extra informations. Let's say you want to call the ``display_login`` hook, in you ``setup.php`` you'll add something like:
+Those hooks are called without any parameters; you cannot attach them to any itemtype; basically they'll permit you to display extra information. Let's say you want to call the ``display_login`` hook, in you ``setup.php`` you'll add something like:
 
 .. code-block:: php
 
@@ -40,7 +40,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
 
    <?php
    /**
-     * Display informations on login page
+     * Display information on login page
      *
      * @return void
      */
@@ -126,7 +126,7 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
 
 The hooks that are called with an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``item_transfer``.
 
-Some hooks will receive a specific array as parameter, they will be detailled below.
+Some hooks will receive a specific array as parameter, they will be detailed below.
 
 Unclassified
 ++++++++++++
@@ -136,7 +136,7 @@ Hooks that cannot be classified in above categories :)
 ``secured_fields``
    .. versionadded:: 9.4.6
 
-   An array of fields names (with table like ``glpi_mytable.myfield``) that are stored using GLPI crypting methods.
+   An array of fields names (with table like ``glpi_mytable.myfield``) that are stored using GLPI encrypting methods.
    This allows plugins to add some fields to the ``glpi:security:changekey`` command.
 
    .. warning::
@@ -148,7 +148,7 @@ Hooks that cannot be classified in above categories :)
 ``secured_configs``
    .. versionadded:: 9.4.6
 
-   An array of configuration entries that are stored using GLPI crypting methods.
+   An array of configuration entries that are stored using GLPI encrypting methods.
    This allows plugins to add some entries to the ``glpi:security:changekey`` command.
 
    .. warning::
@@ -198,7 +198,7 @@ Hooks that cannot be classified in above categories :)
       <?php
       $hook_params = [
          'sub_type'  => 'an item type',
-         'rule_id'   => 'tule id',
+         'rule_id'   => 'rule id',
          'input'     => array(), //original input
          'output'    => array()  //output modified by rule
       ];
@@ -373,7 +373,7 @@ Hooks that cannot be classified in above categories :)
 Items business related
 ++++++++++++++++++++++
 
-Hooks that can do some busines stuff on items.
+Hooks that can do some business stuff on items.
 
 ``item_empty``
    When a new (empty) item has been created. Allow to change / add fields.
@@ -409,13 +409,13 @@ Hooks that can do some busines stuff on items.
    Before an item is deleted (moved to trash), allow to edit ``input`` property, setting it to false will stop the process.
 
 ``item_delete``
-   After an item is moved to tash.
+   After an item is moved to trash.
 
 ``autoinventory_information``
-   After an automated inventory has occured
+   After an automated inventory has occurred
 
 ``item_transfer``
-   When an item is transfered from an entity to another
+   When an item is transferred from an entity to another
 
 ``item_can``
    .. versionadded:: 9.2
@@ -439,7 +439,7 @@ Hooks that permits to add display on items.
 ``pre_item_form``
    .. versionadded:: 9.1.2
 
-   Before an item is displayed; just after the form header if any; or at the beginnning of the form. Waits for a ``<tr>``.
+   Before an item is displayed; just after the form header if any; or at the beginning of the form. Waits for a ``<tr>``.
 
 
 ``post_item_form``
@@ -518,7 +518,7 @@ Functions hooks declarations are the same than standards hooks one. The main dif
    /**
     * Handle hook function
     *
-    * @param array $$data Array of something (assuming that's what wer're receiving!)
+    * @param array $data Array of something (assuming that's what we're receiving!)
     *
     * @return array
     */
@@ -536,25 +536,25 @@ Existing hooks
    After a fields has been unlocked. Will receive the ``$_POST`` array used for the call.
 
 ``restrict_ldap_auth``
-   Aditional LDAP restrictions at connection. Must return a boolean. The ``dn`` string is passed as parameter.
+   Additional LDAP restrictions at connection. Must return a boolean. The ``dn`` string is passed as parameter.
 
 ``undiscloseConfigValue``
    Permit plugin to hide fields that should not appear from the API (like configuration fields, etc). Will receive the requested fields list.
 
 ``infocom``
-   Additional infocom informations oin an item. Will receive an item instance as parameter, is expected to return a table line (``<tr>``).
+   Additional infocom information oin an item. Will receive an item instance as parameter, is expected to return a table line (``<tr>``).
 
 ``retrieve_more_field_from_ldap``
-   Retrieve aditional fields from LDAP for a user. Will receive the current fields lists, is expected to return a fields list.
+   Retrieve additional fields from LDAP for a user. Will receive the current fields lists, is expected to return a fields list.
 
 ``retrieve_more_data_from_ldap``
-   Retrieve aditional data from LDAP for a user. Will receive current fields list, is expected to return a fields list.
+   Retrieve additional data from LDAP for a user. Will receive current fields list, is expected to return a fields list.
 
 ``display_locked_fields``
    To manage fields locks. Will receive an array with ``item`` and ``header`` entries. Is expected to output a table line (``<tr>``).
 
 ``migratetypes``
-   Item types to migrate, will receive an array of types to be updated; must return an aray of item types to migrate.
+   Item types to migrate, will receive an array of types to be updated; must return an array of item types to migrate.
 
 Automatic hooks
 ^^^^^^^^^^^^^^^
@@ -578,7 +578,7 @@ Some hooks are automated; they'll be called if the relevant function exists in y
       ];
 
 ``MassiveActions``
-   If plugin is parameted to provide massive actions (via ``$PLUGIN_HOOKS['use_massive_actions']``), will pass the item type as parameter, and expect an array of aditional massives actions of the form:
+   If plugin provides massive actions (via ``$PLUGIN_HOOKS['use_massive_actions']``), will pass the item type as parameter, and expect an array of additional massive actions of the form:
 
    .. code-block:: php
 
@@ -613,7 +613,7 @@ Some hooks are automated; they'll be called if the relevant function exists in y
 
    .. todo::
 
-      Write documentation for this hook. It lloks at bit particular.
+      Write documentation for this hook. It looks a bit particular.
 
 ``ruleCollectionPrepareInputDataForProcess``
    Prepare input data for rules collections. Will receive an array of the form:
@@ -649,7 +649,7 @@ Some hooks are automated; they'll be called if the relevant function exists in y
       array(
          'where_entity' => 'where entity clause',
          'input'        => 'input array',
-         'criteria'     => 'complex cirteria array',
+         'criteria'     => 'complex criteria array',
          'sql_where'    => 'sql where clause as string',
          'sql_from'     => 'sql from clause as string'
       )

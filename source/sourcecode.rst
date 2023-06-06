@@ -50,9 +50,9 @@ File Hierarchy System
 
 .. note::
 
-   This lists current files and directories listed in the source code of GLPI. Some files are not part of distribued archives.
+   This lists current files and directories listed in the source code of GLPI. Some files are not part of distributed archives.
 
-This is a brieve description of GLPI main folders and files:
+This is a brief description of GLPI main folders and files:
 
 * |folder| `.tx`: Transifex configuration
 * |folder| `ajax`
@@ -178,7 +178,7 @@ When you open a new pull request, it will be reviewed by one or more member of t
 Bugs
 ^^^^
 
-If you find a bug in the current stable release, you'll have to work on the `bugfixes` branch; and, as we've said already, create a specific branch to work on. You may name your branch explicitely like `9.1/fix-sthing` or to reference an existing issue `9.1/fix-1234`; just prefix it with `{version}/fix-`.
+If you find a bug in the current stable release, you'll have to work on the `bugfixes` branch; and, as we've said already, create a specific branch to work on. You may name your branch explicitly like `9.1/fix-sthing` or to reference an existing issue `9.1/fix-1234`; just prefix it with `{version}/fix-`.
 
 Generally, the very first step for a bug is to be `filled in a ticket <https://github.com/glpi-project/glpi/issues>`_.
 
@@ -205,7 +205,7 @@ Just remember here we're working on some bugfix, that should reach the `bugfixes
 Features
 ^^^^^^^^
 
-Before doing any work on any feature, mays sure it has been discussed by the community. Open - if it does not exists yet - a ticket with your detailled proposition. Fo technical features, you can work directly on github; but for work proposals, you should take a look at our `feature proposal platform <http://glpi.userecho.com/>`_.
+Before doing any work on any feature, mays sure it has been discussed by the community. Open - if it does not exists yet - a ticket with your detailed proposition. Fo technical features, you can work directly on github; but for work proposals, you should take a look at our `feature proposal platform <http://glpi.userecho.com/>`_.
 
 If you want to add a new feature, you will have to work on the `main` branch, and create a local branch with the name you want, prefixed with `feature/`.
 
@@ -214,7 +214,7 @@ From the clone directory:
 .. code-block:: bash
 
    $ git branch feature/my-killer-feature
-   $ git co feature/my-killler feature
+   $ git co feature/my-killer feature
 
 
 You'll notice we do no change branch on the first step; that is just because `main` is the default branch, and therefore the one you'll be set on just after cloning. At this point, you're working on an only local branch named `feature/my-killer-feature`. You can now work and commit (as frequently as you want).
@@ -236,7 +236,7 @@ There are several good practices regarding commit messages, but this is quite si
   * automatically close a ticket when commit will be merged back with keywords like ``closes #1234`` or ``fixes #1234``,
 
 * the first line of the commit should be as short and as concise as possible
-* if you want or have to provide details, let a blank line after the first commit line, and go on. Please avoid very long lines (some conventions talks about 80 characters maximum per line, to keep it lisible).
+* if you want or have to provide details, let a blank line after the first commit line, and go on. Please avoid very long lines (some conventions talks about 80 characters maximum per line, to keep it visible).
 
 .. _3rd_party_libs:
 
@@ -336,7 +336,7 @@ You can choose to run tests on a whole directory, or on any file (+ on a specifi
    [...]
    $ atoum -bf tests/bootstrap.php -f tests/units/Html.php
    [...]
-   $ atoum -bf tests/bootstrap.php -f tests/functionnal/Ticket.php -m tests\units\Ticket::testTechAcls
+   $ atoum -bf tests/bootstrap.php -f tests/functional/Ticket.php -m tests\units\Ticket::testTechAcls
 
 
 If you want to run the API tests suite, you need to run a development server:
@@ -352,7 +352,7 @@ Running `atoum` without any arguments will show you the possible options. Most i
 * ``-d`` to run tests located in a whole directory,
 * ``-f`` to run tests on a standalone file,
 * ``-m`` to run tests on a specific method (-f must also be defined),
-* ``--debug`` to get extra informations when something goes wrong,
+* ``--debug`` to get extra information when something goes wrong,
 * ``-mcn`` limit number of concurrent runs. This is unfortunately mandatory running the whole test suite right now :/,
 * ``-ncc`` do not generate code coverage,
 * ``--php`` to change PHP executable to use,

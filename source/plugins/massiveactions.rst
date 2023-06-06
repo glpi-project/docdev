@@ -3,7 +3,7 @@ Massive Actions
 
 Plugins can use the core's :doc:`massive actions <../devapi/massiveactions>` for its own itemtypes.
 
-They just need to aditionnaly define a hook in their init function (setup.php):
+They just need to additionally define a hook in their init function (setup.php):
 
 .. code-block:: php
 

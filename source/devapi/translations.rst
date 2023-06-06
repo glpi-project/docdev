@@ -9,7 +9,7 @@ What the system is capable to do:
 
 * replace variables (on LTR and RTL languages),
 * manage plural forms,
-* add context informations,
+* add context information,
 * ...
 
 Here is the workflow used for translations:
@@ -24,7 +24,7 @@ Here is the workflow used for translations:
 PHP Functions
 ^^^^^^^^^^^^^
 
-There are several standard functions you will have to use in order to get translations. Remember the tranlsation domain will be `glpi` if not defined; so, for plugins specific translations, do not forget to set it!
+There are several standard functions you will have to use in order to get translations. Remember the translation domain will be `glpi` if not defined; so, for plugins specific translations, do not forget to set it!
 
 .. note::
 
