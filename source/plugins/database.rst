@@ -38,7 +38,7 @@ For example, we will create a basic table to store some configuration for our pl
                      `id` INT(11) NOT NULL autoincrement,
                      `name` VARCHAR(255) NOT NULL,
                      PRIMARY KEY  (`id`)
-                  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC";
          $DB->queryOrDie($query, $DB->error());
       }
 
@@ -71,7 +71,7 @@ The update part is quite the same. Considering our previous example, we missed t
                      `id` INT(11) NOT NULL autoincrement,
                      `name` VARCHAR(255) NOT NULL,
                      PRIMARY KEY  (`id`)
-                  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC";
          $DB->queryOrDie($query, $DB->error());
       }
 

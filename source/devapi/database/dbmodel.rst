@@ -91,13 +91,13 @@ Instead, create a relation table, that will reference the memory component along
    CREATE TABLE `glpi_items_devicememories` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
       `items_id` int(11) NOT NULL DEFAULT '0', 
-      `itemtype` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `itemtype` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
       `devicememories_id` int(11) NOT NULL DEFAULT '0',
       PRIMARY KEY (`id`),
       KEY `items_id` (`items_id`),
       KEY `devicememories_id` (`devicememories_id`),
       KEY `itemtype` (`itemtype`,`items_id`),
-   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 Again, this is a very simplified example of what already exists in the database, but you got the point ;)
 
