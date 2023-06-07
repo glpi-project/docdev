@@ -324,11 +324,11 @@ A field name and its wanted value:
    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0]]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
-   $DB->request('glpi_computers', 'WHERE' => ['is_deleted' => 0,
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0,
                                    'name'       => 'foo']);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0 AND `name` = 'foo'
 
-   $DB->request('glpi_computers', 'WHERE' => ['users_id' => [1,5,7]]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['users_id' => [1,5,7]]]);
    // => SELECT * FROM `glpi_computers` WHERE `users_id` IN (1, 5, 7)
 
 When using an array as a value, the operator is automatically set to ``IN``.
@@ -344,11 +344,11 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', 'WHERE' => ['OR' => ['is_deleted' => 0,
-                                            'name'       => 'foo']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['OR' => ['is_deleted' => 0,
+                                            'name'       => 'foo']]]);
    // => SELECT * FROM `glpi_computers` WHERE (`is_deleted` = 0 OR `name` = 'foo')"
 
-   $DB->request('glpi_computers', 'WHERE' => ['NOT' => ['id' => [1,2,7]]]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['NOT' => ['id' => [1,2,7]]]]);
    // => SELECT * FROM `glpi_computers` WHERE NOT (`id` IN (1, 2, 7))
 
 
@@ -357,9 +357,9 @@ Using a more complex expression with ``AND`` and ``OR``:
 .. code-block:: php
 
     <?php
-    $DB->request('glpi_computers', ['is_deleted' => 0,
+    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0,
         ['OR' => ['name' => 'foo', 'otherserial' => 'otherunique']],
-        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]
+        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]]
     ]);
     // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = '0' AND ((`name` = 'foo' OR `otherserial` = 'otherunique')) AND ((`locations_id` = '1' OR `serial` = 'unique'))
 
@@ -371,10 +371,10 @@ Default operator is ``=``, but other operators can be used, by giving an array c
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['date_mod' => ['>' , '2016-10-01']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['date_mod' => ['>' , '2016-10-01']]]);
    // => SELECT * FROM `glpi_computers` WHERE `date_mod` > '2016-10-01'
 
-   $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['name' => ['LIKE' , 'pc00%']]]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
 Known operators are ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE``, ``NOT REGEX``, ``&`` (BITWISE AND), and ``|`` (BITWISE OR).
@@ -387,7 +387,7 @@ You can use SQL aliases (SQL ``AS`` keyword). To achieve that, just write the al
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers AS c');
+   $DB->request(['FROM' => 'glpi_computers AS c']);
    // => SELECT * FROM `glpi_computers` AS `c`
 
    $DB->request(['SELECT' => 'field AS f', 'FROM' => 'glpi_computers AS c']);
@@ -474,7 +474,7 @@ For example, to use the SQL `NOW()` function:
    $DB->request([
       'FROM'   => 'my_table',
       'WHERE'  => [
-         'date_end'  => ['>', Glpi\DBAL\QueryFunction::now()]
+         'date_end'  => ['>', \Glpi\DBAL\QueryFunction::now()]
       ]
    ]);
    // SELECT * FROM `my_table` WHERE `date_end` > NOW()
