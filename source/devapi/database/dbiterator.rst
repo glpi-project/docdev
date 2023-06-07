@@ -42,17 +42,18 @@ The ``request`` method takes two arguments:
 Giving full SQL statement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the only option is a full SQL statement, it will be used.
-This usage is deprecated, and should be avoid when possible.
+If your query cannot be made using the array format, you can give the full SQL statement as a string.
+Otherwise, you should use the array format.
+However, in almost every case, that is not required.
 
 .. note::
 
-   To make a database query that could not be done using recommended way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
+   To make a database query that could not be done using recommended way, you can do:
 
    .. code-block:: php
 
       <?php
-      $DB->request('SELECT id FROM glpi_users WHERE end_date > NOW()');
+      $DB->request('SHOW COLUMNS FROM `glpi_computers`');
 
 Without option
 ^^^^^^^^^^^^^^
@@ -85,13 +86,13 @@ You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINC
    $DB->request(['SELECT' => 'id', 'FROM' => 'glpi_computers']);
    // => SELECT `id` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['FIELDS' => 'id']);
+   $DB->request(['FIELDS' => 'id', 'FROM' => 'glpi_computers']);
    // => SELECT `id` FROM `glpi_computers`
 
    $DB->request(['SELECT' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['FIELDS' => 'name', 'DISTINCT' => true]);
+   $DB->request(['FIELDS' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
 The fields array can also contain per table sub-array:
@@ -99,7 +100,7 @@ The fields array can also contain per table sub-array:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['FIELDS' => ['glpi_computers' => ['id', 'name']]]);
+   $DB->request(['FIELDS' => ['glpi_computers' => ['id', 'name']], 'FROM' => 'glpi_computers']);
    // => SELECT `glpi_computers`.`id`, `glpi_computers`.`name` FROM `glpi_computers`"
 
 Using JOINs
@@ -307,11 +308,10 @@ Using the ``START`` and ``LIMIT`` options:
 
 Criteria
 ^^^^^^^^
-
-Other option are considered as an array of criteria (implicit logical ``AND``)
-
-The ``WHERE`` can also be used for legibility.
-
+Using the ``WHERE`` option with an array of criteria.
+The first level of the array is considered as an implicit logical ``AND``.
+By default, the array keys are considered as field names, and the values as values.
+If this differs from what you want, there are a few workarounds that are covered later.
 
 Simple criteria
 +++++++++++++++
@@ -324,12 +324,17 @@ A field name and its wanted value:
    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0]]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
-   $DB->request('glpi_computers', ['is_deleted' => 0,
+   $DB->request('glpi_computers', 'WHERE' => ['is_deleted' => 0,
                                    'name'       => 'foo']);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0 AND `name` = 'foo'
 
-   $DB->request('glpi_computers', ['users_id' => [1,5,7]]);
+   $DB->request('glpi_computers', 'WHERE' => ['users_id' => [1,5,7]]);
    // => SELECT * FROM `glpi_computers` WHERE `users_id` IN (1, 5, 7)
+
+When using an array as a value, the operator is automatically set to ``IN``.
+Make sure that you verify that the array cannot be empty, otherwise an error will be thrown.
+
+When using ``null`` as a value, the operator is automatically set to ``IS`` and the value is set to the ``NULL`` keyword.
 
 Logical ``OR``, ``AND``, ``NOT``
 ++++++++++++++++++++++++++++++++
@@ -339,11 +344,11 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['OR' => ['is_deleted' => 0,
+   $DB->request('glpi_computers', 'WHERE' => ['OR' => ['is_deleted' => 0,
                                             'name'       => 'foo']]);
    // => SELECT * FROM `glpi_computers` WHERE (`is_deleted` = 0 OR `name` = 'foo')"
 
-   $DB->request('glpi_computers', ['NOT' => ['id' => [1,2,7]]]);
+   $DB->request('glpi_computers', 'WHERE' => ['NOT' => ['id' => [1,2,7]]]);
    // => SELECT * FROM `glpi_computers` WHERE NOT (`id` IN (1, 2, 7))
 
 
@@ -404,6 +409,8 @@ You can use some aggregation SQL functions on fields: ``COUNT``, ``SUM``, ``AVG`
    $DB->request(['SELECT' => ['bar', 'SUM' => 'amount AS total'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'amount']);
    // => SELECT `bar`, SUM(`amount`) AS `total` FROM `glpi_computers` GROUP BY `amount`
 
+Alternatively, you can use the output from ``QueryFunction`` methods as described in the related section below.
+
 .. _sub_queries:
 
 Sub queries
@@ -452,10 +459,12 @@ What if iterator does not provide what I'm looking for?
 Even if we do our best to get as many things as possible implemented in the iterator, there are several things that are missing... Consider for example you want to use the SQL `NOW()` function, or want to use a value based on another field: there is no native way to achieve that.
 
 Right now, there is a `QueryExpression` class that would permit to do such things on values (an not on fields since it is not possible to use a class instance as an array key).
+For convenience and to help with future compatibility with different database servers, there is a ``QueryFunction`` class starting in GLPI 10.1 that provides methods to build the most common SQL functions and return them as a QueryExpression.
+In general, string values passed to ``QueryFunction`` are treated as identifiers. You can pass a ``QueryExpression`` into most parameters to change this behavior. You should check the documentation for each method to see the accepted types for each parameter.
 
 .. warning::
 
-   The `QueryExpression` class will pass raw SQL. You are in charge to escape name and values you use into it!
+   The `QueryExpression` class will pass raw SQL. You are in charge to escape name and values you use into it if you use the QueryExpression class directly!
 
 For example, to use the SQL `NOW()` function:
 
@@ -465,12 +474,12 @@ For example, to use the SQL `NOW()` function:
    $DB->request([
       'FROM'   => 'my_table',
       'WHERE'  => [
-         'date_end'  => ['>', new \QueryExpression('NOW()')]
+         'date_end'  => ['>', Glpi\DBAL\QueryFunction::now()]
       ]
    ]);
    // SELECT * FROM `my_table` WHERE `date_end` > NOW()
 
-Another example with a field value:
+An example with a field value:
 
 .. code-block:: php
 
@@ -485,7 +494,8 @@ Another example with a field value:
 
 .. versionadded:: 9.3.1
 
-You can also use some function or non supported stuff on field part by using a `RAW` entry in the query:
+You can also use some function or non supported stuff on field part by using a `RAW` entry in the query, but this should be avoided if at all possible.
+SQL functions should only be built using the ``QueryFunction`` class methods.
 
 .. code-block:: php
 
@@ -494,7 +504,7 @@ You can also use some function or non supported stuff on field part by using a `
       'FROM'   => 'my_table',
       'WHERE'  => [
         'RAW'  => [
-            'LOWER(' . DBmysql::quoteName('field') . ')' => strtolower('Value')
+            DBmysql::quoteName('field') => DBmysql::quoteName('field2')
         ]
       ]
    ]);
@@ -502,7 +512,7 @@ You can also use some function or non supported stuff on field part by using a `
 
 .. versionadded:: 9.5.0
 
-You can use a QueryExpression object in the FIELDS statement:
+You can use a QueryExpression/QueryFunction object in the FIELDS statement:
 
 .. code-block:: php
 
@@ -510,7 +520,10 @@ You can use a QueryExpression object in the FIELDS statement:
    $DB->request([
       'FIELDS'    => [
          'glpi_computers' => ['id'],
-         new QueryExpression("CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname`")
+         \Glpi\DBAL\QueryFunction::concat(
+            params: ['glpi_computers.name', new QueryExpression($DB::quoteValue('.')), 'glpi_domains.name'],
+            alias: 'fullname'
+         );
       ],
       'FROM'      => 'glpi_computers',
       'LEFT JOIN' => [
