@@ -537,3 +537,5 @@ You can use a QueryExpression object in the FROM statement:
       'FROM'      => new QueryExpression('(SELECT * FROM glpi_computers) as computers'),
    ]);
    // => SELECT * FROM (SELECT * FROM glpi_computers) as computers
+
+When you need to manually quote identifies or values, it is recommended that you use ``$DB::quoteName`` and ``$DB::quoteValue`` respectively rather than directly adding the quotes to ensure future compatibility.
