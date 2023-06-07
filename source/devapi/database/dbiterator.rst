@@ -42,13 +42,12 @@ The ``request`` method takes two arguments:
 Giving full SQL statement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If your query cannot be made using the array format, you can give the full SQL statement as a string.
-However, in almost every case, that is not required.
-Otherwise, you should use the array format.
+If the only option is a full SQL statement, it will be used.
+This usage is deprecated, and should be avoid when possible.
 
 .. note::
 
-   To make a database query that could not be done using recommended way, you can do:
+   To make a database query that could not be done using recommended way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
 
    .. code-block:: php
 
@@ -409,8 +408,6 @@ You can use some aggregation SQL functions on fields: ``COUNT``, ``SUM``, ``AVG`
    $DB->request(['SELECT' => ['bar', 'SUM' => 'amount AS total'], 'FROM' => 'glpi_computers', 'GROUPBY' => 'amount']);
    // => SELECT `bar`, SUM(`amount`) AS `total` FROM `glpi_computers` GROUP BY `amount`
 
-Alternatively, you can use the output from ``QueryFunction`` methods as described in the related section below.
-
 .. _sub_queries:
 
 Sub queries
@@ -459,12 +456,10 @@ What if iterator does not provide what I'm looking for?
 Even if we do our best to get as many things as possible implemented in the iterator, there are several things that are missing... Consider for example you want to use the SQL `NOW()` function, or want to use a value based on another field: there is no native way to achieve that.
 
 Right now, there is a `QueryExpression` class that would permit to do such things on values (an not on fields since it is not possible to use a class instance as an array key).
-For convenience and to help with future compatibility with different database servers, there is a ``QueryFunction`` class starting in GLPI 10.1 that provides methods to build the most common SQL functions and return them as a QueryExpression.
-In general, string values passed to ``QueryFunction`` are treated as identifiers. You can pass a ``QueryExpression`` into most parameters to change this behavior. You should check the documentation for each method to see the accepted types for each parameter.
 
 .. warning::
 
-   The `QueryExpression` class will pass raw SQL. You are in charge to escape name and values you use into it if you use the QueryExpression class directly!
+   The `QueryExpression` class will pass raw SQL. You are in charge to escape name and values you use into it!
 
 For example, to use the SQL `NOW()` function:
 
@@ -474,7 +469,7 @@ For example, to use the SQL `NOW()` function:
    $DB->request([
       'FROM'   => 'my_table',
       'WHERE'  => [
-         'date_end'  => ['>', \Glpi\DBAL\QueryFunction::now()]
+         'date_end'  => ['>', new \QueryExpression('NOW()')]
       ]
    ]);
    // SELECT * FROM `my_table` WHERE `date_end` > NOW()
@@ -494,8 +489,7 @@ An example with a field value:
 
 .. versionadded:: 9.3.1
 
-You can also use some function or non supported stuff on field part by using a `RAW` entry in the query, but this should be avoided if at all possible.
-SQL functions should only be built using the ``QueryFunction`` class methods.
+You can also use some function or non supported stuff on field part by using a `RAW` entry in the query:
 
 .. code-block:: php
 
@@ -512,7 +506,7 @@ SQL functions should only be built using the ``QueryFunction`` class methods.
 
 .. versionadded:: 9.5.0
 
-You can use a QueryExpression/QueryFunction object in the FIELDS statement:
+You can use a QueryExpression object in the FIELDS statement:
 
 .. code-block:: php
 
@@ -520,10 +514,7 @@ You can use a QueryExpression/QueryFunction object in the FIELDS statement:
    $DB->request([
       'FIELDS'    => [
          'glpi_computers' => ['id'],
-         \Glpi\DBAL\QueryFunction::concat(
-            params: ['glpi_computers.name', new QueryExpression($DB::quoteValue('.')), 'glpi_domains.name'],
-            alias: 'fullname'
-         );
+         new QueryExpression("CONCAT(`glpi_computers`.`name`, '.', `glpi_domains`.`name`) AS `fullname`")
       ],
       'FROM'      => 'glpi_computers',
       'LEFT JOIN' => [
