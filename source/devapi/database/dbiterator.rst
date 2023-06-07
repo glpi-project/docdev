@@ -43,8 +43,8 @@ Giving full SQL statement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If your query cannot be made using the array format, you can give the full SQL statement as a string.
-Otherwise, you should use the array format.
 However, in almost every case, that is not required.
+Otherwise, you should use the array format.
 
 .. note::
 
