@@ -52,7 +52,7 @@ This usage is deprecated, and should be avoid when possible.
    .. code-block:: php
 
       <?php
-      $DB->request('SELECT id FROM glpi_users WHERE end_date > NOW()');
+      $DB->request('SHOW COLUMNS FROM `glpi_computers`');
 
 Without option
 ^^^^^^^^^^^^^^
@@ -85,13 +85,13 @@ You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINC
    $DB->request(['SELECT' => 'id', 'FROM' => 'glpi_computers']);
    // => SELECT `id` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['FIELDS' => 'id']);
+   $DB->request(['FIELDS' => 'id', 'FROM' => 'glpi_computers']);
    // => SELECT `id` FROM `glpi_computers`
 
    $DB->request(['SELECT' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['FIELDS' => 'name', 'DISTINCT' => true]);
+   $DB->request(['FIELDS' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
 The fields array can also contain per table sub-array:
@@ -99,7 +99,7 @@ The fields array can also contain per table sub-array:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['FIELDS' => ['glpi_computers' => ['id', 'name']]]);
+   $DB->request(['FIELDS' => ['glpi_computers' => ['id', 'name']], 'FROM' => 'glpi_computers']);
    // => SELECT `glpi_computers`.`id`, `glpi_computers`.`name` FROM `glpi_computers`"
 
 Using JOINs
@@ -307,11 +307,10 @@ Using the ``START`` and ``LIMIT`` options:
 
 Criteria
 ^^^^^^^^
-
-Other option are considered as an array of criteria (implicit logical ``AND``)
-
-The ``WHERE`` can also be used for legibility.
-
+Using the ``WHERE`` option with an array of criteria.
+The first level of the array is considered as an implicit logical ``AND``.
+By default, the array keys are considered as field names, and the values as values.
+If this differs from what you want, there are a few workarounds that are covered later.
 
 Simple criteria
 +++++++++++++++
@@ -324,12 +323,17 @@ A field name and its wanted value:
    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0]]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
-   $DB->request('glpi_computers', ['is_deleted' => 0,
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0,
                                    'name'       => 'foo']);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0 AND `name` = 'foo'
 
-   $DB->request('glpi_computers', ['users_id' => [1,5,7]]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['users_id' => [1,5,7]]]);
    // => SELECT * FROM `glpi_computers` WHERE `users_id` IN (1, 5, 7)
+
+When using an array as a value, the operator is automatically set to ``IN``.
+Make sure that you verify that the array cannot be empty, otherwise an error will be thrown.
+
+When using ``null`` as a value, the operator is automatically set to ``IS`` and the value is set to the ``NULL`` keyword.
 
 Logical ``OR``, ``AND``, ``NOT``
 ++++++++++++++++++++++++++++++++
@@ -339,11 +343,11 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['OR' => ['is_deleted' => 0,
-                                            'name'       => 'foo']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['OR' => ['is_deleted' => 0,
+                                            'name'       => 'foo']]]);
    // => SELECT * FROM `glpi_computers` WHERE (`is_deleted` = 0 OR `name` = 'foo')"
 
-   $DB->request('glpi_computers', ['NOT' => ['id' => [1,2,7]]]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['NOT' => ['id' => [1,2,7]]]]);
    // => SELECT * FROM `glpi_computers` WHERE NOT (`id` IN (1, 2, 7))
 
 
@@ -352,9 +356,9 @@ Using a more complex expression with ``AND`` and ``OR``:
 .. code-block:: php
 
     <?php
-    $DB->request('glpi_computers', ['is_deleted' => 0,
+    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0,
         ['OR' => ['name' => 'foo', 'otherserial' => 'otherunique']],
-        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]
+        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]]
     ]);
     // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = '0' AND ((`name` = 'foo' OR `otherserial` = 'otherunique')) AND ((`locations_id` = '1' OR `serial` = 'unique'))
 
@@ -366,10 +370,10 @@ Default operator is ``=``, but other operators can be used, by giving an array c
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['date_mod' => ['>' , '2016-10-01']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['date_mod' => ['>' , '2016-10-01']]]);
    // => SELECT * FROM `glpi_computers` WHERE `date_mod` > '2016-10-01'
 
-   $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['name' => ['LIKE' , 'pc00%']]]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
 Known operators are ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE``, ``NOT REGEX``, ``&`` (BITWISE AND), and ``|`` (BITWISE OR).
@@ -382,7 +386,7 @@ You can use SQL aliases (SQL ``AS`` keyword). To achieve that, just write the al
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers AS c');
+   $DB->request(['FROM' => 'glpi_computers AS c']);
    // => SELECT * FROM `glpi_computers` AS `c`
 
    $DB->request(['SELECT' => 'field AS f', 'FROM' => 'glpi_computers AS c']);
@@ -470,7 +474,7 @@ For example, to use the SQL `NOW()` function:
    ]);
    // SELECT * FROM `my_table` WHERE `date_end` > NOW()
 
-Another example with a field value:
+An example with a field value:
 
 .. code-block:: php
 
@@ -494,7 +498,7 @@ You can also use some function or non supported stuff on field part by using a `
       'FROM'   => 'my_table',
       'WHERE'  => [
         'RAW'  => [
-            'LOWER(' . DBmysql::quoteName('field') . ')' => strtolower('Value')
+            DBmysql::quoteName('field') => DBmysql::quoteName('field2')
         ]
       ]
    ]);
@@ -533,3 +537,5 @@ You can use a QueryExpression object in the FROM statement:
       'FROM'      => new QueryExpression('(SELECT * FROM glpi_computers) as computers'),
    ]);
    // => SELECT * FROM (SELECT * FROM glpi_computers) as computers
+
+When you need to manually quote identifies or values, it is recommended that you use ``$DB::quoteName`` and ``$DB::quoteValue`` respectively rather than directly adding the quotes to ensure future compatibility.
