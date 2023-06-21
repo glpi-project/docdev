@@ -11,7 +11,7 @@ Prior to GLPI 10.0, the classes were in the ``inc`` directory. Now, only non-cla
 CommonGLPI
 ^^^^^^^^^^
 
-This is **the** main GLPI object, most of GLPI or Plugins class inherit from this one, directly or not. The class is in the ``src/CommonGLPI.php`` file.
+This is **the** main GLPI object, most of GLPI or Plugins class inherit from this one, directly or not.
 
 This object will help you to:
 
@@ -26,7 +26,7 @@ This object will help you to:
 CommonDBTM
 ^^^^^^^^^^
 
-This is an object to manage any database stuff; it of course inherits from `CommonGLPI`_. The class is in the ``src/CommonDBTM.php`` file.
+This is an object to manage any database stuff; it of course inherits from `CommonGLPI`_.
 
 It aims to manage database persistence and tables for all objects; and will help you to:
 
@@ -40,7 +40,7 @@ The CommonDBTM object provides several of the :doc:`available hooks <../plugins/
 CommonDropdown
 ^^^^^^^^^^^^^^
 
-This class aims to manage dropdown (lists) database stuff. It inherits from `CommonDBTM`_. The class is in the ``src/CommonDropdown.php`` file.
+This class aims to manage dropdown (lists) database stuff. It inherits from `CommonDBTM`_.
 
 It will help you to:
 
@@ -51,19 +51,19 @@ It will help you to:
 CommonTreeDropdown
 ^^^^^^^^^^^^^^^^^^
 
-This class aims to manage tree lists database stuff. It inherits from `CommonDropdown`_. The class is in the ``src/CommonTreeDropdown.php`` file.
+This class aims to manage tree lists database stuff. It inherits from `CommonDropdown`_.
 
 It will mainly help you to manage the tree apsect of a dropdown (parents, children, and so on).
 
 CommonImplicitTreeDropdown
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This class manages tree lists that cannot be managed by the user. It inherits from `CommonTreeDropdown`_. The class is in the ``src/CommonImplicitTreeDropdown.php`` file.
+This class manages tree lists that cannot be managed by the user. It inherits from `CommonTreeDropdown`_.
 
 CommonDBVisible
 ^^^^^^^^^^^^^^^
 
-This class helps with visibility management. It inherits from `CommonDBTM`_. The class is in the ``src/CommonDBVisible.php`` file.
+This class helps with visibility management. It inherits from `CommonDBTM`_.
 
 It provides methods to:
 
@@ -74,21 +74,21 @@ It provides methods to:
 CommonDBConnexity
 ^^^^^^^^^^^^^^^^^
 
-This class factorizes database relation and inheritance stuff. It inherits from `CommonDBTM`_. The class is in the ``src/CommonDBConnexity.php`` file.
+This class factorizes database relation and inheritance stuff. It inherits from `CommonDBTM`_.
 
 It is not designed to be used directly, see `CommonDBChild`_ and `CommonDBRelation`_.
 
 CommonDBChild
 ^^^^^^^^^^^^^
 
-This class manages simple relations. It inherits from `CommonDBConnexity`_. The class is in the ``src/CommonDBChild.php`` file.
+This class manages simple relations. It inherits from `CommonDBConnexity`_.
 
 This object will help you to define and manage parent/child relations.
 
 CommonDBRelation
 ^^^^^^^^^^^^^^^^
 
-This class manages relations. It inherits from `CommonDBConnexity`_. The class is in the ``src/CommonDBRelation.php`` file.
+This class manages relations. It inherits from `CommonDBConnexity`_.
 
 Unlike `CommonDBChild`_; it is designed to declare more :ref:`complex relations; as defined in the database model <complex-relations>`. This is therefore more complex thant just using a simple relation; but it also offers many more possibilities.
 
@@ -109,7 +109,7 @@ The object will also help you to:
 CommonDevice
 ^^^^^^^^^^^^
 
-This class factorizes common requirements on devices. It inherits from `CommonDropdown`_. The class is in the ``src/CommonDevice.php`` file.
+This class factorizes common requirements on devices. It inherits from `CommonDropdown`_.
 
 It will help you to:
 
@@ -125,7 +125,7 @@ All common ITIL objects will help you with `ITIL <https://en.wikipedia.org/wiki/
 CommonITILObject
 ++++++++++++++++
 
-Handle ITIL objects. It inherits from `CommonDBTM`_. The class is in the ``src/CommonITILObject.php`` file.
+Handle ITIL objects. It inherits from `CommonDBTM`_.
 
 It will help you to:
 
@@ -138,7 +138,7 @@ It will help you to:
 CommonITILActor
 +++++++++++++++
 
-Handle ITIL actors. It inherits from `CommonDBRelation`_. The class is in the ``src/CommonITILActor.php`` file.
+Handle ITIL actors. It inherits from `CommonDBRelation`_.
 
 It will help you to:
 
@@ -150,7 +150,7 @@ It will help you to:
 CommonITILCost
 ++++++++++++++
 
-Handle ITIL costs. It inherits from `CommonDBChild`_. The class is in the ``src/CommonITILCost.php`` file.
+Handle ITIL costs. It inherits from `CommonDBChild`_.
 
 It will help you to:
 
@@ -161,7 +161,7 @@ It will help you to:
 CommonITILTask
 ++++++++++++++
 
-Handle ITIL tasks. It inherits from `CommonDBTM`_. The class is in the ``src/CommonITILTask.php`` file.
+Handle ITIL tasks. It inherits from `CommonDBTM`_.
 
 It will help you to:
 
@@ -173,7 +173,7 @@ It will help you to:
 CommonITILValidation
 ++++++++++++++++++++
 
-Handle ITIL validation process. It inherits from `CommonDBChild`_. The class is in the ``src/CommonITILValidation.php`` file.
+Handle ITIL validation process. It inherits from `CommonDBChild`_.
 
 It will help you to:
 
