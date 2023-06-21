@@ -17,7 +17,7 @@ First, in the ``plugin_init_{plugin_name}`` function, add the following:
    <?php
    //[...]
    Plugin::registerClass(
-      GlpiPlugin\MyExample\MyClass::class, [
+      GlpiPlugin\Myexample\MyClass::class, [
          'addtabon' => [
             'Computer',
             'Phone'
