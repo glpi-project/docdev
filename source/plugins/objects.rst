@@ -6,22 +6,21 @@ In most of the cases; your plugin will have to manage several objects
 Define an object
 ++++++++++++++++
 
-Objects definitions will be stored into the ``inc/`` or ``src/`` directory of your plugin.
-It is recommended to place all class files in the ``src`` if possible.
-As of GLPI 10.0, namespaces should be supported in almost all cases. Therefore, it is recommended to use namespaces for your plugin classes.
-For example, if your plugin is ``MyExamplePlugin``, you should use the ``GlpiPlugin\Myexampleplugin`` namespace.
-Note that the plugin name part of the namespace must be lowercase with the exception of the first letter.
-Child namespaces of ``GlpiPlugin\Myexampleplugin`` do not need to follow this rule.
+In older (< 10.0.0) GLPI versions:
+Objects definitions will be stored into the ``inc/`` directory of your plugin. File name will be the name of your class in lowercase; the class name will be the concatenation of your plugin name and your class name.
 
-Depending on where your class files are stored, the naming convention will be different:
-- inc: File name will be the name of your class, lowercase; the class name will be the concatenation of your plugin name and your class name.
-  For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
-- src: File name will match the name of your class exactly. The class name should not be prefixed by your plugin name when using namespaces. Namespaces are supported and can be reflected as subfolders.
-  For example, if your class is ``GlpiPlugin\Myexampleplugin\NS\MyObject``, the file will be ``src/NS/MyObject.php``.
+For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
 
 Your object will extends one of the :doc:`common core types <../devapi/mainobjects>` (``CommonDBTM`` in our example).
 
 Extra operations are aslo described in the :doc:`tips and tricks page <tips>`, you may want to take a look at it.
+
+In newer (>10.0.0) GLPI versions:
+You are required to store your objects in the `src\` directory of your plugin. You need to use the `use Namespace\Class` directive to include your objects.
+
+For example: If you want to use Myobject in Myexampleplugin you will create the file `src/Myobject.php` containing a namespace directive `namespace GlpiPlugin\Myexampleplugin;` and the class `class Myobject {}`. In the `setup.php` you then reference this object with use keyword `use GlpiPlugin\Myexampleplugin\Myobject;`
+
+Be aware the namespaces are case sensitive and should follow the following convention: GlpiPlugin\ucfirst(Pluginname)\ucfirst(Classfile). This translates to: include ('Pluginname\src\Classfile.php)
 
 Add a front for my object (CRUD)
 ++++++++++++++++++++++++++++++++
@@ -30,19 +29,17 @@ The goal is to build CRUD (Create, Read, Update, Delete) and list views for your
 
 You will need:
 
-* a class for your object (``src/MyObject.php``),
+* a class for your object (``inc/myobject.class.php``),
 * a front file to handle display (``front/myobject.php``),
 * a front file to handle form display (``front/myobject.form.php``).
 
-First, create the ``src/MyObject.php`` file that looks like:
+First, create the ``inc/myobject.class.php`` file that looks like:
 
 .. code-block:: php
 
    <?php
-   namespace GlpiPlugin\Myexampleplugin;
-
-   class MyObject extends CommonDBTM {
-      public function showForm($ID, array $options = []) {
+   class PluginMyExampleMyObject extends CommonDBTM {
+      public function showForm($ID, $options = []) {
          global $CFG_GLPI;
 
          $this->initForm($ID, $options);
@@ -94,7 +91,6 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
 .. code-block:: php
 
    <?php
-   use GlpiPlugin\Myexampleplugin\MyObject;
    include ("../../../inc/includes.php");
 
    // Check if plugin is activated...
@@ -104,7 +100,7 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
    }
 
    //check for ACLs
-   if (MyObject::canView()) {
+   if (PluginMyExampleMyObject::canView()) {
       //View is granted: display the list.
 
       //Add page header
@@ -112,11 +108,11 @@ The ``front/myobject.php`` file will be in charge to list objects. It should loo
          __('My example plugin', 'myexampleplugin'),
          $_SERVER['PHP_SELF'],
          'assets',
-         MyObject::class,
+         'pluginmyexamplemyobject',
          'myobject'
       );
 
-      Search::show(MyObject::class);
+      Search::show('PluginMyExampleMyObject');
 
       Html::footer();
    } else {
@@ -129,7 +125,6 @@ And finally, the ``front/myobject.form.php`` will be in charge of CRUD operation
 .. code-block:: php
 
    <?php
-   use GlpiPlugin\MyExamplePlugin\MyObject;
    include ("../../../inc/includes.php");
 
    // Check if plugin is activated...
@@ -138,7 +133,7 @@ And finally, the ``front/myobject.form.php`` will be in charge of CRUD operation
       Html::displayNotFoundError();
    }
 
-   $object = new MyObject();
+   $object = new PluginMyExampleMyObject();
 
    if (isset($_POST['add'])) {
       //Check CREATE ACL
