@@ -60,12 +60,41 @@ In GLPI 10 and newer installations you are adviced to use namespaces and compose
 
 The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `src` directory simply add them using the ucfirst convention. i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
 
-Namespace mapping table:
-|GlpiPlugin\|/plugins/ or /marketplace/|
-|MyPlugin| /myplugin/src/ `strtolower`|
-|ClassName | /ClassName.php `original`|
-|SubFolder | /SubFolder `original`| 
+Namespace & use mapping table:
+.. list-table:: Title
+   :widths: 50 50
+   :header-rows: 1
+* - Namespace element
+  - Compose path mapping
+* - GlpiPlugin\
+  - Maps to `/plugins` or `/marketplace/`
+* - MyPlugin\
+  - Maps to /myplugin/src in `strtolower`
+* - SubFolder\
+  - Maps to: /SubFolder in provided case
+* - ClassName
+  - Maps to: ClassName.php in provided case
 
+Examples:
+`GLPI_ROOT/marketplace/myplugin/src/Test.php`
+code-block:: php
+<?php
+namespace GlpiPlugin\MyPlugin;
+class Test extends CommonDBTM
+{
+\\...
+}
+?>
+
+`GLPI_ROOT/marketplace/myplugin/setup.php`
+code-block:: php
+<?php
+use GlpiPlugin\MyPlugin\Test;
+function usingTest() : void
+{
+   $test = new Test();
+}
+?>
 
 Where to write files?
 +++++++++++++++++++++
