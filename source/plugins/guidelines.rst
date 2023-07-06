@@ -6,7 +6,7 @@ Guidelines
 Directories structure
 ^^^^^^^^^^^^^^^^^^^^^
 
-PRE GLPI10
+PRE GLPI 10
 ++++++++++
 
 Real structure will depend of what your plugin propose. See :doc:`requirements <requirements>` to find out what is needed. You may also want to :ref:`take a look at GLPI File Hierarchy Standard <fhs>`.
@@ -53,54 +53,80 @@ The plugin directory structure should look like the following:
 * `MyPlugin.xml` and `MyPlugin.png` can be used to reference your plugin on the `plugins directory website <http://plugins.glpi-project.org>`_,
 * the required `setup.php` and `hook.php` files.
 
-POST GLPI10
+POST GLPI 10
 +++++++++++
 
-In GLPI 10 and newer installations you are adviced to use namespaces and composer autoloader. Objectfiles using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the composer autoloader in your plugin must place your classfiles in the `src/` directory instead of the `inc/`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
+In GLPI 10 and newer installations you are adviced to use namespaces and composer autoloader. Objectfiles using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the composer autoloader in your plugin must place your classfiles in the `/src` directory instead of the `/inc`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
 
-The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `src` directory simply add them using the ucfirst convention. i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
+The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
 
-.. list-table:: "mapping"
-   :widths: 50 50
-   :header-rows: 1
-* - Namespace element
-  - Compose path mapping
-* - GlpiPlugin\
-  - Maps to `/plugins` or `/marketplace/`
-* - MyPlugin\
-  - Maps to /myplugin/src in `strtolower`
-* - SubFolder\
-  - Maps to: /SubFolder in provided case
-* - ClassName
-  - Maps to: ClassName.php in provided case
++-------------+------------------------------------------------------------+
+| Directive   | Composer mapping                                           |
++=============+============================================================+
+| \GlpiPlugin | maps to /plugins or /marketplace                           |
++-------------+------------------------------------------------------------+
+| \MyPlugin   | maps to: /myplugin/src converted strtolower                |
++-------------+------------------------------------------------------------+
+| \SubFolder  | maps to /src/SubFolder/ using provided case                |
++-------------+------------------------------------------------------------+
+| \ClassName  | maps to ../ClassName.php using provided case apending .php |
++-------------+------------------------------------------------------------+
 
-Examples:
-`GLPI_ROOT/marketplace/myplugin/src/Test.php`
-code-block:: php
-<?php
-namespace GlpiPlugin\MyPlugin;
-class Test extends CommonDBTM
-{
-\\...
-}
-?>
 
-`GLPI_ROOT/marketplace/myplugin/setup.php`
-code-block:: php
-<?php
-use GlpiPlugin\MyPlugin\Test;
-function usingTest() : void
-{
-   $test = new Test();
-}
-?>
+GLPI_ROOT/marketplace/myplugin/src/Test.php
+
+.. code-block:: php
+
+  <?php
+
+    namespace GlpiPlugin\MyPlugin;
+
+    class Test extends CommonDBTM
+    {
+      \\ Your class code...
+    }
+
+  ?>
+
+GLPI_ROOT/marketplace/myplugin/src/ChildClass/ResultOutcomes.php
+
+.. code-block:: php
+
+  <?php
+
+    namespace GlpiPlugin\MyPlugin\ChildClass;
+
+    class ResultOutcomes extends CommonDBTM
+    {
+      \\ Your class code...
+    }
+
+  ?>
+
+GLPI_ROOT/marketplace/myplugin/setup.php
+
+.. code-block:: php
+
+  <?php
+
+  use GlpiPlugin\MyPlugin\Test;
+  use GlpiPlugin\Myplugin\ChildClass\ResultOutcomes;
+
+  function usingTest() : void
+  {
+    $t = new Test();
+    $r = new ResultOutcomes();
+  }
+
+  ?>
+
 
 Where to write files?
 +++++++++++++++++++++
 
 .. warning::
 
-   Plugins my never ask user to give them write access on their own directory!
+   Plugins may never ask user to give them write access on their own directory!
 
 The GLPI installation already ask for administrator to get write access on its ``files`` directory; just use ``GLPI_PLUGIN_DOC_DIR/{plugin_name}`` (that would resolve to ``glpi_dir/files/_plugins/{plugin_name}`` in default basic installations).
 
