@@ -60,8 +60,7 @@ In GLPI 10 and newer installations you are adviced to use namespaces and compose
 
 The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `src` directory simply add them using the ucfirst convention. i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
 
-Namespace & use mapping table:
-.. list-table:: Title
+.. list-table:: Namespace & use mapping table
    :widths: 50 50
    :header-rows: 1
 * - Namespace element
