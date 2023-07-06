@@ -56,15 +56,17 @@ The plugin directory structure should look like the following:
 POST GLPI10
 +++++++++++
 
-In GLPI 10 and newer installations you are adviced to use namespaces and composer autoloader. Objectfiles using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the composer autoloader in your plugin must place your classfiles in the `src/` directory instead of the `inc/`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
+In GLPI 10 and newer installations you are adviced to use namespaces and composer autoloader. Objectfiles using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the composer autoloader you need to place your classfiles in the `src/` directory instead of the `inc/`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
 
-The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `src` directory simply add them using the ucfirst convention. i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
+The the convention to be used (Case sensitive) is: `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should by PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT/Plugins/myplugin/src/ClassName.php`. To include folders inside the `src` directory simply add them to the namespace. i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT/Plugins/myplugin/src/SubFolder/ClassName.php`.
 
 Namespace mapping table:
 |GlpiPlugin\|/plugins/ or /marketplace/|
 |MyPlugin| /myplugin/src/ `strtolower`|
 |ClassName | /ClassName.php `original`|
 |SubFolder | /SubFolder `original`| 
+
+In order to include an object you need to reference the object with the `use` keyword. i.e. `use GlpiPlugin\Myplugin\SubFolder\ChildClass;` to include `GLPI_ROOT/Plugins/myplugin/src/SubFolder/ChildClass.php` 
 
 
 Where to write files?
