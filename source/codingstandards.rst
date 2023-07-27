@@ -20,7 +20,7 @@ Static or Non static?
 
 Some methods in the source code as `declared as static <http://php.net/manual/fr/language.oop5.static.php>`_; some are not.
 
-For sure, you cannot make static calls on a non static method. In order to call such a method, you will have to get an object instance, and the call the method on it:
+For sure, you cannot make static calls on a non static method. In order to call such a method, you will have to get an object instance, and then call the method on it:
 
 .. code-block:: php
 
