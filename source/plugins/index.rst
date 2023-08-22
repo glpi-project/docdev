@@ -27,3 +27,4 @@ If you want to see more advanced examples of what it is possible to do with plug
    notifications
    test
    tutorial
+   javascript
