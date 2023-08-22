@@ -21,7 +21,7 @@ Sample webpack config (derived from the config used in GLPI itself for Vue):
         },
         externals: {
             // prevent duplicate import of Vue library (already done in ../../public/build/vue/app.js)
-            vue: 'import vue',
+            vue: 'window _vue',
         },
         output: {
             filename: 'app.js',
@@ -81,9 +81,10 @@ Sample webpack config (derived from the config used in GLPI itself for Vue):
     module.exports = config
 
 Note the use of the ``externals`` option. This will prevent webpack from including Vue itself when building your components since it is already imported by the bundle in GLPI itself.
+The core GLPI bundle sets ``window._vue`` to the vue module and the plugin's externals option will map any imports from 'vue' to that.
 This will drastically reduce the size of your imports.
 
-For your entrypoint, it is mostly the same as the core GLPi one except you should use the ``defineAsyncComponent`` method in ``window.Vue`` instead of importing it from Vue itself.
+For your entrypoint, it is mostly the same as the core GLPI one except you should use the ``defineAsyncComponent`` method in ``window.Vue`` instead of importing it from Vue itself.
 
 Example entrypoint:
 
