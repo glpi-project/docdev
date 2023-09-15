@@ -15,4 +15,5 @@ Apart from the current documentation, you can also generate the full PHP documen
    acl
    crontasks
    tools
+   javascript
    extra
