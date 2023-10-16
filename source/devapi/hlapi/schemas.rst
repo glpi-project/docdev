@@ -204,15 +204,6 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Set and used internally by the OpenAPI documentation generator to track which controller defined the schema.
       - Main schema
       - Debug mode only
-    * - x-default-contexts
-      - Array of contexts where the property will be accessible by default. If this is not present, it is accessible in all contexts.
-        If it is present and the current context is not in the array, the property will only be accessible if it is explicitly requested
-        such as via GraphQL. Currently, the valid contexts are:
-
-        - 'single': Search context where a single item is requested
-        - 'collection': Search context where multiple items may be returned
-      - Schema join properties
-      - Debug mode only
     * - x-field
       - Specifies the column that contains the data for the property if it differs from the property name.
       - Schema properties
