@@ -14,7 +14,7 @@ The locale directory contains several scripts used to maintain :doc:`translation
 genapidoc.sh
 ------------
 
-Generate GLPI phpdoc using `apigen <http://www.apigen.org/>`_. ``apigen`` command must be available in your path.
+Generate GLPI phpdoc using `apigen <https://github.com/ApiGen/ApiGen>`_. ``apigen`` command must be available in your path.
 
 Generated documentation will be available in the ``api`` directory.
 
