@@ -177,14 +177,15 @@ In some cases though, joins may be defined on scalar properties (not array or ob
 
 The information required to join data from outside of the main item's table is defined inside of an 'x-join' array.
 The supported properties of the 'x-join' definition are:
-- table: The database table to pull the data from
-- fkey: The SQL field in the main table to use to identify which records in the other table are related
-- field: The SQL field in the other table to match against the fkey.
-- primary-property: Optional property which indicates the primary property of the foreign data. Typically, this is the 'id' field.
+
+* table: The database table to pull the data from
+* fkey: The SQL field in the main table to use to identify which records in the other table are related
+* field: The SQL field in the other table to match against the fkey.
+* primary-property: Optional property which indicates the primary property of the foreign data. Typically, this is the 'id' field.
   By default, the API will assume the field specified in 'field' is the primary property. If it isn't, it is required to specify it here.
   In the User schema example, email addresses have a many-to-one relation with users. So, we use the user's ID field and match it against the 'users_id' field of the email addresses.
   In that case, the 'field' is 'users_id' but the primary property is 'id', so we need to hint to the API that 'id' is still the primary property.
-- ref-join: In some cases, there is no direct connection between the main item's table and the table with the data desired (typically seen with many-to-many relations).
+* ref-join: In some cases, there is no direct connection between the main item's table and the table with the data desired (typically seen with many-to-many relations).
   In that case, a reference or in-between join can be specified. The 'ref_join' property follows the same format as 'x-join' except that you cannot have another 'ref_join'.
 
 Extension Properties
