@@ -9,6 +9,7 @@ Apart from the current documentation, you can also generate the full PHP documen
    mainobjects
    database/index
    search
+   hlapi/index
    massiveactions
    rules
    translations
