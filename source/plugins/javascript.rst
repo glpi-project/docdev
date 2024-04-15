@@ -9,6 +9,7 @@ Please refer to :doc:`the core Vue developer documentation first <../devapi/java
 Plugins that wish to use custom Vue components must implement their own webpack config to build the components and add them to the `window.Vue.components` object.
 
 Sample webpack config (derived from the config used in GLPI itself for Vue):
+
 .. code-block:: javascript
 
     const webpack = require('webpack');
