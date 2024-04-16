@@ -367,6 +367,47 @@ Using a more complex expression with ``AND`` and ``OR``:
     ]);
     // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = '0' AND ((`name` = 'foo' OR `otherserial` = 'otherunique')) AND ((`locations_id` = '1' OR `serial` = 'unique'))
 
+Criteria unicity
+++++++++++++++++
+
+
+Indexed array entries must be unique; otherwise PHP will only take the last one. The following example is incorrect:
+
+.. code-block:: php
+
+    <?php
+    $DB->request([
+        'FROM' => 'glpi_computers',
+        'WHERE' => [
+            [
+                'OR' => [
+                    'name' => 'a name',
+                    'name' => 'another name'
+                ]
+            ],
+        ]
+    ]);
+    // => SELECT * FROM `glpi_computers` WHERE `name` = 'another name'
+
+The right way would be to enclose each condition in another array, like:
+
+.. code-block:: php
+
+    <?php
+    $DB->request([
+        'FROM' => 'glpi_computers',
+        'WHERE' => [
+            [
+                'OR' => [
+                    ['name' => 'a name'],
+                    ['name' => 'another name']
+                ]
+            ],
+        ]
+    ]);
+    // => SELECT * FROM `glpi_computers` WHERE (`name = 'a name' OR `name` = 'another name')
+
+
 Operators
 +++++++++
 
