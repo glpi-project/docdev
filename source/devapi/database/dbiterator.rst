@@ -33,7 +33,7 @@ Basic usage
 Arguments
 ^^^^^^^^^
 
-The ``request`` method takes as argument an array of criteria with explicit SQL clauses (`FROM`, `WHERE` and so on)
+The ``request`` method takes as argument an array of criteria with explicit SQL clauses (``FROM``, ``WHERE`` and so on)
 
 FROM clause
 ^^^^^^^^^^^
