@@ -85,8 +85,8 @@ Multiple tables, native join
    $DB->request([
        'FROM' => ['glpi_computers', 'glpi_computerdisks'],
        'ON' => [
-           'glpi_computers'=>'id',
-           'glpi_computerdisks'=>'computer_id'
+           'glpi_computers' => 'id',
+           'glpi_computerdisks' => 'computer_id'
        ]
    ]);
    // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
