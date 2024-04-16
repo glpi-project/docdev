@@ -333,7 +333,7 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
        'FROM' => 'glpi_computers',
        'WHERE' => [
            'NOT' => [
-               'id' => [1,2,7]
+               'id' => [1, 2, 7]
            ]
        ]
    ]);
@@ -584,7 +584,7 @@ You can use a QueryExpression object in the FROM statement:
    .. code-block:: php
 
       <?php
-      $DB->doQuery('SHOW COLUMNS FROM `glpi_computers`');
+      $DB->doQuery('SHOW COLUMNS FROM ' . $DB::quoteName('glpi_computers'));
 
    **You have to ensure the query is proprely escaped!**
 
