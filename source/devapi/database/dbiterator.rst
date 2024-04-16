@@ -5,7 +5,7 @@ GLPI framework provides a simple request generator:
 
 * without having to write SQL
 * without having to quote table and field name
-* without escaping values to prevent SQL injections
+* without having to escape values to prevent SQL injections
 * without having to take care of freeing resources
 * iterable
 * countable
