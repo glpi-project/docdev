@@ -74,23 +74,7 @@ The fields array can also contain per table sub-array:
 Using JOINs
 ^^^^^^^^^^^
 
-You need to use criteria, usually a ``FKEY`` (or the ``ON`` equivalent), to describe how to join the tables:
-
-Multiple tables, native join
-++++++++++++++++++++++++++++
-
-.. code-block:: php
-
-   <?php
-   $DB->request([
-       'FROM' => ['glpi_computers', 'glpi_computerdisks'],
-       'ON' => [
-           'glpi_computers' => 'id',
-           'glpi_computerdisks' => 'computer_id'
-       ]
-   ]);
-   // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
-   //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
+You need to use criteria, usually a ``ON`` (or the ``FKEY`` equivalent), to describe how to join the tables.
 
 Left join
 +++++++++
@@ -558,7 +542,7 @@ You can use a QueryExpression object in the FIELDS statement:
       'FROM'      => 'glpi_computers',
       'LEFT JOIN' => [
          'glpi_domains' => [
-            'FKEY' => [
+            'ON' => [
                'glpi_computers' => 'domains_id',
                'glpi_domains' => 'id',
             ]
