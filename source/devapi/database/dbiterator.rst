@@ -5,6 +5,7 @@ GLPI framework provides a simple request generator:
 
 * without having to write SQL
 * without having to quote table and field name
+* without escaping values to prevent SQL injections
 * without having to take care of freeing resources
 * iterable
 * countable
@@ -32,18 +33,8 @@ Basic usage
 Arguments
 ^^^^^^^^^
 
-The ``request`` method takes two arguments:
+The ``request`` method takes as argument an array of criteria with explicit SQL clauses (`FROM`, `WHERE` and so on)
 
-* `table name(s)`: a `string` or an `array` of `string`
-  (optional when given as ``FROM`` option)
-* `option(s)`: `array` of options
-
-
-Giving full SQL statement
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If the only option is a full SQL statement, it will be used.
-This usage is deprecated, and should be avoid when possible.
 
 .. note::
 
@@ -52,12 +43,14 @@ This usage is deprecated, and should be avoid when possible.
    .. code-block:: php
 
       <?php
-      $DB->request('SELECT id FROM glpi_users WHERE end_date > NOW()');
+      $DB->doQuery('SELECT id FROM glpi_users WHERE end_date > NOW()');
 
-Without option
-^^^^^^^^^^^^^^
+   **Keep in mind you have to ensure that kind of query is proprely escaped!**
 
-In this case, all the data from the selected table is iterated:
+FROM clause
+^^^^^^^^^^^
+
+The SQL ``FROM`` clause can be a string or an array of strings:
 
 .. code-block:: php
 
@@ -65,8 +58,8 @@ In this case, all the data from the selected table is iterated:
    $DB->request(['FROM' => 'glpi_computers']);
    // => SELECT * FROM `glpi_computers`
 
-   $DB->request('glpi_computers');
-   // => SELECT * FROM `glpi_computers`
+   $DB->request(['FROM' => ['glpi_computers', 'glpi_monitors']);
+   // => SELECT * FROM `glpi_computers`, `glpi_monitors`
 
 Fields selection
 ^^^^^^^^^^^^^^^^
@@ -74,9 +67,9 @@ Fields selection
 You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINCT`` option might be specified.
 
 .. note::
-   
+
    .. versionchanged:: 9.5.0
-   
+
    Using ``DISTINCT FIELDS`` or ``SELECT DISTINCT`` options is deprecated.
 
 .. code-block:: php
@@ -85,13 +78,7 @@ You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINC
    $DB->request(['SELECT' => 'id', 'FROM' => 'glpi_computers']);
    // => SELECT `id` FROM `glpi_computers`
 
-   $DB->request('glpi_computers', ['FIELDS' => 'id']);
-   // => SELECT `id` FROM `glpi_computers`
-
    $DB->request(['SELECT' => 'name', 'DISTINCT' => true, 'FROM' => 'glpi_computers']);
-   // => SELECT DISTINCT `name` FROM `glpi_computers`
-
-   $DB->request('glpi_computers', ['FIELDS' => 'name', 'DISTINCT' => true]);
    // => SELECT DISTINCT `name` FROM `glpi_computers`
 
 The fields array can also contain per table sub-array:
@@ -123,9 +110,6 @@ You need to use criteria, usually a ``FKEY`` (or the ``ON`` equivalent), to desc
    <?php
    $DB->request(['FROM' => ['glpi_computers', 'glpi_computerdisks'],
                  'FKEY' => ['glpi_computers'=>'id',
-                            'glpi_computerdisks'=>'computer_id']]);
-   $DB->request(['glpi_computers', 'glpi_computerdisks'],
-                ['FKEY' => ['glpi_computers'=>'id',
                             'glpi_computerdisks'=>'computer_id']]);
    // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
    //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
@@ -275,9 +259,6 @@ Using the ``GROUPBY`` option, which contains a field name or an array of field n
    $DB->request(['FROM' => 'glpi_computers', 'GROUPBY' => 'name']);
    // => SELECT * FROM `glpi_computers` GROUP BY `name`
 
-   $DB->request('glpi_computers', ['GROUPBY' => ['name', 'states_id']]);
-   // => SELECT * FROM `glpi_computers` GROUP BY `name`, `states_id`
-
 Order
 ^^^^^
 
@@ -288,9 +269,6 @@ Using the ``ORDER`` option, with value a field or an array of fields. Field name
    <?php
    $DB->request(['FROM' => 'glpi_computers', 'ORDER' => 'name']);
    // => SELECT * FROM `glpi_computers` ORDER BY `name`
-
-   $DB->request('glpi_computers', ['ORDER' => ['date_mod DESC', 'name ASC']]);
-   // => SELECT * FROM `glpi_computers` ORDER BY `date_mod` DESC, `name` ASC
 
 Request pager
 ^^^^^^^^^^^^^
@@ -324,11 +302,10 @@ A field name and its wanted value:
    $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0]]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0
 
-   $DB->request('glpi_computers', ['is_deleted' => 0,
-                                   'name'       => 'foo']);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['is_deleted' => 0, 'name' => 'foo']]);
    // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = 0 AND `name` = 'foo'
 
-   $DB->request('glpi_computers', ['users_id' => [1,5,7]]);
+   $DB->request('FROM' => 'glpi_computers', 'WHERE' => ['users_id' => [1,5,7]]]);
    // => SELECT * FROM `glpi_computers` WHERE `users_id` IN (1, 5, 7)
 
 Logical ``OR``, ``AND``, ``NOT``
@@ -339,11 +316,25 @@ Using the ``OR``, ``AND``, or ``NOT`` option with an array of criteria:
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['OR' => ['is_deleted' => 0,
-                                            'name'       => 'foo']]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'WHERE' => [
+           'OR' => [
+               'is_deleted' => 0,
+               'name'       => 'foo'
+           ]
+       ]
+    ]);
    // => SELECT * FROM `glpi_computers` WHERE (`is_deleted` = 0 OR `name` = 'foo')"
 
-   $DB->request('glpi_computers', ['NOT' => ['id' => [1,2,7]]]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'WHERE' => [
+           'NOT' => [
+               'id' => [1,2,7]
+           ]
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers` WHERE NOT (`id` IN (1, 2, 7))
 
 
@@ -352,9 +343,13 @@ Using a more complex expression with ``AND`` and ``OR``:
 .. code-block:: php
 
     <?php
-    $DB->request('glpi_computers', ['is_deleted' => 0,
-        ['OR' => ['name' => 'foo', 'otherserial' => 'otherunique']],
-        ['OR' => ['locations_id' => 1, 'serial' => 'unique']]
+    $DB->request([
+        'FROM' => 'glpi_computers',
+        'WHERE' => [
+            'is_deleted' => 0,
+            ['OR' => ['name' => 'foo', 'otherserial' => 'otherunique']],
+            ['OR' => ['locations_id' => 1, 'serial' => 'unique']]
+        ]
     ]);
     // => SELECT * FROM `glpi_computers` WHERE `is_deleted` = '0' AND ((`name` = 'foo' OR `otherserial` = 'otherunique')) AND ((`locations_id` = '1' OR `serial` = 'unique'))
 
@@ -366,10 +361,15 @@ Default operator is ``=``, but other operators can be used, by giving an array c
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers', ['date_mod' => ['>' , '2016-10-01']]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'WHERE' => [
+           'date_mod' => ['>' , '2016-10-01']
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers` WHERE `date_mod` > '2016-10-01'
 
-   $DB->request('glpi_computers', ['name' => ['LIKE' , 'pc00%']]);
+   $DB->request(['FROM' => 'glpi_computers', 'WHERE' => ['name' => ['LIKE' , 'pc00%']]]);
    // => SELECT * FROM `glpi_computers` WHERE `name` LIKE 'pc00%'
 
 Known operators are ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``, ``LIKE``, ``REGEXP``, ``NOT LIKE``, ``NOT REGEX``, ``&`` (BITWISE AND), and ``|`` (BITWISE OR).
@@ -382,7 +382,7 @@ You can use SQL aliases (SQL ``AS`` keyword). To achieve that, just write the al
 .. code-block:: php
 
    <?php
-   $DB->request('glpi_computers AS c');
+   $DB->request(['FROM' => 'glpi_computers AS c']);
    // => SELECT * FROM `glpi_computers` AS `c`
 
    $DB->request(['SELECT' => 'field AS f', 'FROM' => 'glpi_computers AS c']);
