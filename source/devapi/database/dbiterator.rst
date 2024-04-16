@@ -66,12 +66,6 @@ Fields selection
 
 You can use either the ``SELECT`` or ``FIELDS`` options, an additional ``DISTINCT`` option might be specified.
 
-.. note::
-
-   .. versionchanged:: 9.5.0
-
-   Using ``DISTINCT FIELDS`` or ``SELECT DISTINCT`` options is deprecated.
-
 .. code-block:: php
 
    <?php
@@ -94,11 +88,6 @@ Using JOINs
 
 You need to use criteria, usually a ``FKEY`` to describe how to join the tables.
 
-.. note::
-
-   .. versionadded:: 9.3.1
-
-   The ``ON`` keyword can aslo be used as an alias of ``FKEY``.
 
 Multiple tables, native join
 ++++++++++++++++++++++++++++
