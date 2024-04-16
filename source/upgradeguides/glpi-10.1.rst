@@ -53,3 +53,23 @@ Also, code that ouputs javascript must be adapted to prevent XSS with both HTML 
    +        $(body).append(json_encode('<p>' . htmlspecialchars($content) . '</p>'));
        </script>
    ';
+
+Query builder usage
++++++++++++++++++++
+
+Since it has been implemented, internal query builder (named `DBMysqlIterator`) do accept several syntaxes; that make things complex:
+
+1. conditions (including table name as `FROM` array key) as first (and only) parameter.
+2. table name as first parameter and condition as second parameter,
+3. raw SQL queries,
+
+The most used and easiest to maintain was the first. The second has been deprecated and the thrird has been prohibited or security reasons.
+
+I you were using the second syntax, you will need to replace as follows:
+
+.. code-block:: diff
+
+   - $iterator = $DB->request('mytable', ['field' => 'condition']);
+   + $iterator = $DB->request(['FROM' => 'mytable', 'WHERE' => ['field' => 'condition']]);
+
+Using raw SQL queries must be replaced with query builder call, among other to prevent syntax issues, and SQL injections; please refer to :doc:devapi/database/dbiterator.
