@@ -86,34 +86,43 @@ The fields array can also contain per table sub-array:
 Using JOINs
 ^^^^^^^^^^^
 
-You need to use criteria, usually a ``FKEY`` to describe how to join the tables.
-
+You need to use criteria, usually a ``FKEY`` (or the ``ON`` equivalent), to describe how to join the tables:
 
 Multiple tables, native join
 ++++++++++++++++++++++++++++
 
-You need to use criteria, usually a ``FKEY`` (or the ``ON`` equivalent), to describe how to join the tables:
-
 .. code-block:: php
 
    <?php
-   $DB->request(['FROM' => ['glpi_computers', 'glpi_computerdisks'],
-                 'FKEY' => ['glpi_computers'=>'id',
-                            'glpi_computerdisks'=>'computer_id']]);
+   $DB->request([
+       'FROM' => ['glpi_computers', 'glpi_computerdisks'],
+       'ON' => [
+           'glpi_computers'=>'id',
+           'glpi_computerdisks'=>'computer_id'
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
    //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
 
 Left join
 +++++++++
 
-Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
+Using the ``LEFT JOIN`` option, with some criteria:
 
 .. code-block:: php
 
    <?php
-   $DB->request(['FROM'      => 'glpi_computers',
-                 'LEFT JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
-                                                                     'glpi_computerdisks' => 'computer_id']]]]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'LEFT JOIN' => [
+           'glpi_computerdisks' => [
+               'ON' => [
+                   'glpi_computers' => 'id',
+                   'glpi_computerdisks' => 'computer_id'
+               ]
+           ]
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers`
    //       LEFT JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
@@ -121,14 +130,22 @@ Using the ``LEFT JOIN`` option, with some criteria, usually a ``FKEY`` (or the `
 Inner join
 ++++++++++
 
-Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
+Using the ``INNER JOIN`` option, with some criteria:
 
 .. code-block:: php
 
    <?php
-   $DB->request(['FROM'       => 'glpi_computers',
-                 'INNER JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
-                                                                      'glpi_computerdisks' => 'computer_id']]]]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'INNER JOIN' => [
+           'glpi_computerdisks' => [
+               'ON' => [
+                   'glpi_computers' => 'id',
+                   'glpi_computerdisks' => 'computer_id'
+               ]
+           ]
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers`
    //       INNER JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
@@ -136,14 +153,22 @@ Using the ``INNER JOIN`` option, with some criteria, usually a ``FKEY`` (or the 
 Right join
 ++++++++++
 
-Using the ``RIGHT JOIN`` option, with some criteria, usually a ``FKEY`` (or the ``ON`` equivalent):
+Using the ``RIGHT JOIN`` option, with some criteria:
 
 .. code-block:: php
 
    <?php
-   $DB->request(['FROM'       => 'glpi_computers',
-                 'RIGHT JOIN' => ['glpi_computerdisks' => ['FKEY' => ['glpi_computers'     => 'id',
-                                                                      'glpi_computerdisks' => 'computer_id']]]]);
+   $DB->request([
+       'FROM' => 'glpi_computers',
+       'RIGHT JOIN' => [
+           'glpi_computerdisks' => [
+               'ON' => [
+                   'glpi_computers' => 'id',
+                   'glpi_computerdisks' => 'computer_id'
+               ]
+           ]
+       ]
+   ]);
    // => SELECT * FROM `glpi_computers`
    //       RIGHT JOIN `glpi_computerdisks`
    //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`)
@@ -162,7 +187,7 @@ It is also possible to add an extra criterion for any `JOIN` clause. You have to
       'FROM'       => 'glpi_computers',
       'INNER JOIN' => [
          'glpi_computerdisks' => [
-            'FKEY' => [
+            'ON' => [
                'glpi_computers'     => 'id',
                'glpi_computerdisks' => 'computer_id',
                ['OR' => ['glpi_computers.field' => ['>', 42]]]
