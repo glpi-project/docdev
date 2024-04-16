@@ -35,18 +35,6 @@ Arguments
 
 The ``request`` method takes as argument an array of criteria with explicit SQL clauses (`FROM`, `WHERE` and so on)
 
-
-.. note::
-
-   To make a database query that could not be done using recommanded way (calling SQL functions such as ``NOW()``, ``ADD_DATE()``, ... for example), you can do:
-
-   .. code-block:: php
-
-      <?php
-      $DB->doQuery('SELECT id FROM glpi_users WHERE end_date > NOW()');
-
-   **Keep in mind you have to ensure that kind of query is proprely escaped!**
-
 FROM clause
 ^^^^^^^^^^^
 
@@ -588,3 +576,15 @@ You can use a QueryExpression object in the FROM statement:
       'FROM'      => new QueryExpression('(SELECT * FROM glpi_computers) as computers'),
    ]);
    // => SELECT * FROM (SELECT * FROM glpi_computers) as computers
+
+.. warning::
+
+   If you really cannot use any of the above, you still can make raw SQL queries:
+
+   .. code-block:: php
+
+      <?php
+      $DB->doQuery('SHOW COLUMNS FROM `glpi_computers`');
+
+   **You have to ensure the query is proprely escaped!**
+
