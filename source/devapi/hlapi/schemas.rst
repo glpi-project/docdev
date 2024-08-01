@@ -20,6 +20,7 @@ Let's look at a partial version of the schema definition for a User since it sho
 .. code-block:: php
 
     'User' => [
+        'x-version-introduced' => '2.0.0',
         'x-itemtype' => User::class,
         'type' => Doc\Schema::TYPE_OBJECT,
         'x-rights-conditions' => [ // Object-level extra permissions
@@ -213,6 +214,18 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Indicates which schema is the full representation of the joined property.
         This enables the accessing of properties not in the partial schema in certain conditions such as a GraphQL query.
       - Schema join properties
+      - Yes
+    * - x-version-introduced
+      - Indicates which API version the schema or property first becomes available in. This is required for all schemas. Any individual properties without this will use the introduction version from the schema.
+      - Main schema and schema properties
+      - Yes
+    * - x-version-deprecated
+      - Indicates which API version the schema or property becomes deprecated in. Any individual properties without this will use the deprecated version from the schema if specified.
+      - Main schema and schema properties
+      - Yes
+    * - x-version-removed
+      - Indicates which API version the schema or property becomes removed in. Any individual properties without this will use the removed version from the schema if specified.
+      - Main schema and schema properties
       - Yes
     * - x-itemtype
       - Specifies the PHP class related to the schema.
