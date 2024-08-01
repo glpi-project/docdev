@@ -11,3 +11,4 @@ These sections are sorted by the recommended reading order. It is recommended th
 
    schemas
    search
+   versioning
