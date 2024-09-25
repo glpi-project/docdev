@@ -83,6 +83,9 @@ Crafting plugins URLs
 In GLPI 11.0, we changed the way to handle URLs to plugin resources so that they no longer need to reflect the location of the plugin on the file system.
 For instance, the same URL could be used to access a plugin file whether it was installed manually in the ``/plugins`` directory or via the marketplace.
 
+To maintain backwards compatibility with previous behavior, we will continue to support URLs using the ``/marketplace`` path prefix.
+However, their use is deprecated and may be removed in a future version of GLPI.
+
 The ``Plugin::getWebDir()`` PHP method has been deprecated.
 
 .. code-block:: diff
