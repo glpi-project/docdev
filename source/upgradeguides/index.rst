@@ -11,4 +11,4 @@ The upgrade guides are intended to help you adapt your plugins to the changes in
 .. toctree::
    :maxdepth: 2
 
-   glpi-10.1
+   glpi-11.0
