@@ -74,13 +74,83 @@ If you were using the second syntax, you will need to replace as follows:
 
 Using raw SQL queries must be replaced with query builder call, among other to prevent syntax issues, and SQL injections; please refer to :doc:devapi/database/dbiterator.
 
-Changes related to URLs routing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changes related to web requests handling
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In GLPI 11.0, all the web requests are now handled by a unique entry point, the ``/public/index.php`` script.
+This allowed us to centralize a large number of things, including GLPI's initialization mechanics and error management.
+
+Removal of the ``/inc/includes.php`` script
++++++++++++++++++++++++++++++++++++++++++++
+
+All the logic that was executed by the inclusion of the ``/inc/includes.php`` script is now made automatically.
+Therefore, it is no longer necessary to include it, even if it is still present to ease the migration to GLPI 11.0.
+
+.. code-block:: diff
+
+   - include("../../../inc/includes.php");
+
+Legacy scripts access policy
+++++++++++++++++++++++++++++
+
+By default, the access to any PHP script will be allowed only to authenticated users.
+If you need to change this default policy for some of your PHP scripts, you will need to do this in your plugin ``init`` function,
+using the ``Glpi\Http\Firewall::addPluginFallbackStrategy()`` method.
+
+.. code-block:: php
+
+   <?php
+   
+   use Glpi\Http\Firewall;
+   
+   function plugin_init_myplugin() {
+       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
+       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
+   }
+
+The following strategies are available:
+
+* ``Firewall::STRATEGY_NO_CHECK``: no check is done, anyone can access your script, even unauthenticated users;
+* ``Firewall::STRATEGY_AUTHENTICATED``: only authenticated users can access your script, it is the default strategy for all PHP scripts;
+* ``Firewall::STRATEGY_CENTRAL_ACCESS``: only users with access to the standard interface can access your script;
+* ``Firewall::STRATEGY_HELPDESK_ACCESS``: only users with access to the simplified interface can access your script;
+* ``Firewall::STRATEGY_FAQ_ACCESS``: only users with a read access to the FAQ will be allowed to access your script, unless the FAQ is configured to be public.
+
+Handling of response codes and early script exit
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Usage of the ``exit()``/``die()`` language construct is now discouraged as it prevents the execution of routines that might take place after the request has been executed.
+Also, due to a PHP bug (see https://bugs.php.net/bug.php?id=81451), the usage of the ``http_response_code()`` function will produce unexpected results, depending on the server environment.
+
+In the case they were used to exit the script early due to an error, you can replace them by throwing an exception.
+Any exception thrown will now be caught correctly and forwarded to the error handler.
+If this exception is thrown during the execution of a web request, the GLPI error page will be shown, unless this exception is handled by a specific routine.
+
+.. code-block:: diff
+
+   if ($item->getFromDB($_GET['id']) === false) {
+   -    http_response_code(404);
+   -    exit();
+   +    throw new \Glpi\Exception\Http\NotFoundHttpException();
+   }
+
+In case the ``exit()``/``die()`` language construct was used to just ignore the following line of code in the script, you can replace it with a ``return`` instruction.
+
+.. code-block:: diff
+
+   if ($action === 'foo') {
+       // specific action
+       echo "foo action executed";
+   -    exit();
+   +    return;
+   }
+   
+   MypluginItem::displayFullPageForItem($_GET['id']);
 
 Crafting plugins URLs
 +++++++++++++++++++++
 
-In GLPI 11.0, we changed the way to handle URLs to plugin resources so that they no longer need to reflect the location of the plugin on the file system.
+We changed the way to handle URLs to plugin resources so that they no longer need to reflect the location of the plugin on the file system.
 For instance, the same URL could be used to access a plugin file whether it was installed manually in the ``/plugins`` directory or via the marketplace.
 
 To maintain backwards compatibility with previous behavior, we will continue to support URLs using the ``/marketplace`` path prefix.
