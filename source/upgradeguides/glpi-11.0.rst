@@ -122,8 +122,8 @@ Handling of response codes and early script exit
 Usage of the ``exit()``/``die()`` language construct is now discouraged as it prevents the execution of routines that might take place after the request has been executed.
 Also, due to a PHP bug (see https://bugs.php.net/bug.php?id=81451), the usage of the ``http_response_code()`` function will produce unexpected results, depending on the server environment.
 
-In the case they were used to exit the script earlier due to an error, you can replace them by an exception throwing.
-Indeed, any exception thrown will now be caught correctly and forwarded to the error handler.
+In the case they were used to exit the script early due to an error, you can replace them by throwing an exception.
+Any exception thrown will now be caught correctly and forwarded to the error handler.
 If this exception is thrown during the execution of a web request, the GLPI error page will be shown, unless this exception is handled by a specific routine.
 
 .. code-block:: diff
