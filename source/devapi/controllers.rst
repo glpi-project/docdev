@@ -5,21 +5,21 @@ You need a `Controller` any time you want an URL access.
 
 .. note::
 
-   `Controllers` is the "modern" way that replaces all files previousely present in ``front/`` and ``ajax/`` directories.
+   `Controllers` are the modern way that replace all files previousely present in ``front/`` and ``ajax/`` directories.
 
 .. warning::
 
-   Currently, not all existing front or ajax files has been migrated to `Controllers`, mainly because of specific stuff or no time to work on that yet.
+   Currently, not all existing ``front/`` or ``ajax/`` files have been migrated to `Controllers`, mainly because of specific behaviors or lack of time to work on migrating them.
 
-   Any new feature added to GLPI >= 11 **must** use `Controllers`.
+   Any new feature added to GLPI >=11 **must** use `Controllers`.
 
 Creating a controller
 ^^^^^^^^^^^^^^^^^^^^^
 
 Minimal requirements to have a working controller:
 
-* The controller file must be placed in the src/Glpi/Controller/** folder.
-* The name of the controller must end with Controller.
+* The controller file must be placed in the ``src/Glpi/Controller/`` folder.
+* The name of the controller must end with ``Controller``.
 * The controller must extends the ``Glpi\Controller\AbstractController`` class.
 * The controller must define a route using the Route attribute.
 * The controller must return some kind of response.
@@ -76,7 +76,7 @@ Dynamic route parameter
 
 .. code-block:: php
 
-   #[Symfony\Component\Routing\Attribute\Route("/Ticket/{$id}", name: "glpi_ticket")]
+   #[Symfony\Component\Routing\Attribute\Route("/Ticket/{id}", name: "glpi_ticket")]
 
 Restricting a route to a specific HTTP method
 +++++++++++++++++++++++++++++++++++++++++++++
@@ -97,7 +97,7 @@ You will thus need to prefix your route by ``/ajax`` until we find a better way 
 Reading query parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-These parameters are found in the $request object:
+These parameters are found in the ``$request`` object:
 
 * ``$request->query`` for ``$_GET``
 * ``$request->request`` for ``$_POST``
@@ -135,7 +135,7 @@ Reading an array of values from $_POST
    <?php
    public function __invoke(Symfony\Component\HttpFoundation\Request $request): Response
    {
-       $ids = $request->request->all()["ids"] ?? [];
+       $ids = $request->request->get("ids", []);
    }
 
 Reading a file
@@ -156,14 +156,16 @@ Single vs multi action controllers
 
 The examples in this documentation use the magic ``__invoke`` method to force the controller to have only one action (see https://symfony.com/doc/current/controller/service.html#invokable-controllers).
 
-In general, this is recommended way to proceed but we do not force it and you are allowed to use multi actions controllers if you need them.
+In general, this is a recommended way to proceed but we do not force it and you are allowed to use multi actions controllers if you need them, by adding another public method and configuring it with the ``#[Route(...)]`` attribute.
 
 Handling errors (missing rights, bad request, …)
 ++++++++++++++++++++++++++++++++++++++++++++++++
 
-A controller may throw some exceptions if it receive an invalid request.
+A controller may throw some exceptions if it receive an invalid request. Exceptions will automatically converted to error pages.
 
-You can use any exception that extends ``Symfony\Component\HttpKernel\Exception``, see below examples.
+If you need exceptions with specific HTTP codes (like 4xx or 5xx codes), you can use any exception that extends ``Symfony\Component\HttpKernel\Exception\HttpException``.
+
+GLPI also provide some custom Http exceptions in the ``Glpi\Exception\Http\`` namespace.
 
 Missing rights
 ++++++++++++++
@@ -174,7 +176,20 @@ Missing rights
    public function __invoke(Symfony\Component\HttpFoundation\Request $request): Response
    {
        if (!Form::canUpdate()) {
-           throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+           throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+       }
+   }
+
+Invalid header
+++++++++++++++
+
+.. code-block:: php
+
+   <?php
+   public function __invoke(Symfony\Component\HttpFoundation\Request $request): Response
+   {
+       if ($request->headers->get('Content-Type') !== 'application/json') {
+           throw new \Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException();
        }
    }
 
@@ -188,7 +203,7 @@ Invalid input
    {
        $id = $request->request->getInt('id');
        if ($id == 0) {
-           throw new Symfony\Component\HttpKernel\Exception\BadRequestHttpException();
+           throw new \Glpi\Exception\Http\BadRequestHttpException();
        }
    }
 
@@ -208,7 +223,7 @@ Possible responses
 
 You may use different responses classes depending on what your controller is doing (sending json content, outputting a file, …).
 
-There is also a render helper method that helps you return a rendered twig content as a response.
+There is also a render helper method that helps you return a rendered Twig template as a Response object.
 
 Sending JSON
 ++++++++++++
@@ -232,7 +247,7 @@ Sending a file from memory
        $filename,
    );
 
-   $response = new Symfony\Component\HttpFoundation;\Response($file_content);
+   $response = new Symfony\Component\HttpFoundation\Response($file_content);
    $response->headers->set('Content-Disposition', $disposition);
    $response->headers->set('Content-Type', 'text/plain');
    return $response
@@ -243,8 +258,8 @@ Sending a file from disk
 .. code-block:: php
 
    <?php
-   $file = 'path/to/file.txt';
-   return new Symfony\Component\HttpFoundation\BinaryFileResponse($file);
+   $file_path = 'path/to/file.txt';
+   return new Symfony\Component\HttpFoundation\BinaryFileResponse($file_path);
 
 Displaying a twig template
 ++++++++++++++++++++++++++
@@ -252,7 +267,7 @@ Displaying a twig template
 .. code-block:: php
 
    <?php
-   return $this->render('/path/to/my/template.html.twig', [
+   return $this->render('path/to/my/template.html.twig', [
        'parameter_1' => 'value_1',
        'parameter_2' => 'value_2',
    ]);
@@ -271,7 +286,7 @@ General best practices
 Use thin controllers
 ++++++++++++++++++++
 
-Controller should be *thin*, which mean they should contains the minimal code needed to *glue* together the pieces of GLPI needed to handle the request.
+Controller should be *thin*, which mean they should contain the minimal code needed to *glue* together the pieces of GLPI needed to handle the request.
 
 A good controller does only the following actions:
 
@@ -279,7 +294,7 @@ A good controller does only the following actions:
 * Validate the request
 * Extract what it needs from the request
 * Call some methods from a dedicated service class that can process the data (using DI in the future, not possible at this time)
-* Return a response
+* Return a ``Response`` object
 
 Most of the time, this will take between 5 and 15 instructions, resulting in a small method.
 
@@ -297,9 +312,9 @@ Unless you are making a generic controller that is explicitly made to be extende
 Always restrict the HTTP method
 +++++++++++++++++++++++++++++++
 
-If your controller is only meant to be used with a specific HTTP method (e.g. `POST`), it is best to define it.
+If your controller is only meant to be used with a specific HTTP method (e.g. `POST`), it is best to define it in the ``Route`` attribute.
 
-It helps others developers to understand how this route must be used and help debugging when miss-using the route.
+It helps others developers understand how this route must be used and help debugging when misusing the route.
 
 .. code-block:: php
 
@@ -323,4 +338,42 @@ URL generation
 
 Ideally, URLs should not be hard-coded but should instead be generated using their route names.
 
-This is not yet possible in many places so we have to rely on hard-coded urls at this time.
+In your Controllers, you can inject the Symfony router in the constructor in order to generate URLs based on route names:
+
+.. code-block:: php
+
+    <?php
+    namespace Glpi\Controller\Custom;
+
+    use Glpi\Controller\AbstractController;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\Routing\Attribute\Route;
+    use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+    class MyController extends AbstractController
+    {
+        public function __construct(
+            private readonly UrlGeneratorInterface $router
+        ) {
+        }
+
+        public function __invoke(Request $request): Response
+        {
+            $route_name = $this->router->generate('my_route');
+
+            // ...
+        }
+    }
+
+You can also do it in Twig templates, using the ``url()`` or ``path()`` functions:
+
+.. code-block:: twig
+
+    {{ path('my_route') }} {# Shows the url like "/my_route" #}
+    {{ url('my_route') }} {# Shows the url like "http://localhost/my_route" #}
+
+Check out the Symfony documentation for more details about these functions:
+
+* ``url()`` https://symfony.com/doc/current/reference/twig_reference.html#url
+* ``path()`` https://symfony.com/doc/current/reference/twig_reference.html#path
