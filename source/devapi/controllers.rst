@@ -92,7 +92,7 @@ If an ajax route will be accessed by multiple POST requests without a page reloa
 
 This is because GLPI’s solution for this is to check a special CRSF token that is valid for multiples requests, but this special token is only checked if your url start with ``/ajax``.
 
-You will thus need to prefix your route by /ajax until we find a better way to handle this.
+You will thus need to prefix your route by ``/ajax`` until we find a better way to handle this.
 
 Reading query parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -163,7 +163,7 @@ Handling errors (missing rights, bad request, …)
 
 A controller may throw some exceptions if it receive an invalid request.
 
-You can use any exception that extends Symfony\Component\HttpKernel\Exception, see below examples.
+You can use any exception that extends ``Symfony\Component\HttpKernel\Exception``, see below examples.
 
 Missing rights
 ++++++++++++++
@@ -201,7 +201,7 @@ By default, the GLPI firewall will not allow unauthenticated user to access your
 
    <?php
    #[Glpi\Security\Attribute\SecurityStrategy(Glpi\Http\Firewall::STRATEGY_NO_CHECK)]
-   public function __invoke(Symfony\Component\HttpFoundation\Reques $request): Response
+   public function __invoke(Symfony\Component\HttpFoundation\Request $request): Response
 
 Possible responses
 ^^^^^^^^^^^^^^^^^^
@@ -242,6 +242,7 @@ Sending a file from disk
 
 .. code-block:: php
 
+   <?php
    $file = 'path/to/file.txt';
    return new Symfony\Component\HttpFoundation\BinaryFileResponse($file);
 
