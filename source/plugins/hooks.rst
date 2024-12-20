@@ -205,7 +205,7 @@ Hooks that cannot be classified in above categories :)
       The name of the minified ``plugin_anonymous.css`` file must be ``plugin_anonymous.min.css``
 
 ``add_header_tag_anonymous_page``
-   Add header tags module in **all anonymous** pages headers
+   Add header tags in **all anonymous** pages headers
 
    .. versionadded:: 10.0.18
 
