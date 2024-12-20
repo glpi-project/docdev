@@ -176,6 +176,39 @@ Hooks that cannot be classified in above categories :)
 
       The name of the minified ``plugin.css`` file must be ``plugin.min.css``
 
+``add_javascript_anonymous_page``
+   Add javascript in **all anonymous** pages headers
+
+   .. versionadded:: 10.0.18
+
+      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+
+      The name of the minified ``plugin_anonymous.js`` file must be ``plugin_anonymous.min.js``
+
+``add_javascript_module_anonymous_page``
+   Add javascript module in **all anonymous** pages headers
+
+   .. versionadded:: 10.0.18
+
+      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+
+      The name of the minified ``mymodule_anonymous.js`` file must be ``mymodule_anonymous.min.js``
+
+
+``add_css_anonymous_page``
+   Add CSS stylesheet on **all anonymous** pages headers
+
+   .. versionadded:: 10.0.18
+
+      Minified CSS files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+
+      The name of the minified ``plugin_anonymous.css`` file must be ``plugin_anonymous.min.css``
+
+``add_header_tag_anonymous_page``
+   Add header tags module in **all anonymous** pages headers
+
+   .. versionadded:: 10.0.18
+
 ``display_central``
    Displays something on central page
 
