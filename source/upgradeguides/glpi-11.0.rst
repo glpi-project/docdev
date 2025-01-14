@@ -90,8 +90,8 @@ Therefore, it is no longer necessary to include it, even if it is still present 
 
    - include("../../../inc/includes.php");
 
-Resources access restrictions
-+++++++++++++++++++++++++++++
+Resource access restrictions
+++++++++++++++++++++++++++++
 
 In GLPI 11.0, we restrict the resources that can be accessed through a web request.
 
