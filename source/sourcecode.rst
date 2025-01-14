@@ -37,7 +37,12 @@ Those branches are created when a new major or intermediate version is released.
 Testing
 -------
 
-There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`_.
+Testing is a very important part of the development process.
+The reference for tests is the [GitHub CI](https://github.com/glpi-project/glpi/blob/main/.github/workflows/ci.yml).
+Because of the shared states and the all the external dependencies not been mocked, the easier way to proceed with testing is to use the provided script test [run_tests.sh](https://github.com/glpi-project/glpi/blob/main/tests/run_tests.sh) which uses Docker and bootstrap everything needed.
+
+Some test can be run in isolation, not all, this is a work in progress.
+Unit tests were written using Atoum and are now being migrated to PHPUnit.
 
 Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet. See the :ref:`unit testing section <unittests>` at the bottom of the page.
 
