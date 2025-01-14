@@ -262,7 +262,7 @@ Unit testing (and functional testing)
 
    A note for the purists... In GLPI, there are both unit and functional tests; without real distinction ;-)
 
-We used the `atoum unit tests framework <http://atoum.org>`_ for PHP tests but Atoum is not maintained and we are switching to `PHPUnit 11 <https://phpunit.de/getting-started/phpunit-11.html>`_.
+We use `PHPUnit <https://phpunit.de>`_ for tests.
 `atoum`'s documentation in available at: http://docs.atoum.org
 
 For JavaScript tests, GLPI uses the Jest testing framework.
