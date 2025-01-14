@@ -37,7 +37,9 @@ Those branches are created when a new major or intermediate version is released.
 Testing
 -------
 
-There are more and more unit tests in GLPI; we use the `atoum unit tests framework <http://atoum.org>`_.
+Testing is a very important part of the development process.
+The reference for tests is the `GitHub CI <https://github.com/glpi-project/glpi/blob/main/.github/workflows/ci.yml>`_.
+The easier way to proceed with testing is to use the provided test script `run_tests.sh <https://github.com/glpi-project/glpi/blob/main/tests/run_tests.sh>`_ which uses Docker and bootstrap everything needed.
 
 Every proposal **must** contains unit tests; for new features as well as bugfixes. For the bugfixes; this is not a strict requirement if this is part of code that is not tested at all yet. See the :ref:`unit testing section <unittests>` at the bottom of the page.
 
@@ -260,7 +262,7 @@ Unit testing (and functional testing)
 
    A note for the purists... In GLPI, there are both unit and functional tests; without real distinction ;-)
 
-We use the `atoum unit tests framework <http://atoum.org>`_ for PHP tests; see `GLPI website if you wonder why <http://glpi-project.org/spip.php?breve375>`_.
+We use `PHPUnit <https://phpunit.de>`_ for tests.
 `atoum`'s documentation in available at: http://docs.atoum.org
 
 For JavaScript tests, GLPI uses the Jest testing framework.

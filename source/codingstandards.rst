@@ -245,33 +245,9 @@ Examples:
 Checking standards
 ------------------
 
-In order to check standards are respected, we provide a defaut configuration for `PHP CodeSniffer <http://pear.php.net/package/PHP_CodeSniffer>`_ rules. From the GLPI directory, just run:
+Linting (checking and fixing coding standards) is a good way to ensure code quality and consistency of the code base.
+This is done using [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer), [PHPStan](https://phpstan.org/), [ESLint](https://eslint.org/), [Stylelint](https://stylelint.io/) and [TwigCS](https://github.com/friendsoftwig/twigcs).
 
-.. code-block::
-
-   phpcs .
-
-If the above command does not provide any output, then, all is OK :)
-
-An example error output would looks like:
-
-.. code-block:: bash
-
-   phpcs .
-   
-   FILE: /var/www/webapps/glpi/tests/HtmlTest.php
-   ----------------------------------------------------------------------
-   FOUND 3 ERRORS AFFECTING 3 LINES
-   ----------------------------------------------------------------------
-    40 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
-       |       |     3
-    59 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
-       |       |     3
-    64 | ERROR | [x] Line indented incorrectly; expected 4 spaces, found
-       |       |     3
-
-To automatically fix most of the issues, use `phpcbf`, it will per default rely on default configuration:
-
-.. code-block::
-
-   phpcbf .
+This can run the tasks using Docker, on your local host use `./tests/run_tests.sh lint` to proceed to all linting tasks, or use a scoped task, `./tests/run_tests.sh lint_php` to proceed to PHP linting only for example.
+All possible lintings are listed in the `./tests/run_tests.sh` script.
+For faster action you can run the scripts on your local machine or Docker development container using `node_modules/.bin/eslint . && echo "ESLint found no errors"` for example. You can find all the commands in [`.github/actions` directory](https://github.com/glpi-project/glpi/tree/main/.github/actions).
