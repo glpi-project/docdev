@@ -90,12 +90,20 @@ Therefore, it is no longer necessary to include it, even if it is still present 
 
    - include("../../../inc/includes.php");
 
+Create ``public/`` folder
++++++++++++++++++++++++++
+
+Create folder ``public/`` in the root and move the folders there:
+- ``css/``
+- ``js/``
+- ``pics/``
+
 Legacy scripts access policy
 ++++++++++++++++++++++++++++
 
 By default, the access to any PHP script will be allowed only to authenticated users.
 If you need to change this default policy for some of your PHP scripts, you will need to do this in your plugin ``init`` function,
-using the ``Glpi\Http\Firewall::addPluginFallbackStrategy()`` method.
+using the ``Glpi\Http\Firewall::addPluginStrategyForLegacyScripts()`` method.
 
 .. code-block:: php
 
@@ -104,8 +112,8 @@ using the ``Glpi\Http\Firewall::addPluginFallbackStrategy()`` method.
    use Glpi\Http\Firewall;
    
    function plugin_init_myplugin() {
-       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
-       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
+       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
+       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
    }
 
 The following strategies are available:
