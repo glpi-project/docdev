@@ -22,7 +22,6 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
 #Watcher
 ALLSPHINXLIVEOPTS   = $(ALLSPHINXOPTS) -q \
-   -B \
    --delay 1 \
    --ignore "*.swp" \
    --ignore "*.pdf" \
@@ -73,7 +72,7 @@ html:
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
 livehtml:
-	$(SPHINXAUTOBUILD) -b html $(ALLSPHINXLIVEOPTS) $(BUILDDIR)/html
+	$(SPHINXAUTOBUILD) -b html $(ALLSPHINXLIVEOPTS) $(BUILDDIR)/html --host 0.0.0.0 --port 8007
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
