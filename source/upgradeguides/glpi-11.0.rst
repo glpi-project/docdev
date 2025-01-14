@@ -90,13 +90,17 @@ Therefore, it is no longer necessary to include it, even if it is still present 
 
    - include("../../../inc/includes.php");
 
-Create ``public/`` folder
-+++++++++++++++++++++++++
+Resources access restrictions
++++++++++++++++++++++++++++++
 
-Create folder ``public/`` in the root and move the folders there:
-- ``css/``
-- ``js/``
-- ``pics/``
+In GLPI 11.0, we restrict the resources that can be accessed through a web request.
+
+We still support access to the PHP scripts located in the ``/ajax``, ``/front`` and ``/report`` directories.
+Their URL remains unchanged, for instance, the URL of the ``/front/index.php`` script of your plugin remains ``/plugins/myplugin/front/index.php``.
+
+The static assets must be moved in the ``/public`` directory to be accessible.
+Their URL must not contain the ``/public`` path.
+For instance, the URL of the ``/public/css/styles.css`` stylesheet of your plugin will be ``/plugins/myplugin/css/styles.css``.
 
 Legacy scripts access policy
 ++++++++++++++++++++++++++++
