@@ -90,12 +90,24 @@ Therefore, it is no longer necessary to include it, even if it is still present 
 
    - include("../../../inc/includes.php");
 
+Resource access restrictions
+++++++++++++++++++++++++++++
+
+In GLPI 11.0, we restrict the resources that can be accessed through a web request.
+
+We still support access to the PHP scripts located in the ``/ajax``, ``/front`` and ``/report`` directories.
+Their URL remains unchanged, for instance, the URL of the ``/front/index.php`` script of your plugin remains ``/plugins/myplugin/front/index.php``.
+
+The static assets must be moved in the ``/public`` directory to be accessible.
+Their URL must not contain the ``/public`` path.
+For instance, the URL of the ``/public/css/styles.css`` stylesheet of your plugin will be ``/plugins/myplugin/css/styles.css``.
+
 Legacy scripts access policy
 ++++++++++++++++++++++++++++
 
 By default, the access to any PHP script will be allowed only to authenticated users.
 If you need to change this default policy for some of your PHP scripts, you will need to do this in your plugin ``init`` function,
-using the ``Glpi\Http\Firewall::addPluginFallbackStrategy()`` method.
+using the ``Glpi\Http\Firewall::addPluginStrategyForLegacyScripts()`` method.
 
 .. code-block:: php
 
@@ -104,8 +116,8 @@ using the ``Glpi\Http\Firewall::addPluginFallbackStrategy()`` method.
    use Glpi\Http\Firewall;
    
    function plugin_init_myplugin() {
-       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
-       Firewall::addPluginFallbackStrategy('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
+       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
+       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
    }
 
 The following strategies are available:
