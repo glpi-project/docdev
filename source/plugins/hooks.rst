@@ -484,12 +484,12 @@ Hooks that permits to add display on items.
 ``timeline_answer_actions``
    .. versionadded:: 10.0.0
 
-   Display new actions in the ITIL object's answer dropdown
+   Add new types of items for the ITIL object and optionally show them in the answer actions dropdown
 
-``show_in_timeline``
+``timeline_items``
    .. versionadded:: 10.0.0
 
-   Display forms in the ITIL object's timeline
+   Modify the array of items in the ITIL object's timeline
 
 Notifications
 +++++++++++++
