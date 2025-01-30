@@ -28,19 +28,3 @@ You can define a unique email recipient for all emails that will be sent from GL
 
    <?php
    define('GLPI_FORCE_MAIL', 'you@host.org');
-
-Disabling CSRF checks
-^^^^^^^^^^^^^^^^^^^^^
-
-.. warning::
-
-   **Use it with cautions!**
-
-   While disabling CSRF checks may be really interesting during debugging, keep in mind that enabling it again (which is the default) may cause issues you cannot see before.
-
-CSRF checks will prevent for example a same form to be sent twice. While this is the expected behavior for the application, this may be a pain during development or debugging. You can therefore use the ``GLPI_USE_CSRF_CHECK`` constant in the ``local_define.php`` file:
-
-.. code-block:: php
-
-   <?php
-   define('GLPI_USE_CSRF_CHECK', 0);
