@@ -1,11 +1,6 @@
 
-.. image:: /_static/images/logo-GLPI-300-blue.png
-   :alt: GLPI
-   :align: center
-
-.. toctree::
-
 .. warning::
+
     ⚠️ Cette formation nécessite les pré-requis d'apprentissage suivants:
 
     - Une connaissance de l'usage de GLPI
@@ -29,19 +24,17 @@ Pré-requis
 
 Voici la liste des briques nécessaires au démarrage de votre projet de plugin GLPI:
 
-* une pile Apache MySQL PHP,
+* un serveur web fonctionnel,
 * la dernière version stable de `GLPI <https://github.com/glpi-project/glpi/releases>`_ installée en local,
-* un éditeur de texte ou IDE,
+* un éditeur de texte ou IDE (par ex `vscode <https://code.visualstudio.com>`_ ou `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
 * le gestionnaire de version `git <https://git-scm.com/>`_.
 * le gestionnaire de dépendances PHP: `Composer`_
-
-.. note::
-    ℹ️ Sur windows, nous vous conseillons d'activer le module `WSl2 <https://docs.microsoft.com/fr-fr/windows/wsl/install>`_ pour bénéficier d'un environnement Linux complet.
 
 Amorcez votre projet
 --------------------
 
 .. warning::
+
     ⚠️ Si vous possédez une copie des données de production dans votre glpi, assurez-vous, avant de commencer la formation, de désactiver les notifications par mail sur votre instance locale.
     Ceci afin d'éviter d'envoyer des mails non désirés à des utilisateurs présents dans les données importées.
 
@@ -49,14 +42,13 @@ Amorcez votre projet
 Tout d’abord, voici quelques ressources:
 
 * le plugin `Empty`_ et sa `documentation <https://glpi-plugins.readthedocs.io/en/latest/empty/index.html>`_. Ce plugin est un kit (ou squelette) de démarrage rapide d'un nouveau plugin.
-* la `documentation développeur plugins <https://glpi-developer-documentation.readthedocs.io/en/master/plugins/index.html>`_
 * le plugin `Example <https://github.com/pluginsGLPI/example>`_. Il se veut exhaustif dans l'utilisation des possibilités offertes par l'api interne de GLPI pour les plugins.
 
 
 Mon nouveau plugin
 ^^^^^^^^^^^^^^^^^^
 
-Clonez avec git le dépôt du plugin ``empty`` directement dans le répertoire ``plugin`` de votre dossier GLPI.
+Clonez avec git le dépôt du plugin ``empty`` directement dans le répertoire ``plugins`` de votre dossier GLPI.
 
 .. code-block:: bash
 
@@ -72,6 +64,7 @@ Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le r�
    ./plugin.sh myplugin 0.0.1
 
 .. note::
+
     | ℹ️ Veuillez noter qu'il faut absolument respecter certaines conditions pour le choix du nom du plugin : aucun espace et aucun caractère spécial n'est autorisé.
     | Ce nom est ensuite utilisé pour déclarer le répertoire de votre plugin ainsi que les noms des fonctions, des constantes, etc.
     | ``My-Plugin`` va également créer un répertoire ``MyPlugin``.
@@ -82,13 +75,14 @@ Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le r�
 Une fois la commande lancée, cela va créer un répertoire ``myplugin`` au même niveau que le répertoire ``empty`` que vous avez dans le dossier ``/path/to/glpi/plugin``, ainsi que les fichiers et méthodes associés à un squelette vide d'un plugin.
 
 .. note::
+
     ℹ️ Si votre outil ``empty`` n'est pas dans le répertoire de votre GLPI, vous pouvez préciser un répertoire de destination de votre nouveau plugin, exemple :
 
     .. code-block:: shell
 
         ./plugin.sh myplugin 0.0.1 /path/to/another/glpi/plugins/
 
-Récupération des dépendances `Composer>`_
+Récupération des dépendances `Composer`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Dans votre terminal, depuis le dossier du plugin, lancez la commande suivante:
@@ -106,34 +100,34 @@ Structure minimale d'un plugin
 
    <pre>
    📂 glpi
-      📂 plugins
-         📂 myplugin
-            📁 ajax
-            📁 front
-            📁 inc
-            📁 locales
-            📁 tools
-            📁 vendor
-            🗋 composer.json
-            🗋 hook.php
-            🗋 LICENSE
-            🗋 myplugin.xml
-            🗋 myplugin.png
-            🗋 Readme.md
-            🗋 setup.php
+     📂 plugins
+       📂 myplugin
+          📁 ajax
+          📁 front
+          📁 src
+          📁 locales
+          📁 tools
+          📁 vendor
+          🗋 composer.json
+          🗋 hook.php
+          🗋 LICENSE
+          🗋 myplugin.xml
+          🗋 myplugin.png
+          🗋 Readme.md
+          🗋 setup.php
    </pre>
 
-* Le dossier ``📂front`` sert à recevoir les actions de nos objets (ajouter, modifier, afficher, etc).
-* Le dossier ``📂ajax`` reçoit les appels ajax (jquery).
-* Vos classes seront placées dans le dossier ``📂src``.
-* Si besoin, les traductions au format `gettext`_ seront stockées dans le dossier ``📂locales``.
-* Le dossier optionnel ``📂templates`` contient les fichiers de templates TWIG de votre plugin.
-* Le dossier ``📂tools`` contient de base (fourni par le plugin empty) un ensemble de scripts optionnels pouvant être utilisés pour la maintenance et le développement de votre plugin. Il est maintenant plus courant d'obtenir ces scripts via les dossiers ``📂vendor`` et ``📂node_modules``.
-* Le dossier ``📂vendor`` contient:
+* Le dossier ``📂 front`` sert à recevoir les actions de nos objets (ajouter, modifier, afficher, etc).
+* Le dossier ``📂 ajax`` reçoit les appels ajax (jquery).
+* Vos classes seront placées dans le dossier ``📂 src``.
+* Si besoin, les traductions au format `gettext`_ seront stockées dans le dossier ``📂 locales``.
+* Le dossier optionnel ``📂 templates`` contient les fichiers de templates TWIG de votre plugin.
+* Le dossier ``📂 tools`` contient de base (fourni par le plugin empty) un ensemble de scripts optionnels pouvant être utilisés pour la maintenance et le développement de votre plugin. Il est maintenant plus courant d'obtenir ces scripts via les dossiers ``📂 vendor`` et ``📂 node_modules``.
+* Le dossier ``📂 vendor`` contient:
   * des librairies php pour votre plugin,
   * des outils d'aide au développement fourni par le modèle ``empty``.
 
-* Le dossier ``📂node_modules`` contient:
+* Le dossier ``📂 node_modules`` contient:
   * des librairies javascript pour votre plugin,
 
 * le fichier ``🗋 composer.json`` décrit les dépendances PHP de votre projet.
@@ -147,14 +141,14 @@ Structure minimale d'un plugin
 setup.php minimal
 ^^^^^^^^^^^^^^^^^
 
-Suite à l'utilisation du script ``plugin.sh`` <#mon-nouveau-plugin>`_ , votre répertoire ``myplugin`` doit contenir le fichier ``🗋setup.php``
+Suite à l'utilisation du script ``plugin.sh``, votre répertoire ``📂 myplugin`` doit contenir le fichier ``🗋 setup.php``
 
 Il doit contenir les parties de code suivantes:
 
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    define('PLUGIN_MYPLUGIN_VERSION', '0.0.1');
 
@@ -164,7 +158,7 @@ Une déclaration optionnelle de constante pour le numéro de version utilisé pl
 **🗋 setup.php**
 
 .. code-block:: php
-  :lineno-start: 3
+   :lineno-start: 3
 
    function plugin_init_myplugin() {
       global $PLUGIN_HOOKS;
@@ -180,7 +174,7 @@ Nous déclarons, à minima, que les formulaires du plugin sont protégés contre
 **🗋 setup.php**
 
 .. code-block:: php
-  :lineno-start: 9
+   :lineno-start: 9
 
    // Minimal GLPI version, inclusive
    define("PLUGIN_MYPLUGIN_MIN_GLPI_VERSION", "10.0.0");
@@ -205,22 +199,23 @@ Nous déclarons, à minima, que les formulaires du plugin sont protégés contre
    }
 
 Cette fonction permet de spécifier les différentes données qui seront affichées dans le menu ``Configuration > Plugins`` de GLPI ainsi que quelques contraintes minimales.
-Nous réutilisons la constante ``PLUGIN_MONNOUVEAUPLUGIN_VERSION`` déclarée plus haut.
+Nous réutilisons la constante ``PLUGIN_MYPLUGIN_VERSION`` déclarée plus haut.
 Vous pouvez changer les différentes lignes pour adapter à vos coordonnées.
 
 .. note::
+
     ℹ️ **Choix d'une licence**
 
     Le choix d'une licence est **important** et a de nombreuses conséquences sur l'usage futur de vos développements. En fonction de vos préférences, vous pouvez choisir une orientation plus permissive ou contraignante.
     Des sites existent pour vous aider dans ce choix tel que https://choosealicense.com/.
 
     Dans l'exemple, la licence choisie est `MIT <https://fr.wikipedia.org/wiki/Licence_MIT>`_.
-    C'est un choix très populaire qui laisse à l'utilisateur beaucoup de libertés dans l'utilisation de vos travaux. Elle demande simplement de conserver la notice (le texte de la licence) et de respecter le copyright (vous ne pouvez pas être dépossédés de vos travaux, la paternité devant être conservée).
+    C'est un choix très populaire qui laisse à l'utilisateur beaucoup de libertés dans l'utilisation de vos travaux. Elle demande simplement de conserver la notice (le texte de la licence) et de respecter le copyright; vous ne pouvez pas être dépossédés de vos travaux, la paternité devant être conservée.
 
 **🗋 setup.php**
 
 .. code-block:: php
-  :lineno-start: 32
+   :lineno-start: 32
 
    function plugin_myplugin_check_config($verbose = false)
    {
@@ -247,7 +242,7 @@ Ce fichier doit contenir à minima les fonctions d'installation et de désinstal
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    function plugin_myplugin_install()
    {
@@ -270,15 +265,15 @@ Installez votre plugin
    :alt: mon plugin listé dans la configuration
 
 
-Suite à ces premières étapes, votre plugin doit pouvoir s'installer et s'activer dans le menu ``Configuration > Plugins``  ainsi que dans le menu ``Configuration > marketplace``.
+Suite à ces premières étapes, votre plugin doit pouvoir s'installer et s'activer dans le menu ``Configuration > Plugins``.
 
 
 Création d'un objet
 -------------------
 
-📝 Dans cette partie, nous allons ajouter un itemtype dans notre plugin et le faire interagir avec GLPI.
-Celui-ci sera un objet maître permettant de regrouper plusieurs "assets".
-Nous le nommerons "Superasset".
+| 📝 Dans cette partie, nous allons ajouter un itemtype dans notre plugin et le faire interagir avec GLPI.
+| Celui-ci sera un objet maître permettant de regrouper plusieurs "assets".
+| Nous le nommerons "Superasset".
 
 Utilisation de `CommonDBTM`_ et création de classes métier
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -332,7 +327,7 @@ Nous déclarerons à minima quelques parties:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
@@ -354,10 +349,12 @@ Nous déclarerons à minima quelques parties:
    }
 
 .. warning::
-    ℹ️ **Attention:**
+
+    ⚠️  **Attention:**
     Le ``namespace`` doit respecter le `CamelCase <https://en.wikipedia.org/wiki/Camel_case>`_
 
-.. warning::
+.. note::
+
     ℹ️  Voici les méthodes les plus couramment utilisées, héritées de `CommonDBTM`_ :
 
     `add(array $input) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1229-L1240>`_
@@ -367,7 +364,7 @@ Nous déclarerons à minima quelques parties:
     Elle renvoie l'id de la ligne ajoutée ou ``false`` dans le cas d'une erreur.
 
     .. code-block:: php
-      :linenos:
+       :linenos:
 
         namespace GlpiPlugin\Myplugin;
         use Toolbox;
@@ -388,6 +385,8 @@ Nous déclarerons à minima quelques parties:
     .. code-block:: php
         :lineno-start: 11
 
+        use Toolbox;
+
         if ($superasset->getFromDB($superassets_id)) {
             Toolbox::logDebug($superasset->fields);
         }
@@ -399,6 +398,8 @@ Nous déclarerons à minima quelques parties:
 
     .. code-block:: php
         :lineno-start: 16
+
+        use Toolbox;
 
         if ($superasset->update([
                 'id'      => $superassets_id,
@@ -414,6 +415,8 @@ Nous déclarerons à minima quelques parties:
 
     .. code-block:: php
         :lineno-start: 23
+
+        use Toolbox;
 
         if ($superasset->delete(['id' => $superassets_id])) {
             Toolbox::logDebug("My super asset is in trashbin");
@@ -431,7 +434,10 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use GlpiPlugin\Myplugin\Superasset;
+   use Migration;
 
    function plugin_myplugin_install()
    {
@@ -441,7 +447,7 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
        $default_collation = DBConnection::getDefaultCollation();
 
        // instantiate migration with version
-       $migration = new \Migration(PLUGIN_MYPLUGIN_VERSION);
+       $migration = new Migration(PLUGIN_MYPLUGIN_VERSION);
 
        // create table only if it does not exist yet!
        $table = GlpiPlugin\Myplugin\Superasset::getTable();
@@ -469,19 +475,21 @@ Nous ajoutons ici, en plus d'une clef primaire, un champ de type ``VARCHAR`` qui
 .. note::
     📝 Vous pouvez, si vous le souhaitez, ajouter d'autres champs (restez raisonnable :wink:) avec d'autres types.
 
-Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouvons utiliser la classe `Migration `_ de GLPI.
+Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouvons utiliser la classe `Migration`_ de GLPI.
 
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use Migration;
 
    function plugin_myplugin_install()
    {
        global $DB;
 
        // instantiate migration with version
-       $migration = new \Migration(PLUGIN_MYPLUGIN_VERSION);
+       $migration = new Migration(PLUGIN_MYPLUGIN_VERSION);
 
        ...
 
@@ -507,32 +515,34 @@ Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouv
    }
 
 .. warning::
-    ℹ️ La classe `Migration `_ inclut de nombreuses méthodes permettant de manipuler vos tables et champs.
-    Tous les appels seront ajoutés à un registre des changements et seront finalement exécutés lors de l'appel de la méthode ``executeMigration``.
 
-    Voici quelques exemples:
+  ℹ️ La classe `Migration `_ inclut de nombreuses méthodes permettant de manipuler vos tables et champs.
+  Tous les appels seront ajoutés à un registre des changements et seront finalement exécutés lors de l'appel de la méthode ``executeMigration``.
 
-    `addField($table, $field, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L389-L407>`_
-      ajoute un nouveau champ à une table
+  Voici quelques exemples:
 
-    `changeField($table, $oldfield, $newfield, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L462-L479>`_
-      Modifie le nom ou le type d'un champ d'une table
+  `addField($table, $field, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L389-L407>`_
+    ajoute un nouveau champ à une table
 
-    `dropField($table, $field) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L534-L542>`_
-      Supprime un champ d'une table
+  `changeField($table, $oldfield, $newfield, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L462-L479>`_
+    Modifie le nom ou le type d'un champ d'une table
 
-    `dropTable($table) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L553-L560>`_
-      Supprime une table.
+  `dropField($table, $field) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L534-L542>`_
+    Supprime un champ d'une table
 
-    `renameTable($oldtable, $newtable) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L654-L662>`_
-      Renomme une table.
+  `dropTable($table) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L553-L560>`_
+    Supprime une table.
 
-    Consultez la documentation de la classe `Migration `_ pour les autres méthodes disponible.
+  `renameTable($oldtable, $newtable) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L654-L662>`_
+    Renomme une table.
 
-    ----
+  Consultez la documentation de la classe `Migration`_ pour les autres méthodes disponible.
 
-    le paramètre ``$type`` des différentes fonctions est le meme que pour la méthode privée `fieldFormat <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ de la classe `Migration `_ et permet un raccourci pour les types SQL les plus courants (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
+  .. raw:: html
 
+    <hr />
+
+  le paramètre ``$type`` des différentes fonctions est le meme que pour la méthode privée `fieldFormat <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ de la classe `Migration`_ et permet un raccourci pour les types SQL les plus courants (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
 
 
 Désinstallation
@@ -543,14 +553,16 @@ Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données 
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use GlpiPlugin\Myplugin\Superasset;
 
    function plugin_myplugin_uninstall()
    {
        global $DB;
 
        $tables = [
-           GlpiPlugin\Myplugin\Superasset::getTable(),
+           Superasset::getTable(),
        ];
 
        foreach ($tables as $table) {
@@ -573,7 +585,7 @@ Quelques fonctions utilitaires supplémentaires:
 
 .. code-block:: php
 
-   \Toolbox::logError($var1, $var2, ...);
+   Toolbox::logError($var1, $var2, ...);
 
 Cette méthode permet d'enregistrer dans le fichier ``glpi/files/_log/php-errors.log`` le contenu de ses paramètres (qui peuvent être des chaînes de caractères, des tableaux, des objets instanciés, des booléens, etc).
 
@@ -625,7 +637,7 @@ Il utilisera la méthode show du `moteur de recherche`_ (Search) interne de GLPI
 **🗋 front/superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    use GlpiPlugin\Myplugin\Superasset;
@@ -647,11 +659,12 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
 **🗋 front/superasset.form.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
    use GlpiPlugin\Myplugin\Superasset;
+   use Html;
 
    include ('../../../inc/includes.php');
 
@@ -663,7 +676,7 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
        if ($_SESSION['glpibackcreated']) {
            \Html::redirect(Superasset::getFormURL()."?id=".$newID);
        }
-       \Html::back();
+       Html::back();
 
    } else if (isset($_POST["delete"])) {
        $supperasset->delete($_POST);
@@ -688,7 +701,7 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
            : $ID = 0;
 
        // display form
-       \Html::header(
+       Html::header(
           Superasset::getTypeName(),
           $_SERVER['PHP_SELF'],
           "plugins",
@@ -696,7 +709,7 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
           "superasset"
        );
        $supperasset->display(['id' => $ID]);
-       \Html::footer();
+       Html::footer();
    }
 
 Toutes les actions courantes définies dans ce fichier sont gérées automatiquement par la classe `CommonDBTM`_.
@@ -708,7 +721,7 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
@@ -738,7 +751,7 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
 **🗋 templates/superasset.form.html.twig**
 
 .. code-block:: twig
-  :linenos:
+   :linenos:
 
    {% extends "generic_show_form.html.twig" %}
    {% import "components/form/fields_macros.html.twig" as fields %}
@@ -780,9 +793,11 @@ Nous allons donc définir notre premier ``hook`` dans l'init de notre plugin.
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
+
+   use GlpiPlugin\Myplugin\Superasset;
 
    function plugin_init_myplugin()
    {
@@ -791,7 +806,7 @@ Nous allons donc définir notre premier ``hook`` dans l'init de notre plugin.
        // add menu hook
        $PLUGIN_HOOKS['menu_toadd']['myplugin'] = [
            // insert into 'plugin menu'
-           'plugins' => GlpiPlugin\Myplugin\Superasset::class
+           'plugins' => Superasset::class
        ];
    }
 
@@ -801,7 +816,7 @@ Editons notre classe et ajoutons les méthodes adaptées:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -867,14 +882,17 @@ La partie ``options`` sert notamment à avoir un 4ème niveau de fil d'Ariane et
 
 Chaque clef ``page`` sert à indiquer sur quelle url s'applique la partie en cours.
 
-.. warning::
+.. note::
+
     ℹ️ Le menu de GLPI est chargé dans ``$_SESSION['glpimenu']`` à la connexion.
     Pour visualiser vos changements, si vous n'êtes pas en mode ``DEBUG``,  vous devrez vous déconnecter et reconnecter.
 
-.. warning::
+.. note::
+
     ℹ️ Notez qu'il est tout à fait possible d'avoir un seul niveau de menu pour le plugin (3 niveaux au global), il suffit de déplacer la partie ``links`` au premier niveau du tableau ``$menu``
 
-.. warning::
+.. note::
+
     ℹ️ Il est aussi possible de définir des ``links`` personnalisés.
     Il suffit pour cela de remplacer la clef (par exemple, add ou search) par un html contenant une balise image
 
@@ -910,7 +928,7 @@ Voici un exemple pour ces deux systèmes:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -954,7 +972,7 @@ De façon similaire, nous pouvons cibler une autre classe de notre plugin:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -988,7 +1006,7 @@ Dans cette nouvelle classe nous devrons définir les deux autres méthodes pour 
 **🗋 src/Superasset_Item.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    namespace GlpiPlugin\Myplugin;
 
@@ -1043,7 +1061,7 @@ Comme précédemment, nous utilisons un template pour gérer notre affichage.
 **🗋 templates/superasset_item.html.twig**
 
 .. code-block:: twig
-  :linenos:
+   :linenos:
 
    {% import "components/form/fields_macros.html.twig" as fields %}
 
@@ -1100,7 +1118,7 @@ Nous déclarons cet ajout via une nouvelle ligne dans notre fonction d'init:
 **🗋 setup.php**
 
 .. code-block:: php
-    :linenos:
+   :linenos:
 
    function plugin_init_myplugin()
    {
@@ -1118,6 +1136,7 @@ Le titre et le contenu de cet onglet se font comme précédemment avec les méth
 * ``CommonDBTM::displayTabContentForItem()``
 
 .. note::
+
     📝 **Exercice** :
     Complétez les méthodes précédentes pour afficher dans les ordinateurs un nouvel onglet listant les ``SuperAsset`` qui lui sont associés.
 
@@ -1132,7 +1151,7 @@ Dans notre classe, il faut déclarer une fonction ``rawSearchOptions``:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -1209,8 +1228,10 @@ Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. 
 **🗋 hook.php**
 
 .. code-block:: php
-  :lineno-start: 50
+   :lineno-start: 50
 
+   use GlpiPlugin\Myplugin\Superasset;
+   use GlpiPlugin\Myplugin\Superasset_Item;
 
    ...
 
@@ -1221,7 +1242,7 @@ Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. 
        if ($itemtype == 'Computer') {
            $sopt[] = [
                'id'           => 12345,
-               'table'        => GlpiPlugin\Myplugin\Superasset::getTable(),
+               'table'        => Superasset::getTable(),
                'field'        => 'name',
                'name'         => __('Associated Superassets', 'myplugin'),
                'datatype'     => 'itemlink',
@@ -1229,7 +1250,7 @@ Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. 
                'usehaving'    => true,
                'joinparams'   => [
                    'beforejoin' => [
-                       'table'      => GlpiPlugin\Myplugin\Superasset_Item::getTable(),
+                       'table'      => Superasset_Item::getTable(),
                        'joinparams' => [
                            'jointype' => 'itemtype_item',
                        ]
@@ -1258,11 +1279,13 @@ Ces colonnes sont enregistrées par l'objet DisplayPreference (table ``glpi_disp
 Ces préférences peuvent être globales (champ ``users_id = 0``) ou personnelles (champ ``users_id != 0``), sont ordonnées (champ ``rank``) et cible un itemtype plus une ``searchoption`` (champ ``num``).
 
 .. warning::
+
     **⚠️ Attention**
     Les préférences globales s'appliquent à tous les utilisateurs et ne peuvent pas être réinitialisées de façon rapide. Il faut apporter un soin particulier à vérifier qu'ajouter des colonnes par défaut à tous les utilisateurs ne provoquera pas de blocage de l'interface voir de GLPI.
 
 
 .. note::
+
     📝 **Exercice**:
     Vous ajouterez aux fonctions d'installation et de désinstallation du plugin l'ajout et la suppression des préférences globales pour que l'affichage par défaut de notre objet comporte quelques colonnes.
 
@@ -1285,6 +1308,7 @@ Pour nos propres objets, les méthodes suivantes peuvent être implémentées:
 Pour chacun des évènements effectivement appliqués sur la base de données, nous avons une méthode qui est exécutée avant et une autre après.
 
 .. note::
+
     📝 **Exercice**:
     Ajoutez les méthodes nécessaires à la classe ``PluginMypluginSuperasset`` pour vérifier que le champ ``name`` soit correctement rempli lors de l'ajout et de la mise à jour.
 
@@ -1293,7 +1317,7 @@ Pour chacun des évènements effectivement appliqués sur la base de données, n
 Les plugins peuvent aussi intercepter les évènements standards des objets du cœur afin d'y appliquer des changements (ou même refuser l’évènement). Voici le nom des ``hooks``:
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    use Glpi\Plugin\Hooks;
 
@@ -1320,6 +1344,11 @@ Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plug
 **🗋 setup.php**
 
 .. code-block:: php
+   :linenos:
+
+   use GlpiPlugin\Myplugin\Superasset;
+
+   ...
 
    function plugin_init_myplugin()
    {
@@ -1333,7 +1362,7 @@ Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plug
        // callback a class method
        $PLUGIN_HOOKS['item_add']['myplugin'] = [
             'Computer' => [
-                 GlpiPlugin\Myplugin\Superasset::class, 'computerUpdated'
+                 Superasset::class, 'computerUpdated'
             ]
        ];
    }
@@ -1341,8 +1370,12 @@ Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plug
 dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype des fonctions sera fait sur ce modèle:
 
 .. code-block:: php
+   :linenos:
 
-   function hookCallback(\CommonDBTM $item)
+   use CommonDBTM;
+   use Session;
+
+   function hookCallback(CommonDBTM $item)
    {
        ...
 
@@ -1352,13 +1385,14 @@ dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype
            $item->input = [];
 
            // store a message in session for warn user
-           \Session::addMessageAfterRedirect('Action forbidden because...');
+           Session::addMessageAfterRedirect('Action forbidden because...');
 
            return;
       }
    }
 
 .. note::
+
     📝 **Exercice**:
     Utilisez un ``hook`` interceptant la suppression définitive (purge) d'un ordinateur pour vérifier que des lignes de nos objets y sont associées et les supprimer également dans ce cas.
 
@@ -1372,13 +1406,15 @@ Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leu
 
 .. code-block:: php
 
+   use Glpi\Plugin\Hooks;
+
    function plugin_init_myplugin()
    {
        ...
 
        // css & js
-       $PLUGIN_HOOKS['add_css']['myplugin'] = 'myplugin.css';
-       $PLUGIN_HOOKS['add_javascript']['myplugin'] = [
+       $PLUGIN_HOOKS[Hooks::ADD_CSS]['myplugin'] = 'myplugin.css';
+       $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['myplugin'] = [
            'js/common.js',
        ];
 
@@ -1393,7 +1429,6 @@ Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leu
 
 Plusieurs choses à noter:
 
-
 * Les chemins de chargement sont **relatifs** au répertoire du plugin.
 * Les scripts ainsi déclarés seront par défaut chargés sur **toutes** les pages des glpi. Il convient de vérifier la page courante dans cette fonction init.
 * L'extension du script n'est **pas** vérifiée par GLPI, vous pouvez tout à fait charger un fichier php en script js. Vous devrez forcer le mimetype ensuite dans le fichier chargé (ex: ``header("Content-type: application/javascript");``).
@@ -1401,7 +1436,7 @@ Plusieurs choses à noter:
 * Si vous souhaitez modifier le dom de glpi et notamment ce qui est affiché en formulaire principal, je vous conseille d'appeler votre code 2 fois (au chargement de la page et à celui de l'onglet en cours) et pensez à ajouter une classe permettant de vérifier l'application effective de votre code :
 
 .. code-block:: javascript
-  :linenos:
+   :linenos:
 
    $(function() {
        doStuff();
@@ -1422,6 +1457,7 @@ Plusieurs choses à noter:
    };
 
 .. note::
+
     📝 **Exercices**:
 
     #. Ajouter une icône supplémentaire dans le menu préférences (en haut à droite à coté du 'login' utilisateur), permettant d'afficher sur un clic la configuration générale de GLPI. Pour afficher votre icône, vous pouvez utiliser :
@@ -1442,18 +1478,22 @@ Nous les déclarons comme les ``hooks`` précédents:
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use Glpi\Plugin\Hooks;
+   use GlpiPlugin\Myplugin\Superasset;
 
    function plugin_init_myplugin()
    {
       ...
 
-       $PLUGIN_HOOKS['pre_item_form']['myplugin'] = [
-           GlpiPlugin\Myplugin\Superasset::class, 'preItemFormComputer'
+       $PLUGIN_HOOKS[Hooks::PRE_ITEM_FORM]['myplugin'] = [
+           Superasset::class, 'preItemFormComputer'
        ];
    }
 
 .. warning::
+
     ℹ️ **Important**
     Ces fonctions d'affichage diffèrent un peu des autres ``hooks`` au niveau des paramètres passés à la fonction de callback.
     Nous aurons un ``array`` contenant les clefs suivantes:
@@ -1469,6 +1509,7 @@ Nous les déclarons comme les ``hooks`` précédents:
         Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
 
 .. note::
+
     📝 **Exercice**:
     Ajouter en entête du formulaire d'édition des ordinateurs indiquant le nombre de ``Super asset`` associés.
     Ce nombre devrait être un lien vers `l'onglet ajouté précédemment <#cibler-des-objets-du-cœur>`_ aux objets ordinateurs.
@@ -1489,12 +1530,13 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
 **🗋 src/Config.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
    namespace GlpiPlugin\Myplugin;
 
+   use Config;
    use CommonGLPI;
    use Dropdown;
    use Html;
@@ -1512,13 +1554,13 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
 
        static function getConfig()
        {
-           return \Config::getConfigurationValues('plugin:myplugin');
+           return Config::getConfigurationValues('plugin:myplugin');
        }
 
        function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
        {
            switch ($item->getType()) {
-               case \Config::class:
+               case Config::class:
                    return self::createTabEntry(self::getTypeName());
            }
            return '';
@@ -1530,7 +1572,7 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
            $withtemplate = 0
        ) {
            switch ($item->getType()) {
-               case \Config::class:
+               case Config::class:
                    return self::showForConfig($item, $withtemplate);
            }
 
@@ -1538,7 +1580,7 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
        }
 
        static function showForConfig(
-           \Config $config,
+           Config $config,
            $withtemplate = 0
        ) {
            global $CFG_GLPI;
@@ -1562,7 +1604,7 @@ De nouveau, nous gérons l'affichage dans un gabarit dédié:
 **🗋 templates/config.html.twig**
 
 .. code-block:: twig
-  :linenos:
+   :linenos:
 
    {% import "components/form/fields_macros.html.twig" as fields %}
 
@@ -1597,8 +1639,8 @@ Il n'est pas utile d'ajouter de fichier dans le dossier ``front``, notre formula
 Vous pouvez constater que nous affichons, via la fonction ``myplugin_computer_form`` deux champs Oui/Non nommés 'myplugin_computer_tab' et 'myplugin_computer_form'.
 
 .. note::
-    ✍️
-    Complétez le fichier ``setup.php`` en définissant l'ajout de l'onglet à la classe Config.
+
+    ✍️ Complétez le fichier ``setup.php`` en définissant l'ajout de l'onglet à la classe Config.
 
     Par ailleurs, vous devrez ajouter aux fonctions d'installation et de désinstallation l'ajout et la suppression des lignes de la table glpi_configs.
     Vous pourrez utiliser les fonctions suivantes :
@@ -1637,22 +1679,24 @@ Si nous avons besoin de vérifier un droit manuellement dans notre code métier,
 
 .. code-block:: php
 
-   if (\Session::haveRight(self::$rightname, CREATE)) {
+   use Session;
+
+   if (Session::haveRight(self::$rightname, CREATE)) {
       // OK
    }
 
    // we can also test a set multiple rights with AND operator
-   if (\Session::haveRightsAnd(self::$rightname, [CREATE, READ])) {
+   if (Session::haveRightsAnd(self::$rightname, [CREATE, READ])) {
       // OK
    }
 
    // also with OR operator
-   if (\Session::haveRightsOr(self::$rightname, [CREATE, READ])) {
+   if (Session::haveRightsOr(self::$rightname, [CREATE, READ])) {
       // OK
    }
 
    // check a specific right (not your class one)
-   if (\Session::haveRight('ticket', CREATE)) {
+   if (Session::haveRight('ticket', CREATE)) {
       // OK
    }
 
@@ -1663,6 +1707,7 @@ Les méthodes ci dessus retournent toutes un booléen. Si nous voulons un arrêt
 * `checkRightsOr <https://github.com/glpi-project/glpi/blob/10.0.15/src/Session.php#L1128-L1136>`_
 
 .. warning::
+
     ℹ️ Si vous avez besoin de vérifier un droit directement dans une requête SQL, utilisez les opérateurs sur les bits ``&`` et ``|``:
 
     .. code-block:: php
@@ -1699,6 +1744,7 @@ Ajouter un nouveau droit
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
+
     ✍️ `Précédemment <#utilisation-de-commondbtm-et-création-de-classes-métier>`_, nous avons défini la propriété ``$rightname = 'computer'`` sur laquelle nous avons automatiquement les droits en tant que ``super-admin``.
     Nous allons maintenant créer un droit spécifique au plugin.
 
@@ -1707,7 +1753,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
 **🗋 src/Profile.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
@@ -1715,6 +1761,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
    use CommonDBTM;
    use CommonGLPI;
    use Html;
+   use Profile as Glpi_Profile;
 
    class Profile extends CommonDBTM
    {
@@ -1728,7 +1775,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
        public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
        {
            if (
-               $item instanceof \Profile
+               $item instanceof Glpi_Profile
                && $item->getField('id')
            ) {
                return self::createTabEntry(self::getTypeName());
@@ -1742,7 +1789,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
            $withtemplate = 0
        ) {
            if (
-               $item instanceof \Profile
+               $item instanceof Glpi_Profile
                && $item->getField('id')
            ) {
                return self::showForProfile($item->getID());
@@ -1767,7 +1814,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
 
        static function showForProfile($profiles_id = 0)
        {
-           $profile = new \Profile();
+           $profile = new Glpi_Profile();
            $profile->getFromDB($profiles_id);
 
            TemplateRenderer::getInstance()->display('@myplugin/profile.html.twig', [
@@ -1783,7 +1830,7 @@ De nouveau, nous afficheons le formulaire dans un gabarit Twig :
 **🗋 templates/profile.html.twig**
 
 .. code-block:: twig
-  :linenos:
+   :linenos:
 
    {% import "components/form/fields_macros.html.twig" as fields %}
    <div class='firstbloc'>
@@ -1810,7 +1857,7 @@ Enfin dans notre fonction d'init, nous déclarons un nouvel onglet sur l'objet `
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    function plugin_init_myplugin()
    {
@@ -1826,14 +1873,17 @@ Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use GlpiPlugin\Myplugin\Profile as MyPlugin_Profile;
+   use ProfileRight;
 
    function plugin_myplugin_install() {
       ...
 
       // add rights to current profile
-      foreach (GlpiPlugin\Myplugin\Profile::getAllRights() as $right) {
-         \ProfileRight::addProfileRights([$right['field']]);
+      foreach (MyPlugin_Profile::getAllRights() as $right) {
+         ProfileRight::addProfileRights([$right['field']]);
       }
 
       return true;
@@ -1843,8 +1893,8 @@ Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès
       ...
 
       // delete rights for current profile
-      foreach (GlpiPlugin\Myplugin\Profile::getAllRights() as $right) {
-         \ProfileRight::deleteProfileRights([$right['field']]);
+      foreach (MyPlugin_Profile::getAllRights() as $right) {
+         ProfileRight::deleteProfileRights([$right['field']]);
       }
 
    }
@@ -1862,7 +1912,7 @@ Celle-ci héritant de CommonDBTM, elle possède une méthode `getRights <https:/
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    namespace GlpiPlugin\Myplugin;
 
@@ -1912,7 +1962,7 @@ Afin d'activer cette fonctionnalité dans votre plugin, il faut déclarer dans l
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    function plugin_init_myplugin()
    {
@@ -1933,7 +1983,7 @@ Ci dessous, un exemple d'implémentation minimal:
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
@@ -2002,6 +2052,7 @@ Ci dessous, un exemple d'implémentation minimal:
    }
 
 .. note::
+
     📝 **Exercice**:
     En vous aidant de la documentation officielle sur les `actions massives <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/massiveactions.html#specific-massive-actions>`_, complétez dans votre plugin, les méthodes présentées ci-dessus pour permettre l'ajout d'un ordinateur via les actions massives des "Super assets".
 
@@ -2017,17 +2068,23 @@ Pour cela, il faut déclarer une fonction ``_MassiveActions`` dans le fichier ho
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use Computer;
+   use MassiveAction;
+   use GlpiPlugin\Myplugin\Superasset;
+
+   ...
 
    function plugin_myplugin_MassiveActions($type)
    {
       $actions = [];
       switch ($type) {
-         case \Computer::class:
-            $class = GlpiPlugin\Myplugin\Superasset::class;
+         case Computer::class:
+            $class = Superasset::class;
             $key   = 'DoIt';
             $label = __("plugin_example_DoIt", 'example');
-            $actions[$class.\MassiveAction::CLASS_ACTION_SEPARATOR.$key]
+            $actions[$class.MassiveAction::CLASS_ACTION_SEPARATOR.$key]
                = $label;
 
             break;
@@ -2038,6 +2095,7 @@ Pour cela, il faut déclarer une fonction ``_MassiveActions`` dans le fichier ho
 L'affichage du sous-formulaire et le traitement de l'envoi se gère de la même façon que pour les massives actions des itemtypes de votre propre plugin.
 
 .. note::
+
     📝 **Exercice**:
     De la même façon que dans l'exercice précédent, ajoutez la possibilité d'affecter des ordinateurs à une "Super asset".
 
@@ -2092,7 +2150,9 @@ Nous pouvons par contre déclencher l’exécution d'une notification via le cod
 
 .. code-block:: php
 
-   \NotificationEvent::raiseEvent($event, $item);
+   use NotificationEvent;
+
+   NotificationEvent::raiseEvent($event, $item);
 
 La clef 'event' correspond au nom de l'événement déclencheur défini dans l'objet ``Notification`` et la clef 'itemtype' l'objet auquel il se rapporte.
 Ainsi, cette fonction ``raiseEvent`` cherchera dans la table ``glpi_notifications`` une ligne active avec ces 2 caractéristiques.
@@ -2103,12 +2163,12 @@ Celle-ci "cible" notre itemtype ``Superasset``, c'est la façon standard de dév
 **🗋 src/NotificationTargetSuperasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
 
-   use \NotificationTarget;
+   use NotificationTarget;
 
    class NotificationTargetSuperasset extends NotificationTarget
    {
@@ -2131,13 +2191,16 @@ Il faudra indiquer en plus dans notre fonction d'init que notre itemtype ``Super
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
+
+   use Plugin;
+   use GlpiPlugin\Myplugin\Superasset;
 
    function plugin_init_myplugin()
    {
       ...
 
-       \Plugin::registerClass(GlpiPlugin\Myplugin\Superasset::class, [
+       Plugin::registerClass(Superasset::class, [
            'notificationtemplates_types' => true
        ]);
    }
@@ -2145,6 +2208,7 @@ Il faudra indiquer en plus dans notre fonction d'init que notre itemtype ``Super
 Avec ce code minimal, il est possible de créer manuellement, via l'interface de GLPI, une nouvelle notification ciblant notre itemtype ``Superasset`` et avec l’événement 'My event label' et d'utiliser la fonction raiseEvent avec ces paramètres.
 
 .. note::
+
     📝 **Exercice** :
     Outre le test d'un envoi effectif, vous gérerez l'installation et la désinstallation automatique d'une notification et des objets associés (modèles, traductions).
 
@@ -2168,12 +2232,12 @@ Pour ajouter une ou plusieurs actions automatiques à notre classe, nous y ajout
 **🗋 src/Superasset.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
    namespace GlpiPlugin\Myplugin;
 
-   use \CommonDBTM;
+   use CommonDBTM;
 
    class Superasset extends CommonDBTM
    {
@@ -2202,15 +2266,18 @@ Pour indiquer l'existence de cette action automatique à GLPI, il suffit de l'in
 **🗋 hook.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
+
+   use CronTask;
+
    function plugin_myplugin_install()
    {
 
        ...
 
-       \CronTask::register(
+       CronTask::register(
            PluginMypluginSuperasset::class,
            'myaction',
            HOUR_TIMESTAMP,
@@ -2235,7 +2302,7 @@ Publiez votre code sur un dépôt git accessible au public (nous utilisons `gith
 Le XML doit respecter cette structure:
 
 .. code-block:: xml
-  :linenos:
+   :linenos:
 
    <root>
       <name>Displayed name</name>
@@ -2326,7 +2393,7 @@ Voir `la documentation développeur <http://glpi-developer-documentation.readthe
 Voici quelques exemples d'usage:
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    foreach ($DB->request(...) as $id => $row) {
        //... work on each row ...
@@ -2378,22 +2445,25 @@ Via votre plugin, vous pouvez compléter ces concepts avec vos propres données 
 **🗋 setup.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
+
+   use Glpi\Plugin\Hooks;
+   use GlpiPlugin\Myplugin\Dashboard;
 
    function plugin_init_myplugin()
    {
        ...
 
        // add new widgets to the dashboard
-       $PLUGIN_HOOKS['dashboard_types']['myplugin'] = [
-           GlpiPlugin\Myplugin\Dashboard::class => 'getTypes',
+       $PLUGIN_HOOKS[Hooks::DASHBOARD_TYPES]['myplugin'] = [
+           Dashboard::class => 'getTypes',
        ];
 
        // add new cards to the dashboard
-       $PLUGIN_HOOKS['dashboard_cards']['myplugin'] = [
-           GlpiPlugin\Myplugin\Dashboard::class => 'getCards',
+       $PLUGIN_HOOKS[Hooks::DASHBOARD_CARDS]['myplugin'] = [
+           Dashboard::class => 'getCards',
        ];
    }
 
@@ -2402,7 +2472,7 @@ En complément, créons une classe dédiée à nos ajouts aux tableaux de bord d
 **🗋 src/Dashboard.php**
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -2526,7 +2596,7 @@ Afficher votre propre tableau de bord
 Le systeme de tableaux de bord de GLPI étant modulaire, vous pouvez l'utiliser dans vos propres affichages.
 
 .. code-block:: php
-  :linenos:
+   :linenos:
 
    <?php
 
@@ -2587,13 +2657,14 @@ Si vous avez utilisé comme squelette le plugin `Empty`_, vous bénéficierez d'
    vendor/bin/robo locales:pull
 
 .. warning::
+
     ℹ️  Il est possible qu'après la génération des fichiers ``.mo`` que GLPI n'affiche pas la traduction de vos chaînes.
     Le cache php est généralement la cause.
     Il convient de redémarrer votre serveur Web ou le serveur PHP selon votre configuration système.
 
 
 API Rest
-========
+--------
 
 Depuis la version 9.1 de GLPI, celui-ci dispose d'une API externe aux formats REST et XmlRPC.
 
@@ -2602,7 +2673,7 @@ Depuis la version 9.1 de GLPI, celui-ci dispose d'une API externe aux formats RE
 
 
 Configuration
--------------
+^^^^^^^^^^^^^
 
 Par mesure de sécurité, elle est désactivée par défaut.
 Depuis le menu ``Configuration > Générale, onglet API``, vous pouvez l'activer.
@@ -2635,13 +2706,14 @@ Celui-ci est écrit en php et utilise la librairie `Guzzle <http://docs.guzzleph
 Par défaut, il effectue une connexion avec des identifiants définis dans le fichier ``config.inc.php`` (que vous devez créer en copiant le fichier ``config.inc.example``.
 
 .. warning::
-    ℹ️  Assurez-vous du fonctionnement du script fourni avant de continuer.
+
+    ⚠️ Assurez-vous du fonctionnement du script fourni avant de continuer.
 
 
 Usage de l'API
---------------
+^^^^^^^^^^^^^^
 
-Pour l'apprentissage de cette partie, en nous aidant de la documentation intégrée (ou celle disponible sur `github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`_), nous effectuerons une série d'exercices:
+Pour l'apprentissage de cette partie, en nous aidant de la documentation intégrée (ou celle disponible sur `github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`__), nous effectuerons une série d'exercices:
 
 .. note::
    * [x] 📝 **Exercice**: Testez une nouvelle connexion via le jeton externe d'authentification de l'utilisateur glpi à la place de la connexion
@@ -2659,18 +2731,18 @@ Pour l'apprentissage de cette partie, en nous aidant de la documentation intégr
     * et ensuite une supression définitive.
 
 .. note::
+
   * [x] 📝 **Exercice**: Récupérez la liste des ordinateurs et afficher les dans un tableau HTML. L'``endpoint`` à utiliser est "Search items". Si vous souhaitez afficher les libellés des colonnes, il faudra utiliser l'``endpoint`` "List searchOptions".
 
 
 Production de statistiques
-==========================
+--------------------------
 
 Metabase
---------
+^^^^^^^^
 
 .. image:: /_static/images/metabase.png
    :alt: logo metabase
-
 
 `Metabase`_ est un outil open source d'`informatique décisionnelle`_. Il permet de "poser des questions" à propos de vos données et vous laisse les afficher dans des formats qui font sens, que ce soit un histogramme ou une table détaillée.
 
@@ -2678,7 +2750,7 @@ Vos questions peuvent être sauvegardées pour plus tard et vous pouvez les regr
 Il est relativement simple de partager vos questions et "dashboards" avec le reste de votre équipe.
 
 Configuration
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 L’exécutable de `Metabase`_ est un fichier ``.jar`` accompagné par défaut d'une base de données `H2 <https://fr.wikipedia.org/wiki/H2_(base_de_donn%C3%A9es>`_).
 Le seul pré-requis est la présence du jdk en version 6 mini. Il fonctionne, à priori, sur les versions Oracle et OpenJDK. De notre coté, nous utilisons la version 1.8 d'openjdk.
@@ -2686,6 +2758,7 @@ Le seul pré-requis est la présence du jdk en version 6 mini. Il fonctionne, à
 Vous pouvez trouver la dernière version sur la `page dédiée au jar <http://www.metabase.com/start/jar.html>`_.
 
 .. warning::
+
     ℹ️ L'équipe de `Metabase`_ fournit des paquets préconfigurés pour les plate-formes suivantes:
 
     * `image Docker <http://www.metabase.com/start/docker.html>`_
@@ -2719,12 +2792,12 @@ Dans le cadre de cette formation, la connexion de la base de donnée n'a pas bes
 Dernière étape de l'assistant, il vous sera demandé si vous autorisez la collecte de données anonymisées sur votre usage du logiciel et si vous souhaitez recevoir des "newsletters".
 
 Utilisation
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 Après installation, vous arrivez sur l’accueil de `metabase`_ qui vous présente l'activité récente sur le logiciel et les objets récemment vus (normalement aucun à ce niveau).
 
 Questions
-~~~~~~~~~
+"""""""""
 
 Les questions sont le moyen de requérir des données et peuvent être construites de 2 manières.
 
@@ -2747,6 +2820,7 @@ Elle vous permet d'écrire vos requêtes complètement en SQL.
 Une fois la requête exécutée, les réponses seront affichées en mode tableau.
 
 .. note::
+
     📝 **Exercice**: Sans se préoccuper des dates pour le moment, construisez plusieurs questions permettant l'affichage de :
 
 
@@ -2759,7 +2833,7 @@ Une fois la requête exécutée, les réponses seront affichées en mode tableau
     * en attente
 
 Collections
-~~~~~~~~~~~
+"""""""""""
 
 Dans le cas d'un volume conséquent, les questions peuvent être organisées dans des "Collections".
 Elles font office de dossiers.
@@ -2767,7 +2841,7 @@ Elles font office de dossiers.
 Par ailleurs, vous avez la possibilité de définir des groupes (coté administration) et les collections permettent d'accorder des droits de visualisation ou d'édition à ces groupes.
 
 Dashboard
-~~~~~~~~~
+"""""""""
 
 Vos questions peuvent être agrégées dans un tableau de bord.
 Outre l'affichage de données multiples, ce concept apporte:
@@ -2778,17 +2852,15 @@ Outre l'affichage de données multiples, ce concept apporte:
 * un mode nuit (font sombre, textes clairs)
 * des filtres (voir le `paragraphe sur les variables <#variables>`_ plus loin)
 
-
 .. image:: /_static/images/metabase_dashboard.png
    :alt: Tableau de bord
-
 
 Les tableaux de bord seront visibles par les autres utilisateurs si au moins une question est stockée dans une collection à laquelle ils ont accès.
 Ils présenteront au maximum toutes les questions avec les bons droits (les autres étant cachées).
 Dans le cas de l'absence de collection, vos tableaux de bord seront accessibles à tous les utilisateurs.
 
 Variables
-~~~~~~~~~
+"""""""""
 
 Lors de la création d'une question en mode SQL, vous avez la possibilité de définir des variables dans leur code afin d'exploiter des paramètres.
 La syntaxe est la suivante: ``{{variable}}``
@@ -2804,15 +2876,16 @@ Dans ce cas, ce n'est pas seulement la valeur choisie qui remplacera la variable
 
 C'est particulièrement utile pour définir des sélecteurs de dates relatives:
 
-
 .. image:: /_static/images/metabase_dashboard_filter.png
    :alt: Filtre de tableau de bord
 
 
 .. warning::
-    ℹ️ Dans le cas de l'absence de choix d'un sélecteur, la variable sera remplacée par ``1=1``
+
+    ⚠️ Dans le cas de l'absence de choix d'un sélecteur, la variable sera remplacée par ``1=1``
 
 .. note::
+
     📝 **Exercice**: Ajoutez aux questions précédemment développés un filtre (pour vos "dashboards") permettant de selectionner des dates.
 
 "Data model" et "Data reference"
@@ -2831,10 +2904,8 @@ Une fois une base sélectionnée, vous pouvez:
 
 Cela permet, lors de la création de questions, que le mode constructeur de requêtes soit enrichi:
 
-
 .. image:: /_static/images/metabase_datamodel_result.png
    :alt: constructeur de requêtes enrichi
-
 
 Depuis la partie utilisation (sortez de l'administration donc) de metabase, le menu ``Data Reference`` est une sorte de wiki (la première page peut être éditée) pour présenter les données.
 Les descriptions des bases et tables sont visibles ici.
@@ -2847,7 +2918,8 @@ Les "Pulses" présents dans le menu général de `Metabase`_ vous aideront à en
 2 canaux sont possibles, mail et via l'intégration slack
 
 .. warning::
-    ℹ️ Les questions envoyées seront forcement dans un format tableau, les graphiques ne sont pas disponibles ici.
+
+    ⚠️ Les questions envoyées seront forcement dans un format tableau, les graphiques ne sont pas disponibles ici.
 
 ----
 
