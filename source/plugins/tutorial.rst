@@ -16,34 +16,32 @@ Plugin development tutorial
     - Being familiar with command line usage
 
 
-📝 In this first part, we will create a plugin we'll name "My plugin" (key: ``myplugin``).
+📝 In this first part, we will create a plugin we will name "My plugin" (key: ``myplugin``).
 We will cover project startup as well as the setup of base elements.
 
 Pre-requisites
 --------------
 
-Voici la liste des briques nécessaires au démarrage de votre projet de plugin GLPI:
+Here are all the bricks you need to start your GLPI plugin project:
 
-* un serveur web fonctionnel,
-* la dernière version stable de `GLPI <https://github.com/glpi-project/glpi/releases>`_ installée en local,
-* un éditeur de texte ou IDE (par ex `vscode <https://code.visualstudio.com>`_ ou `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
-* le gestionnaire de version `git <https://git-scm.com/>`_.
-* le gestionnaire de dépendances PHP: `Composer`_
+* a functional web server,
+* latest `GLPI <https://github.com/glpi-project/glpi/releases>`_ stable release installed locally
+* a text editor or any EDI (like `vscode <https://code.visualstudio.com>`_ or `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
+* `git <https://git-scm.com/>`_ version management software.
+* `Composer`_ PHP dependency software
 
 Start your project
 ------------------
 
 .. warning::
 
-    ⚠️ Si vous possédez une copie des données de production dans votre glpi, assurez-vous, avant de commencer la formation, de désactiver les notifications par mail sur votre instance locale.
-    Ceci afin d'éviter d'envoyer des mails non désirés à des utilisateurs présents dans les données importées.
+    ⚠️ If you have prodution data in your GLPI instance, make sure you disabled all notifications before begining the development.
+    This will prevent sending of tests messages to users present in the imported data.
 
+First of all, a few resources:
 
-Tout d’abord, voici quelques ressources:
-
-* le plugin `Empty`_ et sa `documentation <https://glpi-plugins.readthedocs.io/en/latest/empty/index.html>`_. Ce plugin est un kit (ou squelette) de démarrage rapide d'un nouveau plugin.
-* le plugin `Example <https://github.com/pluginsGLPI/example>`_. Il se veut exhaustif dans l'utilisation des possibilités offertes par l'api interne de GLPI pour les plugins.
-
+* `Empty`_ plugin and its `documentation <https://glpi-plugins.readthedocs.io/en/latest/empty/index.html>`_. This plugin is a kind of skeleton for quick starting a brand new plugin.
+* `Example <https://github.com/pluginsGLPI/example>`_ plugin. It aims to do an exhaustive usage of GLPI internal API for plugins.
 
 My new plugin
 ^^^^^^^^^^^^^
