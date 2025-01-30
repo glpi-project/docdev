@@ -69,6 +69,7 @@ Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le r�
     | Ce nom est ensuite utilisé pour déclarer le répertoire de votre plugin ainsi que les noms des fonctions, des constantes, etc.
     | ``My-Plugin`` va également créer un répertoire ``MyPlugin``.
     | Les majuscules dans le nom du dossiers vont poser problème pour certaines fonctions du cœur.
+
     Restez simple !
 
 
@@ -1513,7 +1514,7 @@ Nous les déclarons comme les ``hooks`` précédents:
     📝 **Exercice**:
     Ajouter en entête du formulaire d'édition des ordinateurs indiquant le nombre de ``Super asset`` associés.
     Ce nombre devrait être un lien vers `l'onglet ajouté précédemment <#cibler-des-objets-du-cœur>`_ aux objets ordinateurs.
-    Le lien pointera vers la même page mais avec un paramètre **forcetab**=PluginMypluginSuperasset$1.
+    Le lien pointera vers la même page mais avec un paramètre `forcetab=PluginMypluginSuperasset$1`.
 
 
 Ajouter une page de configuration
