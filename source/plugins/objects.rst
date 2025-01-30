@@ -14,6 +14,7 @@ Note that the plugin name part of the namespace must be lowercase with the excep
 Child namespaces of ``GlpiPlugin\Myexampleplugin`` do not need to follow this rule.
 
 Depending on where your class files are stored, the naming convention will be different:
+
 - inc: File name will be the name of your class, lowercase; the class name will be the concatenation of your plugin name and your class name.
   For example, if you want to create the ``MyObject`` in ``MyExamplePlugin``; you will create the ``inc/myobject.class.php`` file; and the class name will be ``MyExamplePluginMyObject``.
 - src: File name will match the name of your class exactly. The class name should not be prefixed by your plugin name when using namespaces. Namespaces are supported and can be reflected as subfolders.
