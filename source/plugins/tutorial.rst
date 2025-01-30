@@ -1,6 +1,5 @@
-========
-Tutorial
-========
+Plugin development tutorial
+===========================
 
 .. warning::
 
@@ -8,6 +7,7 @@ Tutorial
 
     - A base knowledge of GLPI usage
     - A correct level in web development:
+
         - PHP
         - HTML
         - CSS
@@ -16,13 +16,10 @@ Tutorial
     - Being familiar with command line usage
 
 
-Plugin development
-==================
-
 📝 In this first part, we will create a plugin we'll name "My plugin" (key: ``myplugin``).
 We will cover project startup as well as the setup of base elements.
 
-Pré-requisites
+Pre-requisites
 --------------
 
 Voici la liste des briques nécessaires au démarrage de votre projet de plugin GLPI:
