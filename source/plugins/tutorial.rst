@@ -129,10 +129,12 @@ Minipal plugin structure
 * ``📂 node_modules`` directory contains javascript libraries for your plugin.
 * ``🗋 composer.json`` files describes PHP dependencies for your project.
 * ``🗋 package.json`` file describes javascript dependencies for your project.
-* ``🗋 myplugin.xml`` file contains data description for :ref:`Publishing your plugin`.
+* ``🗋 myplugin.xml`` file contains data description for :ref:`publishing your plugin <plugin_publication>`.
 * ``🗋 myplugin.png`` image is often included in previous XML file as a representation for `GLPI plugins catalog <http://plugins.glpi-project.org>`_
-* ``🗋 setup.php`` file is meant to :ref:`instanciate your plugin <minimal setup.php>`.
-* ``🗋 hook.php`` file :ref:`contains your plugin basic functions <minimal hook.php>` (install/uninstall, hooks, etc).
+* ``🗋 setup.php`` file is meant to :ref:`instanciate your plugin <plugin_minimal_setupphp>`.
+* ``🗋 hook.php`` file :ref:`contains your plugin basic functions <plugin_minimal_hookphp>` (install/uninstall, hooks, etc).
+
+.. _plugin_minimal_setupphp:
 
 minimal setup.php
 ^^^^^^^^^^^^^^^^^
@@ -237,6 +239,7 @@ Vous pouvez changer les différentes lignes pour adapter à vos coordonnées.
 Cette fonction est appelée systématiquement sur **toutes** les pages de GLPI.
 Elle permet de désactiver automatiquement le plugin si les critères définis ne sont pas ou plus vérifiés (en retournant ``false``).
 
+.. _plugin_minimal_hookphp:
 
 minimal hook.php
 ^^^^^^^^^^^^^^^^
@@ -2374,6 +2377,7 @@ Pour indiquer l'existence de cette action automatique à GLPI, il suffit de l'in
 
 Inutile de gérer la supression (unregister) de cette action, GLPI s'occupe de le faire automatiquement à la désinstallation du plugin.
 
+.. _plugin_publication:
 
 Publishing your plugin
 ----------------------
