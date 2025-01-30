@@ -471,7 +471,7 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
        $migration = new Migration(PLUGIN_MYPLUGIN_VERSION);
 
        // create table only if it does not exist yet!
-       $table = GlpiPlugin\Myplugin\Superasset::getTable();
+       $table = Superasset::getTable();
        if (!$DB->tableExists($table)) {
            //table creation query
            $query = "CREATE TABLE `$table` (
