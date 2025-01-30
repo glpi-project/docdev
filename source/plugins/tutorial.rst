@@ -1,26 +1,29 @@
+========
+Tutorial
+========
 
 .. warning::
 
-    ⚠️ Cette formation nécessite les pré-requis d'apprentissage suivants:
+    ⚠️ Several pre-requisites are required in order to follow this tutorial:
 
-    - Une connaissance de l'usage de GLPI
-    - Un niveau correct dans le développement WEB:
+    - A base knowledge of GLPI usage
+    - A correct level in web development:
         - PHP
         - HTML
         - CSS
         - SQL
         - Javascript (Jquery)
-    - être familier de l'utilisation de la ligne de commande
+    - Being familiar with command line usage
 
 
-Développement d'un plugin
-=========================
+Plugin development
+==================
 
-📝 Dans cette première partie, nous allons créer un nouveau plugin que nous nommerons "My plugin" (clef : ``myplugin``).
-Nous couvrirons le démarrage du projet ainsi que la mise en place des éléments de base.
+📝 In this first part, we will create a plugin we'll name "My plugin" (key: ``myplugin``).
+We will cover project startup as well as the setup of base elements.
 
-Pré-requis
-----------
+Pré-requisites
+--------------
 
 Voici la liste des briques nécessaires au démarrage de votre projet de plugin GLPI:
 
@@ -30,8 +33,8 @@ Voici la liste des briques nécessaires au démarrage de votre projet de plugin 
 * le gestionnaire de version `git <https://git-scm.com/>`_.
 * le gestionnaire de dépendances PHP: `Composer`_
 
-Amorcez votre projet
---------------------
+Start your project
+------------------
 
 .. warning::
 
@@ -45,8 +48,8 @@ Tout d’abord, voici quelques ressources:
 * le plugin `Example <https://github.com/pluginsGLPI/example>`_. Il se veut exhaustif dans l'utilisation des possibilités offertes par l'api interne de GLPI pour les plugins.
 
 
-Mon nouveau plugin
-^^^^^^^^^^^^^^^^^^
+My new plugin
+^^^^^^^^^^^^^
 
 Clonez avec git le dépôt du plugin ``empty`` directement dans le répertoire ``plugins`` de votre dossier GLPI.
 
@@ -83,8 +86,8 @@ Une fois la commande lancée, cela va créer un répertoire ``myplugin`` au mêm
 
         ./plugin.sh myplugin 0.0.1 /path/to/another/glpi/plugins/
 
-Récupération des dépendances `Composer`_
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Retrieving `Composer`_ dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Dans votre terminal, depuis le dossier du plugin, lancez la commande suivante:
 
@@ -94,8 +97,8 @@ Dans votre terminal, depuis le dossier du plugin, lancez la commande suivante:
    composer install
 
 
-Structure minimale d'un plugin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Minipal plugin structure
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. raw:: html
 
@@ -139,7 +142,7 @@ Structure minimale d'un plugin
 * le fichier ``🗋 hook.php`` <#hookphp-minimal>`_ comporte les fonctions de base de votre plugin (des-installation, hooks généralistes, etc).
 
 
-setup.php minimal
+minimal setup.php
 ^^^^^^^^^^^^^^^^^
 
 Suite à l'utilisation du script ``plugin.sh``, votre répertoire ``📂 myplugin`` doit contenir le fichier ``🗋 setup.php``
@@ -243,7 +246,7 @@ Cette fonction est appelée systématiquement sur **toutes** les pages de GLPI.
 Elle permet de désactiver automatiquement le plugin si les critères définis ne sont pas ou plus vérifiés (en retournant ``false``).
 
 
-hook.php minimal
+minimal hook.php
 ^^^^^^^^^^^^^^^^
 
 Ce fichier doit contenir à minima les fonctions d'installation et de désinstallation:
@@ -269,8 +272,8 @@ Quand toutes les étapes sont correctes, nous devons retourner ``true``.
 Nous remplirons ces fonctions plus loin dans ce document avec des créations et suppressions de tables.
 
 
-Installez votre plugin
-^^^^^^^^^^^^^^^^^^^^^^
+Install your plugin
+^^^^^^^^^^^^^^^^^^^
 
 .. image:: /_static/images/install_plugin.png
    :alt: mon plugin listé dans la configuration
@@ -279,15 +282,17 @@ Installez votre plugin
 Suite à ces premières étapes, votre plugin doit pouvoir s'installer et s'activer dans le menu ``Configuration > Plugins``.
 
 
-Création d'un objet
--------------------
+Creating an object
+------------------
 
 | 📝 Dans cette partie, nous allons ajouter un itemtype dans notre plugin et le faire interagir avec GLPI.
 | Celui-ci sera un objet maître permettant de regrouper plusieurs "assets".
 | Nous le nommerons "Superasset".
 
-Utilisation de `CommonDBTM`_ et création de classes métier
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _commondntm_usage:
+
+`CommonDBTM`_ usage and classes creation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Cette super classe permet de manipuler les tables MySQL via du code php.
 Vos classes métiers (présentes dans le dossier ``src``) peuvent hériter de celle-ci et sont appelées "itemtype" par convention.
@@ -361,8 +366,7 @@ Nous déclarerons à minima quelques parties:
 
 .. warning::
 
-    ⚠️  **Attention:**
-    Le ``namespace`` doit respecter le `CamelCase <https://en.wikipedia.org/wiki/Camel_case>`_
+    ⚠️ Le ``namespace`` doit respecter le `CamelCase <https://en.wikipedia.org/wiki/Camel_case>`_
 
 .. note::
 
@@ -569,8 +573,8 @@ Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouv
   le paramètre ``$type`` des différentes fonctions est le meme que pour la méthode privée `fieldFormat <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ de la classe `Migration`_ et permet un raccourci pour les types SQL les plus courants (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
 
 
-Désinstallation
-^^^^^^^^^^^^^^^
+Uninstallation
+^^^^^^^^^^^^^^
 
 Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données ajoutées lors de l'installation et aussi celle saisies par l'utilisateur (nous verrons plus tard que nous pouvons ajouter des données concernant nos classes dans des objets natifs de GLPI).
 
@@ -604,8 +608,8 @@ Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données 
    }
 
 
-Utilisation du framework
-^^^^^^^^^^^^^^^^^^^^^^^^
+Framework usage
+^^^^^^^^^^^^^^^
 
 Quelques fonctions utilitaires supplémentaires:
 
@@ -626,8 +630,8 @@ Cette méthode permet d'enregistrer dans le fichier ``glpi/files/_log/php-errors
 Cette méthode affichera un tableau de "debug" de la variable fournie en paramètre. Elle n'accepte pas d'autre type que ``array``.
 
 
-Actions courantes sur un objet
-------------------------------
+Common actions on an object
+---------------------------
 
 .. note::
 
@@ -815,8 +819,8 @@ Suite à cela, un appel dans notre navigateur à notre page `http://glpi/plugins
     Voir le code source du fhcier ``🗋 templates/components/form/fields_macros.html.twig`` pour plus de détails et de macros.
 
 
-Insertion dans le menu et fil d’Ariane
---------------------------------------
+Adding to menu and breadcrumb
+-----------------------------
 
 Idéalement, nous souhaiterions accéder à nos nouvelles pages sans taper directement l'url dans notre navigateur.
 
@@ -936,8 +940,8 @@ Chaque clef ``page`` sert à indiquer sur quelle url s'applique la partie en cou
             '<img src="path/to/my.png" title="my custom link">' => $url
         ]
 
-Définir des onglets
--------------------
+Defning tabs
+------------
 
 GLPI fournit 3 méthodes standards pour la définition des onglets:
 
@@ -950,8 +954,8 @@ GLPI fournit 3 méthodes standards pour la définition des onglets:
 `displayTabContentForItem(CommonGLPI $item, integer $tabnum = 1, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_displayTabContentForItem>`_
 :  Permet l'affichage du contenu des onglets.
 
-Onglets standards
-^^^^^^^^^^^^^^^^^
+Standards tabs
+^^^^^^^^^^^^^^
 
 De base certaines classes de l'api interne vous permettent d'ajouter un comportement avec un code minimal
 
@@ -998,8 +1002,8 @@ L'affichage d'une instance de votre itemtype depuis la page ``front/superasset.p
 * l'onglet Historique
 
 
-Onglets personnalisés
-^^^^^^^^^^^^^^^^^^^^^
+Custom tabs
+^^^^^^^^^^^
 
 De façon similaire, nous pouvons cibler une autre classe de notre plugin:
 
@@ -1145,8 +1149,8 @@ Comme précédemment, nous utilisons un template pour gérer notre affichage.
     Nous ajouterons aussi en dessous du formulaire une liste des ordinateurs déjà associés.
 
 
-Cibler des objets du cœur
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Using core objets
+^^^^^^^^^^^^^^^^^
 
 Nous pouvons aussi permettre à notre classe d'ajouter des onglets sur les objets natifs du cœur.
 Nous déclarons cet ajout via une nouvelle ligne dans notre fonction d'init:
@@ -1179,10 +1183,10 @@ Le titre et le contenu de cet onglet se font comme précédemment avec les méth
     Complétez les méthodes précédentes pour afficher dans les ordinateurs un nouvel onglet listant les ``SuperAsset`` qui lui sont associés.
 
 
-Définir des Searchoptions
--------------------------
+Defining Search options
+-----------------------
 
-les :ref`Search options <search_options>` sont des registres de colonnes pour le moteur de recherche de GLPI. Elles permettent de déclarer comment doivent s'afficher ou être interrogées les données d'un itemtype.
+Les :ref`Search options <search_options>` sont des registres de colonnes pour le moteur de recherche de GLPI. Elles permettent de déclarer comment doivent s'afficher ou être interrogées les données d'un itemtype.
 
 Dans notre classe, il faut déclarer une fonction ``rawSearchOptions``:
 
@@ -1258,8 +1262,8 @@ Les index '1' et '2' sont "réservés" par convention au nom et à l'ID de l'obj
 
 La :ref:`documentation des search options <search_options>` décrit toutes les options possibles pour la définition du tableau à renvoyer.
 
-Cibler d'autres objets
-^^^^^^^^^^^^^^^^^^^^^^
+Using other objects
+^^^^^^^^^^^^^^^^^^^
 
 Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. Par exemple, nous pourrions vouloir afficher dans la liste des ordinateurs les "Superasset" associés:
 
@@ -1311,8 +1315,8 @@ Vous pouvez utiliser un outil présent dans le dossier ``tools`` du dépôt git 
    /usr/bin/php /path/to/glpi/tools/getsearchoptions.php --type=Computer
 
 
-Préférences d'affichage du moteur de recherche
-----------------------------------------------
+Search engine display preferences
+---------------------------------
 
 Comme vu dans le `paragraphe précédent <#définir-des-searchoptions>`_, nous avons avons manuellement ajouté (par l'icône "clef à molette") des colonnes à la liste de notre itemtype.
 Ces colonnes sont enregistrées par l'objet DisplayPreference (table ``glpi_displaypreferences``).
@@ -1330,8 +1334,8 @@ Ces préférences peuvent être globales (champ ``users_id = 0``) ou personnelle
     Vous ajouterez aux fonctions d'installation et de désinstallation du plugin l'ajout et la suppression des préférences globales pour que l'affichage par défaut de notre objet comporte quelques colonnes.
 
 
-Hooks d’évènements standards
-----------------------------
+Standard events hooks
+---------------------
 
 Dans le cycle de vie d'un objet de GLPI, nous pouvons intervenir via notre plugin avant et après chaque événement (ajout, modification, suppression).
 
@@ -1443,8 +1447,8 @@ dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype
     Utilisez un ``hook`` interceptant la suppression définitive (purge) d'un ordinateur pour vérifier que des lignes de nos objets y sont associées et les supprimer également dans ce cas.
 
 
-Importer des librairies (Javascript / CSS)
-------------------------------------------
+Importing libraries (Javascript / CSS)
+--------------------------------------
 
 Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leur fonction init.
 
@@ -1516,8 +1520,8 @@ Plusieurs choses à noter:
 
     #. Dans la page d'edition d'un ticket, ajouter une icône pour s'auto-associer en tant que demandeur sur le modèle de celle présente pour la partie "attribué à".
 
-Hooks d'affichage
------------------
+Display hooks
+-------------
 
 Depuis la version 9.1.2 de GLPI, il est maintenant possible d'afficher des données dans les formulaires des objets natifs via de nouveaux hooks.
 Voir :ref:`display related hooks <display_related_hooks>` dans la documentation des plugins.
@@ -1569,8 +1573,8 @@ Nous les déclarons comme les ``hooks`` précédents:
     Le lien pointera vers la même page mais avec un paramètre `forcetab=PluginMypluginSuperasset$1`.
 
 
-Ajouter une page de configuration
----------------------------------
+Adding a configuration page
+---------------------------
 
 Afin de rendre optionnelles certaines parties de notre plugin, nous allons proposer un onglet dans la configuration générale de GLPI.
 
@@ -1720,8 +1724,8 @@ Vous pouvez constater que nous affichons, via la fonction ``myplugin_computer_fo
     *Pensez à remplacer les noms entourés par '##' par vos propre valeurs*
 
 
-Gérer les droits
-----------------
+Managing rights
+---------------
 
 Afin de limiter l’accès aux fonctionnalités de notre plugin à certains de nos utilisateurs, nous pouvons utiliser le système de la classe `Profile`_ de GLPI.
 
@@ -1809,13 +1813,13 @@ Les valeurs possibles des droits standards peuvent être trouvés dans le fichie
    define("UPDATENOTE", 64);
    define("UNLOCK", 128);
 
-Ajouter un nouveau droit
-^^^^^^^^^^^^^^^^^^^^^^^^
+Add a new right
+^^^^^^^^^^^^^^^
 
 .. note::
 
-    ✍️ `Précédemment <#utilisation-de-commondbtm-et-création-de-classes-métier>`_, nous avons défini la propriété ``$rightname = 'computer'`` sur laquelle nous avons automatiquement les droits en tant que ``super-admin``.
-    Nous allons maintenant créer un droit spécifique au plugin.
+    ✍️ We :ref:`previousely defined a property <commondntm_usage>` ``$rightname = 'computer'`` sur laquelle nous avons automatiquement les droits en tant que ``super-admin``.
+    We will now create a specific right for the plugin.
 
 Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion des profils:
 
@@ -1978,8 +1982,8 @@ Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès
 
 A partir de ce moment, nous pouvons définir nos droits depuis le menu ``Administration > Profils`` et nous pouvons changer la propriété ``$righname`` de notre classe pour ``myplugin::superasset``.
 
-Etendre les droits standards.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Extending standard rights
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Si nous avons besoin de droits spécifiques pour notre plugin, par exemple le droit d'effectuer les associations, il faut surcharger la fonction ``getRights`` dans la classe définissant les droits.
 
@@ -2017,8 +2021,8 @@ Celle-ci héritant de CommonDBTM, elle possède une méthode `getRights <https:/
    }
 
 
-Actions massives
-----------------
+Massive actions
+---------------
 
 Les actions massives de GLPI, mises à disposition des utilisateurs, permettent d'appliquer des modifications à l'ensemble d'une liste ou d'une sélection.
 
@@ -2303,8 +2307,8 @@ Avec ce code minimal, il est possible de créer manuellement, via l'interface de
     Vous pouvez prendre exemple sur la documentation (encore incomplète) sur les :doc:`notifications dans les plugins <notifications>`.
 
 
-Actions automatiques
---------------------
+Automatic actions
+-----------------
 
 Cette fonctionnalité de GLPI fournit un planificateur de tâches exécutées silencieusement par les clics de l'utilisateur (mode GLPI) ou par le serveur en ligne de commande (mode cli) via un appel du fichier ``front/cron.php`` de glpi.
 
@@ -2379,8 +2383,8 @@ Pour indiquer l'existence de cette action automatique à GLPI, il suffit de l'in
 Inutile de gérer la supression (unregister) de cette action, GLPI s'occupe de le faire automatiquement à la désinstallation du plugin.
 
 
-Publier votre plugin
---------------------
+Publishing your plugin
+----------------------
 
 Vous estimez votre plugin suffisamment mature et celui-ci couvre un besoin générique, vous pouvez le soumettre à la communauté.
 
@@ -2447,11 +2451,11 @@ Enfin, soumettez votre xml sur la `page dédiée <http://plugins.glpi-project.or
 Teclib recevra une notification pour cette soumission et après quelques vérifications, activera la publication sur le catalogue.
 
 
-Divers
-------
+Miscellaneous
+-------------
 
-Interroger la base de données
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Querying database
+^^^^^^^^^^^^^^^^^
 
 Il existe 2 méthodes:
 
@@ -2508,8 +2512,8 @@ Voici quelques exemples d'usage:
 L'utilisation de cet "iterateur" est conseillé car de futures versions de GLPI utiliseront de multiples moteur de base de données (Postgres par exemple) et à ce passage, vos requêtes seront directement compatibles sans nécessité de ré-écriture.
 
 
-Tableaux de bord
-^^^^^^^^^^^^^^^^
+Dashboards
+^^^^^^^^^^
 
 Depuis la version 9.5 de GLPI, des tableaux de bord sont disponibles depuis :
 
@@ -2530,8 +2534,8 @@ Cette fonctionnalité se décompose en plusieurs concepts - sous classes :
 Avec ces classes, on peut construire un tableau de bord qui affichera sur sa grille des cartes.
 Une carte est une combinaison d'un widget, d'un fournisseur de données, d'un positionnement sur un grille et diverses options (comme une couleur de fond par exemple).
 
-Compléter les existants
-~~~~~~~~~~~~~~~~~~~~~~~
+Complting existing
+~~~~~~~~~~~~~~~~~~
 
 Via votre plugin, vous pouvez compléter ces concepts avec vos propres données et codes.
 
@@ -2683,8 +2687,8 @@ Quelques explications sur les différentes méthodes :
 * ``cardWidgetWithoutProvider()`` : Ne diffère pas énormement de la précédente fonction. Elle n'utilise juste pas le paramètre et retourne un HTML construit statiquement.
 * ``cardBigNumberProvider()`` : exemple de fournisseur et du retour attendu par la grille lorsqu'elle affichera la carte.
 
-Afficher votre propre tableau de bord
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Display your own dashboard
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Le systeme de tableaux de bord de GLPI étant modulaire, vous pouvez l'utiliser dans vos propres affichages.
 
@@ -2701,8 +2705,8 @@ Le systeme de tableaux de bord de GLPI étant modulaire, vous pouvez l'utiliser 
 Le fait d'ajouter un contexte (``myplugin``) permet de filtrer les tableaux de bord disponible dans la liste déroulante disponible en haut à droite de la grille. Vous ne verrez pas ceux du coeur de GLPI (central, assistance, etc.).
 
 
-Traduire vos plugins
-^^^^^^^^^^^^^^^^^^^^
+Translating your plugins
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Tout au long de ce document, les exemples de code fournis ont pris soin d'utiliser les notations `gettext`_ de GLPI pour afficher des locales.
 Même si votre plugin n'a pas vocation à publication et est destiné à un public restreint, c'est une bonne pratique de conserver tout de même cet usage de `gettext`_.
@@ -2756,7 +2760,7 @@ Si vous avez utilisé comme squelette le plugin `Empty`_, vous bénéficierez d'
     Il convient de redémarrer votre serveur Web ou le serveur PHP selon votre configuration système.
 
 
-API Rest
+REST API
 --------
 
 Depuis la version 9.1 de GLPI, celui-ci dispose d'une API externe aux formats REST et XmlRPC.
@@ -2802,8 +2806,8 @@ Par défaut, il effectue une connexion avec des identifiants définis dans le fi
     ⚠️ Assurez-vous du fonctionnement du script fourni avant de continuer.
 
 
-Usage de l'API
-^^^^^^^^^^^^^^
+API usage
+^^^^^^^^^
 
 Pour l'apprentissage de cette partie, en nous aidant de la documentation intégrée (ou celle disponible sur `github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`__), nous effectuerons une série d'exercices:
 
@@ -2827,8 +2831,8 @@ Pour l'apprentissage de cette partie, en nous aidant de la documentation intégr
   * [x] 📝 **Exercice**: Récupérez la liste des ordinateurs et afficher les dans un tableau HTML. L'``endpoint`` à utiliser est "Search items". Si vous souhaitez afficher les libellés des colonnes, il faudra utiliser l'``endpoint`` "List searchOptions".
 
 
-Production de statistiques
---------------------------
+Statistics creation
+-------------------
 
 Metabase
 ^^^^^^^^
@@ -2883,8 +2887,8 @@ Dans le cadre de cette formation, la connexion de la base de donnée n'a pas bes
 
 Dernière étape de l'assistant, il vous sera demandé si vous autorisez la collecte de données anonymisées sur votre usage du logiciel et si vous souhaitez recevoir des "newsletters".
 
-Utilisation
-~~~~~~~~~~~
+Usage
+~~~~~
 
 Après installation, vous arrivez sur l’accueil de `metabase`_ qui vous présente l'activité récente sur le logiciel et les objets récemment vus (normalement aucun à ce niveau).
 
@@ -2980,8 +2984,8 @@ C'est particulièrement utile pour définir des sélecteurs de dates relatives:
 
     📝 **Exercice**: Ajoutez aux questions précédemment développés un filtre (pour vos "dashboards") permettant de selectionner des dates.
 
-"Data model" et "Data reference"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Data model" and "Data reference"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Quand vous avez ouvert un accès à des utilisateurs avancés, il est interressant de les guider dans la découverte et l'exploitation des données à leur disposition.
 
