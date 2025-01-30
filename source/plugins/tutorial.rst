@@ -50,14 +50,14 @@ Mon nouveau plugin
 
 Clonez avec git le dépôt du plugin ``empty`` directement dans le répertoire ``plugins`` de votre dossier GLPI.
 
-.. code-block:: bash
+::
 
    cd /path/to/glpi/plugins
    git clone https://github.com/pluginsGLPI/empty.git
 
 Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le répertoire ``empty`` pour créer votre nouveau plugin. Vous devez lui passer en paramètre le nom de votre plugin et le numéro de la première version, exemple avec ``myplugin`` :
 
-.. code-block:: shell
+::
 
    cd empty
    chmod +x plugin.sh
@@ -88,7 +88,7 @@ Récupération des dépendances `Composer`_
 
 Dans votre terminal, depuis le dossier du plugin, lancez la commande suivante:
 
-.. code-block:: shell
+::
 
    cd ../myplugin
    composer install
@@ -296,7 +296,7 @@ Vos classes métiers (présentes dans le dossier ``src``) peuvent hériter de ce
 
     ℹ️ **Conventions:**
 
-    * Les classes doivent impérativement suivre `le modèle de nommage PSR-12 <https://www.php-fig.org/psr/psr-12/>`_. Nous maintenons un guide à ce propos dans la `documentation développeur <https://glpi-developer-documentation.readthedocs.io/en/master/codingstandards.html>`_
+    * Les classes doivent impérativement suivre `le modèle de nommage PSR-12 <https://www.php-fig.org/psr/psr-12/>`_. Nous maintenons un :doc:`guide sur les standards de codage <codingstandards>`
 
     * `Les tables SQL <https://glpi-developer-documentation.readthedocs.io/en/master/devapi/database/dbmodel.html#naming-conventions>`_ correspondantes à vos classes doivent suivre ce schéma de nommage: ``glpi_plugin_pluginkey_names``
         * un préfixe global ``glpi_``
@@ -794,7 +794,7 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
        blabla
    {% endblock %}
 
-Suite à cela, un appel dans notre navigateur à notre page http://glpi/plugins/myplugin/front/superasset.form.php devrait afficher le formulaire de création.
+Suite à cela, un appel dans notre navigateur à notre page `http://glpi/plugins/myplugin/front/superasset.form.php` devrait afficher le formulaire de création.
 
 .. warning::
 
