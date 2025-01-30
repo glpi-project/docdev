@@ -63,19 +63,18 @@ You can use the ``plugin.sh`` script in the ``empty`` directory to create your n
 
 .. note::
 
-    | ℹ️ Several conditions must be repsected choosing a plugin name: no space or special character is allowed.
+    | ℹ️ Several conditions must be respected choosing a plugin name: no space or special character is allowed.
     | This name will be used to declare your plugin directory, as well as methods, constants, database tables and so on.
     | ``My-Plugin`` will therefore create the ``MyPlugin`` directory.
     | Using capital characters will cause issues for some core functions.
 
     Keep it simple!
 
-
-Une fois la commande lancée, cela va créer un répertoire ``myplugin`` au même niveau que le répertoire ``empty`` que vous avez dans le dossier ``/path/to/glpi/plugin``, ainsi que les fichiers et méthodes associés à un squelette vide d'un plugin.
+When running the command, a new directory ``myplugin`` will be created at the same level as the ``empty`` directory (both in ``/path/to/glpi/plugin`` directory) as well as files and methods associated with an empty plugin skeleton.
 
 .. note::
 
-    ℹ️ Si votre outil ``empty`` n'est pas dans le répertoire de votre GLPI, vous pouvez préciser un répertoire de destination de votre nouveau plugin, exemple :
+    ℹ️ If you cloned the ``empty`` project outside your GLPI instance, you can define a destination directory for your new plugin:
 
     .. code-block:: shell
 
@@ -84,11 +83,11 @@ Une fois la commande lancée, cela va créer un répertoire ``myplugin`` au mêm
 Retrieving `Composer`_ dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Dans votre terminal, depuis le dossier du plugin, lancez la commande suivante:
+In a terminal, run the following command:
 
 ::
 
-   cd ../myplugin
+   cd /path/to/glpi/plugins/myplugin
    composer install
 
 
@@ -116,26 +115,24 @@ Minipal plugin structure
           🗋 setup.php
    </pre>
 
-* Le dossier ``📂 front`` sert à recevoir les actions de nos objets (ajouter, modifier, afficher, etc).
-* Le dossier ``📂 ajax`` reçoit les appels ajax (jquery).
-* Vos classes seront placées dans le dossier ``📂 src``.
-* Si besoin, les traductions au format `gettext`_ seront stockées dans le dossier ``📂 locales``.
-* Le dossier optionnel ``📂 templates`` contient les fichiers de templates TWIG de votre plugin.
-* Le dossier ``📂 tools`` contient de base (fourni par le plugin empty) un ensemble de scripts optionnels pouvant être utilisés pour la maintenance et le développement de votre plugin. Il est maintenant plus courant d'obtenir ces scripts via les dossiers ``📂 vendor`` et ``📂 node_modules``.
-* Le dossier ``📂 vendor`` contient:
-  * des librairies php pour votre plugin,
-  * des outils d'aide au développement fourni par le modèle ``empty``.
+* ``📂 front`` directory is used to store our objects actions (create, read, update, delete).
+* ``📂 ajax`` directory is used for ajax calls.
+* Your plugin own classes will be sotred in the ``📂 src`` directory.
+* `gettext`_ translations will be stored in the ``📂 locales`` directory.
+* An optional ``📂 templates`` directory would contain your plugin `Twig <https://twig.symfony.com/>`_ templates files.
+* ``📂 tools`` directory provide some optional scripts provided from empty plugin for developmen,t and maintainance of your plugin. It is now more common to get those scripts from ``📂 vendor`` and ``📂 node_modules`` directories.
+* ``📂 vendor`` directory contains:
 
-* Le dossier ``📂 node_modules`` contient:
-  * des librairies javascript pour votre plugin,
+  * PHP libvraries for your plugin,
+  * helpful tools provided by ``empty`` model.
 
-* le fichier ``🗋 composer.json`` décrit les dépendances PHP de votre projet.
-* le fichier ``🗋 package.json`` décrit les dépendances javascript de votre projet.
-* le fichier ``🗋 myplugin.xml`` fournit pour la `publication de votre plugin <#publier-votre-plugin>`_ , les données le décrivant.
-* l'image ``🗋 myplugin.png`` est généralement incluse dans le contenu du fichier précédent et sert à représenter votre plugin dans le `catalogue <http://plugins.glpi-project.org>`_
-* le fichier ``🗋 setup.php`` <#setupphp-minimal>`_ permet d'initialiser votre plugin.
-* le fichier ``🗋 hook.php`` <#hookphp-minimal>`_ comporte les fonctions de base de votre plugin (des-installation, hooks généralistes, etc).
-
+* ``📂 node_modules`` directory contains javascript libraries for your plugin.
+* ``🗋 composer.json`` files describes PHP dependencies for your project.
+* ``🗋 package.json`` file describes javascript dependencies for your project.
+* ``🗋 myplugin.xml`` file contains data description for :ref:`Publishing your plugin`.
+* ``🗋 myplugin.png`` image is often included in previous XML file as a representation for `GLPI plugins catalog <http://plugins.glpi-project.org>`_
+* ``🗋 setup.php`` file is meant to :ref:`instanciate your plugin <minimal setup.php>`.
+* ``🗋 hook.php`` file :ref:`contains your plugin basic functions <minimal hook.php>` (install/uninstall, hooks, etc).
 
 minimal setup.php
 ^^^^^^^^^^^^^^^^^
