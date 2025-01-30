@@ -46,14 +46,14 @@ First of all, a few resources:
 My new plugin
 ^^^^^^^^^^^^^
 
-Clonez avec git le dépôt du plugin ``empty`` directement dans le répertoire ``plugins`` de votre dossier GLPI.
+Clone ``empty`` plugin repository in you GLPI ``plugins`` directory:
 
 ::
 
    cd /path/to/glpi/plugins
    git clone https://github.com/pluginsGLPI/empty.git
 
-Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le répertoire ``empty`` pour créer votre nouveau plugin. Vous devez lui passer en paramètre le nom de votre plugin et le numéro de la première version, exemple avec ``myplugin`` :
+You can use the ``plugin.sh`` script in the ``empty`` directory to create your new plugin. You must pass it the name of your plugin and the first version number. In our example:
 
 ::
 
@@ -63,12 +63,12 @@ Vous pouvez maintenant utiliser le script ``plugin.sh`` qui se trouve dans le r�
 
 .. note::
 
-    | ℹ️ Veuillez noter qu'il faut absolument respecter certaines conditions pour le choix du nom du plugin : aucun espace et aucun caractère spécial n'est autorisé.
-    | Ce nom est ensuite utilisé pour déclarer le répertoire de votre plugin ainsi que les noms des fonctions, des constantes, etc.
-    | ``My-Plugin`` va également créer un répertoire ``MyPlugin``.
-    | Les majuscules dans le nom du dossiers vont poser problème pour certaines fonctions du cœur.
+    | ℹ️ Several conditions must be repsected choosing a plugin name: no space or special character is allowed.
+    | This name will be used to declare your plugin directory, as well as methods, constants, database tables and so on.
+    | ``My-Plugin`` will therefore create the ``MyPlugin`` directory.
+    | Using capital characters will cause issues for some core functions.
 
-    Restez simple !
+    Keep it simple!
 
 
 Une fois la commande lancée, cela va créer un répertoire ``myplugin`` au même niveau que le répertoire ``empty`` que vous avez dans le dossier ``/path/to/glpi/plugin``, ainsi que les fichiers et méthodes associés à un squelette vide d'un plugin.
