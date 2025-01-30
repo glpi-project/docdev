@@ -3015,7 +3015,6 @@ Les "Pulses" présents dans le menu général de `Metabase`_ vous aideront à en
 ----
 
 .. _Empty:  https://github.com/pluginsGLPI/empty
-.. _moteur de recherche:  http://glpi-developer-documentation.readthedocs.io/en/master/devapi/search.html
 .. _Composer: https://getcomposer.org/download/
 .. _CommonDBTM: https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php
 .. _Computer: https://github.com/glpi-project/glpi/blob/10.0.15/src/Computer.php
