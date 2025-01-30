@@ -457,6 +457,7 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
 
    <?php
 
+   use DBConnection;
    use GlpiPlugin\Myplugin\Superasset;
    use Migration;
 
