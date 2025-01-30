@@ -296,7 +296,7 @@ Vos classes métiers (présentes dans le dossier ``src``) peuvent hériter de ce
 
     ℹ️ **Conventions:**
 
-    * Les classes doivent impérativement suivre `le modèle de nommage PSR-12 <https://www.php-fig.org/psr/psr-12/>`_. Nous maintenons un :doc:`guide sur les standards de codage <codingstandards>`
+    * Les classes doivent impérativement suivre `le modèle de nommage PSR-12 <https://www.php-fig.org/psr/psr-12/>`_. Nous maintenons un :doc:`guide sur les standards de codage <../codingstandards>`
 
     * `Les tables SQL <https://glpi-developer-documentation.readthedocs.io/en/master/devapi/database/dbmodel.html#naming-conventions>`_ correspondantes à vos classes doivent suivre ce schéma de nommage: ``glpi_plugin_pluginkey_names``
         * un préfixe global ``glpi_``
@@ -664,7 +664,7 @@ Dans notre dossier ``front``, nous allons avoir besoin de deux nouveaux fichiers
 
 Le premier fichier du nom de notre itemtype (``superasset.php``) permettra d'afficher la liste des lignes sauvegardées dans notre table.
 
-Il utilisera la méthode show du `moteur de recherche`_ (Search) interne de GLPI.
+Il utilisera la méthode show du :doc:`moteur de recherche <../devapi/search>` interne de GLPI.
 
 **🗋 front/superasset.php**
 
@@ -1182,7 +1182,7 @@ Le titre et le contenu de cet onglet se font comme précédemment avec les méth
 Définir des Searchoptions
 -------------------------
 
-les `Searchoptions`_ sont des registres de colonnes pour le moteur de recherche de GLPI. Elles permettent de déclarer comment doivent s'afficher ou être interrogées les données d'un itemtype.
+les :ref`Search options <search_options>` sont des registres de colonnes pour le moteur de recherche de GLPI. Elles permettent de déclarer comment doivent s'afficher ou être interrogées les données d'un itemtype.
 
 Dans notre classe, il faut déclarer une fonction ``rawSearchOptions``:
 
@@ -1256,7 +1256,7 @@ Cette clef est utilisée dans d'autres parties de glpi.
 Elle doit être **absolument** unique.
 Les index '1' et '2' sont "réservés" par convention au nom et à l'ID de l'objet.
 
-La `documentation des searchoptions <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/search.html#search-options>`_ décrit toutes les options possibles pour la définition du tableau à renvoyer.
+La :ref:`documentation des search options <search_options>` décrit toutes les options possibles pour la définition du tableau à renvoyer.
 
 Cibler d'autres objets
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -1376,7 +1376,7 @@ Les plugins peuvent aussi intercepter les évènements standards des objets du c
    Hooks::PRE_ITEM_UPDATE;
    Hooks::ITEM_UPDATE;
 
-Plus d'informations sont disponibles dans la `documentation des ``hooks`` <http://glpi-developer-documentation.readthedocs.io/en/master/plugins/hooks.html#standards-hooks>`_ et notamment sur la partie des `évènements standards. <http://glpi-developer-documentation.readthedocs.io/en/master/plugins/hooks.html#items-business-related>`_
+Plus d'informations sont disponibles dans la :ref:`documentation des hooks <standards_hooks>` et notamment sur la partie des :ref:`évènements standards <business_related_hooks>`.
 
 Pour tous ces appels, nous obtiendrons une instance de l'objet courant en paramètre de notre fonction de "callback". Nous pourrons donc accéder à ses champs courants (``$item->fields``) ou ceux envoyés par le formulaire (``$item->input``).
 Cette instance sera passée par référence (comme tous les objets php).
@@ -1520,7 +1520,7 @@ Hooks d'affichage
 -----------------
 
 Depuis la version 9.1.2 de GLPI, il est maintenant possible d'afficher des données dans les formulaires des objets natifs via de nouveaux hooks.
-Voir `Items display related <http://glpi-developer-documentation.readthedocs.io/en/master/plugins/hooks.html#items-display-related>`_ dans la documentation des plugins.
+Voir :ref:`display related hooks <display_related_hooks>` dans la documentation des plugins.
 
 Nous les déclarons comme les ``hooks`` précédents:
 
@@ -2023,8 +2023,7 @@ Actions massives
 Les actions massives de GLPI, mises à disposition des utilisateurs, permettent d'appliquer des modifications à l'ensemble d'une liste ou d'une sélection.
 
 
-.. image:: http://glpi-developer-documentation.readthedocs.io/en/master/_images/massiveactions.png
-   :target: http://glpi-developer-documentation.readthedocs.io/en/master/_images/massiveactions.png
+.. image:: ../devapi/images/massiveactions.png
    :alt: contrôles des actions massives
 
 
@@ -2034,7 +2033,7 @@ Par défaut, GLPI met à disposition les actions suivantes:
 * "Modifier": pour éditer les champs définis dans les searchoptions (exceptées celles qui indique ``'massiveaction' = false``)
 * "Mettre à la corbeille" / "Supprimer définitivement"
 
-Il est possible de déclarer des `actions massives supplémentaires <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/massiveactions.html#specific-massive-actions>`_.
+Il est possible de déclarer des :ref:`actions massives supplémentaires <massiveactions_specific>`.
 
 Afin d'activer cette fonctionnalité dans votre plugin, il faut déclarer dans l'init le ``hook`` dédié:
 
@@ -2136,7 +2135,7 @@ Ci dessous, un exemple d'implémentation minimal:
 .. note::
 
     📝 **Exercice**:
-    En vous aidant de la documentation officielle sur les `actions massives <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/massiveactions.html#specific-massive-actions>`_, complétez dans votre plugin, les méthodes présentées ci-dessus pour permettre l'ajout d'un ordinateur via les actions massives des "Super assets".
+    En vous aidant de la documentation officielle sur les :doc:`actions massives <../devapi/massiveactions>`, complétez dans votre plugin, les méthodes présentées ci-dessus pour permettre l'ajout d'un ordinateur via les actions massives des "Super assets".
 
     Vous pourrez afficher une liste des ordinateurs via l'extrait de code suivant:
 
@@ -2301,7 +2300,7 @@ Avec ce code minimal, il est possible de créer manuellement, via l'interface de
     📝 **Exercice** :
     Outre le test d'un envoi effectif, vous gérerez l'installation et la désinstallation automatique d'une notification et des objets associés (modèles, traductions).
 
-    Vous pouvez prendre exemple sur la documentation (encore incomplète) sur les `notifications dans les plugins <http://glpi-developer-documentation.readthedocs.io/en/feature-notifications/plugins/notifications.html>`_
+    Vous pouvez prendre exemple sur la documentation (encore incomplète) sur les :doc:`notifications dans les plugins <notifications>`.
 
 
 Actions automatiques
@@ -2480,7 +2479,7 @@ Pour plus de détails, regardez l'api et les fonctions disponibles dans la class
 
 La seconde méthode est à privilégier et consiste à utiliser la classe `DBmysqlIterator <https://forge.glpi-project.org/apidoc/class-DBmysqlIterator.html>`_.
 Elle a été fortement enrichie depuis la version 9.2 de GLPI et fournit un ``query builder`` exhaustif.
-Voir `la documentation développeur <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/dbiterator.html>`_ pour le détail des options possibles.
+Voir :doc:`la documentation de l'itérateur de base de données <../devapi/database/dbiterator>` pour le détail des options possibles.
 
 Voici quelques exemples d'usage:
 
@@ -3025,7 +3024,6 @@ Les "Pulses" présents dans le menu général de `Metabase`_ vous aideront à en
 .. _Migration: https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php
 .. _Notepad: https://github.com/glpi-project/glpi/blob/10.0.15/src/Notepad.php
 .. _Log: https://github.com/glpi-project/glpi/blob/10.0.15/src/Log.php
-.. _Searchoptions: http://glpi-developer-documentation.readthedocs.io/en/master/devapi/search.html#search-options
 .. _Profile: https://github.com/glpi-project/glpi/blob/10.0.15/src/Profile.php
 .. _Session: https://github.com/glpi-project/glpi/blob/10.0.15/src/Session.php
 .. _gettext: https://www.gnu.org/software/gettext/
