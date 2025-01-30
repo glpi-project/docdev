@@ -151,6 +151,8 @@ Il doit contenir les parties de code suivantes:
 .. code-block:: php
    :linenos:
 
+   <?php
+
    define('PLUGIN_MYPLUGIN_VERSION', '0.0.1');
 
 Une déclaration optionnelle de constante pour le numéro de version utilisé plus loin (dans la fonction ``plugin_version_myplugin`` ).
@@ -160,6 +162,8 @@ Une déclaration optionnelle de constante pour le numéro de version utilisé pl
 
 .. code-block:: php
    :lineno-start: 3
+
+   <?php
 
    function plugin_init_myplugin() {
       global $PLUGIN_HOOKS;
@@ -176,6 +180,8 @@ Nous déclarons, à minima, que les formulaires du plugin sont protégés contre
 
 .. code-block:: php
    :lineno-start: 9
+
+   <?php
 
    // Minimal GLPI version, inclusive
    define("PLUGIN_MYPLUGIN_MIN_GLPI_VERSION", "10.0.0");
@@ -218,6 +224,8 @@ Vous pouvez changer les différentes lignes pour adapter à vos coordonnées.
 .. code-block:: php
    :lineno-start: 32
 
+   <?php
+
    function plugin_myplugin_check_config($verbose = false)
    {
        if (true) { // Your configuration check
@@ -244,6 +252,8 @@ Ce fichier doit contenir à minima les fonctions d'installation et de désinstal
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    function plugin_myplugin_install()
    {
@@ -367,6 +377,8 @@ Nous déclarerons à minima quelques parties:
     .. code-block:: php
        :linenos:
 
+        <?php
+
         namespace GlpiPlugin\Myplugin;
         use Toolbox;
 
@@ -386,6 +398,8 @@ Nous déclarerons à minima quelques parties:
     .. code-block:: php
         :lineno-start: 11
 
+        <?php
+
         use Toolbox;
 
         if ($superasset->getFromDB($superassets_id)) {
@@ -399,6 +413,8 @@ Nous déclarerons à minima quelques parties:
 
     .. code-block:: php
         :lineno-start: 16
+
+        <?php
 
         use Toolbox;
 
@@ -416,6 +432,8 @@ Nous déclarerons à minima quelques parties:
 
     .. code-block:: php
         :lineno-start: 23
+
+        <?php
 
         use Toolbox;
 
@@ -436,6 +454,8 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    use GlpiPlugin\Myplugin\Superasset;
    use Migration;
@@ -482,6 +502,8 @@ Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouv
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    use Migration;
 
@@ -556,6 +578,8 @@ Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données 
 .. code-block:: php
    :linenos:
 
+   <?php
+
    use GlpiPlugin\Myplugin\Superasset;
 
    function plugin_myplugin_uninstall()
@@ -586,11 +610,15 @@ Quelques fonctions utilitaires supplémentaires:
 
 .. code-block:: php
 
+   <?php
+
    Toolbox::logError($var1, $var2, ...);
 
 Cette méthode permet d'enregistrer dans le fichier ``glpi/files/_log/php-errors.log`` le contenu de ses paramètres (qui peuvent être des chaînes de caractères, des tableaux, des objets instanciés, des booléens, etc).
 
 .. code-block:: php
+
+   <?php
 
    Html::printCleanArray($var);
 
@@ -629,6 +657,8 @@ Dans notre dossier ``front``, nous allons avoir besoin de deux nouveaux fichiers
 
     .. code-block:: php
 
+        <?php
+
         include ('../../../inc/includes.php');
 
 Le premier fichier du nom de notre itemtype (``superasset.php``) permettra d'afficher la liste des lignes sauvegardées dans notre table.
@@ -641,6 +671,7 @@ Il utilisera la méthode show du `moteur de recherche`_ (Search) interne de GLPI
    :linenos:
 
    <?php
+
    use GlpiPlugin\Myplugin\Superasset;
 
    include ('../../../inc/includes.php');
@@ -725,6 +756,7 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
    :linenos:
 
    <?php
+
    namespace GlpiPlugin\Myplugin;
 
    use CommonDBTM;
@@ -1009,6 +1041,8 @@ Dans cette nouvelle classe nous devrons définir les deux autres méthodes pour 
 .. code-block:: php
    :linenos:
 
+   <?php
+
    namespace GlpiPlugin\Myplugin;
 
    use CommonDBTM;
@@ -1121,6 +1155,8 @@ Nous déclarons cet ajout via une nouvelle ligne dans notre fonction d'init:
 .. code-block:: php
    :linenos:
 
+   <?php
+
    function plugin_init_myplugin()
    {
       ...
@@ -1231,6 +1267,8 @@ Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. 
 .. code-block:: php
    :lineno-start: 50
 
+   <?php
+
    use GlpiPlugin\Myplugin\Superasset;
    use GlpiPlugin\Myplugin\Superasset_Item;
 
@@ -1320,6 +1358,8 @@ Les plugins peuvent aussi intercepter les évènements standards des objets du c
 .. code-block:: php
    :linenos:
 
+   <?php
+
    use Glpi\Plugin\Hooks;
 
    ...
@@ -1347,6 +1387,8 @@ Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plug
 .. code-block:: php
    :linenos:
 
+   <?php
+
    use GlpiPlugin\Myplugin\Superasset;
 
    ...
@@ -1372,6 +1414,8 @@ dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    use CommonDBTM;
    use Session;
@@ -1406,6 +1450,9 @@ Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leu
 **🗋 setup.php**
 
 .. code-block:: php
+   :linenos:
+
+   <?php
 
    use Glpi\Plugin\Hooks;
 
@@ -1481,6 +1528,8 @@ Nous les déclarons comme les ``hooks`` précédents:
 .. code-block:: php
    :linenos:
 
+   <?php
+
    use Glpi\Plugin\Hooks;
    use GlpiPlugin\Myplugin\Superasset;
 
@@ -1506,6 +1555,8 @@ Nous les déclarons comme les ``hooks`` précédents:
     exemple d'un appel par le coeur :
 
     .. code-block:: php
+
+        <?php
 
         Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
 
@@ -1648,13 +1699,21 @@ Vous pouvez constater que nous affichons, via la fonction ``myplugin_computer_fo
 
     .. code-block:: php
 
-        \Config::setConfigurationValues('##context##', [
+        <?php
+
+        use Config;
+
+        Config::setConfigurationValues('##context##', [
             '##config_name##' => '##config_default_value##'
         ]);
 
     .. code-block:: php
 
-        $config = new \Config();
+        <?php
+
+        use Config;
+
+        $config = new Config();
         $config->deleteByCriteria(['context' => '##context##']);
 
     *Pensez à remplacer les noms entourés par '##' par vos propre valeurs*
@@ -1679,6 +1738,9 @@ Afin de spécialiser la vérification de nos droits, nous pouvons re-définir ce
 Si nous avons besoin de vérifier un droit manuellement dans notre code métier, la classe `Session`_ nous fourni quelques méthodes:
 
 .. code-block:: php
+   :linenos:
+
+   <?php
 
    use Session;
 
@@ -1713,6 +1775,8 @@ Les méthodes ci dessus retournent toutes un booléen. Si nous voulons un arrêt
 
     .. code-block:: php
 
+        <?php
+
         $query = "SELECT `glpi_profiles_users`.`users_id`
             FROM `glpi_profiles_users`
             INNER JOIN `glpi_profiles`
@@ -1728,6 +1792,9 @@ Les méthodes ci dessus retournent toutes un booléen. Si nous voulons un arrêt
 Les valeurs possibles des droits standards peuvent être trouvés dans le fichier ``inc/define.php`` de GLPI:
 
 .. code-block:: php
+   :linenos:
+
+   <?php
 
    ...
 
@@ -1860,12 +1927,18 @@ Enfin dans notre fonction d'init, nous déclarons un nouvel onglet sur l'objet `
 .. code-block:: php
    :linenos:
 
+   <?php
+
+   use Plugin;
+   use Profile;
+   use GlpiPlugin\Myplugin\Profile as MyPlugin_Profile;
+
    function plugin_init_myplugin()
    {
       ...
 
-       \Plugin::registerClass(GlpiPlugin\Myplugin\Profile::class, [
-           'addtabon' => \Profile::class
+       Plugin::registerClass(MyPlugin_Profile::class, [
+           'addtabon' => Profile::class
        ]);
    }
 
@@ -1875,6 +1948,8 @@ Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    use GlpiPlugin\Myplugin\Profile as MyPlugin_Profile;
    use ProfileRight;
@@ -1914,6 +1989,8 @@ Celle-ci héritant de CommonDBTM, elle possède une méthode `getRights <https:/
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    namespace GlpiPlugin\Myplugin;
 
@@ -1965,6 +2042,8 @@ Afin d'activer cette fonctionnalité dans votre plugin, il faut déclarer dans l
 .. code-block:: php
    :linenos:
 
+   <?php
+
    function plugin_init_myplugin()
    {
        ...
@@ -1987,6 +2066,7 @@ Ci dessous, un exemple d'implémentation minimal:
    :linenos:
 
    <?php
+
    namespace GlpiPlugin\Myplugin;
 
    use CommonDBTM;
@@ -2071,6 +2151,8 @@ Pour cela, il faut déclarer une fonction ``_MassiveActions`` dans le fichier ho
 .. code-block:: php
    :linenos:
 
+   <?php
+
    use Computer;
    use MassiveAction;
    use GlpiPlugin\Myplugin\Superasset;
@@ -2151,6 +2233,8 @@ Nous pouvons par contre déclencher l’exécution d'une notification via le cod
 
 .. code-block:: php
 
+   <?php
+
    use NotificationEvent;
 
    NotificationEvent::raiseEvent($event, $item);
@@ -2167,6 +2251,7 @@ Celle-ci "cible" notre itemtype ``Superasset``, c'est la façon standard de dév
    :linenos:
 
    <?php
+
    namespace GlpiPlugin\Myplugin;
 
    use NotificationTarget;
@@ -2193,6 +2278,8 @@ Il faudra indiquer en plus dans notre fonction d'init que notre itemtype ``Super
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    use Plugin;
    use GlpiPlugin\Myplugin\Superasset;
@@ -2224,7 +2311,6 @@ Cette fonctionnalité de GLPI fournit un planificateur de tâches exécutées si
 .. image:: /_static/images/crontask.png
    :alt: image alt
 
-
 Pour ajouter une ou plusieurs actions automatiques à notre classe, nous y ajoutons ces méthodes:
 
 * ``cronInfo``: déclaration des actions possibles pour la classe ainsi que les libellés associés
@@ -2236,6 +2322,7 @@ Pour ajouter une ou plusieurs actions automatiques à notre classe, nous y ajout
    :linenos:
 
    <?php
+
    namespace GlpiPlugin\Myplugin;
 
    use CommonDBTM;
@@ -2371,6 +2458,9 @@ Il existe 2 méthodes:
 La première consiste à utilise directement la variable globale ``$DB`` et les fonctions de base mysql. Exemple:
 
 .. code-block:: php
+   :linenos:
+
+   <?php
 
    function myfunction()
    {
@@ -2395,6 +2485,8 @@ Voici quelques exemples d'usage:
 
 .. code-block:: php
    :linenos:
+
+   <?php
 
    foreach ($DB->request(...) as $id => $row) {
        //... work on each row ...
@@ -2695,7 +2787,6 @@ Pour le reste de la configuration:
 
   .. image:: /_static/images/api_external_token.png
      :alt: jeton externe
-
 
 * les "clients API" permettent de limiter l’accès à l'api pour certaines IP et de récupérer du log si nécessaire. Un client permettant un accès depuis n'importe quelle ip est fourni par défaut.
 
