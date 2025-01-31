@@ -815,11 +815,11 @@ After that step, a call in our browser to `http://glpi/plugins/myplugin/front/su
 Adding to menu and breadcrumb
 -----------------------------
 
-Idéalement, nous souhaiterions accéder à nos nouvelles pages sans taper directement l'url dans notre navigateur.
+We would like to access our pages without entering their URL in our browser.
 
-Nous allons donc définir notre premier ``hook`` dans l'init de notre plugin.
+We'll therefore define our first `Hook` in our plugin's ``init``.
 
-Éditons le fichier ``setup.php`` et la fonction ``plugin_init_myplugin`` :
+Open ``setup.php`` and edit ``plugin_init_myplugin`` function:
 
 **🗋 setup.php**
 
@@ -841,8 +841,8 @@ Nous allons donc définir notre premier ``hook`` dans l'init de notre plugin.
        ];
    }
 
-Ce ``hook`` indique que notre itemtype ``Superasset`` définit une fonction d'affichage du menu.
-Editons notre classe et ajoutons les méthodes adaptées:
+This `hook` indicates our ``Superasset`` itemtype defines a menu display function.
+Edit our class and add related methods:
 
 **🗋 src/Superasset.php**
 
@@ -875,7 +875,7 @@ Editons notre classe et ajoutons les méthodes adaptées:
         */
        static function getMenuContent()
        {
-           $title  = self::getMenuName(2);
+           $title  = self::getMenuName(Session::getPluralNumber());
            $search = self::getSearchURL(false);
            $form   = self::getFormURL(false);
 
@@ -904,28 +904,27 @@ Editons notre classe et ajoutons les méthodes adaptées:
        }
    }
 
-La fonction ``getMenuContent`` peut paraître redondante au premier abord mais chacune des entrées codées adresse des parties de l'affichage différentes.
-La partie ``options`` sert notamment à avoir un 4ème niveau de fil d'Ariane et ainsi avoir un sous menu cliquable dans votre page d'entrée.
+``getMenuContent`` function may seem redundant at first, but each of the coded entries relates to different parts of the display.
+The ``options`` part is used to have a 4th level of breadcrumb and thus have a clickable submenu in your entry page.
 
 .. image:: /_static/images/breadcrumbs.png
-   :alt: Fil d’Ariane
+   :alt: Breadcrub
 
-
-Chaque clef ``page`` sert à indiquer sur quelle url s'applique la partie en cours.
-
-.. note::
-
-    ℹ️ Le menu de GLPI est chargé dans ``$_SESSION['glpimenu']`` à la connexion.
-    Pour visualiser vos changements, si vous n'êtes pas en mode ``DEBUG``,  vous devrez vous déconnecter et reconnecter.
+Each ``page`` key is used to indicate on which URL the current part applies.
 
 .. note::
 
-    ℹ️ Notez qu'il est tout à fait possible d'avoir un seul niveau de menu pour le plugin (3 niveaux au global), il suffit de déplacer la partie ``links`` au premier niveau du tableau ``$menu``
+    ℹ️ GLPI menu is lodaed in ``$_SESSION['glpimenu']`` on login.
+    To see your changes, either use the ``DEBUG`` mode, or disconnect and reconnect.
 
 .. note::
 
-    ℹ️ Il est aussi possible de définir des ``links`` personnalisés.
-    Il suffit pour cela de remplacer la clef (par exemple, add ou search) par un html contenant une balise image
+    ℹ️ It is possible to have only one menu level for the plugin (3 globally), just move the ``links`` part to the first level of the ``$menu`` array.
+
+.. note::
+
+    ℹ️ It is also possible to define custom ``links``.
+    You just need to replace the key (for example, add or search) with an html containing an image tag:
 
     .. code-block:: php
 
@@ -936,25 +935,25 @@ Chaque clef ``page`` sert à indiquer sur quelle url s'applique la partie en cou
 Defning tabs
 ------------
 
-GLPI fournit 3 méthodes standards pour la définition des onglets:
+GLPI proposes three methods to deinfe tabs:
 
 `defineTabs(array $options = []) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_defineTabs>`_
-:  Déclaration des classes fournissant des onglets à la classe courante.
+: declares classes that provides tabs to curretn class.
 
 `getTabNameForItem(CommonGLPI $item, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_getTabNameForItem>`_
-:  Déclare les titres affichés pour les onglets.
+: declares titles displayed for tabs.
 
 `displayTabContentForItem(CommonGLPI $item, integer $tabnum = 1, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_displayTabContentForItem>`_
-:  Permet l'affichage du contenu des onglets.
+: allow displaying tabs contents.
 
 Standards tabs
 ^^^^^^^^^^^^^^
 
-De base certaines classes de l'api interne vous permettent d'ajouter un comportement avec un code minimal
+Some GLPI internal API classes allow syou to add a behavior with minimal code.
 
-C'est le cas pour les notes (`Notepad`_) et l'historique (`Log`_).
+It's true for notes (`Notepad`_) and history (`Log`_).
 
-Voici un exemple pour ces deux systèmes:
+Here is an example for both of them:
 
 **🗋 src/Superasset.php**
 
@@ -988,17 +987,17 @@ Voici un exemple pour ces deux systèmes:
        }
    }
 
-L'affichage d'une instance de votre itemtype depuis la page ``front/superasset.php?id=1`` doit maintenant comporter 3 onglets:
+Display of an instance of your itemtype from the page ``front/superasset.php?id=1`` should now have 3 tabs:
 
-* l'onglet principal du nom de votre itemtype
-* l'onglet Notes
-* l'onglet Historique
+* Main tab with your itemtype name
+* Notes tab
+* Hstory tab
 
 
 Custom tabs
 ^^^^^^^^^^^
 
-De façon similaire, nous pouvons cibler une autre classe de notre plugin:
+On a similar basis, we can target another class of our plugin:
 
 **🗋 src/Superasset.php**
 
@@ -1032,7 +1031,7 @@ De façon similaire, nous pouvons cibler une autre classe de notre plugin:
            return $tabs;
        }
 
-Dans cette nouvelle classe nous devrons définir les deux autres méthodes pour contrôler le titre et le contenu de l'onglet:
+In this new class we will define two other methods to control title and content of the tab:
 
 **🗋 src/Superasset_Item.php**
 
@@ -1089,7 +1088,7 @@ Dans cette nouvelle classe nous devrons définir les deux autres méthodes pour 
        }
    }
 
-Comme précédemment, nous utilisons un template pour gérer notre affichage.
+As previousely, we will use a Twig template to handle display.
 
 **🗋 templates/superasset_item.html.twig**
 
@@ -1102,24 +1101,22 @@ Comme précédemment, nous utilisons un template pour gérer notre affichage.
 
 .. note::
 
-    📝 **Exercice** :
-    Pour la suite de cette partie, vous devrez compléter notre plugin pour permettre l'installation / désinstallation des données de cette nouvelle classe ``Superasset_Item``.
+    📝 **Exercice**:
+    For the rest of this part, you will need to complete our plugin to allow the installation/uninstallation of the data of this new class ``Superasset_Item``.
 
-    Sa table devrait inclure les champs suivants:
+    Table shoudl contains following fields:
 
+    * an identifier (id)
+    * a foreign key to ``plugin_myplugin_superassets`` table
+    * two fields to link with an itemtype:
 
-    * un identifiant (id)
-    * une clef étrangère vers la table ``plugin_myplugin_superassets``
-    * deux champs pour faire la liaison avec un itemtype:
+       * ``itemtype`` which will store the itemtype class to link to (`Computer`_ for example)
+       * ``items_id`` the id of the linked asset
 
-    * ``itemtype``, le nom de la classe à associer (ex: `Computer`_)
-    * ``items_id``, une clef étrangère vers l'id de l'item
+    Your plugin must be re-installed or updated for the table creation to be done.
+    You can force the plugin status to change by incrementing the version number in the ``setup.php`` file.
 
-    Note, votre plugin doit être ré-installé ou mis à jour pour que la création de la table soit effectuée.
-    Vous pouvez forcer le changement de status de votre plugin pour "A mettre à jour" en modifiant le numéro de version dans le fichier ``setup.php``.
-
-
-    Pour l'exercice, nous nous limiterons à associer des ordinateurs (`Computer`_) que nous pourrons afficher avec la fonction suivante:
+    Fot the exercice, we will only display computers (`Computer`_) displayed withthe following code:
 
     .. code-block:: twig
 
@@ -1130,16 +1127,16 @@ Comme précédemment, nous utilisons un template pour gérer notre affichage.
             __('Add a computer')
         ) }}
 
-    Nous inclurons dans notre onglet un **"mini" formulaire** pour insérer les items_id des ordinateurs à notre table. Les actions du formulaire pouvant être traitées par le fichier ``myplugin/front/supperasset.form.php``
+    We will include a mini form to insert related items in our table. Form actions can be handled from ``myplugin/front/supperasset.form.php`` file.
 
-    Note, les formulaires de GLPI envoyés en POST sont protégés par un jeton ([CSRF]).
-    vous pouvez inclure un champs caché pour valider le formulaire:
+    Note GLPI forms submitted as ``POST`` will be protected with a CRSF token..
+    You can include a hidden field to validate the form:
 
     .. code-block:: twig
 
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
 
-    Nous ajouterons aussi en dessous du formulaire une liste des ordinateurs déjà associés.
+    We will also display a list of computers already associated below the form.
 
 
 Using core objets
