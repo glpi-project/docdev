@@ -439,7 +439,7 @@ We declare a few parts:
 Installation
 ^^^^^^^^^^^^
 
-Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``, nous allons gérer la création de la table MySQL correspondante à notre itemtype ``Superasset``.
+In the ``plugin_myplugin_install`` function of your ``🗋 hook.php`` file, we will manage the creation of the MySQL table corresponding to our itemtype ``Superasset``.
 
 **🗋 hook.php**
 
@@ -483,12 +483,12 @@ Dans la fonction ``plugin_myplugin_install`` de votre fichier ``🗋 hook.php``,
        return true;
    }
 
-Nous ajoutons ici, en plus d'une clef primaire, un champ de type ``VARCHAR`` qui pourra contenir un nom saisi par l'utilisateur ainsi qu'un flag indiquant la mise en corbeille de la ligne.
+In addition, of a primary key, ``VARCHAR`` field to store a name entered by the user and a flag for the the trashbin.
 
 .. note::
-    📝 Vous pouvez, si vous le souhaitez, ajouter d'autres champs (restez raisonnable :wink:) avec d'autres types.
+    📝 You of course can add some other fields with other types (stay reasonable 😉).
 
-Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouvons utiliser la classe `Migration`_ de GLPI.
+To handle migration from a version to another of our plugin, we will use GLPI `Migration`_ class.
 
 **🗋 hook.php**
 
@@ -531,39 +531,39 @@ Pour gérer nos migrations d'une version à une autre de notre plugin, nous pouv
 
 .. warning::
 
-  ℹ️ La classe `Migration `_ inclut de nombreuses méthodes permettant de manipuler vos tables et champs.
-  Tous les appels seront ajoutés à un registre des changements et seront finalement exécutés lors de l'appel de la méthode ``executeMigration``.
+  ℹ️ `Migration `_ class provides several methods that permit to manipulate tables and fields.
+  All calls will be stored in queue that will be executed when calling ``executeMigration`` method.
 
-  Voici quelques exemples:
+  Here are some examples:
 
   `addField($table, $field, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L389-L407>`_
-    ajoute un nouveau champ à une table
+    adds a new field to a table
 
   `changeField($table, $oldfield, $newfield, $type, $options) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L462-L479>`_
-    Modifie le nom ou le type d'un champ d'une table
+    change a field name or type
 
   `dropField($table, $field) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L534-L542>`_
-    Supprime un champ d'une table
+    drops a field
 
   `dropTable($table) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L553-L560>`_
-    Supprime une table.
+    drops a table
 
   `renameTable($oldtable, $newtable) <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L654-L662>`_
-    Renomme une table.
+    rename a table
 
-  Consultez la documentation de la classe `Migration`_ pour les autres méthodes disponible.
+  See `Migration`_ documentation for all other possibilities.
 
   .. raw:: html
 
     <hr />
 
-  le paramètre ``$type`` des différentes fonctions est le meme que pour la méthode privée `fieldFormat <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ de la classe `Migration`_ et permet un raccourci pour les types SQL les plus courants (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
+  ``$type`` parameter of different functions is the same as the private `Migration::fieldFormat() method <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ it allows shortcut for most common SQL types (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
 
 
 Uninstallation
 ^^^^^^^^^^^^^^
 
-Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données ajoutées lors de l'installation et aussi celle saisies par l'utilisateur (nous verrons plus tard que nous pouvons ajouter des données concernant nos classes dans des objets natifs de GLPI).
+To uninstall our plugin, we want to clean all related data.
 
 **🗋 hook.php**
 
@@ -584,7 +584,7 @@ Pour désinstaller notre plugin, nous souhaitons "nettoyer" toutes les données 
 
        foreach ($tables as $table) {
            if ($DB->tableExists($table)) {
-               $DB->queryOrDie(
+               $DB->doQueryOrDie(
                    "DROP TABLE `$table`",
                    $DB->error()
                );
@@ -622,12 +622,12 @@ Common actions on an object
 
 .. note::
 
-    📝 Nous allons maintenant  ajouter les actions les plus communes à notre itemtype ``Superasset``:
+    📝 We will now add most common actions to our ``Superasset`` itemtype:
 
-    * Afficher une liste et un formulaire d'ajout / édition
-    * définir les routes d'ajout / modification / suppression
+    * display a list and a form to add/edit
+    * define add/edit/delete routes
 
-Dans notre dossier ``front``, nous allons avoir besoin de deux nouveaux fichiers.
+In our ``front`` directory, we will need two new files.
 
 .. raw:: html
 
@@ -645,7 +645,7 @@ Dans notre dossier ``front``, nous allons avoir besoin de deux nouveaux fichiers
 
 .. warning::
 
-    ℹ️ Dans ces fichiers, nous ferons appel au framework de glpi via le code suivant:
+    ℹ️ Into those files, we will import GLPI framework with the ofllowing:
 
     .. code-block:: php
 
@@ -653,9 +653,9 @@ Dans notre dossier ``front``, nous allons avoir besoin de deux nouveaux fichiers
 
         include ('../../../inc/includes.php');
 
-Le premier fichier du nom de notre itemtype (``superasset.php``) permettra d'afficher la liste des lignes sauvegardées dans notre table.
+First file (``superasset.php``) will display liste of rows stored in our table.
 
-Il utilisera la méthode show du :doc:`moteur de recherche <../devapi/search>` interne de GLPI.
+It will use the internal search engine ``show`` method of the :doc:`search engine <../devapi/search>`.
 
 **🗋 front/superasset.php**
 
@@ -665,20 +665,24 @@ Il utilisera la méthode show du :doc:`moteur de recherche <../devapi/search>` i
    <?php
 
    use GlpiPlugin\Myplugin\Superasset;
+   use Search;
+   use Html;
 
    include ('../../../inc/includes.php');
 
-   Html::header(Superasset::getTypeName(),
-                $_SERVER['PHP_SELF'],
-                "plugins",
-                Superasset::class,
-                "superasset");
-   \Search::show(Superasset::class);
-   \Html::footer();
+   Html::header(
+       Superasset::getTypeName(),
+       $_SERVER['PHP_SELF'],
+       "plugins",
+       Superasset::class,
+       "superasset"
+   );
+   Search::show(Superasset::class);
+   Html::footer();
 
-Les fonctions ``header`` et ``footer`` de la classe `Html`_ nous permettent d'habiller notre page avec l'interface graphique de glpi (menu, fil d’Ariane, bas de page, etc).
+``header`` and ``footer`` methods from `Html`_ class permit to rely on GLPI graphical user interface (menu, breadcrumb, page footer, etc).
 
-Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra les actions courantes CRUD.
+Second file (``superasset.form.php`` - with ``.form`` suffix) will handle CRUD actions.
 
 **🗋 front/superasset.form.php**
 
@@ -698,7 +702,7 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
        $newID = $supperasset->add($_POST);
 
        if ($_SESSION['glpibackcreated']) {
-           \Html::redirect(Superasset::getFormURL()."?id=".$newID);
+           Html::redirect(Superasset::getFormURL()."?id=".$newID);
        }
        Html::back();
 
@@ -736,11 +740,11 @@ Le second fichier (``superasset.form.php``) avec le suffixe ``.form`` recevra le
        Html::footer();
    }
 
-Toutes les actions courantes définies dans ce fichier sont gérées automatiquement par la classe `CommonDBTM`_.
-Pour l'action manquante d'affichage, nous allons créer une méthode ``showForm`` dans notre classe ``Superasset``.
-À noter que celle-ci existe déjà dans la superclasse ``CommonDBTM`` et s'affiche via un template TWIG générique.
+All common actions defined here are handled from `CommonDBTM`_ class.
+For missing display action, we will create a ``showForm`` method in our ``Superasset`` class.
+Note this one already exists in ``CommonDBTM`` and is displayed using a generic Twig template.
 
-Nous allons donc utiliser notre propre template qui étendra le générique (celui-ci affichant seulement les champs communs).
+We will use our own template that will extends the generic one (because it only displays common fields).
 
 **🗋 src/Superasset.php**
 
@@ -762,8 +766,7 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
        function showForm($ID, $options=[])
        {
            $this->initForm($ID, $options);
-           // @myplugin est un raccourci pour indiquer d'aller chercher
-           // dans le dossier **templates** de votre propre plugin
+           // @myplugin is a shortcut to the **templates** directory of your plugin
            TemplateRenderer::getInstance()->display('@myplugin/superasset.form.html.twig', [
                'item'   => $this,
                'params' => $options,
@@ -785,25 +788,25 @@ Nous allons donc utiliser notre propre template qui étendra le générique (cel
        blabla
    {% endblock %}
 
-Suite à cela, un appel dans notre navigateur à notre page `http://glpi/plugins/myplugin/front/superasset.form.php` devrait afficher le formulaire de création.
+After that step, a call in our browser to `http://glpi/plugins/myplugin/front/superasset.form.php` shoudl display creation form.
 
 .. warning::
 
-    ℹ️  le fichier ``🗋 components/form/fields_macros.html.twig`` (importé dans l'exemple) inclut des fonctions twig pouvant afficher des champs Html courants tel que:
+    ℹ️  ``🗋 components/form/fields_macros.html.twig`` file imported in the example includes Twig functions or macros to display common HTML fields like:
 
     ``{{ fields.textField(name, value, label = '', options = {}) }}``
-    :  retourne l'html d'un input de type ``text``.
+    : HTML code for a ``text`` input.
 
     ``{{ fields.hiddenField(name, value, label = '', options = {}) }``
-    :  retourne l'html d'un input de type ``hidden``.
+    : HTML code for a ``hidden`` input.
 
     ``{{ dateField(name, value, label = '', options = {}) }``
-    :  retourne l'html d'un sélecteur de date (via la libraire [flatpickr])
+    : HTML code for a date picker (using `flatpickr <https://flatpickr.js.org/>`_)
 
     ``{{ datetimeField(name, value, label = '', options = {}) }``
-    :  retourne l'html d'un sélecteur de date et d'heure (via la libraire [flatpickr])
+    : HTML code for a datetime picker (using `flatpickr <https://flatpickr.js.org/>`_)
 
-    Voir le code source du fhcier ``🗋 templates/components/form/fields_macros.html.twig`` pour plus de détails et de macros.
+    See ``🗋 templates/components/form/fields_macros.html.twig`` file in source code for more details and capacities.
 
 
 Adding to menu and breadcrumb
