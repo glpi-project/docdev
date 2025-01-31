@@ -373,14 +373,13 @@ We declare a few parts:
         <?php
 
         namespace GlpiPlugin\Myplugin;
-        use Toolbox;
 
         $superasset = new Superasset;
         $superassets_id = $superasset->add([
-                'name' => 'My super asset'
+            'name' => 'My super asset'
         ]);
         if (!superassets_id) {
-            Toolbox::logDebug("we failed to create my super asset");
+            //super asset has not been created :'(
         }
 
     `getFromDB(integer $id) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L285-L292>`_
@@ -393,10 +392,9 @@ We declare a few parts:
 
         <?php
 
-        use Toolbox;
-
         if ($superasset->getFromDB($superassets_id)) {
-            Toolbox::logDebug($superasset->fields);
+            //super $superassets_id has been lodaded.
+            //you can access its data from $superasset->fields
         }
 
     `update(array $input) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1561-L1570>`_
@@ -409,13 +407,13 @@ We declare a few parts:
 
         <?php
 
-        use Toolbox;
-
-        if ($superasset->update([
+        if (
+            $superasset->update([
                 'id'      => $superassets_id,
                 'comment' => 'my comments'
-        ])) {
-            Toolbox::logDebug($superasset->fields);
+            ])
+        ) {
+            //super asset comment has been updated in databse.
         }
 
     `delete(array $input, bool $force = false) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2027-L2036>`_
@@ -429,14 +427,13 @@ We declare a few parts:
 
         <?php
 
-        use Toolbox;
-
         if ($superasset->delete(['id' => $superassets_id])) {
-            Toolbox::logDebug("My super asset is in trashbin");
+            //super asset has been moved to trashbin
         }
 
         if ($superasset->delete(['id' => $superassets_id], true)) {
-            Toolbox::logDebug("My super asset is purged");
+            //super asset is no longer present un database.
+            //a message will be displayed to user on next displayed page.
         }
 
 Installation
@@ -1589,7 +1586,6 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
    use Html;
    use Session;
    use Glpi\Application\View\TemplateRenderer;
-   use Toolbox;
 
    class Config extends \Config
    {
