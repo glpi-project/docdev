@@ -3,7 +3,7 @@ Plugin development tutorial
 
 .. warning::
 
-    ⚠️ Several pre-requisites are required in order to follow this tutorial:
+    ⚠️ Several prerequisites are required in order to follow this tutorial:
 
     - A base knowledge of GLPI usage
     - A correct level in web development:
@@ -12,21 +12,21 @@ Plugin development tutorial
         - HTML
         - CSS
         - SQL
-        - Javascript (Jquery)
+        - JavaScript (JQuery)
     - Being familiar with command line usage
 
 
-📝 In this first part, we will create a plugin we will name "My plugin" (key: ``myplugin``).
+📝 In this first part, we will create a plugin named "My plugin" (key: ``myplugin``).
 We will cover project startup as well as the setup of base elements.
 
-Pre-requisites
+Prerequisites
 --------------
 
-Here are all the bricks you need to start your GLPI plugin project:
+Here are all the things you need to start your GLPI plugin project:
 
 * a functional web server,
 * latest `GLPI <https://github.com/glpi-project/glpi/releases>`_ stable release installed locally
-* a text editor or any EDI (like `vscode <https://code.visualstudio.com>`_ or `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
+* a text editor or any IDE (like `vscode <https://code.visualstudio.com>`_ or `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
 * `git <https://git-scm.com/>`_ version management software.
 * `Composer`_ PHP dependency software
 
@@ -35,7 +35,7 @@ Start your project
 
 .. warning::
 
-    ⚠️ If you have prodution data in your GLPI instance, make sure you disabled all notifications before begining the development.
+    ⚠️ If you have production data in your GLPI instance, make sure you disable all notifications before beginning the development.
     This will prevent sending of tests messages to users present in the imported data.
 
 First of all, a few resources:
@@ -91,7 +91,7 @@ In a terminal, run the following command:
    composer install
 
 
-Minipal plugin structure
+Minimal plugin structure
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. raw:: html
@@ -115,23 +115,23 @@ Minipal plugin structure
           🗋 setup.php
    </pre>
 
-* ``📂 front`` directory is used to store our objects actions (create, read, update, delete).
+* ``📂 front`` directory is used to store our object actions (create, read, update, delete).
 * ``📂 ajax`` directory is used for ajax calls.
-* Your plugin own classes will be sotred in the ``📂 src`` directory.
+* Your plugin own classes will be stored in the ``📂 src`` directory.
 * `gettext`_ translations will be stored in the ``📂 locales`` directory.
-* An optional ``📂 templates`` directory would contain your plugin `Twig <https://twig.symfony.com/>`_ templates files.
-* ``📂 tools`` directory provide some optional scripts provided from empty plugin for developmen,t and maintainance of your plugin. It is now more common to get those scripts from ``📂 vendor`` and ``📂 node_modules`` directories.
+* An optional ``📂 templates`` directory would contain your plugin `Twig <https://twig.symfony.com/>`_ template files.
+* ``📂 tools`` directory provides some optional scripts from the empty plugin for development and maintenance of your plugin. It is now more common to get those scripts from ``📂 vendor`` and ``📂 node_modules`` directories.
 * ``📂 vendor`` directory contains:
 
-  * PHP libvraries for your plugin,
+  * PHP libraries for your plugin,
   * helpful tools provided by ``empty`` model.
 
-* ``📂 node_modules`` directory contains javascript libraries for your plugin.
+* ``📂 node_modules`` directory contains JavaScript libraries for your plugin.
 * ``🗋 composer.json`` files describes PHP dependencies for your project.
-* ``🗋 package.json`` file describes javascript dependencies for your project.
+* ``🗋 package.json`` file describes JavaScript dependencies for your project.
 * ``🗋 myplugin.xml`` file contains data description for :ref:`publishing your plugin <plugin_publication>`.
 * ``🗋 myplugin.png`` image is often included in previous XML file as a representation for `GLPI plugins catalog <http://plugins.glpi-project.org>`_
-* ``🗋 setup.php`` file is meant to :ref:`instanciate your plugin <plugin_minimal_setupphp>`.
+* ``🗋 setup.php`` file is meant to :ref:`instantiate your plugin <plugin_minimal_setupphp>`.
 * ``🗋 hook.php`` file :ref:`contains your plugin basic functions <plugin_minimal_hookphp>` (install/uninstall, hooks, etc).
 
 .. _plugin_minimal_setupphp:
