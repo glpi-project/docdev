@@ -1142,8 +1142,8 @@ As previousely, we will use a Twig template to handle display.
 Using core objets
 ^^^^^^^^^^^^^^^^^
 
-Nous pouvons aussi permettre à notre classe d'ajouter des onglets sur les objets natifs du cœur.
-Nous déclarons cet ajout via une nouvelle ligne dans notre fonction d'init:
+We can aslo allow our class to add tabs on core objects.
+We weill declare this in a new line in our ``init`` function:
 
 **🗋 setup.php**
 
@@ -1152,33 +1152,33 @@ Nous déclarons cet ajout via une nouvelle ligne dans notre fonction d'init:
 
    <?php
 
+   use Computer;
+
    function plugin_init_myplugin()
    {
       ...
 
        Plugin::registerClass(GlpiPlugin\Myplugin\Superasset_Item::class, [
-           'addtabon' => 'Computer'
+           'addtabon' => Computer::class
        ]);
    }
 
-Le titre et le contenu de cet onglet se font comme précédemment avec les méthodes:
-
+Title and ocntent for this tab are done as previousely with:
 
 * ``CommonDBTM::getTabNameForItem()``
 * ``CommonDBTM::displayTabContentForItem()``
 
 .. note::
 
-    📝 **Exercice** :
-    Complétez les méthodes précédentes pour afficher dans les ordinateurs un nouvel onglet listant les ``SuperAsset`` qui lui sont associés.
-
+    📝 **Exercice**:
+    Complete previous methods to display on computers a new tab with associated ``Superasset``.
 
 Defining Search options
 -----------------------
 
-Les :ref`Search options <search_options>` sont des registres de colonnes pour le moteur de recherche de GLPI. Elles permettent de déclarer comment doivent s'afficher ou être interrogées les données d'un itemtype.
+:ref`Search options <search_options>` is an array of columns for GLPI search engine. They are used to know for each itemtype how the dabase must be queried, and how data should be dosplayed.
 
-Dans notre classe, il faut déclarer une fonction ``rawSearchOptions``:
+In our class, we must declare a ``rawSearchOptions`` method:
 
 **🗋 src/Superasset.php**
 
@@ -1236,26 +1236,25 @@ Dans notre classe, il faut déclarer une fonction ``rawSearchOptions``:
        }
    }
 
-Suite à l'ajout de notre fonction, depuis la page de liste de notre itemtype, nous devrions pouvoir ajouter nos nouvelle colonnes depuis l’icône "clef à molette":
-
+Following this addition, we should be able to select our new columns from our asset list page:
 
 .. image:: /_static/images/search.png
    :alt: Search form
 
+Those options will also be present in search criteria list of that page.
 
-Ces options seront aussi présentes en critères de recherche dans le même formulaire.
+Each ``option`` is identified by an ``id`` key.
+This key is used in other parts of GLPI.
+It **must be absolutely unique**.
+By convention, '1' and '2' are "reserved" for the object name and ID.
 
-Chaque ``option`` est identifiée par une clef ``id`` dans le tableau généré.
-Cette clef est utilisée dans d'autres parties de glpi.
-Elle doit être **absolument** unique.
-Les index '1' et '2' sont "réservés" par convention au nom et à l'ID de l'objet.
-
-La :ref:`documentation des search options <search_options>` décrit toutes les options possibles pour la définition du tableau à renvoyer.
+The :ref:`search options documentation <search_options>` describes all possible options.
 
 Using other objects
 ^^^^^^^^^^^^^^^^^^^
 
-Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. Par exemple, nous pourrions vouloir afficher dans la liste des ordinateurs les "Superasset" associés:
+It is also possible to improve another itemtype search options.
+As an example, we would like to display associated "Superasset" on in the computer list:
 
 **🗋 hook.php**
 
@@ -1296,33 +1295,30 @@ Il est aussi possible d'enrichir les searchoptions d'un itemtype natif de GLPI. 
        return $sopt;
    }
 
-Comme précédemment, vous devez fournir un id pour vos nouvelles searchoptions qui n'écrase pas les existantes de ``Computer``.
+As previousely, you must provide an ``id`` for your new search options that does not override existing ones for ``Computer``.
 
-Vous pouvez utiliser un outil présent dans le dossier ``tools`` du dépôt git de GLPI (non présent dans les archives de "release") pour vous aider à lister les **id** déjà déclarés (par le cœur et les plugins présents sur votre ordinateur) pour un itemtype particulier.
+You can use a script from the ``tools`` folder of the GLPI git repository (not present in the "release" archives) to help you list the **id** already declared (by the core and plugins present on your computer) for a particular itemtype.
 
 .. code-block:: shell
 
    /usr/bin/php /path/to/glpi/tools/getsearchoptions.php --type=Computer
 
-
 Search engine display preferences
 ---------------------------------
 
-Comme vu dans le `paragraphe précédent <#définir-des-searchoptions>`_, nous avons avons manuellement ajouté (par l'icône "clef à molette") des colonnes à la liste de notre itemtype.
-Ces colonnes sont enregistrées par l'objet DisplayPreference (table ``glpi_displaypreferences``).
-Ces préférences peuvent être globales (champ ``users_id = 0``) ou personnelles (champ ``users_id != 0``), sont ordonnées (champ ``rank``) et cible un itemtype plus une ``searchoption`` (champ ``num``).
+We just have added new columns to our itemtype list.
+Thos columns are handled by ``DisplayPreference`` object (``glpi_displaypreferences`` table).
+They can be defined as global (set ``0``for ``users_id`` field) or personal (set ``users_id`` field to the user id). They are sorted (``rank`` field) and target an itemtype plus a ``searchoption`` (``num`` field).
 
 .. warning::
 
-    **⚠️ Attention**
-    Les préférences globales s'appliquent à tous les utilisateurs et ne peuvent pas être réinitialisées de façon rapide. Il faut apporter un soin particulier à vérifier qu'ajouter des colonnes par défaut à tous les utilisateurs ne provoquera pas de blocage de l'interface voir de GLPI.
-
+    **⚠️ Warning**
+    Global preferences are applied to all users ans cannot be reset easily. You must take care to check that adding columns by default to all users will not block the interface or GLPI.
 
 .. note::
 
     📝 **Exercice**:
-    Vous ajouterez aux fonctions d'installation et de désinstallation du plugin l'ajout et la suppression des préférences globales pour que l'affichage par défaut de notre objet comporte quelques colonnes.
-
+    You will change installation and uninstallation functions of your plugin to add and remove global preferences so objects list display some columns.
 
 Standard events hooks
 ---------------------
