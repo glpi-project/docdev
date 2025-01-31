@@ -139,9 +139,9 @@ Minimal plugin structure
 minimal setup.php
 ^^^^^^^^^^^^^^^^^
 
-Suite à l'utilisation du script ``plugin.sh``, votre répertoire ``📂 myplugin`` doit contenir le fichier ``🗋 setup.php``
+After running ``plugin.sh`` script, there muse be ``🗋 setup.php`` file in your ``📂 myplugin`` directory.
 
-Il doit contenir les parties de code suivantes:
+It contains the following code:
 
 **🗋 setup.php**
 
@@ -152,8 +152,7 @@ Il doit contenir les parties de code suivantes:
 
    define('PLUGIN_MYPLUGIN_VERSION', '0.0.1');
 
-Une déclaration optionnelle de constante pour le numéro de version utilisé plus loin (dans la fonction ``plugin_version_myplugin`` ).
-
+An optional constant declaration for your plugin version number used later in the ``plugin_version_myplugin`` function.
 
 **🗋 setup.php**
 
@@ -168,10 +167,9 @@ Une déclaration optionnelle de constante pour le numéro de version utilisé pl
       $PLUGIN_HOOKS['csrf_compliant']['myplugin'] = true;
    }
 
-Cette fonction d'initialisation est importante, nous y déclarerons plus tard nos ``Hooks`` sur l'api interne de GLPI.
-Elle est systématiquement lancée sur **toutes** les pages de GLPI sauf si la fonction ``_check_prerequisites`` n'est pas vérifiée (voir plus bas).
-Nous déclarons, à minima, que les formulaires du plugin sont protégés contre les vulnérabilités `CSRF <https://fr.wikipedia.org/wiki/Cross-Site_Request_Forgery>`_ même si pour le moment notre plugin ne contient aucun formulaire.
-
+This instanciation function is important, we will declare later here `Hooks` on GLPI internal API.
+It's systematically called on **all** GLPI pages except if the ``_check_prerequisites`` fails (see below).
+We declare here that our plugin forms are `CSRF <https://en.wikipedia.org/wiki/Cross-Site_Request_Forgery>`_ compliant even if for now our plugin does not contain any form.
 
 **🗋 setup.php**
 
@@ -202,19 +200,19 @@ Nous déclarons, à minima, que les formulaires du plugin sont protégés contre
        ];
    }
 
-Cette fonction permet de spécifier les différentes données qui seront affichées dans le menu ``Configuration > Plugins`` de GLPI ainsi que quelques contraintes minimales.
-Nous réutilisons la constante ``PLUGIN_MYPLUGIN_VERSION`` déclarée plus haut.
-Vous pouvez changer les différentes lignes pour adapter à vos coordonnées.
+This function specifies data that will be displayed in the ``Configuration > Plugins`` menu of GLPI as well as some minimal constraints.
+We reuse the constant ``PLUGIN_MYPLUGIN_VERSION`` declared above.
+You can of course change data according to your needs.
 
 .. note::
 
-    ℹ️ **Choix d'une licence**
+    ℹ️ **Choosing a license**
 
-    Le choix d'une licence est **important** et a de nombreuses conséquences sur l'usage futur de vos développements. En fonction de vos préférences, vous pouvez choisir une orientation plus permissive ou contraignante.
-    Des sites existent pour vous aider dans ce choix tel que https://choosealicense.com/.
+    The choice of a license is **important** and has many consequences on the future use of your developments. Depending on your preferences, you can choose a more permissive or restrictive orientation.
+    Websites that can be of help exists, like https://choosealicense.com/.
 
-    Dans l'exemple, la licence choisie est `MIT <https://fr.wikipedia.org/wiki/Licence_MIT>`_.
-    C'est un choix très populaire qui laisse à l'utilisateur beaucoup de libertés dans l'utilisation de vos travaux. Elle demande simplement de conserver la notice (le texte de la licence) et de respecter le copyright; vous ne pouvez pas être dépossédés de vos travaux, la paternité devant être conservée.
+    In our example, `MIT <https://fr.wikipedia.org/wiki/Licence_MIT>`_ license has been choose.
+    It's a very popular choice which gives user enough liberty using your work. It just asks to keep the notice (license text) and respect the copyright. You can't be dispossessed of your work, paternity must be kept.
 
 **🗋 setup.php**
 
@@ -236,15 +234,15 @@ Vous pouvez changer les différentes lignes pour adapter à vos coordonnées.
        return false;
    }
 
-Cette fonction est appelée systématiquement sur **toutes** les pages de GLPI.
-Elle permet de désactiver automatiquement le plugin si les critères définis ne sont pas ou plus vérifiés (en retournant ``false``).
+This function is systematically called on **all** GLPI pages.
+It allows to automatically deactivate plugin if defined criteria are not or no longer met (returning ``false``).
 
 .. _plugin_minimal_hookphp:
 
 minimal hook.php
 ^^^^^^^^^^^^^^^^
 
-Ce fichier doit contenir à minima les fonctions d'installation et de désinstallation:
+This file must contains initialization and deinstallation functions:
 
 **🗋 hook.php**
 
@@ -263,8 +261,8 @@ Ce fichier doit contenir à minima les fonctions d'installation et de désinstal
        return true;
    }
 
-Quand toutes les étapes sont correctes, nous devons retourner ``true``.
-Nous remplirons ces fonctions plus loin dans ce document avec des créations et suppressions de tables.
+Whel all steps are OK, we must return ``true``.
+WIll will populate those ones later while creating/removing database tables.
 
 
 Install your plugin
@@ -273,52 +271,49 @@ Install your plugin
 .. image:: /_static/images/install_plugin.png
    :alt: mon plugin listé dans la configuration
 
-
-Suite à ces premières étapes, votre plugin doit pouvoir s'installer et s'activer dans le menu ``Configuration > Plugins``.
+Following those first steps, you should be able to install and activate your plugin from ``Configuration > Plugins`` menu.
 
 
 Creating an object
 ------------------
 
-| 📝 Dans cette partie, nous allons ajouter un itemtype dans notre plugin et le faire interagir avec GLPI.
-| Celui-ci sera un objet maître permettant de regrouper plusieurs "assets".
-| Nous le nommerons "Superasset".
+| 📝 In this part, we will add an itemtype to our plugin and make it interact with GLPI.
+| This will be a parent object that will regroup several "assets".
+| We will name it "Superasset".
 
 .. _commondntm_usage:
 
 `CommonDBTM`_ usage and classes creation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Cette super classe permet de manipuler les tables MySQL via du code php.
-Vos classes métiers (présentes dans le dossier ``src``) peuvent hériter de celle-ci et sont appelées "itemtype" par convention.
+This super class allows to manipulate MySQL tables from PHP code.
+Your working classes (in the ``src`` directory) can inherit from it and are called "itemtype" by convention.
 
 .. note::
 
     ℹ️ **Conventions:**
 
-    * Les classes doivent impérativement suivre `le modèle de nommage PSR-12 <https://www.php-fig.org/psr/psr-12/>`_. Nous maintenons un :doc:`guide sur les standards de codage <../codingstandards>`
+    * Classes must respedct `PSR-12 naming conventions <https://www.php-fig.org/psr/psr-12/>`_. Wa maintain a :doc:`guide on coding standards <../codingstandards>`
 
-    * `Les tables SQL <https://glpi-developer-documentation.readthedocs.io/en/master/devapi/database/dbmodel.html#naming-conventions>`_ correspondantes à vos classes doivent suivre ce schéma de nommage: ``glpi_plugin_pluginkey_names``
-        * un préfixe global ``glpi_``
-        * un préfixe pour les plugins ``plugin_``
-        * la clef du plugin ``myplugin_``
-        * le nom de l'itemtype au pluriel ``superassets``
+    * :ref:`SQL tables <dbnaming_conventions>`_ related to your classes must respect that naming convention: ``glpi_plugin_pluginkey_names``
+        * a global ``glpi_`` prefix
+        * a prefix for plugins ``plugin_``
+        * plugin key ``myplugin_``
+        * itemtype name in plural form ``superassets``
 
-    * `Les champs de tables <http://glpi-developer-documentation.readthedocs.io/en/master/devapi/dbmodel.html#fields>`_ suivent aussi quelques conventions:
-        * il y a impérativement une clef ``auto-incremented primary`` nommée ``id``
-        * les clefs étrangères sont nommées comme le nom de la table à laquelle elles font référence sans le préfixe ``glpi_`` et avec un suffixe ``id``, exemple: ``plugin_myotherclasses_id`` fait référence à la table ``glpi_plugin_myotherclasses``
+    * :ref:`Tables columns Les champs de tables <dbfields>`_ must also follow some conventions:
+        * there must be an ``auto-incremented primary`` field named ``id``
+        * forgeign keys names use tha referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
-        **Attention !** GLPI n'utilise pas de contrainte forte pour sa gestion des clefs étrangères. N'utilisez donc pas les mots clefs ``FOREIGN`` ou ``CONSTRAINT``.
+        **Warnging!** GLPI do not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` ou ``CONSTRAINT`` keys.
 
-    * quelques conseils supplémentaire :
-        * finissez toujours vos fichiers par un retour à la ligne supplémentaire
-        * ne mettez pas de balise php fermante ``?>``, voir https://www.php.net/manual/fr/language.basic-syntax.instruction-separation.php
+    * Some extra advices:
+        * always end your files with an extra carriage return
+        * never use the closing PHP tag ``?>`` - see https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php
 
+        Main reason for that is to avoid concatenation errors when using require/include functions, and prevent unexpected outputs.
 
-        Pour ces points, la raison est pour éviter des erreurs de concaténations lors de l'utilisation des fonctions require/include
-
-
-Nous allons créer notre première classe en plaçant un fichier ``🗋 Superasset.php`` dans le dossier ``📂src`` de notre plugin:
+We will create our first class in ``🗋 Superasset.php`` file in our plugin ``📂src`` directory:
 
 .. raw:: html
 
@@ -332,8 +327,7 @@ Nous allons créer notre première classe en plaçant un fichier ``🗋 Superass
             ...
    </pre>
 
-
-Nous déclarerons à minima quelques parties:
+We declare a few parts:
 
 **🗋 src/Superasset.php**
 
@@ -361,17 +355,17 @@ Nous déclarerons à minima quelques parties:
 
 .. warning::
 
-    ⚠️ Le ``namespace`` doit respecter le `CamelCase <https://en.wikipedia.org/wiki/Camel_case>`_
+    ⚠️ ``namespace`` must be `CamelCase <https://en.wikipedia.org/wiki/Camel_case>`_
 
 .. note::
 
-    ℹ️  Voici les méthodes les plus couramment utilisées, héritées de `CommonDBTM`_ :
+    ℹ️  Here are most common `CommonDBTM`_ inherited methods:
 
     `add(array $input) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1229-L1240>`_
-    :  Ajoute un nouvel objet dans la table.
-    Le paramètre input contient les champs de la table.
-    Si l'ajout se passe correctement, l'objet sera rempli avec les données fournies.
-    Elle renvoie l'id de la ligne ajoutée ou ``false`` dans le cas d'une erreur.
+    :  Add an new object in database table.
+    ``input`` parameter contains table fields.
+    If add goes well, the object will be populated with provided data.
+    It returns the id of the new added line, or ``false`` if there were an error.
 
     .. code-block:: php
        :linenos:
@@ -390,9 +384,9 @@ Nous déclarerons à minima quelques parties:
         }
 
     `getFromDB(integer $id) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L285-L292>`_
-    :  Charge l'id d'une ligne dans l'objet courant.
-    Les données ainsi récupérées seront disponibles dans la propriété ``fields`` de l'objet
-    Elle retourne ``false`` dans le cas où l'objet n'existe pas.
+    :  load a line from database into current object using its id.
+    Fetched data will be available from ``fields`` object property.
+    It returns ``false`` if the object does not exists.
 
     .. code-block:: php
         :lineno-start: 11
@@ -406,9 +400,9 @@ Nous déclarerons à minima quelques parties:
         }
 
     `update(array $input) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1561-L1570>`_
-    :  Met à jour les champs de ligne identifiée par la clef ``id`` avec le paramètre $input
-    Cette clef ``id`` doit être inclue dans le paramètre input.
-    Renvoi un booléen.
+    :  update fields of ``id`` identified line with ``$input`` parameter.
+    The ``id`` key must be part of ``$input``.
+    Returns a boolean.
 
     .. code-block:: php
         :lineno-start: 16
@@ -425,9 +419,10 @@ Nous déclarerons à minima quelques parties:
         }
 
     `delete(array $input, bool $force = false) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2027-L2036>`_
-    :  Supprime la ligne identifiée par la clef id (présente dans ``$input`` ).
-    Le paramètre force permet d'indiquer si la ligne doit être mise en corbeille (``false`` , un champ ``is_deleted`` est nécessaire dans la table associée à votre classe) ou supprimé complétement de la table (``true``).
-    Cette méthode renvoie un booléen.
+    :  remove ``id`` identified line corresponding.
+    The ``id`` key must be part of ``$input``.
+    ``$force`` parameter indicates if the line must be place in trashbin (``false``, and a ``is_deleted`` field must be present in the table) or removed (``true``).
+    Returns a boolean.
 
     .. code-block:: php
         :lineno-start: 23
