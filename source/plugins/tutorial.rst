@@ -295,19 +295,22 @@ Your working classes (in the ``src`` directory) can inherit from it and are call
 
     * Classes must respedct `PSR-12 naming conventions <https://www.php-fig.org/psr/psr-12/>`_. Wa maintain a :doc:`guide on coding standards <../codingstandards>`
 
-    * :ref:`SQL tables <dbnaming_conventions>`_ related to your classes must respect that naming convention: ``glpi_plugin_pluginkey_names``
+    * :ref:`SQL tables <dbnaming_conventions>` related to your classes must respect that naming convention: ``glpi_plugin_pluginkey_names``
+
         * a global ``glpi_`` prefix
         * a prefix for plugins ``plugin_``
         * plugin key ``myplugin_``
         * itemtype name in plural form ``superassets``
 
-    * :ref:`Tables columns Les champs de tables <dbfields>`_ must also follow some conventions:
+    * :ref:`Tables columns Les champs de tables <dbfields>` must also follow some conventions:
+
         * there must be an ``auto-incremented primary`` field named ``id``
         * forgeign keys names use tha referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
         **Warnging!** GLPI do not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` ou ``CONSTRAINT`` keys.
 
     * Some extra advices:
+
         * always end your files with an extra carriage return
         * never use the closing PHP tag ``?>`` - see https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php
 
