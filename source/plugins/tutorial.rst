@@ -2449,60 +2449,31 @@ Miscellaneous
 Querying database
 ^^^^^^^^^^^^^^^^^
 
-Il existe 2 méthodes:
-
-La première consiste à utilise directement la variable globale ``$DB`` et les fonctions de base mysql. Exemple:
+Rely on :doc:`DBmysqlIterator <../devapi/database/dbiterator>`. It provides an exhaustive ``query builder``.
 
 .. code-block:: php
    :linenos:
 
    <?php
 
-   function myfunction()
-   {
-      global $DB;
 
-      $query = "SELECT * FROM glpi_computers";
-      $res   = $DB->query($query);
-      if ($DB->numrows($res)) {
-         while ($data = $DB->fetch_assoc(res)) {
-            ...
-         }
-      }
-   }
-
-Pour plus de détails, regardez l'api et les fonctions disponibles dans la classe `DBmysql <https://forge.glpi-project.org/apidoc/class-DBmysql.html>`_.
-
-La seconde méthode est à privilégier et consiste à utiliser la classe `DBmysqlIterator <https://forge.glpi-project.org/apidoc/class-DBmysqlIterator.html>`_.
-Elle a été fortement enrichie depuis la version 9.2 de GLPI et fournit un ``query builder`` exhaustif.
-Voir :doc:`la documentation de l'itérateur de base de données <../devapi/database/dbiterator>` pour le détail des options possibles.
-
-Voici quelques exemples d'usage:
-
-.. code-block:: php
-   :linenos:
-
-   <?php
-
-   foreach ($DB->request(...) as $id => $row) {
+   // => SELECT * FROM `glpi_computers`
+   $iterator = $DB->request(['FROM' => 'glpi_computers']);
+   foreach ($ierator as $row) {
        //... work on each row ...
    }
 
-   // => SELECT * FROM `glpi_computers`
-   $DB->request(['FROM' => 'glpi_computers']);
-
-   // => SELECT * FROM `glpi_computers`, `glpi_computerdisks`
-   //       WHERE `glpi_computers`.`id` = `glpi_computerdisks`.`computer_id`
    $DB->request([
        'FROM' => ['glpi_computers', 'glpi_computerdisks'],
-       'FKEY' => [
-           'glpi_computers' => 'id',
-           'glpi_computerdisks' => 'computer_id'
+       'LEFT JOIN' => [
+           'glpi_computerdisks' => [
+               'ON' => [
+                   'glpi_computers' => 'id',
+                   'glpi_computerdisks' => 'computer_id'
+               ]
+           ]
        ]
    ]);
-
-L'utilisation de cet "iterateur" est conseillé car de futures versions de GLPI utiliseront de multiples moteur de base de données (Postgres par exemple) et à ce passage, vos requêtes seront directement compatibles sans nécessité de ré-écriture.
-
 
 Dashboards
 ^^^^^^^^^^
