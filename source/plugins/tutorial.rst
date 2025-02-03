@@ -1138,6 +1138,7 @@ As previousely, we will use a Twig template to handle display.
 
     We will also display a list of computers already associated below the form.
 
+.. _using-core-objects:
 
 Using core objets
 ^^^^^^^^^^^^^^^^^
@@ -1323,9 +1324,9 @@ They can be defined as global (set ``0``for ``users_id`` field) or personal (set
 Standard events hooks
 ---------------------
 
-Dans le cycle de vie d'un objet de GLPI, nous pouvons intervenir via notre plugin avant et après chaque événement (ajout, modification, suppression).
+During a GLPI object life cycle, we can intervene via our plugin before and after each event (add, modify, delete).
 
-Pour nos propres objets, les méthodes suivantes peuvent être implémentées:
+For our own objects, following methods can be implemented:
 
 * `prepareInputForAdd <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1536-L1543>`_
 * `post_addItem <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1549-L1554>`_
@@ -1335,16 +1336,16 @@ Pour nos propres objets, les méthodes suivantes peuvent être implémentées:
 * `post_deleteItem <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2148-L2153>`_
 * `post_purgeItem <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2158-L2163>`_
 
-Pour chacun des évènements effectivement appliqués sur la base de données, nous avons une méthode qui est exécutée avant et une autre après.
+For every event applied on the database, we have a method that is executed before, and another after.
 
 .. note::
 
     📝 **Exercice**:
-    Ajoutez les méthodes nécessaires à la classe ``PluginMypluginSuperasset`` pour vérifier que le champ ``name`` soit correctement rempli lors de l'ajout et de la mise à jour.
+    Add required methods to ``PluginMypluginSuperasset`` class to chek the ``name`` field is properly filled when adding and updating.
 
-    Dans le cas de la suppression (complète), nous nous assurerons de purger les données associées dans l'autre classe/table.
+    On effective removal,we must ensure linked data from other tables are also removed.
 
-Les plugins peuvent aussi intercepter les évènements standards des objets du cœur afin d'y appliquer des changements (ou même refuser l’évènement). Voici le nom des ``hooks``:
+Plugins can also intercept standard core events to apply changes (or even refuse the event). Here are the names of the `hooks`:
 
 .. code-block:: php
    :linenos:
@@ -1366,12 +1367,12 @@ Les plugins peuvent aussi intercepter les évènements standards des objets du c
    Hooks::PRE_ITEM_UPDATE;
    Hooks::ITEM_UPDATE;
 
-Plus d'informations sont disponibles dans la :ref:`documentation des hooks <standards_hooks>` et notamment sur la partie des :ref:`évènements standards <business_related_hooks>`.
+More information are available from :ref:`hooks documentation <standards_hooks>` especially on :ref:`standard events <business_related_hooks>` part.
 
-Pour tous ces appels, nous obtiendrons une instance de l'objet courant en paramètre de notre fonction de "callback". Nous pourrons donc accéder à ses champs courants (``$item->fields``) ou ceux envoyés par le formulaire (``$item->input``).
-Cette instance sera passée par référence (comme tous les objets php).
+For all those calls, we will get an instance of the current object in parameter of our ``callback`` function. We will be able to access its current fields (``$item->fields``) or those sent by the form (``$item->input``).
+As all PHP objects, this instance wil be passed by reference.
 
-Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plugin et ajouterons une fonction de ``callback``:
+We will declare one of those hooks usage in the plugin's init function and add a ``callback`` function:
 
 **🗋 setup.php**
 
@@ -1401,7 +1402,7 @@ Nous déclarons l'usage de l'un de ces ``hooks`` dans la fonction d'init du plug
        ];
    }
 
-dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype des fonctions sera fait sur ce modèle:
+In both cases (``hook.php`` function or class method), the prototype of the functions will be made on this model:
 
 .. code-block:: php
    :linenos:
@@ -1430,13 +1431,12 @@ dans les deux cas (fonction de ``hook.php`` ou méthode de classe), le prototype
 .. note::
 
     📝 **Exercice**:
-    Utilisez un ``hook`` interceptant la suppression définitive (purge) d'un ordinateur pour vérifier que des lignes de nos objets y sont associées et les supprimer également dans ce cas.
-
+    Use a `hook` to intercept the purge of a computer and remove associated with a ``Superasset`` lines if any.
 
 Importing libraries (Javascript / CSS)
 --------------------------------------
 
-Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leur fonction init.
+Plugins can declare import of additional libraries from their ``init`` function.
 
 **🗋 setup.php**
 
@@ -1466,13 +1466,13 @@ Les plugins peuvent déclarer l'import de librairies supplémentaires depuis leu
        ...
    }
 
-Plusieurs choses à noter:
+Sevral things to remember:
 
-* Les chemins de chargement sont **relatifs** au répertoire du plugin.
-* Les scripts ainsi déclarés seront par défaut chargés sur **toutes** les pages des glpi. Il convient de vérifier la page courante dans cette fonction init.
-* L'extension du script n'est **pas** vérifiée par GLPI, vous pouvez tout à fait charger un fichier php en script js. Vous devrez forcer le mimetype ensuite dans le fichier chargé (ex: ``header("Content-type: application/javascript");``).
-* Vous pouvez utilisez la libraire ``requirejs`` pour charger des ressources externes à glpi ou à votre plugin. Les chemins des scripts étant forcement absolus, l'url racine de GLPI sera forcement ajoutée en préfixe lors du chargement. Le `plugin XIVO <https://github.com/pluginsGLPI/xivo>`_ pour GLPI utilise cette méthode de chargement.
-* Si vous souhaitez modifier le dom de glpi et notamment ce qui est affiché en formulaire principal, je vous conseille d'appeler votre code 2 fois (au chargement de la page et à celui de l'onglet en cours) et pensez à ajouter une classe permettant de vérifier l'application effective de votre code :
+* Loading paths are relative to plugin directory.
+* Scripts declared this way will be loaded on **all* GLPI pages. You must check the current page in the ``init`` function.
+* Script extension is **not** checked by GLPI, you can load a PHP file as a JS script. You will have to force the mimetype in the loaded file (ex: ``header("Content-type: application/javascript");``).
+* You can rely on ``Html::requireJs()`` method to load external resources. Paths will be prefixed with GLPI root URL at load.
+* If you want to modifiy page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
 
 .. code-block:: javascript
    :linenos:
@@ -1499,20 +1499,20 @@ Plusieurs choses à noter:
 
     📝 **Exercices**:
 
-    #. Ajouter une icône supplémentaire dans le menu préférences (en haut à droite à coté du 'login' utilisateur), permettant d'afficher sur un clic la configuration générale de GLPI. Pour afficher votre icône, vous pouvez utiliser :
+    #. Add a new icon in preferecnes menu to display main GLPI configuration. You can use:
 
-      * `tabler-icons <https://tabler-icons.io/>`_ (préféré), ex: ``<a href='...' class='ti ti-mood-smile'></a>``).
+      * `tabler-icons <https://tabler-icons.io/>`_ (prefered), ex: ``<a href='...' class='ti ti-mood-smile'></a>``).
       * `font-awesome v6 <https://fontawesome.com>`_, ex: ``<a href='...' class='fas fa-face-smile'></a>``).
 
-    #. Dans la page d'edition d'un ticket, ajouter une icône pour s'auto-associer en tant que demandeur sur le modèle de celle présente pour la partie "attribué à".
+    #. On ticket edition page, add an icon to self-associate as a requester on the model of the one present for the "assigned to" part.
 
 Display hooks
 -------------
 
-Depuis la version 9.1.2 de GLPI, il est maintenant possible d'afficher des données dans les formulaires des objets natifs via de nouveaux hooks.
-Voir :ref:`display related hooks <display_related_hooks>` dans la documentation des plugins.
+Since GLPI 9.1.2, it is possible to display data in native objects forms via new hooks.
+See :ref:`display related hooks <display_related_hooks>` in plugins documentation.
 
-Nous les déclarons comme les ``hooks`` précédents:
+As previous `hooks`, declaration will look like:
 
 **🗋 setup.php**
 
@@ -1536,14 +1536,13 @@ Nous les déclarons comme les ``hooks`` précédents:
 .. warning::
 
     ℹ️ **Important**
-    Ces fonctions d'affichage diffèrent un peu des autres ``hooks`` au niveau des paramètres passés à la fonction de callback.
-    Nous aurons un ``array`` contenant les clefs suivantes:
+    Those display hooks are a bit different from other hooks regarding parameters that are passed to callback underlying method.
+    We will obtain an array with the following keys:
 
+       * ``item`` with current ``CommonDBTM`` object
+       * ``options``, an array passed from current object ``showForm()`` method
 
-    * **'item'** avec l'objet CommonDBTM courant
-    * **'options'**, ``array`` passée depuis la fonction showForm de l'objet courant
-
-    exemple d'un appel par le coeur :
+    example of a call from core:
 
     .. code-block:: php
 
@@ -1554,21 +1553,20 @@ Nous les déclarons comme les ``hooks`` précédents:
 .. note::
 
     📝 **Exercice**:
-    Ajouter en entête du formulaire d'édition des ordinateurs indiquant le nombre de ``Super asset`` associés.
-    Ce nombre devrait être un lien vers `l'onglet ajouté précédemment <#cibler-des-objets-du-cœur>`_ aux objets ordinateurs.
-    Le lien pointera vers la même page mais avec un paramètre `forcetab=PluginMypluginSuperasset$1`.
-
+    Add the number of associated ``Superasset`` in the computer form header.
+    It should be a link to the :ref:`previous added tab <using-core-objects>` to computers.
+    This link will target the sam page, but with the ``forcetab=PluginMypluginSuperasset$1`` parameter.
 
 Adding a configuration page
 ---------------------------
 
-Afin de rendre optionnelles certaines parties de notre plugin, nous allons proposer un onglet dans la configuration générale de GLPI.
+We will add a tab in GLPI configuration so some parts of our plugin can be optional.
 
-Précédemment, nous avons ajouté, via des hooks dans le fichier setup.php, un onglet aux ordinateurs ainsi qu'au début de leurs formulaires. Nous allons donc définir deux options de configuration afin d'activer / désactiver ces affichages à loisir.
+We previousely add an tab to computers and their form, using hooks in ``setup.php`` file. We will define two configuration options to enable/disable those displays.
 
-GLPI fournit une table ``glpi_configs``, stockant la configuration du logiciel, qui permet aux plugins, via un système de contexte, de sauvegarder leurs propres données sans définir de table supplémentaire.
+GLPI provides a ``glpi_configs`` table to store software configuration. It allows plugins to save their own data without defining additional tables.
 
-Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Config.php dont voici le squelette:
+First of all, let's create a new ``Config.php`` class in the ``src/`` folder with the following skeleton:
 
 **🗋 src/Config.php**
 
@@ -1641,7 +1639,7 @@ Tout d’abord, créons une nouvelle classe dans le dossier ``src/`` nommée Con
        }
    }
 
-De nouveau, nous gérons l'affichage dans un gabarit dédié:
+Once again, we ma,nage display from a dedicated template file:
 
 **🗋 templates/config.html.twig**
 
@@ -1675,17 +1673,17 @@ De nouveau, nous gérons l'affichage dans un gabarit dédié:
        </form>
    {% endif %}
 
-Ce squelette récupéra les appels à un onglet dans le menu ``Configuration > Générale`` pour afficher le formulaire dédié à notre plugin.
-Il n'est pas utile d'ajouter de fichier dans le dossier ``front``, notre formulaire renvoie vers la page ``front/config.form`` du cœur et sauvegardera les données sans plus de travaux.
+This skeletton retrieves the calls to a tab in the ``Configuration > General`` menu to display the dedicated form.
+It is useless to add a ``front`` file because the GLPI ``Config`` object already offers a form display.
 
-Vous pouvez constater que nous affichons, via la fonction ``myplugin_computer_form`` deux champs Oui/Non nommés 'myplugin_computer_tab' et 'myplugin_computer_form'.
+Note that we display, form the ``myplugin_computer_form`` two yes/no fields named ``myplugin_computer_tab`` and ``myplugin_computer_form``.
 
 .. note::
 
-    ✍️ Complétez le fichier ``setup.php`` en définissant l'ajout de l'onglet à la classe Config.
+    ✍️ Complete ``setup.php`` file by defining the new tab in the ``Config`` class.
 
-    Par ailleurs, vous devrez ajouter aux fonctions d'installation et de désinstallation l'ajout et la suppression des lignes de la table glpi_configs.
-    Vous pourrez utiliser les fonctions suivantes :
+    You also have to add thos new configuration entries management to install/uninstall methods.
+    You can use the following:
 
     .. code-block:: php
 
@@ -1706,26 +1704,26 @@ Vous pouvez constater que nous affichons, via la fonction ``myplugin_computer_fo
         $config = new Config();
         $config->deleteByCriteria(['context' => '##context##']);
 
-    *Pensez à remplacer les noms entourés par '##' par vos propre valeurs*
+    *Do not forget to replace ``##`` surrounded terms with your own values*
 
 
 Managing rights
 ---------------
 
-Afin de limiter l’accès aux fonctionnalités de notre plugin à certains de nos utilisateurs, nous pouvons utiliser le système de la classe `Profile`_ de GLPI.
+To limit access to our plugin's features to some of our users, we can use the GLPI `Profile`_ class.
 
-Celle-ci vérifie de base la propriété ``$rightname`` des classes héritant de `CommonDBTM`_ pour tous les évènements standard.
-Ces vérifications sont effectuées par les fonctions ``static`` can*:
+This will check ``$rightname`` property of class that inherits `CommonDBTM`_ for all standard events.
+Those check are doen by static ``can*`` functions:
 
 
-* `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ pour la méthode `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_)
-* `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_ pour la méthode `update <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_update>`_)
-* `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ pour la méthode `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_)
-* `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ pour la méthode `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_) aussi mais dans le cas ou le paramètre ``$force = true``
+* `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ for `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_)
+* `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_ for `update <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_update>`_)
+* `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_)
+* `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_) when ``$force`` parameter is set to ``true``
 
-Afin de spécialiser la vérification de nos droits, nous pouvons re-définir ces fonctions statiques dans nos classes.
+In order to cutomize rights, we will redefine thos static methods in our classes.
 
-Si nous avons besoin de vérifier un droit manuellement dans notre code métier, la classe `Session`_ nous fourni quelques méthodes:
+If we need to check a right manually in our code, the `Session`_ class provides some methods:
 
 .. code-block:: php
    :linenos:
@@ -1753,33 +1751,45 @@ Si nous avons besoin de vérifier un droit manuellement dans notre code métier,
       // OK
    }
 
-Les méthodes ci dessus retournent toutes un booléen. Si nous voulons un arrêt de la page avec un message à destination de l'utilisateur, il existe des méthodes équivalente avec le préfixe ``check`` à la place de ``have``:
-
+Above methods return a boolean. If we need to stop the page with a message to the user, we can use equivalent methods with ``check`` instead of ``have`` prefix:
 
 * `checkRight <https://github.com/glpi-project/glpi/blob/10.0.15/src/Session.php#L1109-L1117>`_
 * `checkRightsOr <https://github.com/glpi-project/glpi/blob/10.0.15/src/Session.php#L1128-L1136>`_
 
 .. warning::
 
-    ℹ️ Si vous avez besoin de vérifier un droit directement dans une requête SQL, utilisez les opérateurs sur les bits ``&`` et ``|``:
+    ℹ️ If you need to check a right in an SQL query, use bitwise operators ``&`` and ``|``:
 
     .. code-block:: php
 
         <?php
 
-        $query = "SELECT `glpi_profiles_users`.`users_id`
-            FROM `glpi_profiles_users`
-            INNER JOIN `glpi_profiles`
-                ON (`glpi_profiles_users`.`profiles_id` = `glpi_profiles`.`id`)
-            INNER JOIN `glpi_profilerights`
-                ON (`glpi_profilerights`.`profiles_id` = `glpi_profiles`.`id`)
-            WHERE `glpi_profilerights`.`name` = 'ticket'
-                AND `glpi_profilerights`.`rights` & ". (READ | CREATE);
-        $result = $DB->query($query);
+        $iterator = $DB->request([
+            'SELECT' => 'glpi_profiles_users.users_id',
+            'FROM' => 'glpi_profiles_users',
+            'INNER JOIN' => [
+                'glpi_profiles' => [
+                    'ON' => [
+                        'glpi_profiles_users' => 'profiles_id'
+                         'glpi_profiles' => 'id'
+                    ]
+                ],
+                'glpi_profilerights' => [
+                    'ON' => [
+                        'glpi_profilerights' => 'profiles_id',
+                         'glpi_profiles' => 'id'
+                    ]
+                ]
+            ],
+            'WHERE' => [
+                'glpi_profilerights.name' => 'ticket',
+                'glpi_profilerights.rights' => ['&', (READ | CREATE)];
+            ]
+        ]);
 
-    Dans cet extrait de code, la partie ``READ | CREATE`` effectue une somme au niveau binaire et la partie ``&`` compare au niveau logique la valeur avec celle de la table.
+    In this code example, the ``READ | CREATE`` make a bit sum, and the ``&`` operator compare the value at logical level with the table.
 
-Les valeurs possibles des droits standards peuvent être trouvés dans le fichier ``inc/define.php`` de GLPI:
+Possible avlues for standard rights can be found in the ``inc/define.php`` file of GLPI:
 
 .. code-block:: php
    :linenos:
@@ -1806,7 +1816,7 @@ Add a new right
     ✍️ We :ref:`previousely defined a property <commondntm_usage>` ``$rightname = 'computer'`` sur laquelle nous avons automatiquement les droits en tant que ``super-admin``.
     We will now create a specific right for the plugin.
 
-Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion des profils:
+First of all, let's create a new class dedicated to profiles management:
 
 **🗋 src/Profile.php**
 
@@ -1883,7 +1893,7 @@ Tout d’abord, nous allons créer une nouvelle classe dédiée à la gestion de
        }
    }
 
-De nouveau, nous afficheons le formulaire dans un gabarit Twig :
+Once again, display will be done from a Twig template:
 
 **🗋 templates/profile.html.twig**
 
@@ -1910,7 +1920,7 @@ De nouveau, nous afficheons le formulaire dans un gabarit Twig :
        </form>
    </div>
 
-Enfin dans notre fonction d'init, nous déclarons un nouvel onglet sur l'objet ``Profile``:
+We decalre a new tab on ``Profile`` object from our ``init`` function:
 
 **🗋 setup.php**
 
@@ -1932,7 +1942,7 @@ Enfin dans notre fonction d'init, nous déclarons un nouvel onglet sur l'objet `
        ]);
    }
 
-Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès minimal (pour le profil courant ``super-admin``):
+And we tell installer to setup a minimal right for current profile (``super-admin``):
 
 **🗋 hook.php**
 
@@ -1965,15 +1975,15 @@ Finalement, nous indiquons à l'installation d'enregistrer le droit et un accès
 
    }
 
-A partir de ce moment, nous pouvons définir nos droits depuis le menu ``Administration > Profils`` et nous pouvons changer la propriété ``$righname`` de notre classe pour ``myplugin::superasset``.
+Then, wa can define rights from ``Administration > Profiles`` menu and can change the ``$rightname`` property of our class to ``myplugin::superasset``.
 
 Extending standard rights
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Si nous avons besoin de droits spécifiques pour notre plugin, par exemple le droit d'effectuer les associations, il faut surcharger la fonction ``getRights`` dans la classe définissant les droits.
+If we need specific rights for our plugin, for example the right to perform associations, we must override the ``getRights`` function in the class defining the rights.
 
-Dans l'exemple de classe ``PluginMypluginProfile`` définit plus haut, nous avons ajouté une méthode getAllRights qui indique que le droit ``myplugin::superasset`` est défini dans la classe ``PluginMypluginSuperasset``.
-Celle-ci héritant de CommonDBTM, elle possède une méthode `getRights <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_getRights>`_ que nous pouvons surcharger:
+In defined above example of the ``PluginMypluginProfile`` class, we added a ``getAllRights`` method which indicates that the right ``myplugin::superasset`` is defined in the ``PluginMypluginSuperasset`` class.
+This one inherits from ``CommonDBTM`` and has a ``getRights`` method that we can override:
 
 **🗋 src/Superasset.php**
 
@@ -2009,22 +2019,19 @@ Celle-ci héritant de CommonDBTM, elle possède une méthode `getRights <https:/
 Massive actions
 ---------------
 
-Les actions massives de GLPI, mises à disposition des utilisateurs, permettent d'appliquer des modifications à l'ensemble d'une liste ou d'une sélection.
-
+User accessible GLPI massive actions allow to apply modifications to a selection.
 
 .. image:: ../devapi/images/massiveactions.png
-   :alt: contrôles des actions massives
+   :alt: massive actions control
 
+By fedault, GLPI proposes following actions:
 
-Par défaut, GLPI met à disposition les actions suivantes:
+* `Edit`: to edit fields that are defined in search options (excepted those where ``massiveaction`` is set to ``false``)
+* `Put in trashbin`/`Delete`
 
+It is powwible to declare :ref:`extra massive actions <massiveactions_specific>`.
 
-* "Modifier": pour éditer les champs définis dans les searchoptions (exceptées celles qui indique ``'massiveaction' = false``)
-* "Mettre à la corbeille" / "Supprimer définitivement"
-
-Il est possible de déclarer des :ref:`actions massives supplémentaires <massiveactions_specific>`.
-
-Afin d'activer cette fonctionnalité dans votre plugin, il faut déclarer dans l'init le ``hook`` dédié:
+To achieve that in your plugin, you must declare a hook in the ``init`` function:
 
 **🗋 setup.php**
 
@@ -2040,14 +2047,13 @@ Afin d'activer cette fonctionnalité dans votre plugin, il faut déclarer dans l
        $PLUGIN_HOOKS['use_massive_action']['myplugin'] = true;
    }
 
-Ensuite dans la classe ``Superasset``, il faudra ajouter 3 méthodes:
+Then, in the ``Superasset`` class, you must add 3 methods:
 
+* ``getSpecificMassiveActions``: massive actions declaration.
+* ``showMassiveActionsSubForm``: sub-form display.
+* ``processMassiveActionsForOneItemtype``: handle form submit.
 
-* ``getSpecificMassiveActions``: déclaration des définitions des actions massives.
-* ``showMassiveActionsSubForm``: affichage du sous-formulaire.
-* ``processMassiveActionsForOneItemtype``: traitement de l'envoi du formulaire.
-
-Ci dessous, un exemple d'implémentation minimal:
+Here is a minimal implementation example:
 
 **🗋 src/Superasset.php**
 
@@ -2124,16 +2130,16 @@ Ci dessous, un exemple d'implémentation minimal:
 .. note::
 
     📝 **Exercice**:
-    En vous aidant de la documentation officielle sur les :doc:`actions massives <../devapi/massiveactions>`, complétez dans votre plugin, les méthodes présentées ci-dessus pour permettre l'ajout d'un ordinateur via les actions massives des "Super assets".
+    With the help of the official documentation on :doc:`massive actions <../devapi/massiveactions>`, complete in =your plugin above methods to allow the linking with a computer from "Super assets" massive actions.
 
-    Vous pourrez afficher une liste des ordinateurs via l'extrait de code suivant:
+    You can display a list of computers with:
 
     .. code-block:: php
 
         Computer::dropdown();
 
-Il est aussi possible d'ajouter des actions massives aux itemtype natifs de GLPI.
-Pour cela, il faut déclarer une fonction ``_MassiveActions`` dans le fichier hook.php:
+It is also possible to add massive actions to GLPI native objects.
+TO achieve that, you must declare a ``_MassiveActions`` function in the ``hook.php`` file:
 
 **🗋 hook.php**
 
@@ -2164,14 +2170,14 @@ Pour cela, il faut déclarer une fonction ``_MassiveActions`` dans le fichier ho
       return $actions;
    }
 
-L'affichage du sous-formulaire et le traitement de l'envoi se gère de la même façon que pour les massives actions des itemtypes de votre propre plugin.
+Sub form display and processing are done the same way as you did for your plugin itemtypes.
 
 .. note::
 
     📝 **Exercice**:
-    De la même façon que dans l'exercice précédent, ajoutez la possibilité d'affecter des ordinateurs à une "Super asset".
+    As the previous exercice, add a massive action to link a computer to a "Super asset" from the computer list.
 
-    Pensez à définir des clefs et labels différents que ceux précédemment développés.
+    Do not forget to use unique keys and labels.
 
 Notifications
 -------------
