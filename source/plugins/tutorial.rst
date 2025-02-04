@@ -242,7 +242,7 @@ It allows to automatically deactivate plugin if defined criteria are not or no l
 minimal hook.php
 ^^^^^^^^^^^^^^^^
 
-This file must contains initialization and deinstallation functions:
+This file must contains initialization and uninstallation functions:
 
 **🗋 hook.php**
 
@@ -269,7 +269,7 @@ Install your plugin
 ^^^^^^^^^^^^^^^^^^^
 
 .. image:: /_static/images/install_plugin.png
-   :alt: mon plugin listé dans la configuration
+   :alt: my plugin in confiuguration
 
 Following those first steps, you should be able to install and activate your plugin from ``Configuration > Plugins`` menu.
 
@@ -305,9 +305,9 @@ Your working classes (in the ``src`` directory) can inherit from it and are call
     * :ref:`Tables columns Les champs de tables <dbfields>` must also follow some conventions:
 
         * there must be an ``auto-incremented primary`` field named ``id``
-        * forgeign keys names use tha referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
+        * foreign keys names use that referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
-        **Warnging!** GLPI do not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` ou ``CONSTRAINT`` keys.
+        **Warning!** GLPI do not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` or ``CONSTRAINT`` keys.
 
     * Some extra advices:
 
@@ -560,7 +560,7 @@ To handle migration from a version to another of our plugin, we will use GLPI `M
 
     <hr />
 
-  ``$type`` parameter of different functions is the same as the private `Migration::fieldFormat() method <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ it allows shortcut for most common SQL types (bool, string, integer, date, datatime, text, longtext,  autoincrement, char)
+  ``$type`` parameter of different functions is the same as the private `Migration::fieldFormat() method <https://github.com/glpi-project/glpi/blob/10.0.15/src/Migration.php#L252-L262>`_ it allows shortcut for most common SQL types (bool, string, integer, date, datetime, text, longtext,  autoincrement, char)
 
 
 Uninstallation
@@ -601,7 +601,7 @@ To uninstall our plugin, we want to clean all related data.
 Framework usage
 ^^^^^^^^^^^^^^^
 
-Quelques fonctions utilitaires supplémentaires:
+Some few useful functions
 
 .. code-block:: php
 
@@ -609,7 +609,7 @@ Quelques fonctions utilitaires supplémentaires:
 
    Toolbox::logError($var1, $var2, ...);
 
-Cette méthode permet d'enregistrer dans le fichier ``glpi/files/_log/php-errors.log`` le contenu de ses paramètres (qui peuvent être des chaînes de caractères, des tableaux, des objets instanciés, des booléens, etc).
+This method stored in ``glpi/files/_log/php-errors.log`` file content of its parameters (may be strings, arrays, objects, etc).
 
 .. code-block:: php
 
@@ -617,7 +617,7 @@ Cette méthode permet d'enregistrer dans le fichier ``glpi/files/_log/php-errors
 
    Html::printCleanArray($var);
 
-Cette méthode affichera un tableau de "debug" de la variable fournie en paramètre. Elle n'accepte pas d'autre type que ``array``.
+This method will display a "debug" array of the provided variable. It only accepts ``array`` type.
 
 
 Common actions on an object
@@ -817,7 +817,7 @@ Adding to menu and breadcrumb
 
 We would like to access our pages without entering their URL in our browser.
 
-We'll therefore define our first `Hook` in our plugin's ``init``.
+We'll therefore define our first `Hook` in our plugin ``init``.
 
 Open ``setup.php`` and edit ``plugin_init_myplugin`` function:
 
@@ -905,10 +905,10 @@ Edit our class and add related methods:
    }
 
 ``getMenuContent`` function may seem redundant at first, but each of the coded entries relates to different parts of the display.
-The ``options`` part is used to have a 4th level of breadcrumb and thus have a clickable submenu in your entry page.
+The ``options`` part is used to have a fourth level of breadcrumb and thus have a clickable submenu in your entry page.
 
 .. image:: /_static/images/breadcrumbs.png
-   :alt: Breadcrub
+   :alt: Breadcrumb
 
 Each ``page`` key is used to indicate on which URL the current part applies.
 
@@ -938,7 +938,7 @@ Defining tabs
 GLPI proposes three methods to define tabs:
 
 `defineTabs(array $options = []) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_defineTabs>`_
-: declares classes that provides tabs to curretn class.
+: declares classes that provides tabs to current class.
 
 `getTabNameForItem(CommonGLPI $item, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_getTabNameForItem>`_
 : declares titles displayed for tabs.
@@ -949,7 +949,7 @@ GLPI proposes three methods to define tabs:
 Standards tabs
 ^^^^^^^^^^^^^^
 
-Some GLPI internal API classes allow syou to add a behavior with minimal code.
+Some GLPI internal API classes allows you to add a behaviour with minimal code.
 
 It's true for notes (`Notepad`_) and history (`Log`_).
 
@@ -991,7 +991,7 @@ Display of an instance of your itemtype from the page ``front/superasset.php?id=
 
 * Main tab with your itemtype name
 * Notes tab
-* Hstory tab
+* History tab
 
 
 Custom tabs
@@ -1088,7 +1088,7 @@ In this new class we will define two other methods to control title and content 
        }
    }
 
-As previousely, we will use a Twig template to handle display.
+As previously, we will use a Twig template to handle display.
 
 **🗋 templates/superasset_item.html.twig**
 
@@ -1101,10 +1101,10 @@ As previousely, we will use a Twig template to handle display.
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     For the rest of this part, you will need to complete our plugin to allow the installation/uninstallation of the data of this new class ``Superasset_Item``.
 
-    Table shoudl contains following fields:
+    Table should contains following fields:
 
     * an identifier (id)
     * a foreign key to ``plugin_myplugin_superassets`` table
@@ -1116,7 +1116,7 @@ As previousely, we will use a Twig template to handle display.
     Your plugin must be re-installed or updated for the table creation to be done.
     You can force the plugin status to change by incrementing the version number in the ``setup.php`` file.
 
-    Fot the exercice, we will only display computers (`Computer`_) displayed withthe following code:
+    For the exercise, we will only display computers (`Computer`_) displayed with the following code:
 
     .. code-block:: twig
 
@@ -1140,11 +1140,11 @@ As previousely, we will use a Twig template to handle display.
 
 .. _using-core-objects:
 
-Using core objets
-^^^^^^^^^^^^^^^^^
+Using core objects
+^^^^^^^^^^^^^^^^^^
 
-We can aslo allow our class to add tabs on core objects.
-We weill declare this in a new line in our ``init`` function:
+We can also allow our class to add tabs on core objects.
+We will declare this in a new line in our ``init`` function:
 
 **🗋 setup.php**
 
@@ -1164,20 +1164,20 @@ We weill declare this in a new line in our ``init`` function:
        ]);
    }
 
-Title and ocntent for this tab are done as previousely with:
+Title and content for this tab are done as previously with:
 
 * ``CommonDBTM::getTabNameForItem()``
 * ``CommonDBTM::displayTabContentForItem()``
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     Complete previous methods to display on computers a new tab with associated ``Superasset``.
 
 Defining Search options
 -----------------------
 
-:ref`Search options <search_options>` is an array of columns for GLPI search engine. They are used to know for each itemtype how the dabase must be queried, and how data should be dosplayed.
+:ref`Search options <search_options>` is an array of columns for GLPI search engine. They are used to know for each itemtype how the database must be queried, and how data should be dosplayed.
 
 In our class, we must declare a ``rawSearchOptions`` method:
 
@@ -1296,7 +1296,7 @@ As an example, we would like to display associated "Superasset" on in the comput
        return $sopt;
    }
 
-As previousely, you must provide an ``id`` for your new search options that does not override existing ones for ``Computer``.
+As previously, you must provide an ``id`` for your new search options that does not override existing ones for ``Computer``.
 
 You can use a script from the ``tools`` folder of the GLPI git repository (not present in the "release" archives) to help you list the **id** already declared (by the core and plugins present on your computer) for a particular itemtype.
 
@@ -1308,7 +1308,7 @@ Search engine display preferences
 ---------------------------------
 
 We just have added new columns to our itemtype list.
-Thos columns are handled by ``DisplayPreference`` object (``glpi_displaypreferences`` table).
+Those columns are handled by ``DisplayPreference`` object (``glpi_displaypreferences`` table).
 They can be defined as global (set ``0``for ``users_id`` field) or personal (set ``users_id`` field to the user id). They are sorted (``rank`` field) and target an itemtype plus a ``searchoption`` (``num`` field).
 
 .. warning::
@@ -1318,7 +1318,7 @@ They can be defined as global (set ``0``for ``users_id`` field) or personal (set
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     You will change installation and uninstallation functions of your plugin to add and remove global preferences so objects list display some columns.
 
 Standard events hooks
@@ -1340,8 +1340,8 @@ For every event applied on the database, we have a method that is executed befor
 
 .. note::
 
-    📝 **Exercice**:
-    Add required methods to ``PluginMypluginSuperasset`` class to chek the ``name`` field is properly filled when adding and updating.
+    📝 **Exercise**:
+    Add required methods to ``PluginMypluginSuperasset`` class to check the ``name`` field is properly filled when adding and updating.
 
     On effective removal,we must ensure linked data from other tables are also removed.
 
@@ -1370,9 +1370,9 @@ Plugins can also intercept standard core events to apply changes (or even refuse
 More information are available from :ref:`hooks documentation <standards_hooks>` especially on :ref:`standard events <business_related_hooks>` part.
 
 For all those calls, we will get an instance of the current object in parameter of our ``callback`` function. We will be able to access its current fields (``$item->fields``) or those sent by the form (``$item->input``).
-As all PHP objects, this instance wil be passed by reference.
+As all PHP objects, this instance will be passed by reference.
 
-We will declare one of those hooks usage in the plugin's init function and add a ``callback`` function:
+We will declare one of those hooks usage in the plugin init function and add a ``callback`` function:
 
 **🗋 setup.php**
 
@@ -1430,10 +1430,10 @@ In both cases (``hook.php`` function or class method), the prototype of the func
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     Use a `hook` to intercept the purge of a computer and remove associated with a ``Superasset`` lines if any.
 
-Importing libraries (Javascript / CSS)
+Importing libraries (JavaScript / CSS)
 --------------------------------------
 
 Plugins can declare import of additional libraries from their ``init`` function.
@@ -1466,13 +1466,13 @@ Plugins can declare import of additional libraries from their ``init`` function.
        ...
    }
 
-Sevral things to remember:
+Several things to remember:
 
 * Loading paths are relative to plugin directory.
 * Scripts declared this way will be loaded on **all** GLPI pages. You must check the current page in the ``init`` function.
-* Script extension is **not** checked by GLPI, you can load a PHP file as a JS script. You will have to force the mimetype in the loaded file (ex: ``header("Content-type: application/javascript");``).
+* Script extension is **not** checked by GLPI, you can load a PHP file as a JS script. You will have to force the mime-type in the loaded file (ex: ``header("Content-type: application/javascript");``).
 * You can rely on ``Html::requireJs()`` method to load external resources. Paths will be prefixed with GLPI root URL at load.
-* If you want to modifiy page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
+* If you want to modify page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
 
 .. code-block:: javascript
    :linenos:
@@ -1497,11 +1497,11 @@ Sevral things to remember:
 
 .. note::
 
-    📝 **Exercices**:
+    📝 **Exercises**:
 
-    #. Add a new icon in preferecnes menu to display main GLPI configuration. You can use:
+    #. Add a new icon in preferences menu to display main GLPI configuration. You can use:
 
-      * `tabler-icons <https://tabler-icons.io/>`_ (prefered), ex: ``<a href='...' class='ti ti-mood-smile'></a>``).
+      * `tabler-icons <https://tabler-icons.io/>`_ (preferred), ex: ``<a href='...' class='ti ti-mood-smile'></a>``).
       * `font-awesome v6 <https://fontawesome.com>`_, ex: ``<a href='...' class='fas fa-face-smile'></a>``).
 
     #. On ticket edition page, add an icon to self-associate as a requester on the model of the one present for the "assigned to" part.
@@ -1562,7 +1562,7 @@ Adding a configuration page
 
 We will add a tab in GLPI configuration so some parts of our plugin can be optional.
 
-We previousely add an tab to computers and their form, using hooks in ``setup.php`` file. We will define two configuration options to enable/disable those displays.
+We previously add an tab to computers and their form, using hooks in ``setup.php`` file. We will define two configuration options to enable/disable those displays.
 
 GLPI provides a ``glpi_configs`` table to store software configuration. It allows plugins to save their own data without defining additional tables.
 
@@ -1639,7 +1639,7 @@ First of all, let's create a new ``Config.php`` class in the ``src/`` folder wit
        }
    }
 
-Once again, we ma,nage display from a dedicated template file:
+Once again, we manage display from a dedicated template file:
 
 **🗋 templates/config.html.twig**
 
@@ -1673,7 +1673,7 @@ Once again, we ma,nage display from a dedicated template file:
        </form>
    {% endif %}
 
-This skeletton retrieves the calls to a tab in the ``Configuration > General`` menu to display the dedicated form.
+This skeleton retrieves the calls to a tab in the ``Configuration > General`` menu to display the dedicated form.
 It is useless to add a ``front`` file because the GLPI ``Config`` object already offers a form display.
 
 Note that we display, form the ``myplugin_computer_form`` two yes/no fields named ``myplugin_computer_tab`` and ``myplugin_computer_form``.
@@ -1710,10 +1710,10 @@ Note that we display, form the ``myplugin_computer_form`` two yes/no fields name
 Managing rights
 ---------------
 
-To limit access to our plugin's features to some of our users, we can use the GLPI `Profile`_ class.
+To limit access to our plugin features to some of our users, we can use the GLPI `Profile`_ class.
 
 This will check ``$rightname`` property of class that inherits `CommonDBTM`_ for all standard events.
-Those check are doen by static ``can*`` functions:
+Those check are done by static ``can*`` functions:
 
 
 * `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ for `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_)
@@ -1721,7 +1721,7 @@ Those check are doen by static ``can*`` functions:
 * `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_)
 * `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_) when ``$force`` parameter is set to ``true``
 
-In order to cutomize rights, we will redefine thos static methods in our classes.
+In order to customize rights, we will redefine thos static methods in our classes.
 
 If we need to check a right manually in our code, the `Session`_ class provides some methods:
 
@@ -1789,7 +1789,7 @@ Above methods return a boolean. If we need to stop the page with a message to th
 
     In this code example, the ``READ | CREATE`` make a bit sum, and the ``&`` operator compare the value at logical level with the table.
 
-Possible avlues for standard rights can be found in the ``inc/define.php`` file of GLPI:
+Possible values for standard rights can be found in the ``inc/define.php`` file of GLPI:
 
 .. code-block:: php
    :linenos:
@@ -1813,7 +1813,7 @@ Add a new right
 
 .. note::
 
-    ✍️ We :ref:`previousely defined a property <commondntm_usage>` ``$rightname = 'computer'`` sur laquelle nous avons automatiquement les droits en tant que ``super-admin``.
+    ✍️ We :ref:`previously defined a property <commondntm_usage>` ``$rightname = 'computer'`` on which we've automatically rights as ``super-admin``.
     We will now create a specific right for the plugin.
 
 First of all, let's create a new class dedicated to profiles management:
@@ -1920,7 +1920,7 @@ Once again, display will be done from a Twig template:
        </form>
    </div>
 
-We decalre a new tab on ``Profile`` object from our ``init`` function:
+We declare a new tab on ``Profile`` object from our ``init`` function:
 
 **🗋 setup.php**
 
@@ -2024,12 +2024,12 @@ User accessible GLPI massive actions allow to apply modifications to a selection
 .. image:: ../devapi/images/massiveactions.png
    :alt: massive actions control
 
-By fedault, GLPI proposes following actions:
+By default, GLPI proposes following actions:
 
 * `Edit`: to edit fields that are defined in search options (excepted those where ``massiveaction`` is set to ``false``)
 * `Put in trashbin`/`Delete`
 
-It is powwible to declare :ref:`extra massive actions <massiveactions_specific>`.
+It is possible to declare :ref:`extra massive actions <massiveactions_specific>`.
 
 To achieve that in your plugin, you must declare a hook in the ``init`` function:
 
@@ -2129,7 +2129,7 @@ Here is a minimal implementation example:
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     With the help of the official documentation on :doc:`massive actions <../devapi/massiveactions>`, complete in =your plugin above methods to allow the linking with a computer from "Super assets" massive actions.
 
     You can display a list of computers with:
@@ -2174,8 +2174,8 @@ Sub form display and processing are done the same way as you did for your plugin
 
 .. note::
 
-    📝 **Exercice**:
-    As the previous exercice, add a massive action to link a computer to a "Super asset" from the computer list.
+    📝 **Exercise**:
+    As the previous exercise, add a massive action to link a computer to a "Super asset" from the computer list.
 
     Do not forget to use unique keys and labels.
 
@@ -2184,7 +2184,7 @@ Notifications
 
 .. warning::
     ⚠️ Access to an SNMP server is recommended; it must be properly configured in ``Configuration > Notifications`` menu.
-    On a devleopment envirnoment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local smtp server and allow you to get mails sent by GLPI in a graphical interface.
+    On a development environment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local SMTP server and allow you to get mails sent by GLPI in a graphical interface.
 
     Please also note that GLPI does not send mails directly. It goes through a queue system.
     All "pending" notifications are visible in the ``Administration > Email queue`` menu.
@@ -2193,7 +2193,7 @@ Notifications
 The GLPI notification system allows sending alerts to the actors of a recorded event.
 By default, notifications can be sent by email or as browser notifications, but other channels may be available from plugins (or you can add your own one).
 
-Rhat system is divided in several classes:
+That system is divided in several classes:
 
 * ``Notification``: the main object. It receives common data like name, activation, sending mode, event, content (``NotificationTemplate``), etc.
 
@@ -2230,7 +2230,7 @@ We can however trigger a notification execution via the following code:
    NotificationEvent::raiseEvent($event, $item);
 
 The ``event`` key corresponds to the triggering event name defined in the ``Notification`` object and the ``itemtype`` key to the related object.
-Thereofre, the ``raiseEvent`` method will search the ``glpi_notifications`` table for an active line with these 2 characteristics.
+Therefore, the ``raiseEvent`` method will search the ``glpi_notifications`` table for an active line with these 2 characteristics.
 
 To use this trigger in our plugin, we will add a new class ``PluginMypluginNotificationTargetSuperasset``.
 This ones targets our ``Superasset`` object. It is the standard way to develop notifications in GLPI. We have an itemtype with its own life and a notification object related to it.
@@ -2283,19 +2283,19 @@ We have to declare our ``Superasset`` object can send notifications in our ``ini
        ]);
    }
 
-With this manimal code, it's possible to manually create using GLPI UI a new notification targeting our ``Superasset`` itemtype and with the 'My event label' event and then use the ``raiseEvent`` method with these parameters.
+With this minimal code, it's possible to manually create using GLPI UI a new notification targeting our ``Superasset`` itemtype and with the 'My event label' event and then use the ``raiseEvent`` method with these parameters.
 
 .. note::
 
-    📝 **Exercice**:
+    📝 **Exercise**:
     Along with an effective sending test, you will manage installation and uninstallation of notification and related objects (templates, translations).
 
-    You can tak eexample on (still incomplete) on :doc:`notifications in plugins documentation <notifications>`.
+    You can take example on (still incomplete) on :doc:`notifications in plugins documentation <notifications>`.
 
 Automatic actions
 -----------------
 
-This GLPI feature provides a task scheduler executed silently from user usage (GLPI mode) or by the server in command line (cli mode) via a call to the ``front/cron.php`` file of GLPI.
+This GLPI feature provides a task scheduler executed silently from user usage (GLPI mode) or by the server in command line (CLI mode) via a call to the ``front/cron.php`` file of GLPI.
 
 .. image:: /_static/images/crontask.png
    :alt:
@@ -2376,7 +2376,7 @@ You consider your plugin is ready and covers a real need, so you can submit it t
 
 The `plugins catalog <http://plugins.glpi-project.org/>`_ allows GLPI users to discover, download and follow plugins provided by the developers community.
 
-Just publish your code to an publically accessible GIT repository (`github <https://github.com/>`_, `gitlab <https://gitlab.com>`_, ...) with an `open source license <https://choosealicense.com/>`_ of your choice and prepare an XML description file of your plugin.
+Just publish your code to an publicly accessible GIT repository (`github <https://github.com/>`_, `gitlab <https://gitlab.com>`_, ...) with an `open source license <https://choosealicense.com/>`_ of your choice and prepare an XML description file of your plugin.
 XML file must follow that structure:
 
 .. code-block:: xml
@@ -2430,7 +2430,7 @@ XML file must follow that structure:
       </screenshots>
    </root>
 
-Take care of this XML file content, add a detaille ddescription in sveral languages, representative screenshots and icon - make users want to install it ✰
+Take care of this XML file content, add a detailled description in several languages, representative screenshots and icon - make users want to install it ✰
 
 Finally, submit your XML file on the `dedicated page <http://plugins.glpi-project.org/#/submit>`_ of the plugins catalog (registration is required).
 
@@ -2477,7 +2477,7 @@ Since GLPI 9.5, dashboards are available from:
 * Assets menu
 * Assistance menu
 
-This feature is splitted in several concepts - sub classes:
+This feature is slitted in several concepts - sub classes:
 
 * a 26*24 placement grid (``Glpi\Dashboard\Grid``)
 * a widgets collection (``Glpi\Dashboard\Widget``) to graphically display data
@@ -2486,12 +2486,12 @@ This feature is splitted in several concepts - sub classes:
 * filters (``Glpi\Dashboard\Filter``) that can be displayed in a dashboard header and impacting providers.
 
 With thos classes, we can build a dashboard that will display cards on its grid.
-A card is a combination of a widget, a data provider, a place on grid and various options (like a background color for example).
+A card is a combination of a widget, a data provider, a place on grid and various options (like a background colour for example).
 
 Completing existing
 ~~~~~~~~~~~~~~~~~~~
 
-From your plugin, you can complete those concetps with your own data and code.
+From your plugin, you can complete those concepts with your own data and code.
 
 **🗋 setup.php**
 
@@ -2636,15 +2636,15 @@ We will create a dedicated class for our dashboards:
 A few explanations on those methods:
 
 * ``getTypes()``: define available widgets for cards and methods to call for display.
-* ``getCards()``: define available cards for dashoboards (when added to the grid). As previousely epxlained, each is defined from a label, widget and optional data provider (from core or your plugin) combination
-* ``cardWidget()``: use provided parameters to display HTML. You are free to deleguate display to a Twig template, and use your favorite javascript library.
+* ``getCards()``: define available cards for dashboards (when added to the grid). As previously explained, each is defined from a label, widget and optional data provider (from core or your plugin) combination
+* ``cardWidget()``: use provided parameters to display HTML. You are free to delegate display to a Twig template, and use your favourite JavaScript library.
 * ``cardWidgetWithoutProvider()``: almost the same as the ``cardWidget()``, but doe snot use parameters and just returns a static HTML.
 * ``cardBigNumberProvider()``: provider and expected return example when grid will display card.
 
 Display your own dashboard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-GLPI dashoboards system is modular, you can use it in your own displays.
+GLPI dashboards system is modular, you can use it in your own displays.
 
 .. code-block:: php
    :linenos:
@@ -2656,7 +2656,7 @@ GLPI dashoboards system is modular, you can use it in your own displays.
    $dashboard = new Grid('myplugin_example_dashboard', 10, 10, 'myplugin');
    $dashboard->show();
 
-By adding a contaxt (``myplugin``), you can filter dashboards available in the dropdown list at the top right of the grid. You will not see GLPI core ones (central, assistance, etc.).
+By adding a context (``myplugin``), you can filter dashboards available in the dropdown list at the top right of the grid. You will not see GLPI core ones (central, assistance, etc.).
 
 Translating your plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2667,7 +2667,7 @@ Event if your plugin will be restricted, it is a good practice to keep this `get
 See :doc:`developper guide translation documentation <../devapi/translations>` for more explanations and list of PHP functions that can be used.
 
 * On your local instance, you cans use software like `poedit <https://poedit.net>`_ to manage your translations.
-* You can also rely on online services like `transifex <https://www.transifex.com>`_ or `Weblate <https://weblate.org>`_ (both are free for open source projects).
+* You can also rely on on-line services like `Transifex <https://www.transifex.com>`_ or `Weblate <https://weblate.org>`_ (both are free for open source projects).
 
 If you have used the `Empty`_ skeleton, you will benefit from command line tools to manage your locales:
 
@@ -2679,15 +2679,15 @@ If you have used the `Empty`_ skeleton, you will benefit from command line tools
 
 .. warning::
 
-    ℹ️  It is possible your tanslations are not updated after compiling MO files, a restart of your PHP (or webserver, depending on your configuration) may be required.
+    ℹ️  It is possible your translations are not updated after compiling MO files, a restart of your PHP (or web server, depending on your configuration) may be required.
 
 REST API
 --------
 
-Sicne GLPI (since 9.1 release) has an external API in REST format. An XMLRPC format is also still available, but is deprecated.
+Since GLPI (since 9.1 release) has an external API in REST format. An XMLRPC format is also still available, but is deprecated.
 
 .. image:: /_static/images/API.png
-   :alt: Api configuration
+   :alt: API configuration
 
 Configuration
 ^^^^^^^^^^^^^
@@ -2704,20 +2704,20 @@ First link includes an integrated documentation when you access it from a simple
 
 For the rest of the configuration:
 
-* login with identifiants allows to use ``login`` / ``password`` as well as web interface
+* login allows to use ``login`` / ``password`` as well as web interface
 * token connection use the token displayed in user preferences
 
   .. image:: /_static/images/api_external_token.png
-     :alt: external jeton
+     :alt: external token
 
-* API clients allow to limit API access from some IP adresses and log if necessary. A client allowing access from any IP is provided by default.
+* API clients allow to limit API access from some IP addresses and log if necessary. A client allowing access from any IP is provided by default.
 
 ----
 
 You can use the `API usage bootstrap <https://github.com/orthagh/glpi_boostrap_api>`_.
 This one is written in PHP and relies on `Guzzle <http://docs.guzzlephp.org/>`_ library to hanlde HTTP requests.
 
-By default, it does a connection with identifiants defined in the ``config.inc.php`` file (that you must create by copying the ``config.inc.example`` file).
+By default, it does a connection with login details defined in the ``config.inc.php`` file (that you must create by copying the ``config.inc.example`` file).
 
 .. warning::
 
@@ -2726,19 +2726,19 @@ By default, it does a connection with identifiants defined in the ``config.inc.p
 API usage
 ^^^^^^^^^
 
-To learn this part, with the help of integrate documentation (or `latest stable GLPI API documentation on github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`_), we will do several exercices:
+To learn this part, with the help of integrate documentation (or `latest stable GLPI API documentation on github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`_), we will do several exercises:
 
 .. note::
 
-   📝 **Exercice**: Test a new connection using GLPI user external token
+   📝 **Exercise**: Test a new connection using GLPI user external token
 
 .. note::
 
-   📝 **Exercice**: Close the session at the end of your script.
+   📝 **Exercise**: Close the session at the end of your script.
 
 .. note::
 
-   📝 **Exercice**: Simulate computer lifecycle:
+   📝 **Exercise**: Simulate computer life cycle:
 
     * add a computer and some volumes (``Item_Disk``),
     * edit several fields,
@@ -2749,7 +2749,7 @@ To learn this part, with the help of integrate documentation (or `latest stable 
 
 .. note::
 
-   📝 **Exercice**: Retrieve computers list and display them an HTML array. The `endpoint` to use us "Search items".
+   📝 **Exercise**: Retrieve computers list and display them an HTML array. The `endpoint` to use us "Search items".
    If you want to display columns labels, you will have to use the "List searchOptions" `endpoint`.
 
 ----
