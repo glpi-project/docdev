@@ -95,12 +95,16 @@ Resource access restrictions
 
 In GLPI 11.0, we restrict the resources that can be accessed through a web request.
 
-We still support access to the PHP scripts located in the ``/ajax``, ``/front`` and ``/report`` directories.
-Their URL remains unchanged, for instance, the URL of the ``/front/index.php`` script of your plugin remains ``/plugins/myplugin/front/index.php``.
-
-The static assets must be moved in the ``/public`` directory to be accessible.
+The static assets and PHP scripts must be moved in the ``/public`` directory to be accessible.
 Their URL must not contain the ``/public`` path.
-For instance, the URL of the ``/public/css/styles.css`` stylesheet of your plugin will be ``/plugins/myplugin/css/styles.css``.
+For instance:
+
+* the URL of the ``/public/css/styles.css`` stylesheet of your plugin will be ``/plugins/myplugin/css/styles.css``;
+* the URL of the ``/public/mypluginapi.php`` script of your plugin will be ``/plugins/myplugin/mypluginapi.php``.
+
+However, to ease the migration to GLPI 11.0, we still support public access to the PHP scripts located in the ``/ajax``, ``/front`` and ``/report`` directories,
+and their URL remains unchanged.
+For instance, the URL of the ``/front/index.php`` script of your plugin remains ``/plugins/myplugin/front/index.php``.
 
 Legacy scripts access policy
 ++++++++++++++++++++++++++++
