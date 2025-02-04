@@ -200,7 +200,7 @@ We declare here that our plugin forms are `CSRF <https://en.wikipedia.org/wiki/C
        ];
    }
 
-This function specifies data that will be displayed in the ``Configuration > Plugins`` menu of GLPI as well as some minimal constraints.
+This function specifies data that will be displayed in the ``Setup > Plugins`` menu of GLPI as well as some minimal constraints.
 We reuse the constant ``PLUGIN_MYPLUGIN_VERSION`` declared above.
 You can of course change data according to your needs.
 
@@ -261,8 +261,8 @@ This file must contains initialization and uninstallation functions:
        return true;
    }
 
-Whel all steps are OK, we must return ``true``.
-WIll will populate those ones later while creating/removing database tables.
+When all steps are OK, we must return ``true``.
+We will populate these functions later while creating/removing database tables.
 
 
 Install your plugin
@@ -271,7 +271,7 @@ Install your plugin
 .. image:: /_static/images/install_plugin.png
    :alt: my plugin in confiuguration
 
-Following those first steps, you should be able to install and activate your plugin from ``Configuration > Plugins`` menu.
+Following those first steps, you should be able to install and activate your plugin from ``Setup > Plugins`` menu.
 
 
 Creating an object
@@ -286,14 +286,14 @@ Creating an object
 `CommonDBTM`_ usage and classes creation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This super class allows to manipulate MySQL tables from PHP code.
+This super class adds the ability to manage items in the database.
 Your working classes (in the ``src`` directory) can inherit from it and are called "itemtype" by convention.
 
 .. note::
 
     ℹ️ **Conventions:**
 
-    * Classes must respedct `PSR-12 naming conventions <https://www.php-fig.org/psr/psr-12/>`_. Wa maintain a :doc:`guide on coding standards <../codingstandards>`
+    * Classes must respect `PSR-12 naming conventions <https://www.php-fig.org/psr/psr-12/>`_. We maintain a :doc:`guide on coding standards <../codingstandards>`
 
     * :ref:`SQL tables <dbnaming_conventions>` related to your classes must respect that naming convention: ``glpi_plugin_pluginkey_names``
 
@@ -302,14 +302,14 @@ Your working classes (in the ``src`` directory) can inherit from it and are call
         * plugin key ``myplugin_``
         * itemtype name in plural form ``superassets``
 
-    * :ref:`Tables columns Les champs de tables <dbfields>` must also follow some conventions:
+    * :ref:`Tables columns <dbfields>` must also follow some conventions:
 
         * there must be an ``auto-incremented primary`` field named ``id``
         * foreign keys names use that referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
-        **Warning!** GLPI do not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` or ``CONSTRAINT`` keys.
+        **Warning!** GLPI does not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` or ``CONSTRAINT`` keys.
 
-    * Some extra advices:
+    * Some extra advice:
 
         * always end your files with an extra carriage return
         * never use the closing PHP tag ``?>`` - see https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php
@@ -386,7 +386,7 @@ We declare a few parts:
         }
 
     `getFromDB(integer $id) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L285-L292>`_
-    :  load a line from database into current object using its id.
+    :  load an item from database into current object using its id.
     Fetched data will be available from ``fields`` object property.
     It returns ``false`` if the object does not exists.
 
@@ -435,14 +435,14 @@ We declare a few parts:
         }
 
         if ($superasset->delete(['id' => $superassets_id], true)) {
-            //super asset is no longer present un database.
+            //super asset is no longer present in database.
             //a message will be displayed to user on next displayed page.
         }
 
 Installation
 ^^^^^^^^^^^^
 
-In the ``plugin_myplugin_install`` function of your ``🗋 hook.php`` file, we will manage the creation of the MySQL table corresponding to our itemtype ``Superasset``.
+In the ``plugin_myplugin_install`` function of your ``🗋 hook.php`` file, we will manage the creation of the database table corresponding to our itemtype ``Superasset``.
 
 **🗋 hook.php**
 
@@ -601,7 +601,7 @@ To uninstall our plugin, we want to clean all related data.
 Framework usage
 ^^^^^^^^^^^^^^^
 
-Some few useful functions
+Some useful functions
 
 .. code-block:: php
 
@@ -648,7 +648,7 @@ In our ``front`` directory, we will need two new files.
 
 .. warning::
 
-    ℹ️ Into those files, we will import GLPI framework with the ofllowing:
+    ℹ️ Into those files, we will import GLPI framework with the following:
 
     .. code-block:: php
 
@@ -656,7 +656,7 @@ In our ``front`` directory, we will need two new files.
 
         include ('../../../inc/includes.php');
 
-First file (``superasset.php``) will display liste of rows stored in our table.
+First file (``superasset.php``) will display list of items stored in our table.
 
 It will use the internal search engine ``show`` method of the :doc:`search engine <../devapi/search>`.
 
@@ -791,7 +791,7 @@ We will use our own template that will extends the generic one (because it only 
        blabla
    {% endblock %}
 
-After that step, a call in our browser to `http://glpi/plugins/myplugin/front/superasset.form.php` shoudl display creation form.
+After that step, a call in our browser to `http://glpi/plugins/myplugin/front/superasset.form.php` should display the creation form.
 
 .. warning::
 
@@ -1314,7 +1314,7 @@ They can be defined as global (set ``0``for ``users_id`` field) or personal (set
 .. warning::
 
     **⚠️ Warning**
-    Global preferences are applied to all users ans cannot be reset easily. You must take care to check that adding columns by default to all users will not block the interface or GLPI.
+    Global preferences are applied to all users that don't have any personal preferences set.
 
 .. note::
 
@@ -1555,7 +1555,7 @@ As previous `hooks`, declaration will look like:
     📝 **Exercice**:
     Add the number of associated ``Superasset`` in the computer form header.
     It should be a link to the :ref:`previous added tab <using-core-objects>` to computers.
-    This link will target the sam page, but with the ``forcetab=PluginMypluginSuperasset$1`` parameter.
+    This link will target the same page, but with the ``forcetab=PluginMypluginSuperasset$1`` parameter.
 
 Adding a configuration page
 ---------------------------
@@ -1673,7 +1673,7 @@ Once again, we manage display from a dedicated template file:
        </form>
    {% endif %}
 
-This skeleton retrieves the calls to a tab in the ``Configuration > General`` menu to display the dedicated form.
+This skeleton retrieves the calls to a tab in the ``Setup > General`` menu to display the dedicated form.
 It is useless to add a ``front`` file because the GLPI ``Config`` object already offers a form display.
 
 Note that we display, form the ``myplugin_computer_form`` two yes/no fields named ``myplugin_computer_tab`` and ``myplugin_computer_form``.
@@ -1682,7 +1682,7 @@ Note that we display, form the ``myplugin_computer_form`` two yes/no fields name
 
     ✍️ Complete ``setup.php`` file by defining the new tab in the ``Config`` class.
 
-    You also have to add thos new configuration entries management to install/uninstall methods.
+    You also have to add those new configuration entries management to install/uninstall methods.
     You can use the following:
 
     .. code-block:: php
@@ -1721,7 +1721,7 @@ Those check are done by static ``can*`` functions:
 * `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_)
 * `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_) when ``$force`` parameter is set to ``true``
 
-In order to customize rights, we will redefine thos static methods in our classes.
+In order to customize rights, we will redefine those static methods in our classes.
 
 If we need to check a right manually in our code, the `Session`_ class provides some methods:
 
