@@ -932,10 +932,10 @@ Each ``page`` key is used to indicate on which URL the current part applies.
             '<img src="path/to/my.png" title="my custom link">' => $url
         ]
 
-Defning tabs
-------------
+Defining tabs
+-------------
 
-GLPI proposes three methods to deinfe tabs:
+GLPI proposes three methods to define tabs:
 
 `defineTabs(array $options = []) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_defineTabs>`_
 : declares classes that provides tabs to curretn class.
