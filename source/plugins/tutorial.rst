@@ -1676,7 +1676,7 @@ Once again, we manage display from a dedicated template file:
 This skeleton retrieves the calls to a tab in the ``Setup > General`` menu to display the dedicated form.
 It is useless to add a ``front`` file because the GLPI ``Config`` object already offers a form display.
 
-Note that we display, form the ``myplugin_computer_form`` two yes/no fields named ``myplugin_computer_tab`` and ``myplugin_computer_form``.
+Note that we display, from the ``myplugin_computer_form`` two yes/no fields named ``myplugin_computer_tab`` and ``myplugin_computer_form``.
 
 .. note::
 
