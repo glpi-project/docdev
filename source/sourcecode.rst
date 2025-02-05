@@ -262,31 +262,10 @@ Unit testing (and functional testing)
 
    A note for the purists... In GLPI, there are both unit and functional tests; without real distinction ;-)
 
-We use `PHPUnit <https://phpunit.de>`_ for tests.
-`atoum`'s documentation in available at: http://docs.atoum.org
+We use `PHPUnit <https://phpunit.de>`_ for PHP tests.
 
 For JavaScript tests, GLPI uses the Jest testing framework.
-It's documentation can be found at: https://devdocs.io/jest/.
-
-.. warning::
-
-   With `atoum`, test class **must** refer to an existing class of the project!
-   This means that your test class must have the same name and relative namespace as an existing class.]
-
-Tests isolation
-^^^^^^^^^^^^^^^
-
-PHP tests must be run in an isolated environment. By default, `atoum` use a concurrent mode; that launches tests in a multi-threaded environment. While it is possible to bypass this; this should not be done See http://docs.atoum.org/en/latest/engine.html.
-
-For technical reasons (mainly because of the huge session usage), GLPI PHP unit tests are actually limited to one only thread while running the whole suite; but while developing, the behavior should only be changed if this is really needed.
-
-For JavaScript tests, Jest is able to run multiple tests in parallel as long as they are in different *spec* files since they don't interact with database data or a server.
-This behavior is the default.
-
-Type hitting
-^^^^^^^^^^^^
-
-Unlike PHPUnit, `atoum` is very strict on type hitting. This really makes sense; but often in GLPI types are not what we should expect (for example, we often get a string and not an integer from counting methods).
+Its documentation can be found at: https://devdocs.io/jest/.
 
 Database
 ^^^^^^^^
@@ -323,44 +302,32 @@ When you use a property that has not been declared, you will have errors that ma
 Launch tests
 ^^^^^^^^^^^^
 
-You can install `atoum` from composer (just run ``composer install`` from GLPI directory) or even system wide.
+All required :ref:`third party libraries are installed at once <_3rd_party_libs>`, including testing framework.
 
-There are two directories for tests:
+There are several directories for tests:
 
-* ``tests/units`` for main core tests;
-* ``tests/api`` for API tests.
+* ``phpunit/functionnal`` for main core unit/functional tests;
+* ``phpunit/LDAP`` - requires a LDAP server;
+* ``phpunit/web`` - requires a web server;
+* ``phpunit/imap`` - requires mail server;
 
-You can choose to run tests on a whole directory, or on any file (+ on a specific method). You have to specify a bootstrap file each time:
-
-.. code-block:: bash
-
-   $ atoum -bf tests/bootstrap.php -mcn 1 -d tests/units/
-   [...]
-   $ atoum -bf tests/bootstrap.php -f tests/units/Html.php
-   [...]
-   $ atoum -bf tests/bootstrap.php -f tests/functional/Ticket.php -m tests\units\Ticket::testTechAcls
-
-
-If you want to run the API tests suite, you need to run a development server:
+You can choose to run tests on a whole directory, or on any file (+ on a specific method). Refer to PHPUnit documentation for more information.
 
 .. code-block:: bash
 
-   php -S localhost:8088 tests/router.php &>/dev/null &
+   $ ./vendor/bin/phpunit phpunit/functional/
+   [...]
+   $ ./vendor/bin/phpunit phpunit/functional/ComputerTest.php
+   [...]
+   $ $ ./vendor/bin/phpunit phpunit/functional/ComputerTest.php --filter testSomething
 
 
-Running `atoum` without any arguments will show you the possible options. Most important are:
+If you want to run the web tests suite, you need to run a web server, and give tests its URL when running. Here is an example using PHP native webserver:
 
-* ``-bf`` to set bootstrap file,
-* ``-d`` to run tests located in a whole directory,
-* ``-f`` to run tests on a standalone file,
-* ``-m`` to run tests on a specific method (-f must also be defined),
-* ``--debug`` to get extra information when something goes wrong,
-* ``-mcn`` limit number of concurrent runs. This is unfortunately mandatory running the whole test suite right now :/,
-* ``-ncc`` do not generate code coverage,
-* ``--php`` to change PHP executable to use,
-* ``-l`` loop mode.
+.. code-block:: bash
 
-Note that if you do not use the `-ncc` switch; coverage will be generated in the `tests/code-coverage/` directory.
+   $ php -S localhost:8088 tests/router.php &>/dev/null &
+   $ GLPI_URI=http://localhost:8088 ./vendor/bin/phpunit phpunit/web/
 
 To run the JavaScript unit tests, simply run `npm test` in a terminal from the root of the GLPI folder.
 Currently, there is only a single "project" set up for Jest so this command will run all tests.
