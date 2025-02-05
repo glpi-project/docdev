@@ -322,7 +322,7 @@ You can choose to run tests on a whole directory, or on any file (+ on a specifi
    $ $ ./vendor/bin/phpunit phpunit/functional/ComputerTest.php --filter testSomething
 
 
-If you want to run the web tests suite, you need to run a web server, and give tests its URL when running. Hre is an exampl eusing PHP native webserver:
+If you want to run the web tests suite, you need to run a web server, and give tests its URL when running. Here is an example using PHP native webserver:
 
 .. code-block:: bash
 
