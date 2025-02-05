@@ -28,7 +28,11 @@ Here are all the things you need to start your GLPI plugin project:
 * latest `GLPI <https://github.com/glpi-project/glpi/releases>`_ stable release installed locally
 * a text editor or any IDE (like `vscode <https://code.visualstudio.com>`_ or `phpstorm <https://www.jetbrains.com/phpstorm/>`_),
 * `git <https://git-scm.com/>`_ version management software.
-* `Composer`_ PHP dependency software
+
+You may also need:
+
+* `Composer`_ PHP dependency software, to handle PHP libraries specific for your plugin.
+* `Npm`_ JavaScript dependency software, to handle JavaScript libraries specific for your plugin.
 
 Start your project
 ------------------
@@ -2756,6 +2760,7 @@ To learn this part, with the help of integrate documentation (or `latest stable 
 
 .. _Empty:  https://github.com/pluginsGLPI/empty
 .. _Composer: https://getcomposer.org/download/
+.. _Npm: https://www.npmjs.com/
 .. _CommonDBTM: https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php
 .. _Computer: https://github.com/glpi-project/glpi/blob/10.0.15/src/Computer.php
 .. _Html: https://github.com/glpi-project/glpi/blob/10.0.15/src/Html.php
