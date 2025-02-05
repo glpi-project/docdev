@@ -302,7 +302,7 @@ When you use a property that has not been declared, you will have errors that ma
 Launch tests
 ^^^^^^^^^^^^
 
-All required :ref:`third party libraries are installed at once <_3rd_party_libs>`, including testing framework.
+All required :ref:`third party libraries are installed at once <3rd_party_libs>`, including testing framework.
 
 There are several directories for tests:
 
