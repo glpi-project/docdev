@@ -1503,10 +1503,9 @@ Several things to remember:
 
     📝 **Exercises**:
 
-    #. Add a new icon in preferences menu to display main GLPI configuration. You can use:
+    #. Add a new icon in preferences menu to display main GLPI configuration. You can use `tabler-icons <https://tabler-icons.io/>`_:
 
-      * `tabler-icons <https://tabler-icons.io/>`_ (preferred), ex: ``<a href='...' class='ti ti-mood-smile'></a>``).
-      * `font-awesome v6 <https://fontawesome.com>`_, ex: ``<a href='...' class='fas fa-face-smile'></a>``).
+      * ``<a href='...' class='ti ti-mood-smile'></a>``
 
     #. On ticket edition page, add an icon to self-associate as a requester on the model of the one present for the "assigned to" part.
 
@@ -1566,7 +1565,7 @@ Adding a configuration page
 
 We will add a tab in GLPI configuration so some parts of our plugin can be optional.
 
-We previously add an tab to computers and their form, using hooks in ``setup.php`` file. We will define two configuration options to enable/disable those displays.
+We previously added a tab to the form for computers using hooks in ``setup.php`` file. We will define two configuration options to enable/disable those tabs.
 
 GLPI provides a ``glpi_configs`` table to store software configuration. It allows plugins to save their own data without defining additional tables.
 
@@ -1910,11 +1909,6 @@ Once again, display will be done from a Twig template:
            <input type="hidden" name="id" value="{{ profile.fields['id'] }}">
            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
 
-           {% set  rnd = profile.displayRightsChoiceMatrix(rights, {
-               'canedit': can_edit,
-               'title': __("My plugin", 'myplugin'),
-           }) %}
-
            {% if can_edit %}
                <button type="submit" class="btn btn-primary mx-1" name="update" value="1">
                    <i class="ti ti-device-floppy"></i>
@@ -2023,7 +2017,7 @@ This one inherits from ``CommonDBTM`` and has a ``getRights`` method that we can
 Massive actions
 ---------------
 
-User accessible GLPI massive actions allow to apply modifications to a selection.
+GLPI massive actions allow applying modifications to a selection.
 
 .. image:: ../devapi/images/massiveactions.png
    :alt: massive actions control
@@ -2134,7 +2128,7 @@ Here is a minimal implementation example:
 .. note::
 
     📝 **Exercise**:
-    With the help of the official documentation on :doc:`massive actions <../devapi/massiveactions>`, complete in =your plugin above methods to allow the linking with a computer from "Super assets" massive actions.
+    With the help of the official documentation on :doc:`massive actions <../devapi/massiveactions>`, complete in your plugin the above methods to allow the linking with a computer from "Super assets" massive actions.
 
     You can display a list of computers with:
 
@@ -2143,7 +2137,7 @@ Here is a minimal implementation example:
         Computer::dropdown();
 
 It is also possible to add massive actions to GLPI native objects.
-TO achieve that, you must declare a ``_MassiveActions`` function in the ``hook.php`` file:
+To achieve that, you must declare a ``_MassiveActions`` function in the ``hook.php`` file:
 
 **🗋 hook.php**
 
@@ -2187,41 +2181,41 @@ Notifications
 -------------
 
 .. warning::
-    ⚠️ Access to an SNMP server is recommended; it must be properly configured in ``Configuration > Notifications`` menu.
-    On a development environment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local SMTP server and allow you to get mails sent by GLPI in a graphical interface.
+    ⚠️ Access to an SMTP server is recommended; it must be properly configured in ``Setup > Notifications`` menu.
+    On a development environment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local SMTP server and allow you to get emails sent by GLPI in a graphical interface.
 
-    Please also note that GLPI does not send mails directly. It goes through a queue system.
-    All "pending" notifications are visible in the ``Administration > Email queue`` menu.
-    You can effectively send mails from this menu or by forcing the ``queuedmail`` automatic action.
+    Please also note that GLPI queues all notifications rather than sending them directly. The only exception to this is the test email notification.
+    All "pending" notifications are visible in the ``Administration > Notification queue`` menu.
+    You can send notifications immediately from this menu or by forcing the ``queuednotification`` automatic action.
 
 The GLPI notification system allows sending alerts to the actors of a recorded event.
 By default, notifications can be sent by email or as browser notifications, but other channels may be available from plugins (or you can add your own one).
 
 That system is divided in several classes:
 
-* ``Notification``: the main object. It receives common data like name, activation, sending mode, event, content (``NotificationTemplate``), etc.
+* ``Notification``: the triggering item. It receives common data like name, if it is active, sending mode, event, content (``NotificationTemplate``), etc.
 
    .. image:: /_static/images/Notification.png
       :alt: Add notification form
 
 * ``NotificationTarget``: defines notification recipients.
-    It is possible to define actors from the calling object (author, assignee) or directly other actors (all users of a specific group).
+    It is possible to define recipients based on the triggering item (author, assignee) or static recipients (a specific user, all users of a specific group, etc).
 
    .. image:: /_static/images/NotificationTarget.png
       :alt: Choose actor form
 
-* ``NotificationTemplate``: notification templates used to build the content, which can be choose from Notification form. CSS can be defined in this object, and it receive one or more ``NotificationTemplateTranslation`` instances.
+* ``NotificationTemplate``: notification templates are used to build the content, which can be chosen from Notification form. CSS can be defined in the templates and it receives one or more ``NotificationTemplateTranslation`` instances.
 
    .. image:: /_static/images/NotificationTemplate.png
       :alt: Notification template form
 
-* ``NotificationTemplateTranslation``: receives templates content to be translated. Please note that in the absence of a defined language, the content will be applied regardless of the user's language.
+* ``NotificationTemplateTranslation``: defines the translated template content. If no language is specified, it will be the default translation. If no template translation exists for a user's language, the default translation will be used.
     The content is dynamically generated with tags provided to the user and completed by HTML.
 
    .. image:: /_static/images/NotificationTemplateTranslation.png
       :alt: Template translation form
 
-All those objects are natively managed by GLPI core and does not require any development intervention from us.
+All of these notification-related object are natively managed by GLPI core and does not require any development intervention from us.
 
 We can however trigger a notification execution via the following code:
 
@@ -2233,7 +2227,7 @@ We can however trigger a notification execution via the following code:
 
    NotificationEvent::raiseEvent($event, $item);
 
-The ``event`` key corresponds to the triggering event name defined in the ``Notification`` object and the ``itemtype`` key to the related object.
+The ``event`` key corresponds to the triggering event name defined in the ``Notification`` object and the ``item`` key to the triggering item.
 Therefore, the ``raiseEvent`` method will search the ``glpi_notifications`` table for an active line with these 2 characteristics.
 
 To use this trigger in our plugin, we will add a new class ``PluginMypluginNotificationTargetSuperasset``.
@@ -2287,14 +2281,14 @@ We have to declare our ``Superasset`` object can send notifications in our ``ini
        ]);
    }
 
-With this minimal code, it's possible to manually create using GLPI UI a new notification targeting our ``Superasset`` itemtype and with the 'My event label' event and then use the ``raiseEvent`` method with these parameters.
+With this minimal code it's possible to create using the GLPI UI, a new notification targeting our ``Superasset`` itemtype and with the 'My event label' event and then use the ``raiseEvent`` method with these parameters.
 
 .. note::
 
     📝 **Exercise**:
     Along with an effective sending test, you will manage installation and uninstallation of notification and related objects (templates, translations).
 
-    You can take example on (still incomplete) on :doc:`notifications in plugins documentation <notifications>`.
+    You can see an example (still incomplete) on :doc:`notifications in plugins documentation <notifications>`.
 
 Automatic actions
 -----------------
@@ -2342,7 +2336,7 @@ To add one or more automatic actions to our class, we will add those methods:
        }
    }
 
-To tell GLPI that automatic action does exists, you just have to install it:
+To tell GLPI that the automatic action exists, you just have to register it:
 
 **🗋 hook.php**
 
@@ -2369,19 +2363,19 @@ To tell GLPI that automatic action does exists, you just have to install it:
        );
    }
 
-No need to manage uninstallation (`unregister`), GLPI handle that itself on plugin removal.
+No need to manage uninstallation (`unregister`) as GLPI will handle that itself when the plugin is uninstalled.
 
 .. _plugin_publication:
 
 Publishing your plugin
 ----------------------
 
-You consider your plugin is ready and covers a real need, so you can submit it to the community.
+When you consider your plugin is ready and covers a real need, you can submit it to the community.
 
-The `plugins catalog <http://plugins.glpi-project.org/>`_ allows GLPI users to discover, download and follow plugins provided by the developers community.
+The `plugins catalog <http://plugins.glpi-project.org/>`_ allows GLPI users to discover, download and follow plugins provided by the community as well as first-party plugins provided by Teclib'.
 
 Just publish your code to an publicly accessible GIT repository (`github <https://github.com/>`_, `gitlab <https://gitlab.com>`_, ...) with an `open source license <https://choosealicense.com/>`_ of your choice and prepare an XML description file of your plugin.
-XML file must follow that structure:
+The XML file must follow this structure:
 
 .. code-block:: xml
    :linenos:
@@ -2434,7 +2428,7 @@ XML file must follow that structure:
       </screenshots>
    </root>
 
-Take care of this XML file content, add a detailled description in several languages, representative screenshots and icon - make users want to install it ✰
+To market this plugin to a wide range of users, you should add a detailed description in several languages and provide screenshots that represent your plugin. ✰
 
 Finally, submit your XML file on the `dedicated page <http://plugins.glpi-project.org/#/submit>`_ of the plugins catalog (registration is required).
 
@@ -2477,25 +2471,26 @@ Dashboards
 
 Since GLPI 9.5, dashboards are available from:
 
-* central page
+* Central page
 * Assets menu
 * Assistance menu
+* Ticket search results (mini dashboard)
 
-This feature is slitted in several concepts - sub classes:
+This feature is split into several concepts - sub classes:
 
-* a 26*24 placement grid (``Glpi\Dashboard\Grid``)
-* a widgets collection (``Glpi\Dashboard\Widget``) to graphically display data
-* a data providers collection (``Glpi\Dashboard\Provider``) that queries the database
+* a placement grid (``Glpi\Dashboard\Grid``)
+* a widget collection (``Glpi\Dashboard\Widget``) to graphically display data
+* a data provider collection (``Glpi\Dashboard\Provider``) that queries the database
 * rights (``Glpi\Dashboard\Right``) on each dashboard
 * filters (``Glpi\Dashboard\Filter``) that can be displayed in a dashboard header and impacting providers.
 
-With thos classes, we can build a dashboard that will display cards on its grid.
+With these classes, we can build a dashboard that will display cards on its grid.
 A card is a combination of a widget, a data provider, a place on grid and various options (like a background colour for example).
 
-Completing existing
-~~~~~~~~~~~~~~~~~~~
+Completing existing concepts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From your plugin, you can complete those concepts with your own data and code.
+From your plugin, you can complete these concepts with your own data and code.
 
 **🗋 setup.php**
 
@@ -2642,13 +2637,13 @@ A few explanations on those methods:
 * ``getTypes()``: define available widgets for cards and methods to call for display.
 * ``getCards()``: define available cards for dashboards (when added to the grid). As previously explained, each is defined from a label, widget and optional data provider (from core or your plugin) combination
 * ``cardWidget()``: use provided parameters to display HTML. You are free to delegate display to a Twig template, and use your favourite JavaScript library.
-* ``cardWidgetWithoutProvider()``: almost the same as the ``cardWidget()``, but doe snot use parameters and just returns a static HTML.
+* ``cardWidgetWithoutProvider()``: almost the same as the ``cardWidget()``, but does not use parameters and just returns a static HTML.
 * ``cardBigNumberProvider()``: provider and expected return example when grid will display card.
 
 Display your own dashboard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-GLPI dashboards system is modular, you can use it in your own displays.
+GLPI dashboards system is modular and you can use it in your own displays.
 
 .. code-block:: php
    :linenos:
@@ -2666,14 +2661,14 @@ Translating your plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 In many places in current document, code exmaples takes care of using `gettext`_ GLPI notations to display strings to users.
-Event if your plugin will be restricted, it is a good practice to keep this `gettext`_ usage.
+Even if your plugin will be private, it is a good practice to keep this `gettext`_ usage.
 
 See :doc:`developper guide translation documentation <../devapi/translations>` for more explanations and list of PHP functions that can be used.
 
-* On your local instance, you cans use software like `poedit <https://poedit.net>`_ to manage your translations.
-* You can also rely on on-line services like `Transifex <https://www.transifex.com>`_ or `Weblate <https://weblate.org>`_ (both are free for open source projects).
+* On your local instance, you can use software like `poedit <https://poedit.net>`_ to manage your translations.
+* You can also rely on online services like `Transifex <https://www.transifex.com>`_ or `Weblate <https://weblate.org>`_ (both are free for open source projects).
 
-If you have used the `Empty`_ skeleton, you will benefit from command line tools to manage your locales:
+If you have used the `Empty`_ plugin skeleton, you will benefit from command line tools to manage your locales:
 
 .. code-block:: shell
 
@@ -2697,14 +2692,14 @@ Configuration
 ^^^^^^^^^^^^^
 
 For security reasons, API is disabled bu default.
-From the ``Configuration > General, API tab`` menu, you can enable it.
+From the ``Setup > General, API tab`` menu, you can enable it.
 
 It's available from your instance at:
 
 * ``http://path/to/glpi/apirest.php``
 * ``http://path/to/glpi/apixmlrpc.php``
 
-First link includes an integrated documentation when you access it from a simple browser (a link is provided as soon as the API is active).
+The first link includes an integrated documentation when you access it from a simple browser (a link is provided as soon as the API is active).
 
 For the rest of the configuration:
 
@@ -2719,18 +2714,18 @@ For the rest of the configuration:
 ----
 
 You can use the `API usage bootstrap <https://github.com/orthagh/glpi_boostrap_api>`_.
-This one is written in PHP and relies on `Guzzle <http://docs.guzzlephp.org/>`_ library to hanlde HTTP requests.
+This one is written in PHP and relies on `Guzzle <http://docs.guzzlephp.org/>`_ library to handle HTTP requests.
 
 By default, it does a connection with login details defined in the ``config.inc.php`` file (that you must create by copying the ``config.inc.example`` file).
 
 .. warning::
 
-    ⚠️ Make sure the script is working as expected before going on.
+    ⚠️ Make sure the script is working as expected before continuing.
 
 API usage
 ^^^^^^^^^
 
-To learn this part, with the help of integrate documentation (or `latest stable GLPI API documentation on github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`_), we will do several exercises:
+To learn this part, with the help of integrated documentation (or `latest stable GLPI API documentation on github <https://github.com/glpi-project/glpi/blob/master/apirest.md>`_), we will do several exercises:
 
 .. note::
 
