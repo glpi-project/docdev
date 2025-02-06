@@ -51,6 +51,8 @@ PHP class name            Table name
 ``PluginExampleProfile``  ``glpi_plugin_example_profiles``
 ========================  ================================
 
+.. _dbfields:
+
 Fields
 ++++++
 
