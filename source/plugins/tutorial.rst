@@ -2405,7 +2405,8 @@ The XML file must follow this structure:
       <versions>
          <version>
             <num>1.0</num>
-            <compatibility>0.90</compatibility>
+            <compatibility>10.0</compatibility>
+            <download_url>http://link/to/your/download/glpi-myplugin-1.0.tar.bz2</download_url>
          </version>
       </versions>
       <langs>
@@ -2431,6 +2432,20 @@ The XML file must follow this structure:
 To market this plugin to a wide range of users, you should add a detailed description in several languages and provide screenshots that represent your plugin. ✰
 
 Finally, submit your XML file on the `dedicated page <http://plugins.glpi-project.org/#/submit>`_ of the plugins catalog (registration is required).
+
+.. note::
+
+   Path to plugin XML file must display the raw XML file itself. For example, the following URL for the `exmple` plugin would be incorrect:
+
+   ::
+
+      https://github.com/pluginsGLPI/example/blob/main/example.xml
+
+   The correct one (use Github UI `raw` button) would be:
+
+   ::
+
+      https://raw.githubusercontent.com/pluginsGLPI/example/refs/heads/main/example.xml
 
 Teclib' will receive a notification for this submission and after some checks, will activate the publication on the catalog.
 
