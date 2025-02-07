@@ -1,6 +1,8 @@
 Plugin development tutorial
 ===========================
 
+This tutorial explores the basic concepts of GLPI while building a simple plugin. It has been written to be explained during a training session, but most of this document could be read and used by people wanting to write plugins. Don't hesitate to suggest enhancements or contribute at this address: https://github.com/glpi-project/docdev
+
 .. warning::
 
     ⚠️ Several prerequisites are required in order to follow this tutorial:
@@ -143,7 +145,7 @@ Minimal plugin structure
 minimal setup.php
 ^^^^^^^^^^^^^^^^^
 
-After running ``plugin.sh`` script, there muse be ``🗋 setup.php`` file in your ``📂 myplugin`` directory.
+After running ``plugin.sh`` script, there must be a ``🗋 setup.php`` file in your ``📂 myplugin`` directory.
 
 It contains the following code:
 
@@ -246,7 +248,7 @@ It allows to automatically deactivate plugin if defined criteria are not or no l
 minimal hook.php
 ^^^^^^^^^^^^^^^^
 
-This file must contains initialization and uninstallation functions:
+This file must contains installation and uninstallation functions:
 
 **🗋 hook.php**
 
@@ -309,7 +311,7 @@ Your working classes (in the ``src`` directory) can inherit from it and are call
     * :ref:`Tables columns <dbfields>` must also follow some conventions:
 
         * there must be an ``auto-incremented primary`` field named ``id``
-        * foreign keys names use that referenced table name without the global``glpi_``prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
+        * foreign keys names use that referenced table name without the global ``glpi_`` prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
         **Warning!** GLPI does not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` or ``CONSTRAINT`` keys.
 
@@ -538,7 +540,7 @@ To handle migration from a version to another of our plugin, we will use GLPI `M
 
 .. warning::
 
-  ℹ️ `Migration `_ class provides several methods that permit to manipulate tables and fields.
+  ℹ️ `Migration`_ class provides several methods that permit to manipulate tables and fields.
   All calls will be stored in queue that will be executed when calling ``executeMigration`` method.
 
   Here are some examples:
@@ -918,7 +920,7 @@ Each ``page`` key is used to indicate on which URL the current part applies.
 
 .. note::
 
-    ℹ️ GLPI menu is lodaed in ``$_SESSION['glpimenu']`` on login.
+    ℹ️ GLPI menu is loaded in ``$_SESSION['glpimenu']`` on login.
     To see your changes, either use the ``DEBUG`` mode, or disconnect and reconnect.
 
 .. note::
@@ -1181,7 +1183,7 @@ Title and content for this tab are done as previously with:
 Defining Search options
 -----------------------
 
-:ref`Search options <search_options>` is an array of columns for GLPI search engine. They are used to know for each itemtype how the database must be queried, and how data should be dosplayed.
+:ref:`Search options <search_options>` is an array of columns for GLPI search engine. They are used to know for each itemtype how the database must be queried, and how data should be displayed.
 
 In our class, we must declare a ``rawSearchOptions`` method:
 
@@ -1313,7 +1315,7 @@ Search engine display preferences
 
 We just have added new columns to our itemtype list.
 Those columns are handled by ``DisplayPreference`` object (``glpi_displaypreferences`` table).
-They can be defined as global (set ``0``for ``users_id`` field) or personal (set ``users_id`` field to the user id). They are sorted (``rank`` field) and target an itemtype plus a ``searchoption`` (``num`` field).
+They can be defined as global (set ``0`` for ``users_id`` field) or personal (set ``users_id`` field to the user id). They are sorted (``rank`` field) and target an itemtype plus a ``searchoption`` (``num`` field).
 
 .. warning::
 
@@ -1347,7 +1349,7 @@ For every event applied on the database, we have a method that is executed befor
     📝 **Exercise**:
     Add required methods to ``PluginMypluginSuperasset`` class to check the ``name`` field is properly filled when adding and updating.
 
-    On effective removal,we must ensure linked data from other tables are also removed.
+    On effective removal, we must ensure linked data from other tables are also removed.
 
 Plugins can also intercept standard core events to apply changes (or even refuse the event). Here are the names of the `hooks`:
 
@@ -1474,7 +1476,6 @@ Several things to remember:
 
 * Loading paths are relative to plugin directory.
 * Scripts declared this way will be loaded on **all** GLPI pages. You must check the current page in the ``init`` function.
-* Script extension is **not** checked by GLPI, you can load a PHP file as a JS script. You will have to force the mime-type in the loaded file (ex: ``header("Content-type: application/javascript");``).
 * You can rely on ``Html::requireJs()`` method to load external resources. Paths will be prefixed with GLPI root URL at load.
 * If you want to modify page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
 
@@ -1707,7 +1708,7 @@ Note that we display, from the ``myplugin_computer_form`` two yes/no fields name
         $config = new Config();
         $config->deleteByCriteria(['context' => '##context##']);
 
-    *Do not forget to replace ``##`` surrounded terms with your own values*
+    Do not forget to replace ``##`` surrounded terms with your own values!
 
 
 Managing rights
@@ -1719,10 +1720,10 @@ This will check ``$rightname`` property of class that inherits `CommonDBTM`_ for
 Those check are done by static ``can*`` functions:
 
 
-* `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ for `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_)
-* `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_ for `update <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_update>`_)
-* `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_)
-* `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_) when ``$force`` parameter is set to ``true``
+* `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ for `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_
+* `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_ for `update <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_update>`_
+* `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_
+* `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_ when ``$force`` parameter is set to ``true``
 
 In order to customize rights, we will redefine those static methods in our classes.
 
@@ -2210,6 +2211,7 @@ That system is divided in several classes:
       :alt: Notification template form
 
 * ``NotificationTemplateTranslation``: defines the translated template content. If no language is specified, it will be the default translation. If no template translation exists for a user's language, the default translation will be used.
+
     The content is dynamically generated with tags provided to the user and completed by HTML.
 
    .. image:: /_static/images/NotificationTemplateTranslation.png
@@ -2429,7 +2431,7 @@ The XML file must follow this structure:
       </screenshots>
    </root>
 
-To market this plugin to a wide range of users, you should add a detailed description in several languages and provide screenshots that represent your plugin. ✰
+To market this plugin to a wide range of users, you should add a detailed description in several languages and provide screenshots that represent your plugin.
 
 Finally, submit your XML file on the `dedicated page <http://plugins.glpi-project.org/#/submit>`_ of the plugins catalog (registration is required).
 
