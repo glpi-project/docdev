@@ -170,12 +170,11 @@ An optional constant declaration for your plugin version number used later in th
    function plugin_init_myplugin() {
       global $PLUGIN_HOOKS;
 
-      $PLUGIN_HOOKS['csrf_compliant']['myplugin'] = true;
+      //hooks declarations here...
    }
 
 This instanciation function is important, we will declare later here `Hooks` on GLPI internal API.
 It's systematically called on **all** GLPI pages except if the ``_check_prerequisites`` fails (see below).
-We declare here that our plugin forms are `CSRF <https://en.wikipedia.org/wiki/Cross-Site_Request_Forgery>`_ compliant even if for now our plugin does not contain any form.
 
 **🗋 setup.php**
 
