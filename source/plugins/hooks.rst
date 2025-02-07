@@ -5,6 +5,8 @@ GLPI provides a certain amount of "hooks". Their goal is for plugins (mainly) to
 
 This page describes current existing hooks; but not the way they must be implemented from plugins. Please refer to the plugins development documentation.
 
+.. _standards_hooks:
+
 Standards Hooks
 ^^^^^^^^^^^^^^^
 
@@ -403,6 +405,8 @@ Hooks that cannot be classified in above categories :)
 ``post_plugin_clean``
   Called after a plugin is cleaned (removed from the database after the folder is deleted)
 
+.. _business_related_hooks:
+
 Items business related
 ++++++++++++++++++++++
 
@@ -462,6 +466,8 @@ Hooks that can do some busines stuff on items.
    .. versionadded:: 9.2
 
    Permit to filter search results.
+
+.. _display_related_hooks:
 
 Items display related
 +++++++++++++++++++++
