@@ -943,14 +943,11 @@ Defining tabs
 
 GLPI proposes three methods to define tabs:
 
-`defineTabs(array $options = []) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_defineTabs>`_
-: declares classes that provides tabs to current class.
+`defineTabs(array $options = []) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L292-L302>`_: declares classes that provides tabs to current class.
 
-`getTabNameForItem(CommonGLPI $item, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_getTabNameForItem>`_
-: declares titles displayed for tabs.
+`getTabNameForItem(CommonGLPI $item, boolean $withtemplate = 0) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L598-L611>`_: declares titles displayed for tabs.
 
-`displayTabContentForItem(CommonGLPI $item, integer $tabnum = 1, boolean $withtemplate = 0) <https://forge.glpi-project.org/apidoc/class-CommonGLPI.html#_displayTabContentForItem>`_
-: allow displaying tabs contents.
+`displayTabContentForItem(CommonGLPI $item, integer $tabnum = 1, boolean $withtemplate = 0) <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L617-L628>`_: allow displaying tabs contents.
 
 Standards tabs
 ^^^^^^^^^^^^^^
@@ -1720,10 +1717,10 @@ This will check ``$rightname`` property of class that inherits `CommonDBTM`_ for
 Those check are done by static ``can*`` functions:
 
 
-* `canCreate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canCreate>`_ for `add <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_add>`_
-* `canUpdate <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canUpdate>`_ for `update <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_update>`_
-* `canDelete <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canDelete>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_
-* `canPurge <https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_canPurge>`_ for `delete <(https://forge.glpi-project.org/apidoc/class-CommonDBTM.html#_delete>`_ when ``$force`` parameter is set to ``true``
+* `canCreate <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L169-L175>`_ for `add <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1230-L1240>`_
+* `canUpdate <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L202-L210>`_ for `update <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L1561-L1570>`_
+* `canDelete <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L219-L226>`_ for `delete <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2027-L2036>`_
+* `canPurge <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonGLPI.php#L235-L242>`_ for `delete <https://github.com/glpi-project/glpi/blob/10.0.15/src/CommonDBTM.php#L2027-L2036>`_ when ``$force`` parameter is set to ``true``
 
 In order to customize rights, we will redefine those static methods in our classes.
 
