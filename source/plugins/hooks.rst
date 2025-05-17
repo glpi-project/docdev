@@ -1,713 +1,1263 @@
 Hooks
 -----
 
-GLPI provides a certain amount of "hooks". Their goal is for plugins (mainly) to work on certain places of the framework; like when an item has been added, updated, deleted, ...
+GLPI provides over 130 "hooks". Their goal is for plugins to be able to expand functionality of GLPI and react to specific events; like when an item has been added, updated, deleted, etc.
+The hooks are primarily interacted with through the "$PLUGIN_HOOKS" global array from the plugin's ``init`` function.
+Some hooks though are automatically called if a specific function exists in the plugin's ``hook.php`` file.
 
-This page describes current existing hooks; but not the way they must be implemented from plugins. Please refer to the plugins development documentation.
+This page describes the different currently existing hooks. For more information about plugin development, please refer to the plugins development documentation.
 
-.. _standards_hooks:
+Hooks
+#####
+ADD_CSS
+*******
 
-Standards Hooks
-^^^^^^^^^^^^^^^
+Add CSS file in the head of all non-anonymous pages.
 
-Usage
-+++++
 
-Aside from their goals or when/where they're called; you will see three types of different hooks. Some will receive an item as parameter, others an array of parameters, and some won't receive anything. Basically, the way they're declared into your plugin, and the way you'll handle that will differ.
 
-All hooks called are defined in the ``setup.php`` file of your plugin; into the ``$PLUGIN_HOOKS`` array. The first key is the hook name, the second your plugin name; values can be just text (to call a function declared in the ``hook.php`` file), or an array (to call a static method from an object):
+ADD_JAVASCRIPT
+**************
 
-.. code-block:: php
+Add classic JavaScript file in the head of all non-anonymous pages.
 
-   <?php
-   //call a function
-   $PLUGIN_HOOKS['hook_name']['plugin_name'] = 'function_name';
-   //call a static method from an object
-   $PLUGIN_HOOKS['other_hook']['plugin_name'] = ['ObjectName', 'methodName'];
-
-Without parameters
-~~~~~~~~~~~~~~~~~~
-
 
-Those hooks are called without any parameters; you cannot attach them to any itemtype; basically they'll permit youi to display extra informations. Let's say you want to call the ``display_login`` hook, in you ``setup.php`` you'll add something like:
 
-.. code-block:: php
+ADD_JAVASCRIPT_MODULE
+*********************
 
-   <?php
-   $PLUGIN_HOOKS['display_login']['myPlugin'] = 'myplugin_display_login';
+Add ESM JavaScript module in the head of all non-anonymous pages.
 
-You will also have to declare the function you want to call in you ``hook.php`` file:
 
-.. code-block:: php
+ADD_HEADER_TAG
+**************
 
-   <?php
-   /**
-     * Display informations on login page
-     *
-     * @return void
-     */
-   public function myplugin_display_login () {
-      echo "That line will appear on the login page!";
-   }
+Add a header tag in the head of all non-anonymous pages.
 
-The hooks that are called without parameters are: ``display_central``, ``post_init init_session``, ``change_entity``, ``change_profile```, ``display_login`` and ``add_plugin_where``.
 
-.. _hook_item_parameter:
+JAVASCRIPT
+**********
 
-With item as parameter
-~~~~~~~~~~~~~~~~~~~~~~
+Register one or more on-demand JavaScript files.
+On-demand JS files are loaded based on the `$CFG_GLPI['javascript']` array.
+Example: `$PLUGIN_HOOKS[Hooks::JAVASCRIPT]['your_js_name'] = ['path/to/your/file.js'];`
 
-Those hooks will send you an item instance as parameter; you'll have to attach them to the itemtypes you want to apply on. Let's say you want to call the ``pre_item_update`` hook for `Computer` and `Phone` item types, in your ``setup.php`` you'll add something like:
 
-.. code-block:: php
+ADD_CSS_ANONYMOUS_PAGE
+**********************
 
-   <?php
-   $PLUGIN_HOOKS['pre_item_update']['myPlugin'] = [
-      'Computer'  => 'myplugin_updateitem_called',
-      'Phone'     => 'myplugin_updateitem_called'
-   ];
+Add CSS file in the head of all anonymous pages.
 
-You will also have to declare the function you want to call in you ``hook.php`` file:
 
-.. code-block:: php
+ADD_JAVASCRIPT_ANONYMOUS_PAGE
+*****************************
 
-   <?php
-   /**
-    * Handle update item hook
-    *
-    * @param CommonDBTM $item Item instance
-    *
-    * @return void
-    */
-   public function myplugin_updateitem_called (CommonDBTM $item) {
-      //do everything you want!
-      //remember that $item is passed by reference (it is an abject)
-      //so changes you will do here will be used by the core.
-      if ($item::getType() === Computer::getType()) {
-         //we're working with a computer
-      } elseif ($item::getType() === Phone::getType()) {
-         //we're working with a phone
-      }
-   }
+Add classic JavaScript file in the head of all anonymous pages.
 
-The hooks that are called with item as parameter are: ``item_empty``, ``pre_item_add``, ``post_prepareadd``, ``item_add``, ``pre_item_update``, ``item_update``, ``pre_item_purge``, ``pre_item_delete``, ``item_purge``, ``item_delete``, ``pre_item_restore``, ``item_restore``, ``autoinventory_information``, ``item_add_targets``, ``item_get_events``, ``item_action_targets``, ``item_get_datas``.
 
-With array of parameters
-~~~~~~~~~~~~~~~~~~~~~~~~
+ADD_JAVASCRIPT_MODULE_ANONYMOUS_PAGE
+************************************
 
-These hooks will work just as the :ref:`hooks with item as parameter <hook_item_parameter>` expect they will send you an array of parameters instead of only an item instance. The array will contain two entries: ``item`` and ``options``, the first one is the item instance, the second options that have been passed:
+Add ESM JavaScript module in the head of all anonymous pages.
 
-.. code-block:: php
 
-   <?php
-   /**
-    * Function that handle a hook with array of parameters
-    *
-    * @param array $params Array of parameters
-    *
-    * @return void
-    */
-   public function myplugin_params_hook(array $params) {
-      print_r($params);
-      //Will display:
-      //Array
-      //(
-      //   [item] => Computer Object
-      //      (...)
-      //
-      //   [options] => Array
-      //      (
-      //            [_target] => /front/computer.form.php
-      //            [id] => 1
-      //            [withtemplate] =>
-      //            [tabnum] => 1
-      //            [itemtype] => Computer
-      //      )
-      //)
-   }
+ADD_HEADER_TAG_ANONYMOUS_PAGE
+*****************************
 
-The hooks that are called with an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``pre_itil_info_section``, ``post_itil_info_section``, ``item_transfer``.
+Add a header tag in the head of all anonymous pages.
 
-Some hooks will receive a specific array as parameter, they will be detailled below.
 
-Unclassified
-++++++++++++
+CHANGE_ENTITY
+*************
 
-Hooks that cannot be classified in above categories :)
+Register a function to be called when the entity is changed.
 
-``secured_fields``
-   .. versionadded:: 9.4.6
 
-   An array of fields names (with table like ``glpi_mytable.myfield``) that are stored using GLPI crypting methods.
-   This allows plugins to add some fields to the ``glpi:security:changekey`` command.
+CHANGE_PROFILE
+**************
 
-   .. warning::
+Register a function to be called when the profile is changed.
 
-       Plugins have to ensure crypt migration on their side is OK; and once using it, they **must** properly declare fields.
 
-       All fields that would use the key file without being listed would be unreadable after key has been changed (and stored data would stay potentially unsecure).
+DISPLAY_LOGIN
+*************
 
-``secured_configs``
-   .. versionadded:: 9.4.6
+Register a function to output some content on the login page.
 
-   An array of configuration entries that are stored using GLPI crypting methods.
-   This allows plugins to add some entries to the ``glpi:security:changekey`` command.
 
-   .. warning::
+DISPLAY_CENTRAL
+***************
 
-       Plugins have to ensure crypt migration on their side is OK; and once using it, they **must** properly declare fields.
+Register a function to output some content on the standard (central) or simplified interface (helpdesk) home page.
+This hook is called inside a table element.
 
-       All configuration entries that would use the key file without being listed would be unreadable after key has been changed (and stored data would stay potentially unsecure).
 
-``add_javascript``
-   Add javascript in **all** pages headers
+DISPLAY_NETPORT_LIST_BEFORE
+***************************
 
-   .. versionadded:: 9.2
+Register a function to output some content before the network port list.
 
-      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
 
-      The name of the minified ``plugin.js`` file must be ``plugin.min.js``
+INIT_SESSION
+************
 
+Register a function to be called when the session is initialized.
 
-``add_css``
-   Add CSS stylesheet on **all** pages headers
 
-   .. versionadded:: 9.2
+POST_INIT
+*********
 
-      Minified CSS files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+Register a function to be called after all plugins are initialized.
 
-      The name of the minified ``plugin.css`` file must be ``plugin.min.css``
 
-``add_javascript_anonymous_page``
-   Add javascript in **all anonymous** pages headers
+CONFIG_PAGE
+***********
 
-   .. versionadded:: 10.0.18
+Register a URL relative to the plugin's root URL for the plugin's config page.
 
-      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
 
-      The name of the minified ``plugin_anonymous.js`` file must be ``plugin_anonymous.min.js``
+USE_MASSIVE_ACTION
+******************
 
-``add_javascript_module_anonymous_page``
-   Add javascript module in **all anonymous** pages headers
+Set to true if the plugin wants to use the Hooks::AUTO_MASSIVE_ACTIONS hook.
+Example: $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['myplugin'] = true;
 
-   .. versionadded:: 10.0.18
 
-      Minified javascript files are checked automatically. You will just have to provide a minified file along with the original to get it used!
+ASSIGN_TO_TICKET
+****************
 
-      The name of the minified ``mymodule_anonymous.js`` file must be ``mymodule_anonymous.min.js``
+Set to true if the plugin wants to use the Hooks::AUTO_ASSIGN_TO_TICKET hook.
+Example: $PLUGIN_HOOKS[Hooks::ASSIGN_TO_TICKET]['myplugin'] = true;
 
 
-``add_css_anonymous_page``
-   Add CSS stylesheet on **all anonymous** pages headers
+IMPORT_ITEM
+***********
 
-   .. versionadded:: 10.0.18
+Set to true if the plugin can import items. Adds the plugin as a source criteria for 'Rules for assigning an item to an entity'
 
-      Minified CSS files are checked automatically. You will just have to provide a minified file along with the original to get it used!
 
-      The name of the minified ``plugin_anonymous.css`` file must be ``plugin_anonymous.min.css``
+RULE_MATCHED
+************
 
-``add_header_tag_anonymous_page``
-   Add header tags in **all anonymous** pages headers
+Register a function to be called when the rules engine matches a rule.
+The function is called with an array containing several properties including:
+* 'sub_type' => The subtype of the rule (Example: RuleTicket)
+* 'ruleid' => The ID of the rule
+* 'input' => The input data sent to the rule engine
+* 'output' => The current output data
+The function is not expected to return anything and the data provided to it cannot be modified.
 
-   .. versionadded:: 10.0.18
 
-``display_central``
-   Displays something on central page
+VCARD_DATA
+**********
 
-``display_login``
-   Displays something on the login page
+Register a function to be called when a vCard is generated.
+The function is called with an array containing several properties including:
+* 'item' => The item for which the vCard is generated
+* 'data' => The vCard data
+The function is expected to modify the given array as needed and return it.
 
-``status``
-   Displays status
 
-``post_init``
-   After the framework initialization
+POST_PLUGIN_DISABLE
+*******************
 
-``rule_matched``
-   After a rule has matched.
+Register a function to be called when the plugin is disabled.
+The function is called with the plugin name as a parameter.
 
-   This hook will receive a specific array that looks like:
 
-   .. code-block:: php
+POST_PLUGIN_CLEAN
+*****************
 
-      <?php
-      $hook_params = [
-         'sub_type'  => 'an item type',
-         'rule_id'   => 'tule id',
-         'input'     => array(), //original input
-         'output'    => array()  //output modified by rule
-      ];
+Register a function to be called when the plugin is cleaned from the database.
+The function is called with the plugin name as a parameter.
 
-``redefine_menus``
-   Add, edit or remove items from the GLPI menus.
 
-   This hook will receive the current GLPI menus definition as an argument and must return the new definition.
+POST_PLUGIN_INSTALL
+*******************
 
+Register a function to be called when the plugin is installed.
+The function is called with the plugin name as a parameter.
 
-``init_session``
-   At session initialization
 
-``change_entity``
-   When entity is changed
+POST_PLUGIN_UNINSTALL
+*********************
 
-``change_profile``
-   When profile is changed
+Register a function to be called when the plugin is uninstalled.
+The function is called with the plugin name as a parameter.
 
-``pre_kanban_content``
-   .. versionadded:: 9.5
 
-   Set or modify the content that shows before the main content in a Kanban card.
+POST_PLUGIN_ENABLE
+******************
 
-   This hook will receive a specific array that looks like:
+Register a function to be called when the plugin is enabled.
+The function is called with the plugin name as a parameter.
 
-   .. code-block:: php
 
-      <?php
-      $hook_params = [
-         'itemtype'  => string, //item type that is showing the Kanban
-         'items_id'  => int, //ID of itemtype showing the Kanban
-         'content'   => string //current content shown before main content
-      ];
+DISPLAY_LOCKED_FIELDS
+*********************
 
-``post_kanban_content``
-   .. versionadded:: 9.5
+Register a function to be called to show locked fields managed by the plugin.
+The function is called with an array containing several properties including:
+* 'item' => The item for which the locked fields are shown
+* 'header' => Always false. //TODO WHY!?
 
-   Set or modify the content that shows after the main content in a Kanban card.
 
-   This hook will receive a specific array that looks like:
+PRE_KANBAN_CONTENT
+******************
 
-   .. code-block:: php
+Register a function to define content to show before the main content of a Kanban card.
+This function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-      <?php
-      $hook_params = [
-         'itemtype'  => string, //item type that is showing the Kanban
-         'items_id'  => int, //ID of itemtype showing the Kanban
-         'content'   => string //current content shown after main content
-      ];
 
-``kanban_filters``
-   .. versionadded 10.0
+POST_KANBAN_CONTENT
+*******************
 
-   Add new filter definitions for Kanban by itemtype.
+Register a function to define content to show after the main content of a Kanban card.
+This function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-   This data is set directly in $PLUGIN_HOOKS like:
 
-   .. code-block:: php
+KANBAN_ITEM_METADATA
+********************
 
-      <?php
-      $PLUGIN_HOOKS['kanban_filters']['tag'] = [
-         'Ticket' => [
-            'tag' => [
-               'description' => _x('filters', 'If the item has a tag'),
-               'supported_prefixes' => ['!']
-            ],
-            'tagged' => [
-               'description' => _x('filters', 'If the item is tagged'),
-               'supported_prefixes' => ['!']
-            ]
-         ],
-         'Project' => [
-            'tag' => [
-               'description' => _x('filters', 'If the item has a tag'),
-               'supported_prefixes' => ['!']
-            ],
-            'tagged' => [
-               'description' => _x('filters', 'If the item is tagged'),
-               'supported_prefixes' => ['!']
-            ]
-         ];
-      ]
+Register a function to redefine metadata for a Kanban card.
+This function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+* 'metadata' => The current metadata for the Kanban card
+The function is expected to modify the given array as needed and return it.
 
-``kanban_item_metadata``
-   .. versionadded 10.0
 
-   Set or modify the metadata for a Kanban card. This metadata isn't displayed directly but will be used by the filtering system.
+KANBAN_FILTERS
+**************
 
-   This hook will receive a specific array that looks like:
+Define extra Kanban filters by itemtype.
+Example:
+```
+$PLUGIN_HOOKS[Hooks::KANBAN_FILTERS]['myplugin'] = [
+    'Ticket' => [
+        'new_metadata_property' => [
+            'description' => 'My new property'
+            'supported_prefixes' => ['!']
+        ]
+    ]
+]
+```
 
-   .. code-block:: php
 
-      <?php
-      $hook_params = [
-         'itemtype'  => string, //item type that is showing the Kanban
-         'items_id'  => int, //ID of itemtype showing the Kanban
-         'metadata'  => array //current metadata array
-      ];
-``vcard_data``
-   .. versionadded 9.5
+PRE_KANBAN_PANEL_CONTENT
+************************
 
-   Add or modify data in vCards such as IM contact information
+Register a function to display content at the beginning of the item details panel in the Kanban.
+The function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-   .. code-block:: php
 
-      <?php
-      $hook_params = [
-         'item'   => CommonDBTM, //The item the vCard is for such as a User or Contact
-         'data'   => array, //The current vCard data for the item
-      ];
 
+POST_KANBAN_PANEL_CONTENT
+*************************
 
-``filter_actors``
-   .. versionadded 9.5
+Register a function to display content at the end of the item details panel in the Kanban.
+The function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-   Add or modify data actor fields provided in the right panel of ITIL objects
 
-   .. code-block:: php
 
-      <?php
-      $hook_params = [
-         'actors' => array, // actors array send to select2 field
-         'params' => array, // actor field param
-      ];
+PRE_KANBAN_PANEL_MAIN_CONTENT
+*****************************
 
-``helpdesk_menu_entry``
-  Add a link to the menu for users with the simplified interface
+Register a function to display content at the beginning of the item details panel in the Kanban after the content from Hooks::PRE_KANBAN_PANEL_CONTENT but before the default main content.
+The function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-  .. code-block:: php
 
-      <?php
-      $PLUGIN_HOOKS['helpdesk_menu_entry']['example'] = 'MY_CUSTOM_LINK';
 
-``helpdesk_menu_entry_icon``
-  Add an icon for the link specified by the `helpdesk_menu_entry` hook
+POST_KANBAN_PANEL_MAIN_CONTENT
+******************************
 
-  .. code-block:: php
+Register a function to display content at the end of the item details panel in the Kanban after the default main content but before the content from Hooks::POST_KANBAN_PANEL_CONTENT.
+The function is called with an array containing several properties including:
+* 'itemtype' => The type of the item represented by the Kanban card
+* 'items_id' => The ID of the item represented by the Kanban card
+The function is expected to return HTML content.
 
-      <?php
-      $PLUGIN_HOOKS['helpdesk_menu_entry_icon']['example'] = 'fas fa-tools';
 
-``debug_tabs``
-  Add one or more new tabs to the GLPI debug panel.
-  Each tab must define a `title` and `display_callable` which is what will be called to print the tab contents.
 
-  .. code-block:: php
+REDEFINE_MENUS
+**************
 
-     <?php
-     $PLUGIN_HOOKS['debug_tabs']['example'] = [
-       [
-          'title' => 'ExampleTab',
-          'display_callable' => 'ExampleClass::displayDebugTab'
-       ]
-     ];
+Register a function to redefine the GLPI menu.
+The function is called with the current menu as a parameter.
+The function is expected to modify the given array as needed and return it.
 
-``post_plugin_install``
-  Called after a plugin is installed
 
-``post_plugin_enable``
-  Called after a plugin is enabled
 
-``post_plugin_disable``
-  Called after a plugin is disabled
+RETRIEVE_MORE_DATA_FROM_LDAP
+****************************
 
-``post_plugin_uninstall``
-  Called after a plugin is uninstalled
+Register a function to get more user field data from LDAP.
+The function is called with an array containing the current fields for the user along with:
+* '_ldap_result' => The LDAP query result
+* '_ldap_conn' => The LDAP connection resource
+The function is expected to modify the given array as needed and return it.
 
-``post_plugin_clean``
-  Called after a plugin is cleaned (removed from the database after the folder is deleted)
 
-.. _business_related_hooks:
+RETRIEVE_MORE_FIELD_FROM_LDAP
+*****************************
 
-Items business related
-++++++++++++++++++++++
+Register a function to get more LDAP -> Field mappings.
+The function is called with an array containing the current mappings.
+The function is expected to modify the given array as needed and return it.
 
-Hooks that can do some busines stuff on items.
 
-``item_empty``
-   When a new (empty) item has been created. Allow to change / add fields.
 
-``post_prepareadd``
-   Before an item has been added, after ``prepareInputForAdd()`` has been run, so after rule engine has ben run, allow to edit ``input`` property, setting it to false will stop the process.
+RESTRICT_LDAP_AUTH
+******************
 
-``pre_item_add``
-   Before an item has been added, allow to edit ``input`` property, setting it to false will stop the process.
+Register a function to add additional checks to the LDAP authentication.
+The function is called with an array containing several properties including:
+* 'dn' => The DN of the user
+* login field => Login field value where 'login field' is the name of the login field (usually samaccountname or uid) set in the LDAP config in GLPI.
+* sync field => Sync field value where 'sync field' is the name of the sync field (usually objectguid or entryuuid) set in the LDAP config in GLPI
 
-``item_add``
-   After adding an item, ``fields`` property can be used.
 
-``pre_item_update``
-   Before an item is updated, allow to edit ``input`` property, setting it to false will stop the process.
+UNLOCK_FIELDS
+*************
 
-``item_update``
-   While updating an item, ``fields`` and ``updates`` properties can be used.
+Register a function to handle unlocking additional fields.
+The function is called with the $_POST array containing several properties including:
+* 'itemtype' => The type of the item for which the fields are unlocked
+* 'id' => The ID of the item for which the fields are unlocked
+* itemtype => Array of fields to unlock where 'itemtype' is the name of the item type (usually the same as the itemtype value).
+The function is expected to return nothing.
 
-``pre_item_purge``
-   Before an item is purged, allow to edit ``input`` property, setting it to false will stop the process.
 
-``item_purge``
-   After an item is purged (not pushed to trash, see ``item_delete``). The ``fields`` property still available.
+UNDISCLOSED_CONFIG_VALUE
+************************
 
-``pre_item_restore``
-   Before an item is restored from trash.
+Register a function to optionally hide a config value in certain locations such as the API.
+The function is called with an array containing several properties including:
+* 'context' => The context of the config option ('core' for core GLPI configs)
+* 'name' => The name of the config option
+* 'value' => The value of the config option
+The function is expected to modify the given array as needed (typically unsetting the value if it should be hidden) and return it.
 
-``item_restore``
-   After an item is restored from trash.
 
-``pre_item_delete``
-   Before an item is deleted (moved to trash), allow to edit ``input`` property, setting it to false will stop the process.
+FILTER_ACTORS
+*************
 
-``item_delete``
-   After an item is moved to tash.
+Register a function to modify the actor results in the right panel of ITIL objects.
+The function is called with an array containing several properties including:
+* 'actors' => The current actor results
+* 'params' => The parameters used to retrieve the actors
+The function is expected to modify the given array as needed and return it.
 
-``autoinventory_information``
-   After an automated inventory has occured
 
-``item_transfer``
-   When an item is transfered from an entity to another
+DEFAULT_DISPLAY_PREFS
+*********************
 
-``item_can``
-   .. versionadded:: 9.2
+Register a function to declare what the default display preferences are for an itemtype.
+This is not used when no display preferences are set for the itemtype, but rather when hte preferences are being reset.
+Therefore, defaults should be set during the plugin installation and the result of the function should be the same as the default values set in the plugin installation.
+Core GLPI itemtypes with display preferences set in `install/empty_data.php` will never use this hook.
+The function is called with an array containing several properties including:
+* 'itemtype' => The type of the item for which the display preferences are set
+* 'prefs' => The current defaults (usually empty unless also modified by another plugin)
+The function is expected to modify the given array as needed and return it.
 
-   Allow to restrict user rights (can't grant more right).
-   If ``right`` property is set (called during CommonDBTM::can) changing it allow to
-   deny evaluated access. Else (called from Search::addDefaultWhere) ``add_where``
-   property can be set to filter search results.
 
-``add_plugin_where``
-   .. versionadded:: 9.2
+USE_RULES
+*********
 
-   Permit to filter search results.
+Must be set to true for some other hooks to function including:
+* Hooks::AUTO_GET_RULE_CRITERIA
+* Hooks::AUTO_GET_RULE_ACTIONS
+* Hooks::AUTO_RULE_COLLECTION_PREPARE_INPUT_DATA_FOR_PROCESS
+* Hooks::AUTO_PRE_PROCESS_RULE_COLLECTION_PREVIEW_RESULTS
+* Hooks::AUTO_RULEIMPORTASSET_GET_SQL_RESTRICTION
+* Hooks::AUTO_RULEIMPORTASSET_ADD_GLOBAL_CRITERIA
 
-.. _display_related_hooks:
 
-Items display related
-+++++++++++++++++++++
+ADD_RECIPIENT_TO_TARGET
+***********************
 
-Hooks that permits to add display on items.
+Register a function to be called when a notification recipient is to be added.
+The function is called with the NotificationTarget object as a parameter.
+The function is expected to return nothing.
+The added notification target information can be found in the `recipient_data` property of the object. Modifying this information will have no effect.
+The current list of all added notification targets can be found in the `target` property of the object.
+If you wish to remove/modify targets, you must do so in the `target` property.
 
-``pre_itil_info_section``
-   .. versionadded:: 11
 
-   Before displaying ITIL object sections (Ticket, Change, Problem) Waits for a ``<section>``.
+AUTOINVENTORY_INFORMATION
+*************************
 
+Register a function to be called to display some automatic inventory information.
+The function is called with the item as a parameter.
+The function is expected to return nothing, but the information may be output directly.
+The function is only called for items that have the `is_dynamic` field, and it is set to 1.
 
-``post_itil_info_section``
-   .. versionadded:: 11
 
-   After displaying ITIL object sections (ticket, Change, Problem) Waits for a ``<section>``.
+INFOCOM
+*******
 
+Register a function to be called to display extra Infocom form fields/information.
+The function is called with the item as a parameter.
+The function is expected to return nothing, but the information may be output directly.
 
-``pre_item_form``
-   .. versionadded:: 9.1.2
 
-   Before an item is displayed; just after the form header if any; or at the beginnning of the form. Waits for a ``<tr>``.
+ITEM_ACTION_TARGETS
+*******************
 
+Register a function to handle adding a plugin-specific notification target.
+The function is called with the NotificationTarget object as a parameter.
+The function is expected to return nothing.
+The notification target data can be found in the `data` property of the object.
 
-``post_item_form``
-   .. versionadded:: 9.1.2
 
-   After an item form has been displayed; just before the dates or the save buttons. Waits for a ``<tr>``.
 
-``pre_show_item``
-   Before an item is displayed
+ITEM_ADD_TARGETS
+****************
 
-``post_show_item``
-   After an item has been displayed
+Register a function to handle adding new possible recipients for notification targets.
+The function is called with the NotificationTarget object as a parameter.
+The function is expected to return nothing.
 
-``pre_show_tab``
-   Before a tab is displayed
 
-``post_show_tab``
-   After a tab has been displayed
 
-``show_item_stats``
-   .. versionadded:: 9.2.1
+ITEM_EMPTY
+**********
 
-   Add display from statistics tab of a item like ticket
+Register a function to handle the 'item_empty' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+The hook is called at the very end of the process of initializing an empty item.
 
-``timeline_actions``
-   .. versionadded:: 9.4.1
-   .. versionchanged:: 10.0.0 The timeline action buttons were moved to the timeline footer. Some previous actions may no longer be compatible with the new timeline and will need to be adjusted.
 
-   Display new actions in the ITIL object's timeline
 
-``timeline_answer_actions``
-   .. versionadded:: 10.0.0
+PRE_ITEM_ADD
+************
 
-   Display new actions in the ITIL object's answer dropdown
+Register a function to handle the 'pre_item_add' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very beginning of the add process, before the input has been modified.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the add process.
 
-``show_in_timeline``
-   .. versionadded:: 10.0.0
 
-   Display forms in the ITIL object's timeline
 
-Notifications
-+++++++++++++
-Hooks that are called from notifications
+POST_PREPAREADD
+***************
 
-``item_add_targets``
-   When a target has been added to an item
+Register a function to handle the 'post_prepareadd' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called after the input has been modified, but before the item is added to the database.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the add process.
 
-``item_get_events``
-   After notifications events have been retrieved
 
-``item_action_targets``
-   After target addresses have been retrieved
 
-``item_get_datas``
-   After data for template have been retrieved
+ITEM_ADD
+********
 
-``add_recipient_to_target``
-   .. versionadded:: 9.4.0
+Register a function to handle the 'item_add' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very end of the add process, after the item has been added to the database.
 
-   When a recipient is added to targets.
 
-   The object passed as hook method parameter will contain a property ``recipient_data`` which will
-   be an array containing `itemtype` and `items_id` fields corresponding to the added target.
+PRE_ITEM_UPDATE
+***************
 
-Functions hooks
-^^^^^^^^^^^^^^^
+Register a function to handle the 'pre_item_update' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very beginning of the update process, before the input has been modified.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the update process.
 
-Usage
-+++++
 
-Functions hooks declarations are the same than standards hooks one. The main difference is that the hook will wait as output what have been passed as argument.
 
-.. code-block:: php
+ITEM_UPDATE
+***********
 
-   <?php
-   /**
-    * Handle hook function
-    *
-    * @param array $$data Array of something (assuming that's what wer're receiving!)
-    *
-    * @return array
-    */
-   public function myplugin_updateitem_called ($data) {
-      //do everything you want
-      //return passed argument
-      return $data;
-   }
+Register a function to handle the 'item_update' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very end of the update process, after the item has been updated in the database.
+The input can be found in the `input` property of the item while the updated field names can be found in the `updates` property.
+The old values of changed field can be found in the `oldvalues` property.
 
 
-Existing hooks
-++++++++++++++
+PRE_ITEM_DELETE
+***************
 
-``unlock_fields``
-   After a fields has been unlocked. Will receive the ``$_POST`` array used for the call.
+Register a function to handle the 'pre_item_delete' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very beginning of the soft-deletion process.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the deletion process.
 
-``restrict_ldap_auth``
-   Aditional LDAP restrictions at connection. Must return a boolean. The ``dn`` string is passed as parameter.
 
-``undiscloseConfigValue``
-   Permit plugin to hide fields that should not appear from the API (like configuration fields, etc). Will receive the requested fields list.
+ITEM_DELETE
+***********
 
-``infocom``
-   Additional infocom informations oin an item. Will receive an item instance as parameter, is expected to return a table line (``<tr>``).
+Register a function to handle the 'item_delete' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very end of the soft-deletion process, after the item has been soft-deleted from the database (`is_deleted` set to 1).
 
-``retrieve_more_field_from_ldap``
-   Retrieve aditional fields from LDAP for a user. Will receive the current fields lists, is expected to return a fields list.
 
-``retrieve_more_data_from_ldap``
-   Retrieve aditional data from LDAP for a user. Will receive current fields list, is expected to return a fields list.
+PRE_ITEM_PURGE
+**************
 
-``display_locked_fields``
-   To manage fields locks. Will receive an array with ``item`` and ``header`` entries. Is expected to output a table line (``<tr>``).
+Register a function to handle the 'pre_item_purge' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very beginning of the purge process.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the purge process.
 
-``migratetypes``
-   Item types to migrate, will receive an array of types to be updated; must return an aray of item types to migrate.
 
-Automatic hooks
-^^^^^^^^^^^^^^^
+ITEM_PURGE
+**********
 
-Some hooks are automated; they'll be called if the relevant function exists in you plugin's ``hook.php`` file. Required function must be of the form ``plugin_{plugin_name}_{hook_name}``.
+Register a function to handle the 'item_purge' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very end of the purge process, after the item has been purged from the database.
 
-``MassiveActionsFieldsDisplay``
-   Add massive actions. Will receive an array with ``item`` (the item type) and ``options`` (the search options) as input. These hook have to output its content, and to return true if there is some specific output, false otherwise.
 
-``dynamicReport``
-   Add parameters for print. Will receive the ``$_GET`` array used for query. Is expected to return an array of parameters to add.
+PRE_ITEM_RESTORE
+****************
 
-``AssignToTicket``
-   Declare types an ITIL object can be assigned to. Will receive an empty array adn is expected to return a list an array of type of the form:
+Register a function to handle the 'pre_item_restore' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very beginning of the restore process.
+The input can be found in the `input` property of the item. Setting the `input` property to false will cancel the restore process.
 
-   .. code-block:: php
 
-      <?php
-      return [
-         'TypeClass' => 'label'
-      ];
+ITEM_RESTORE
+************
 
-``MassiveActions``
-   If plugin is parameted to provide massive actions (via ``$PLUGIN_HOOKS['use_massive_actions']``), will pass the item type as parameter, and expect an array of aditional massives actions of the form:
+Register a function to handle the 'item_restore' lifecycle event for an item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+This hook is called at the very end of the restore process, after the item has been restored in the database (`is_deleted` set to 0).
 
-   .. code-block:: php
 
-      <?php
-      return [
-         'Class::method' => 'label'
-      ];
+ITEM_GET_DATA
+*************
 
-``getDropDown``
-   To declare extra dropdowns. Will not receive any parameter, and is expected to return an array of the form:
+Register a function to handle adding data for a notification target.
+The function is called with the NotificationTarget object as a parameter.
+The function is expected to return nothing.
+The notification target data can be found in the `data` property of the object.
 
-   .. code-block:: php
 
-      <?php
-      return [
-         'Class::method' => 'label'
-      ];
 
-``rulePrepareInputDataForProcess``
-    Provide data to process rules. Will receive an array with ``item`` (data used to check criteria) and ``params`` (the parameters) keys. Is expected to retrun an array of rules.
+ITEM_GET_EVENTS
+***************
 
-``executeActions``
-   Actions to execute for rule. Will receive an array with ``output``, ``params`` ans ``action`` keys. Is expected to return an array of actions to execute.
+Register a function to handle adding events for a notification target.
+The function is called with the NotificationTarget object as a parameter.
+The function is expected to return nothing.
+The notification target events can be found in the `events` property of the object.
 
-``preProcessRulePreviewResults``
 
-   .. todo::
 
-      Write documentation for this hook.
+SHOW_ITEM_STATS
+***************
 
-``use_rules``
+Register a function to show additional statistics in the Statistics tab of Tickets, Changes and Problems.
+The function is called with the item as a parameter.
+The function is expected to return nothing, but the information may be output directly.
 
-   .. todo::
 
-      Write documentation for this hook. It lloks at bit particular.
+ITEM_CAN
+********
 
-``ruleCollectionPrepareInputDataForProcess``
-   Prepare input data for rules collections. Will receive an array of the form:
+Register a function to add additional permission restrictions for the item.
+The function is called with the item as a parameter.
+The function is expected to return nothing.
+The permission being checked can be found in the `right` property of the item.
+The input used to create, update or delete the item can be found in the `input` property of the item.
+If you change the `right` property to any other value, it will be treated as a failed check. Take care when reading this property as it may have been changed by another plugin. If it isn't an integer greater than 0, you should assume the check already failed.
 
-   .. code-block:: php
 
-      <?php
-      array(
-         'rule_itemtype'   => 'name fo the rule itemtype',
-         'values'          => array(
-            'input'  => 'input array',
-            'params' => 'array of parameters'
-         )
-      );
+PRE_ITIL_INFO_SECTION
+*********************
 
-   Is expected to return an array.
+Register a function to show additional fields at the top of a Ticket, Change or Problem fields panel.
+The function is called with the following parameters:
+* 'item' => The item for which the fields are shown
+* 'options' => An array of form parameters
 
-``preProcessRuleCollectionPreviewResults``
 
-.. todo::
 
-      Write documentation for this hook.
+POST_ITIL_INFO_SECTION
+**********************
 
-``ruleImportComputer_addGlobalCriteria``
-   Add global criteria for computer import. Will receive an array of global criteria, is expected to return global criteria array.
+Register a function to show additional fields at the bottom of a Ticket, Change or Problem fields panel.
+ The function is called with the following parameters:
+ * 'item' => The item for which the fields are shown
+ * 'options' => An array of form parameters
 
-``ruleImportComputer_getSqlRestriction``
-   Adds SQL restriction to links. Will receive an array of the form:
 
-   .. code-block:: php
 
-      <?php
-      array(
-         'where_entity' => 'where entity clause',
-         'input'        => 'input array',
-         'criteria'     => 'complex cirteria array',
-         'sql_where'    => 'sql where clause as string',
-         'sql_from'     => 'sql from clause as string'
-      )
+ITEM_TRANSFER
+*************
 
-   Is expected to return the input array modified.
+Register a function to be called after an item is transferred to another entity.
+The function is called with an array containing several properties including:
+* 'type' => The type of the item being transferred.
+* 'id' => The original ID of the item being transferred.
+* 'newID' => The new ID of the item being transferred. If the item was cloned into the new entity, this ID will differ from the original ID.
+* 'entities_id' => The ID of the destination entity.
+The function is expected to return nothing.
 
-``getAddSearchOptions``
-   Adds :ref:`search options <search_options>`, using "old" method. Will receive item type as string, is expected to return an array of search options.
 
-``getAddSearchOptionsNew``
-   Adds :ref:`search options <search_options>`, using "new" method. Will receive item type as string, is expected to return an **indexed** array of search options.
+PRE_SHOW_ITEM
+*************
+
+Register a function to be called before showing an item in the timeline of a Ticket, Change or Problem.
+The function is called with the following parameters:
+* 'item' => The item being shown in the timeline
+* 'options' => An array containing the following properties:
+  * 'parent' => The Ticket, Change or Problem
+  * 'rand' => A random number that may be used for unique element IDs within the timeline item HTML
+The function is expected to return nothing, but the information may be output directly.
+
+
+
+POST_SHOW_ITEM
+**************
+
+Register a function to be called after showing an item in the timeline of a Ticket, Change or Problem.
+The function is called with the following parameters:
+* 'item' => The item being shown in the timeline
+* 'options' => An array containing the following properties:
+  * 'parent' => The Ticket, Change or Problem
+  * 'rand' => A random number that may be used for unique element IDs within the timeline item HTML
+The function is expected to return nothing, but the information may be output directly.
+
+
+
+PRE_ITEM_FORM
+*************
+
+Register a function to show additional fields at the top of an item form.
+The function is called with the following parameters:
+* 'item' => The item for which the fields are shown
+* 'options' => An array of form parameters
+The function is expected to return nothing, but the information may be output directly.
+
+
+POST_ITEM_FORM
+**************
+
+Register a function to show additional fields at the bottom of an item form.
+The function is called with the following parameters:
+* 'item' => The item for which the fields are shown
+* 'options' => An array of form parameters
+The function is expected to return nothing, but the information may be output directly.
+
+
+PRE_SHOW_TAB
+************
+
+Register a function to show additional content before the main content in a tab.
+This function is not called for the main tab of a form.
+The function is called with the following parameters:
+* 'item' => The item for which the tab is shown
+* 'options' => An array containing the following properties:
+  * 'itemtype' => The type of the item being shown in the tab
+  * 'tabnum' => The number of the tab being shown for the itemtype
+The function is expected to return HTML content or an empty string.
+
+
+POST_SHOW_TAB
+*************
+
+Register a function to show additional content after the main content in a tab.
+This function is not called for the main tab of a form.
+The function is called with the following parameters:
+* 'item' => The item for which the tab is shown
+* 'options' => An array containing the following properties:
+  * 'itemtype' => The type of the item being shown in the tab
+  * 'tabnum' => The number of the tab being shown for the itemtype
+The function is expected to return HTML content or an empty string.
+
+
+PRE_ITEM_LIST
+*************
+
+Register a function to show additional content before the search result list for an itemtype.
+The function is called with the following parameters:
+* 'itemtype' => The type of the item being shown in the list
+* 'options' => Unused. Always an empty array.
+The function is expected to return nothing, but the information may be output directly.
+
+
+
+POST_ITEM_LIST
+**************
+
+Register a function to show additional content after the search result list for an itemtype.
+The function is called with the following parameters:
+* 'itemtype' => The type of the item being shown in the list
+* 'options' => Unused. Always an empty array.
+The function is expected to return nothing, but the information may be output directly.
+
+
+
+TIMELINE_ACTIONS
+****************
+
+Register a function to show action buttons in the footer of a Ticket, Change or Problem timeline.
+This is how timeline actions were displayed before version 10.0, but now using the Hooks::TIMELINE_ANSWER_ACTIONS is the preferred way.
+The function is called with the following parameters:
+* 'item' => The item for which the actions are shown
+* 'rand' => A random number that may be used for unique element IDs within the HTML
+The function is expected to return nothing, but the information may be output directly.
+
+
+TIMELINE_ANSWER_ACTIONS
+***********************
+
+Register a function to add new itemtypes to the answer/action split dropdown, and be made available to show in a Ticket, Change or Problem timeline.
+The function is called with the following parameters:
+* 'item' => The item for which the actions are shown
+The function is expected to return an array of options to be added to the dropdown.
+Each option should have a unique key and be an array with the following properties:
+* 'type' => The type of the item to be used for the action. In some cases, this is a parent/abstract class such as ITILTask. This is used as a CSS class on the main timeline item element.
+* 'class' => The actual type of the item to be used for the action such as TicketTask.
+* 'icon' => The icon to be used for the action.
+* 'label' => The label to be used for the action.
+* 'short_label' => The short label to be used for the action.
+* 'template' => The Twig template to use when showing related items in the timeline.
+* 'item' => An instance of the related itemtype.
+* 'hide_in_menu' => If true, the option is not available in the dropdown menu but the related items may still be shown in the timeline.
+
+
+SHOW_IN_TIMELINE
+****************
+
+.. warning::\nDeprecated: 11.0.0 Use `TIMELINE_ITEMS` instead. The usage of both hooks is the same.\n
+
+
+TIMELINE_ITEMS
+**************
+
+Register a function to add new items to the timeline of a Ticket, Change or Problem.
+The function is called with the following parameters:
+* 'item' => The item for which the actions are shown.
+* 'timeline' => The array of items currently shown in the timeline. This is passed by reference.
+The function is expected to modify the timeline array as needed.
+The timeline item array contains arrays where the keys are typically "${itemtype}_${items_id}" and the values are arrays with the following properties:
+* 'type' => The type of the item being shown in the timeline. This should match the 'class' property used in Hooks::TIMELINE_ANSWER_ACTIONS.
+* 'item' => Array of information to pass to the 'template' used in Hooks::TIMELINE_ANSWER_ACTIONS, and notifications.
+
+
+SET_ITEM_IMPACT_ICON
+********************
+
+Register a function to set the icon used by an item in the impact graph.
+The function is called with the following parameters:
+* 'itemtype' => The type of the item being shown in the graph
+* 'items_id' => The ID of the item being shown in the graph
+The function is expected to return a URL starting with a '/' relative to the GLPI root directory, or an empty string.
+
+
+SECURED_FIELDS
+**************
+
+An array of database columns (example: glpi_mytable.myfield) that are stored using GLPI encrypting methods.
+This allows plugin fields to be handled by the `glpi:security:changekey` command.
+Added in version 9.4.6
+
+SECURED_CONFIGS
+***************
+
+An array of configuration keys that are stored using GLPI encrypting methods.
+This allows plugin configuration values to be handled by the `glpi:security:changekey` command.
+Added in version 9.4.6
+
+PROLOG_RESPONSE
+***************
+
+
+
+NETWORK_DISCOVERY
+*****************
+
+
+
+NETWORK_INVENTORY
+*****************
+
+
+
+INVENTORY_GET_PARAMS
+********************
+
+
+
+PRE_INVENTORY
+*************
+
+
+             You may modify the inventory data which is passed as a parameter (stdClass) and return the modified data.
+             Returning null will cancel the inventory submission with no specific reason.
+             Throwing an Exception will cancel the inventory submission with the exception message as the reason.
+             To avoid unrelated exception messages from being sent to the agent, you must handle all exceptions (except the one you would throw to cancel the inventory) within the hook function.
+
+
+POST_INVENTORY
+**************
+
+
+             You may view the inventory data which is passed as a parameter (stdClass).
+             Nothing is expected to be returned.
+             This hook is only called if the inventory submission was successful.
+
+
+HANDLE_INVENTORY_TASK
+*********************
+
+
+
+HANDLE_NETDISCOVERY_TASK
+************************
+
+
+
+HANDLE_NETINVENTORY_TASK
+************************
+
+
+
+HANDLE_ESX_TASK
+***************
+
+
+
+HANDLE_COLLECT_TASK
+*******************
+
+
+
+HANDLE_DEPLOY_TASK
+******************
+
+
+
+HANDLE_WAKEONLAN_TASK
+*********************
+
+
+
+HANDLE_REMOTEINV_TASK
+*********************
+
+
+
+STALE_AGENT_CONFIG
+******************
+
+Add new agent cleanup actions.
+The hook is expected to be an array where each value is an array with the following properties:
+* 'label' => The label to be used for the action.
+* 'render_callback' => Callable used to display the configuration field. The callable will be called with the inventory configuration values array.
+* 'action_callback' => Callable used to perform the action. The callable will be called with the following parameters:
+  * 'agent' => The agent to be cleaned
+  * 'config' => The inventory configuration values array
+  * 'item' => The asset that the agent is for
+
+
+MENU_TOADD
+**********
+
+Add menu items.
+The hook is expected to be an array where the keys are identiifers for the top-level menu items, and the values are arrays with the following properties:
+* 'types' => Array of item types to be added
+* 'icon' => The icon for the top-level menu item which is expected to be a Tabler icon CSS class
+
+
+HELPDESK_MENU_ENTRY
+*******************
+
+Add a menu item in the simplified interface.
+The hook is expected to be a URL relative to the plugin's directory.
+
+
+HELPDESK_MENU_ENTRY_ICON
+************************
+
+Add an icon for the menu item added with the Hooks::HELPDESK_MENU_ENTRY hook.
+The hook is expected to be a Tabler icon CSS class.
+
+
+DASHBOARD_CARDS
+***************
+
+Register a function to add new dashboard cards.
+The function is called with no parameters.
+The function is expected to return an array of dashboard cards.
+Each key in the returned array should be a unique identifier for the card.
+The value should be an array with the following properties (but not limited to):
+* 'widgettype' => Array of widget types this card can use (pie, bar, line, etc)
+* 'label' => The label to be used for the card
+* 'group' => Group string to be used to organize the card in dropdowns
+* 'filters' => An optional array of filters that can apply to this card
+
+
+DASHBOARD_FILTERS
+*****************
+
+Add new dashboard filters.
+The hook is expected to be an array of classes which extend Glpi\Dashboard\Filters\AbstractFilter.
+
+
+DASHBOARD_PALETTES
+******************
+
+Add new dashboard color palettes.
+The hook is expected to be an array where the keys are unique identifiers and the values are arrays of #rrggbb color strings.
+
+
+DASHBOARD_TYPES
+***************
+
+Register a function to add new dashboard widget types.
+The function is called with no parameters.
+The function is expected to return an array where the keys are unique identifiers and the values are arrays with the following properties:
+* 'label' => The label to be used for the widget type
+* 'function' => A callable to be used to display the widget
+* 'image' => The image to be used for the widget
+* 'limit' => Indicate if the amount of data shown by the widget can be limited
+* 'width' => The default width of cards using this widget
+* 'height' => The default height of cards using this widget
+
+
+REDEFINE_API_SCHEMAS
+********************
+
+The hook function to call to redefine schemas.
+Each time a controller's schemas are retrieved, the hook is called with a $data parameter.
+The $data parameter will contain the Controller class name in the 'controller' key and an array of schemas in the 'schemas' key.
+The function should return the modified $data array.
+The controller value should not be changed as it would result in undefined behavior.
+
+
+API_CONTROLLERS
+***************
+
+This hook should provide an array of the plugin's API controller class names.
+
+
+API_MIDDLEWARE
+**************
+
+This hook should provide an array of arrays containing a 'middlware' value that is the class name.
+The middleware classes should extend HL_API\Middleware\AbstractMiddleware and
+implement either {@link HL_API\Middleware\RequestMiddlewareInterface{ or HL_API\Middleware\ResponseMiddlewareInterface.
+The arrays may also contain values for 'priority' and 'condition' where priority is an integer (higher is more important) and condition is a callable.
+If a condition is provided, that callable will be called with the current controller as a parameter, and it must return true for the middleware to be used, or false to not be.
+
+
+STATS
+*****
+
+Add new statistics reports.
+The hook is expected to be an array where the keys are URLs relative to the plugin's directory and the values are the report names.
+
+
+MAIL_SERVER_PROTOCOLS
+*********************
+
+Register a function to add new email server protocols.
+The function is called with no parameters.
+The function is expected to return an array where the keys are the protocol name and the values are arrays with the following properties:
+* 'label' => The label to be used for the protocol.
+* 'protocol' => The name of the class to be used for the protocol. The class should use the `Laminas\Mail\Protocol\ProtocolTrait` trait.
+* 'storage' => The name of the class to be used for the protocol storage. The class should extend the `Laminas\Mail\Storage\AbstractStorage` class.
+
+
+AUTO_MASSIVE_ACTIONS
+********************
+
+Automatic hook function to add new massive actions.
+The function is called with the itemtype as a parameter.
+The function is expected to return an array of massive action.
+Only called if the plugin also uses the Hooks::USE_MASSIVE_ACTION hook set to true.
+
+
+AUTO_MASSIVE_ACTIONS_FIELDS_DISPLAY
+***********************************
+
+Automatic hook function to display the form for the "update" massive action for itemtypes or search options related to the plugin.
+The function is called with the following parameters:
+* 'itemtype' => The type of the item for which the fields are shown
+* 'options' => The search option array
+The function is expected to return true if the display is handled, or false if the default behavior should be used.
+
+
+AUTO_DYNAMIC_REPORT
+*******************
+
+Automatic hook function called to handle the export display of an itemtype added by the plugin.
+The function is called with the $_GET array containing several properties including:
+* 'item_type' => The type of the item for which the fields are shown
+* 'display_type' => The numeric type of the display. See the constants in the `Search` class.
+* 'export_all' => If all pages are being exported or just the current one.
+The function is expected to return true if the display is handled, or false if the default behavior should be used.
+
+
+AUTO_ASSIGN_TO_TICKET
+*********************
+
+Automatic hook function to add new itemtypes which can be linked to Tickets, Changes or Problems.
+The function is called with the current array of plugin itemtypes allowed to be linked.
+The function is expected to modify the given array as needed and return it.
+
+
+AUTO_GET_DROPDOWN
+*****************
+
+Automatic hook function called to get additional dropdown classes which would be displayed in Setup > Dropdowns.
+The function is called with no parameters.
+The function is expected to return an array where the class names are in the keys or null. For the array values, anything can be used, but typically it is just `null`.
+
+
+AUTO_GET_RULE_CRITERIA
+**********************
+
+Automatic hook function called with an array with the key 'rule_itemtype' set to the itemtype and 'values' set to the input sent to the rule engine.
+The function is expected to return an array of criteria to add.
+Only called if the plugin also uses the Hooks::USE_RULES hook set to true.
+
+
+
+AUTO_GET_RULE_ACTIONS
+*********************
+
+Automatic hook function called with an array with the key 'rule_itemtype' set to the itemtype and 'values' set to the input sent to the rule engine.
+The function is expected to return an array of actions to add.
+Only called if the plugin also uses the Hooks::USE_RULES hook set to true.
+
+
+
+AUTO_RULE_COLLECTION_PREPARE_INPUT_DATA_FOR_PROCESS
+***************************************************
+
+Only called if the plugin also uses the Hooks::USE_RULES hook set to true.
+
+
+AUTO_PRE_PROCESS_RULE_COLLECTION_PREVIEW_RESULTS
+************************************************
+
+Only called if the plugin also uses the Hooks::USE_RULES hook set to true.
+
+
+AUTO_RULEIMPORTASSET_GET_SQL_RESTRICTION
+****************************************
+
+Automatic hook function called with an array containing several criteria including:
+* 'where_entity' => the entity to restrict
+* 'input' => the rule input
+* 'criteria' => the rule criteria
+* 'sql_where' => the SQL WHERE clause as a string
+* 'sql_from' => the SQL FROM clause as a string
+The function is expected to modify the given array as needed and return it.
+Only called if the plugin also uses the Hooks::USE_RULES hook set to true.
+
+
+AUTO_RULEIMPORTASSET_ADD_GLOBAL_CRITERIA
+****************************************
+
+Automatic hook function called with an array of the current global criteria.
+The function is expected to modify the given array as needed and return it.
+
+
+AUTO_SEARCH_OPTION_VALUES
+*************************
+
+Automatic hook function to display the value field for a search option criteria.
+The function is called with an array with the following properties:
+* 'name' => The HTML input name expected.
+* searchtype' => The search type of the criteria (contains, equals, etc).
+* 'searchoption' => The search option array related to the criteria.
+* 'value' => The current value of the criteria.
+The function is expected to output HTML content if it customizes the value field and then return true. If the default behavior is desired, the function should not output anything and return false.
+
+
+AUTO_ADD_PARAM_FOR_DYNAMIC_REPORT
+*********************************
+
+Automatic hook function to add URL parameters needed for a dynamic report/export.
+The function is called with the itemtype as a parameter.
+The function is expected to return a key/value array of parameters to add.
+
+
+AUTO_ADD_DEFAULT_JOIN
+*********************
+
+Automatic hook function to add a JOIN clause to the SQL query for a search of itemtypes added by the plugin.
+This can be a LEFT JOIN , INNER JOIN or RIGHT JOIN.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'reference_table' => The name of the reference table. This should be the table for the itemtype.
+* 'already_link_table' => An array of tables that are already joined.
+The function is expected to return a SQL JOIN clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_DEFAULT_SELECT
+***********************
+
+Automatic hook function to add a SELECT clause to the SQL query for a searchof itemtypes added by the plugin.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+The function is expected to return a SQL SELECT clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_DEFAULT_WHERE
+**********************
+
+Automatic hook function to add a WHERE clause to the SQL query for a searchof itemtypes added by the plugin.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+The function is expected to return a SQL WHERE clause as a string or an empty string if the default behavior should be used.
+
+
+ADD_DEFAULT_JOIN
+****************
+
+Automatic hook function to add a JOIN clause to the SQL query for a search.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'join' => The current JOIN clause in the iterator format.
+The function is expected to return the modified join array or an empty array if no join should be added.
+ This function is called after the Hooks::AUTO_ADD_DEFAULT_JOIN hook and after the default joins are added.
+
+
+ADD_DEFAULT_WHERE
+*****************
+
+Automatic hook function to add a WHERE clause to the SQL query for a search.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'criteria' => The current WHERE clause in the iterator format.
+The function is expected to return the modified criteria array or an empty array if no criteria should be added.
+This function is called after the Hooks::AUTO_ADD_DEFAULT_WHERE hook and after the default WHERE clauses are added.
+
+
+AUTO_ADD_HAVING
+***************
+
+Automatic hook function to add a HAVING clause to the SQL query for a specific search criteria.
+The function is called with the following parameters:
+* 'link' => The linking operator (AND/OR) for the criteria.
+* 'not' => Indicates if the criteria is negated.
+* 'itemtype' => The type of the items being searched.
+* 'search_option_id' => The ID of the search option of the criteria.
+* 'search_value' => The value to search for.
+* 'num' => A string in the form of "${itemtype}_{$search_option_id}". The alias of the related field in the SELECT clause will be "ITEM_{$num}".
+The function is expected to return a SQL HAVING clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_LEFT_JOIN
+******************
+
+Automatic hook function to add a JOIN clause to the SQL query for a specific search criteria.
+Despite the name, this can be a LEFT JOIN , INNER JOIN or RIGHT JOIN.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'reference_table' => The name of the reference table. This is typically the table for the itemtype.
+* 'new_table' => The name of the table to be joined. Typically, this is the table related to the search option.
+* 'link_field' => The name of the field in the reference table that links to the new table.
+* 'already_link_table' => An array of tables that are already joined.
+The function is expected to return a SQL JOIN clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_ORDER_BY
+*****************
+
+Automatic hook function to add an ORDER clause to the SQL query for a specific search criteria.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'search_option_id' => The ID of the search option of the criteria.
+* 'order' => The order requested (ASC/DESC).
+* 'num' => A string in the form of "${itemtype}_{$search_option_id}". The alias of the related field in the SELECT clause will be "ITEM_{$num}".
+The function is expected to return a SQL ORDER clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_SELECT
+***************
+
+Automatic hook function to add a SELECT clause to the SQL query for a specific search criteria.
+The function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'search_option_id' => The ID of the search option of the criteria.
+* 'num' => A string in the form of "${itemtype}_{$search_option_id}". The alias of the related field in the clause returned should be "ITEM_{$num}".
+The function is expected to return a SQL SELECT clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_ADD_WHERE
+**************
+
+Automatic hook function to add a WHERE clause to the SQL query for a specific search criteria.
+The function is called with the following parameters:
+* 'link' => No longer used but used to indicate the linking operator (AND/OR) for the criteria.
+* 'not' => Indicates if the criteria is negated.
+* 'itemtype' => The type of the items being searched.
+* 'search_option_id' => The ID of the search option of the criteria.
+* 'search_value' => The value to search for.
+* 'search_type' => The type of the search (notcontains, contains, equals, etc.).
+The function is expected to return a SQL WHERE clause as a string or an empty string if the default behavior should be used.
+
+
+AUTO_GIVE_ITEM
+**************
+
+Automatic hook function to show an HTML search result column value for an item of one of the itemtypes added by the plugin.
+The function is called with the following parameters:
+* 'itemtype' => The type of the result items.
+* 'search_option_id' => The ID of the search option.
+* 'data' => The data retrieved from the database.
+* 'id' => The ID of the result item.
+The function is expected to return the HTML content to display or an empty string if the default display should be used.
+
+
+AUTO_DISPLAY_CONFIG_ITEM
+************************
+
+Automatic hook function to show an export (CSV,  PDF, etc) search result column value for an item of one of the itemtypes added by the plugin.
+This function is called with the following parameters:
+* 'itemtype' => The type of the items being searched.
+* 'search_option_id' => The ID of the search option.
+* 'data' => The data retrieved from the database.
+* 'num' => A string in the form of "${itemtype}_{$search_option_id}". The alias of the related field in the SELECT clause will be "ITEM_{$num}".
+The function is expected to return content to display or an empty string if the default display should be used.
+
+
+
+AUTO_STATUS
+***********
+
+Automatic hook function to report status information through the GLPI status feature.
+The function receives a parameter with the following keys:
+* 'ok' => Always true
+* '_public_only' => True if only non-sensitive/public information should be returned
+The function is expected to return an array containing at least a 'status' key with a `StatusChecker::STATUS_*` value.
+`https://glpi-user-documentation.readthedocs.io/fr/latest/advanced/status.html <https://glpi-user-documentation.readthedocs.io/fr/latest/advanced/status.html>`_
