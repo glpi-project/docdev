@@ -4,7 +4,7 @@ Javascript
 Vue.js
 ------
 
-Starting in GLPI 10.1, we have added support for Vue.
+Starting in GLPI 11.0, we have added support for Vue.
 .. note::
 
     Only SFCs (Single-file Components) using the Components API is supported. Do not use the Options API.
