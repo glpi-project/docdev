@@ -2506,6 +2506,8 @@ Technical Requirements and Recommendations
 Submission Process
 ^^^^^^^^^^^^^^^^^^
 
+.. note:: Before continuing, your plugin must be published on the `plugins catalog <http://plugins.glpi-project.org/>`_, see above.
+
 1. **Validation and Approval**:
 
  - By default, plugins accepted on the Plugins Website are not automatically available on the Marketplace. For security and relevance reasons, the GLPI team must review key technical aspects before approving Marketplace availability.
