@@ -2447,6 +2447,91 @@ Finally, submit your XML file on the `dedicated page <http://plugins.glpi-projec
 
 Teclib' will receive a notification for this submission and after some checks, will activate the publication on the catalog.
 
+By following these steps and recommendations, you will be able to make your plugin available on the GLPI Marketplace, thus offering users simplified installation and updates. We would like to thank you for this contribution, which helps enrich the GLPI ecosystem for the entire community.
+
+1. **Preparation**:
+
+a. Once your plugin archive is extracted, the plugin must be located in a directory named after its technical name.
+
+    Example:
+
+    for a plugin whose ``plugin_init_`` function is ``plugin_init_oauthimap`` in ``setup.php``, the technical name of its folder must be ``oauthimap``.
+    When you extract the archive (``glpi-oauthimap-1.4.3.tar.bz2``), the plugin should be directly inside a folder named ``oauthimap``.
+
+b. Make sure your XML file contains a ``<key>`` element that exactly matches this directory name (no spaces, no accents, no uppercase letters).
+
+    Example: ``<key>oauthimap</key>``
+
+c. In the ``<versions>`` section of your XML file, for each version of your plugin (with version number and compatibility),
+   add a ``download_url`` tag containing the URL where the plugin archive can be downloaded.
+
+Example:
+
+  ::
+
+      <versions>
+        <version>
+          <num>1.0</num>
+          <compatibility>~10.0.0</compatibility>
+          <download_url>https://link/to/your/plugin/file-1.0.tar.gz</download_url>
+        </version>
+      </versions>
+
+1. **Public Access**:
+
+ - Make sure the URL of the XML file and the plugin archive download URL are publicly accessible.
+ - Ensure that the plugin archive is properly structured and downloadable using the URL provided in the XML file.
+
+Technical Requirements and Recommendations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. **Compliance with Coding Standards**:
+
+ - Follow the recommendations in the GLPI Developer Documentation: `GLPI Developer Documentation <https://glpi-developer-documentation.readthedocs.io/>`_
+ - Ensure your code complies with GLPI coding standards and does not trigger errors from tools like phpcs.
+
+2. **Code Security and Quality**:
+
+ - Avoid raw SQL queries. Always use prepared statements — **this is mandatory starting from GLPI 11**.
+ - Use Twig for templating.
+ - Properly enforce permissions in all front-end (front/*) and AJAX (ajax/*) files — **this is mandatory**.
+ - The plugin may be rejected if it contains backdoors or obvious security flaws.
+
+3. **Compatibility and Updates**:
+
+ - Make sure your plugin is compatible with the current major version of GLPI in production and with the next major version under development.
+ - Keep your plugin up to date to ensure continued compatibility with future GLPI versions.
+
+
+Submission Process
+^^^^^^^^^^^^^^^^^^
+
+1. **Submit the XML File URL** on the `Plugins <https://plugins.glpi-project.org>`_ Website:
+
+ - If your plugin is already listed in the catalog, this step is optional.
+ - Provide a raw HTTPS URL to the XML file of your plugin hosted on a public repository (e.g., GitHub).
+
+    Example: `Sample XML File <https://github.com/pluginsGLPI/oauthimap/blob/main/oauthimap.xml>`_
+
+2. **Validation and Approval**:
+
+ - By default, plugins accepted on the Plugins Website are not automatically available on the Marketplace. For security and relevance reasons, the GLPI team must review key technical aspects before approving Marketplace availability.
+ - If your plugin is already listed on the Plugins Website and you want to distribute it on the Marketplace, please send an email to the GLPI team at glpi@teclib.com.
+ - Depending on the results of the review, the team may approve the plugin for availability on the on-premise GLPI Marketplace, and/or the Cloud instance Marketplace (which has stricter security requirements).
+
+3. **Lifecycle and Maintenance**
+
+ - Ongoing Monitoring:
+
+  - After approval and publication, regularly monitor your plugin’s performance and security to ensure continued compliance with GLPI requirements.
+
+ - Plugin Deactivation:
+
+  - The GLPI team reserves the right to deactivate the plugin from the Marketplace if, at any point, it no longer meets requirements, causes a major bug, or presents a critical security vulnerability.
+
+Therefore, it is crucial to maintain your plugin and promptly address any reported issues.
+
+
 Miscellaneous
 -------------
 
