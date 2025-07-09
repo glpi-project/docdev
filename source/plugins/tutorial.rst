@@ -2368,6 +2368,9 @@ No need to manage uninstallation (`unregister`) as GLPI will handle that itself 
 Publishing your plugin
 ----------------------
 
+Catalog
+^^^^^^^
+
 When you consider your plugin is ready and covers a real need, you can submit it to the community.
 
 The `plugins catalog <http://plugins.glpi-project.org/>`_ allows GLPI users to discover, download and follow plugins provided by the community as well as first-party plugins provided by Teclib'.
@@ -2447,6 +2450,10 @@ Finally, submit your XML file on the `dedicated page <http://plugins.glpi-projec
 
 Teclib' will receive a notification for this submission and after some checks, will activate the publication on the catalog.
 
+
+Marketplace
+^^^^^^^^^^^
+
 By following these steps and recommendations, you will be able to make your plugin available on the GLPI Marketplace, thus offering users simplified installation and updates. We would like to thank you for this contribution, which helps enrich the GLPI ecosystem for the entire community.
 
 1. **Preparation**:
@@ -2483,7 +2490,7 @@ Example:
  - Ensure that the plugin archive is properly structured and downloadable using the URL provided in the XML file.
 
 Technical Requirements and Recommendations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+******************************************
 
 1. **Compliance with Coding Standards**:
 
@@ -2504,7 +2511,7 @@ Technical Requirements and Recommendations
 
 
 Submission Process
-^^^^^^^^^^^^^^^^^^
+******************
 
 .. note:: Before continuing, your plugin must be published on the `plugins catalog <http://plugins.glpi-project.org/>`_, see above.
 
