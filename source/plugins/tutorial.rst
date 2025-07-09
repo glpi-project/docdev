@@ -2492,7 +2492,7 @@ Technical Requirements and Recommendations
 
 2. **Code Security and Quality**:
 
- - Avoid raw SQL queries. Always use prepared statements (go to :doc:`Querying <../devapi/database/dbiterator>` and :doc:`Updating <..//devapi/database/dbupdate>`) — **this is mandatory starting from GLPI 11**.
+ - Avoid raw SQL queries. Always use GLPI framework methods (see :doc:`Querying <../devapi/database/dbiterator>` and :doc:`Updating <..//devapi/database/dbupdate>`) — **this is mandatory starting from GLPI 11**.
  - Use Twig for templating.
  - Properly enforce permissions in all front-end (front/*) and AJAX (ajax/*) files — **this is mandatory**.
  - The plugin may be rejected if it contains backdoors or obvious security flaws.
