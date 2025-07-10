@@ -2458,12 +2458,12 @@ By following these steps and recommendations, you will be able to make your plug
 
 1. **Preparation**:
 
-a. Once your plugin archive is extracted, the plugin must be located in a directory named after its technical name.
+a. Your plugin archive should contain a directory with a name corresponding to the plugin's technical name. All your plugin's files should be placed in this directory.
 
     Example:
 
-    for a plugin whose ``plugin_init_`` function is ``plugin_init_oauthimap`` in ``setup.php``, the technical name of its folder must be ``oauthimap``.
-    When you extract the archive (``glpi-oauthimap-1.4.3.tar.bz2``), the plugin should be directly inside a folder named ``oauthimap``.
+    for a plugin whose ``plugin_init_`` function is ``plugin_init_oauthimap`` in ``setup.php``, the technical name of its directory must be ``oauthimap``.
+    The plugin's files should be located inside a directory named ``oauthimap``.
 
 b. Make sure your XML file contains a ``<key>`` element that exactly matches this directory name (no spaces, no accents, no uppercase letters).
 
