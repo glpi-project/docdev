@@ -2504,7 +2504,7 @@ Technical Requirements and Recommendations
  - Properly enforce permissions in all front-end (front/*) and AJAX (ajax/*) files — **this is mandatory**.
  - The plugin may be rejected if it contains backdoors or obvious security flaws.
 
-1. **Compatibility and Updates**:
+3. **Compatibility and Updates**:
 
  - Make sure your plugin is compatible with a maintained version of GLPI.
  - Keep your plugin up to date to ensure continued compatibility with future GLPI versions.
