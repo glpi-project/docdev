@@ -2506,7 +2506,7 @@ Technical Requirements and Recommendations
 
 1. **Compatibility and Updates**:
 
- - Make sure your plugin is compatible with the current major version of GLPI in production and with the next major version under development.
+ - Make sure your plugin is compatible with a maintained version of GLPI.
  - Keep your plugin up to date to ensure continued compatibility with future GLPI versions.
 
 
