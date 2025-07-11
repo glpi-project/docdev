@@ -2484,6 +2484,12 @@ Example:
         </version>
       </versions>
 
+
+d. In the ``<versions>`` section of your XML file, for each version of your plugin the ``compatibility`` tag value
+   must correspond to a GLPI version constraint in a format compatible with the `composer API <https://getcomposer.org/doc/articles/versions.md#writing-version-constraints>`_.
+
+    Example: ``<compatibility>~10.0.7</compatibility>``
+
 1. **Public Access**:
 
  - Make sure the URL of the XML file and the plugin archive download URL are publicly accessible.
