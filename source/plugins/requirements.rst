@@ -24,6 +24,16 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
    define('MYEXAMPLE_VERSION', '1.2.10');
 
    /**
+    * Hook executed during the GLPI boot sequence, before the session is actually loaded
+    * and before the initialization of the active plugins.
+    */
+   function plugin_myexample_boot() {
+      // Indicates to GLPI that the `/plugins/myexample/api.php` path is stateless and therefore
+      // should not use session cookies nor check for a valid session.
+      \Glpi\Http\SessionManager::registerPluginStatelessPath('myexample', '#^/api\.php#');
+   }
+
+   /**
     * Init the hooks of the plugins - Needed
     *
     * @return void
