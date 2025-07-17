@@ -118,7 +118,7 @@ using the ``Glpi\Http\Firewall::addPluginStrategyForLegacyScripts()`` method.
    use Glpi\Http\Firewall;
    
    function plugin_init_myplugin() {
-       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/api.php/#', Firewall::STRATEGY_NO_CHECK);
+       Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/faq.php$#', Firewall::STRATEGY_FAQ_ACCESS);
        Firewall::addPluginStrategyForLegacyScripts('myplugin', '#^/front/dashboard.php$#', Firewall::STRATEGY_CENTRAL_ACCESS);
    }
 
@@ -129,6 +129,26 @@ The following strategies are available:
 * ``Firewall::STRATEGY_CENTRAL_ACCESS``: only users with access to the standard interface can access your script;
 * ``Firewall::STRATEGY_HELPDESK_ACCESS``: only users with access to the simplified interface can access your script;
 * ``Firewall::STRATEGY_FAQ_ACCESS``: only users with a read access to the FAQ will be allowed to access your script, unless the FAQ is configured to be public.
+
+Stateless endpoints
++++++++++++++++++++
+
+By default, GLPI will automatically start the PHP session, and use a session cookie to share the current session ID
+between web requests. If there is no active session, it will redirect the client to the login page.
+This behaviour should be disabled for stateless endpoints, such as APIs endpoints.
+To do this, you will need to call the ``\Glpi\Http\SessionManager::registerPluginStatelessPath()`` method from the ``boot`` hook of your plugin,
+located in the ``setup.php`` file.
+
+.. code-block:: php
+
+   <?php
+   
+   use Glpi\Http\SessionManager;
+   
+   function plugin_init_myplugin() {
+       SessionManager::registerPluginStatelessPath('myplugin', '#^/front/api.php/#');
+   }
+
 
 Handling of response codes and early script exit
 ++++++++++++++++++++++++++++++++++++++++++++++++
