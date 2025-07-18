@@ -6,10 +6,7 @@ Differents tools are available on the ``tools`` folder; here is an non exhaustiv
 locale/
 -------
 
-The locale directory contains several scripts used to maintain :doc:`translations <translations>` along with Transifex services:
-
-* ``extract_template.sh`` is used to extract translated string to the POT file (before sending it to Transifex),
-* ``locale\update_mo.pl`` compiles MO files from PO file (after they've been updated from transifex).
+Translations can be compiled using `./bin/console locales:compile`
 
 genapidoc.sh
 ------------
