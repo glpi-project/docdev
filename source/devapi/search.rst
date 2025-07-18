@@ -254,6 +254,9 @@ Optionally, it can defined the following keys:
 ``joinparams``
    Defines how the SQL join must be done. See :ref:`paragraph on joinparams <search_joinparams>` below.
 
+``condition``
+   Defines a restriction for items to choose from in filter. Do not confuse with the ``condition`` key in :ref:`joinparams <search_joinparams_condition>`. |br|
+
 ``additionalfields``
    An array for additional fields to add in the ``SELECT`` clause. For example: ``'additionalfields' => ['id', 'content', 'status']``
 
@@ -332,6 +335,7 @@ To define join parameters, you can use one or more of the following:
       NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_1`
       OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`
 
+.. _search_joinparams_condition:
 ``condition``
 
    Additional condition to add to the standard link.
