@@ -76,15 +76,3 @@ Not yet documented...
 * testmail.php
 * testunit.php
 * update_registered_ids.php: Purge history with some criteria
-
-Out of date
------------
-
-.. warning::
-
-   Those tools are outdated, and kept for reference, or need some work to be working again. Use them at your own risks, or do not use them at all :)
-
-phpunit/
-^^^^^^^^
-
-This directory contains a set of unit tests that have not really been integrated in the project. Since, some unit tests have been rewritten, but not everything has been ported :/
