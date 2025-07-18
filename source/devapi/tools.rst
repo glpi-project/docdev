@@ -15,15 +15,6 @@ Generate GLPI phpdoc using `apigen <https://github.com/ApiGen/ApiGen>`_. ``apige
 
 Generated documentation will be available in the ``api`` directory.
 
-convert_search_options.php
---------------------------
-
-Search options have changed in GLPI 9.2 (see `PR #1396 <https://github.com/glpi-project/glpi/issues/1396>`_). This script is a helper to convert existing search options to new way.
-
-.. note::
-
-   The script output can probably **not be used as is**; but it would probably help you a lot!
-
 make_release.sh
 ---------------
 
@@ -97,8 +88,3 @@ phpunit/
 ^^^^^^^^
 
 This directory contains a set of unit tests that have not really been integrated in the project. Since, some unit tests have been rewritten, but not everything has been ported :/
-
-php.vim
-^^^^^^^
-
-A vimfile for autocompletion and highlighting in VIM. This one is very outdated; it should be replaced with a most recent version, or being removed.
