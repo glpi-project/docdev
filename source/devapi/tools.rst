@@ -8,13 +8,6 @@ locale/
 
 Translations can be compiled using `./bin/console locales:compile`
 
-genapidoc.sh
-------------
-
-Generate GLPI phpdoc using `apigen <https://github.com/ApiGen/ApiGen>`_. ``apigen`` command must be available in your path.
-
-Generated documentation will be available in the ``api`` directory.
-
 make_release.sh
 ---------------
 
@@ -42,11 +35,6 @@ For example :
 .. code-block:: bash
 
    $ php tools/getsearchoptions.php --type=Computer
-
-generate_bigdump.php
---------------------
-
-This script is designed to generate many data in your GLPI instance. It relies on the ``generate_bigdump.function.php`` file.
 
 Not yet documented...
 ---------------------
