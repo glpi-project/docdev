@@ -18,10 +18,16 @@ Builds GLPI release tarball:
 * minify CSS an Javascript files,
 * ...
 
-modify_headers.pl
------------------
 
-Update copyright header based on the contents of the ``HEADER`` file.
+
+Modify and check code files headers
+-----------------------------------
+
+Update copyright header based on the contents of the ``./tools/HEADER`` file.
+
+.. code-block:: bash
+
+   $ ./vendor/bin/licence-headers-check --fix
 
 .. _getsearchoptions_php:
 
