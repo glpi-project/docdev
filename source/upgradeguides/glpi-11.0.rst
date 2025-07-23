@@ -36,23 +36,30 @@ Also, Twig automatically escapes special characters, which protects against XSS.
    - <p>{{ content|verbatim_value }}</p>
    + <p>{{ content }}</p>
 
-Code that outputs HTML code directly must be adapted to use the ``htmlspecialchars()`` function.
+Code that outputs HTML code directly must be adapted to use the ``htmlescape()`` function.
 
 .. code-block:: diff
 
    - echo '<p>' . $content . '</p>';
-   + echo '<p>' . htmlspecialchars($content) . '</p>';
+   + echo '<p>' . htmlescape($content) . '</p>';
 
-Also, code that ouputs javascript must be adapted to prevent XSS with both HTML special characters and quotes.
+Also, code that ouputs javascript must be adapted to prevent XSS by escaping both the HTML code with the ``htmlescape()`` function
+and the JS variables with the ``jsescape()`` function.
 
 .. code-block:: diff
 
    echo '
        <script>
    -        $(body).append('<p>' . $content . '</p>');
-   +        $(body).append(json_encode('<p>' . htmlspecialchars($content) . '</p>'));
+   +        $(body).append("' . jsescape('<p>' . htmlescape($content) . '</p>') . '"');
        </script>
    ';
+
+.. note::
+
+   Both the ``htmlescape()`` and the ``jsescape()`` functions have been added to ease the migration to GLPI 11.0
+   but will be deprecated and removed when the GLPI HTML and JS code will be completely moved into ``Twig`` templates and JS files.
+
 
 Query builder usage
 +++++++++++++++++++
