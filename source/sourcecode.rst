@@ -282,23 +282,6 @@ Each ``CommonDBTM`` object added in the database with its ``add()`` method will 
 
 Some bootstrapped data are provided (will be inserted on the first test run); they can be used to check defaults behaviors or make queries, but you should **never change those data!** This lend to unpredictable further tests results.
 
-Variables declaration
-^^^^^^^^^^^^^^^^^^^^^
-
-When you use a property that has not been declared, you will have errors that may be quite difficult to understand. Just remember to always declare property you use!
-
-.. code-block:: php
-
-   <?php
-
-   class MyClass extends atoum {
-      private $myprop;
-
-      public function testMethod() {
-         $this->myprop = 'foo'; //<-- error here if missing "private $myprop"
-      }
-   }
-
 Launch tests
 ^^^^^^^^^^^^
 
