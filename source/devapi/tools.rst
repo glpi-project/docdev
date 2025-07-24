@@ -52,24 +52,7 @@ Not yet documented...
 
    Following scripts are not yet documented... Feel free to open a pull request to add them!
 
-* autoupdatelocales.sh: Probably obsolete
-* check_dict.pl
-* check_functions.pl
-* checkforms.php: Check forms opened / closed
-* checkfunction.php: Check for obsolete function usage
-* cleanhistory.php: Purge history with some criteria
-* diff_plugin_locale.php: Probably obsolete
-* find_twin_in_dict.sh: Check duplicates key in language template
-* findtableswithoutclass.php
-* fix_utf8_bomfiles.sh
 * fk_generate.php
-* genphpcov.sh
-* glpiuser.php
 * ldap-glpi.ldif: An LDAP export
-* ldap-schema.txt: An LDAP export
-* ldapsync.php
-* notincludedlanguages.php: Get all po files not used in GLPI
-* test_langfiles.php
 * testmail.php
-* testunit.php
 * update_registered_ids.php: Purge history with some criteria
