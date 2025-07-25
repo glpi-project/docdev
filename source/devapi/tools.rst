@@ -6,7 +6,8 @@ Differents tools are available on the ``tools`` folder; here is an non exhaustiv
 locale/
 -------
 
-Translations can be compiled using `./bin/console locales:compile`
+* Translations can be compiled using `./bin/console locales:compile`
+* `vendor/bin/extract-locales` is used to extract translated string to the POT file (before sending it to Transifex)
 
 make_release.sh
 ---------------
@@ -50,9 +51,10 @@ Not yet documented...
 
 .. note::
 
-   Following scripts are not yet documented... Feel free to open a pull request to add them!
+   Following scripts are not yet documented and probably broken.
+   Feel free to open a pull request to add them!
 
 * fk_generate.php
 * ldap-glpi.ldif: An LDAP export
 * testmail.php
-* update_registered_ids.php: Purge history with some criteria
+* update_registered_ids.php: This script seems to update the Registered PCI and USB IDs
