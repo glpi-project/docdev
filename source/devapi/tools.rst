@@ -6,8 +6,12 @@ Differents tools are available on the ``tools`` folder; here is an non exhaustiv
 locale/
 -------
 
+The locale directory contains several scripts used to maintain :doc:`translations <translations>` along with Transifex services:
+
 * Translations can be compiled using `./bin/console locales:compile`
 * `vendor/bin/extract-locales` is used to extract translated string to the POT file (before sending it to Transifex)
+
+The locale directory contains several scripts used to maintain :doc:`translations <translations>` along with Transifex services:
 
 make_release.sh
 ---------------
