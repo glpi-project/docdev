@@ -22,7 +22,7 @@ Builds GLPI release tarball:
 .. code-block:: bash
 
     $ ./tools/make_release.sh -y . mytag
-    # file created in /tmp/glpi-mytag.tgz ./
+    # file created in /tmp/glpi-mytag.tgz
 
 Modify and check code files headers
 -----------------------------------
