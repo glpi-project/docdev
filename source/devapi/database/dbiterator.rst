@@ -21,8 +21,8 @@ Basic usage
    }
 
    $req = $DB->request(...);
-   if ($row = $req->next()) {
-     // ... work on a single row
+   if ($row = $req->current()) {
+     // ... work on current row
    }
 
    $req = $DB->request(...);
@@ -171,7 +171,7 @@ It is also possible to add an extra criterion for any `JOIN` clause. You have to
 
    // => SELECT * FROM `glpi_computers`
    //       INNER JOIN `glpi_computerdisks`
-   //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id` OR 
+   //         ON (`glpi_computers`.`id` = `glpi_computerdisks`.`computer_id` OR
    //              `glpi_computers`.`field` > '42'
    //            )
 

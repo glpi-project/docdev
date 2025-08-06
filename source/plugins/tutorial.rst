@@ -310,7 +310,7 @@ Your working classes (in the ``src`` directory) can inherit from it and are call
     * :ref:`Tables columns <dbfields>` must also follow some conventions:
 
         * there must be an ``auto-incremented primary`` field named ``id``
-        * foreign keys names use that referenced table name without the global ``glpi_`` prefix and with and ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
+        * foreign keys names use that referenced table name without the global ``glpi_`` prefix and with ``_id`` suffix. example: ``plugin_myotherclasses_id`` references ``glpi_plugin_myotherclasses`` table
 
         **Warning!** GLPI does not use database foreign keys constraints. Therefore you must not use ``FOREIGN`` or ``CONSTRAINT`` keys.
 
@@ -482,7 +482,7 @@ In the ``plugin_myplugin_install`` function of your ``🗋 hook.php`` file, we w
                     ) ENGINE=InnoDB
                     DEFAULT CHARSET={$default_charset}
                     COLLATE={$default_collation}";
-           $DB->queryOrDie($query, $DB->error());
+           $DB->doQuery($query);
        }
 
        //execute the whole migration
@@ -592,9 +592,8 @@ To uninstall our plugin, we want to clean all related data.
 
        foreach ($tables as $table) {
            if ($DB->tableExists($table)) {
-               $DB->doQueryOrDie(
-                   "DROP TABLE `$table`",
-                   $DB->error()
+               $DB->doQuery(
+                   "DROP TABLE `$table`"
                );
            }
        }
@@ -808,10 +807,10 @@ After that step, a call in our browser to `http://glpi/plugins/myplugin/front/su
     ``{{ fields.hiddenField(name, value, label = '', options = {}) }``
     : HTML code for a ``hidden`` input.
 
-    ``{{ dateField(name, value, label = '', options = {}) }``
+    ``{{ fields.dateField(name, value, label = '', options = {}) }``
     : HTML code for a date picker (using `flatpickr <https://flatpickr.js.org/>`_)
 
-    ``{{ datetimeField(name, value, label = '', options = {}) }``
+    ``{{ fields.datetimeField(name, value, label = '', options = {}) }``
     : HTML code for a datetime picker (using `flatpickr <https://flatpickr.js.org/>`_)
 
     See ``🗋 templates/components/form/fields_macros.html.twig`` file in source code for more details and capacities.
@@ -840,7 +839,7 @@ Open ``setup.php`` and edit ``plugin_init_myplugin`` function:
        ...
 
        // add menu hook
-       $PLUGIN_HOOKS['menu_toadd']['myplugin'] = [
+       $PLUGIN_HOOKS[Hooks::MENU_TOADD]['myplugin'] = [
            // insert into 'plugin menu'
            'plugins' => Superasset::class
        ];
@@ -874,7 +873,7 @@ Edit our class and add related methods:
        }
 
        /**
-        * Define additionnal links used in breacrumbs and sub-menu
+        * Define additional links used in breacrumbs and sub-menu
         *
         * A default implementation is provided by CommonDBTM
         */
@@ -1026,7 +1025,7 @@ On a similar basis, we can target another class of our plugin:
        {
            $tabs = [];
            $this->addDefaultFormTab($tabs)
-               ->addStandardTab(Superasset_Item::class, $tabs, $options);
+               ->addStandardTab(Superasset_Item::class, $tabs, $options)
                ->addStandardTab(Notepad::class, $tabs, $options)
                ->addStandardTab(Log::class, $tabs, $options);
 
@@ -1343,7 +1342,7 @@ For every event applied on the database, we have a method that is executed befor
 .. note::
 
     📝 **Exercise**:
-    Add required methods to ``PluginMypluginSuperasset`` class to check the ``name`` field is properly filled when adding and updating.
+    Add required methods to ``Superasset`` class to check the ``name`` field is properly filled when adding and updating.
 
     On effective removal, we must ensure linked data from other tables are also removed.
 
@@ -1392,12 +1391,12 @@ We will declare one of those hooks usage in the plugin init function and add a `
       ...
 
        // callback a function (declared in hook.php)
-       $PLUGIN_HOOKS['item_update']['myplugin'] = [
+       $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['myplugin'] = [
            'Computer' => 'myplugin_computer_updated'
        ];
 
        // callback a class method
-       $PLUGIN_HOOKS['item_add']['myplugin'] = [
+       $PLUGIN_HOOKS[Hooks::ITEM_ADD]['myplugin'] = [
             'Computer' => [
                  Superasset::class, 'computerUpdated'
             ]
@@ -1462,7 +1461,7 @@ Plugins can declare import of additional libraries from their ``init`` function.
        // on ticket page (in edition)
        if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
            && isset($_GET['id'])) {
-           $PLUGIN_HOOKS['add_javascript']['myplugin'][] = 'js/ticket.js.php';
+           $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['myplugin'][] = 'js/ticket.js.php';
        }
 
        ...
@@ -1577,7 +1576,6 @@ First of all, let's create a new ``Config.php`` class in the ``src/`` folder wit
 
    namespace GlpiPlugin\Myplugin;
 
-   use Config;
    use CommonGLPI;
    use Dropdown;
    use Html;
@@ -1594,13 +1592,13 @@ First of all, let's create a new ``Config.php`` class in the ``src/`` folder wit
 
        static function getConfig()
        {
-           return Config::getConfigurationValues('plugin:myplugin');
+           return \Config::getConfigurationValues('plugin:myplugin');
        }
 
        function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
        {
            switch ($item->getType()) {
-               case Config::class:
+               case \Config::class:
                    return self::createTabEntry(self::getTypeName());
            }
            return '';
@@ -1612,7 +1610,7 @@ First of all, let's create a new ``Config.php`` class in the ``src/`` folder wit
            $withtemplate = 0
        ) {
            switch ($item->getType()) {
-               case Config::class:
+               case \Config::class:
                    return self::showForConfig($item, $withtemplate);
            }
 
@@ -1620,7 +1618,7 @@ First of all, let's create a new ``Config.php`` class in the ``src/`` folder wit
        }
 
        static function showForConfig(
-           Config $config,
+           \Config $config,
            $withtemplate = 0
        ) {
            global $CFG_GLPI;
@@ -1887,7 +1885,7 @@ First of all, let's create a new class dedicated to profiles management:
 
            TemplateRenderer::getInstance()->display('@myplugin/profile.html.twig', [
                'can_edit' => self::canUpdate(),
-               'profile'  => $profile
+               'profile'  => $profile,
                'rights'   => self::getAllRights()
            ]);
        }
@@ -1970,7 +1968,7 @@ And we tell installer to setup a minimal right for current profile (``super-admi
 
    }
 
-Then, wa can define rights from ``Administration > Profiles`` menu and can change the ``$rightname`` property of our class to ``myplugin::superasset``.
+Then, we can define rights from ``Administration > Profiles`` menu and can change the ``$rightname`` property of our class to ``myplugin::superasset``.
 
 Extending standard rights
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2039,7 +2037,7 @@ To achieve that in your plugin, you must declare a hook in the ``init`` function
    {
        ...
 
-       $PLUGIN_HOOKS['use_massive_action']['myplugin'] = true;
+       $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['myplugin'] = true;
    }
 
 Then, in the ``Superasset`` class, you must add 3 methods:
