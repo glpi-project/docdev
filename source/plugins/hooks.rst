@@ -81,7 +81,7 @@ You will also have to declare the function you want to call in you ``hook.php`` 
     */
    public function myplugin_updateitem_called (CommonDBTM $item) {
       //do everything you want!
-      //remember that $item is passed by reference (it is an abject)
+      //remember that $item is passed by reference (it is an object)
       //so changes you will do here will be used by the core.
       if ($item::getType() === Computer::getType()) {
          //we're working with a computer
