@@ -58,7 +58,7 @@ POST GLPI 10
 
 In GLPI 10 and newer installations you are advised to use namespaces and the Composer PSR-4 autoloader. Classes using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the Composer autoloader in your plugin, must place your PHP class files in the `/src` directory instead of `/inc`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
 
-The the convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every classfile in the `/src` directory and should be PHP convention be placed in the top of your classfile. Classfiles using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\Plugins\myplugin\src\ClassName.php`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load `GLPI_ROOT\Plugins\myplugin\src\SubFolder\ClassName.php`.
+The convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every class in the `/src` directory and per the PSR-12 PHP convention be placed in the top of your class. Classes using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\plugins\myplugin\src\`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load from `GLPI_ROOT\plugins\myplugin\src\SubFolder\`.
 
 +-------------+------------------------------------------------------------+
 | Directive   | Composer mapping                                           |
