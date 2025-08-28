@@ -6,6 +6,9 @@ Guidelines
 Directories structure
 ^^^^^^^^^^^^^^^^^^^^^
 
+PRE GLPI 10
+++++++++++
+
 Real structure will depend of what your plugin propose. See :doc:`requirements <requirements>` to find out what is needed. You may also want to :ref:`take a look at GLPI File Hierarchy Standard <fhs>`.
 
 .. warning::
@@ -50,12 +53,80 @@ The plugin directory structure should look like the following:
 * `MyPlugin.xml` and `MyPlugin.png` can be used to reference your plugin on the `plugins directory website <http://plugins.glpi-project.org>`_,
 * the required `setup.php` and `hook.php` files.
 
+POST GLPI 10
++++++++++++
+
+In GLPI 10 and newer installations you are advised to use namespaces and the Composer PSR-4 autoloader. Classes using namespaces are no longer loaded by the old autoload.function.php but by the newer Composer autoloader. In order to use the Composer autoloader in your plugin, must place your PHP class files in the `/src` directory instead of `/inc`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
+
+The convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every class in the `/src` directory and per the PSR-12 PHP convention be placed in the top of your class. Classes using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\plugins\myplugin\src\`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load from `GLPI_ROOT\plugins\myplugin\src\SubFolder\`.
+
++-------------+------------------------------------------------------------+
+| Directive   | Composer mapping                                           |
++=============+============================================================+
+| \GlpiPlugin | maps to /plugins or /marketplace                           |
++-------------+------------------------------------------------------------+
+| \MyPlugin   | maps to: /myplugin/src converted strtolower                |
++-------------+------------------------------------------------------------+
+| \SubFolder  | maps to /src/SubFolder/ using provided case                |
++-------------+------------------------------------------------------------+
+| \ClassName  | maps to ../ClassName.php using provided case apending .php |
++-------------+------------------------------------------------------------+
+
+
+GLPI_ROOT/marketplace/myplugin/src/Test.php
+
+.. code-block:: php
+
+  <?php
+
+    namespace GlpiPlugin\MyPlugin;
+
+    class Test extends CommonDBTM
+    {
+      \\ Your class code...
+    }
+
+  ?>
+
+GLPI_ROOT/marketplace/myplugin/src/ChildClass/ResultOutcomes.php
+
+.. code-block:: php
+
+  <?php
+
+    namespace GlpiPlugin\MyPlugin\ChildClass;
+
+    class ResultOutcomes extends CommonDBTM
+    {
+      \\ Your class code...
+    }
+
+  ?>
+
+GLPI_ROOT/marketplace/myplugin/setup.php
+
+.. code-block:: php
+
+  <?php
+
+  use GlpiPlugin\MyPlugin\Test;
+  use GlpiPlugin\Myplugin\ChildClass\ResultOutcomes;
+
+  function usingTest() : void
+  {
+    $t = new Test();
+    $r = new ResultOutcomes();
+  }
+
+  ?>
+
+
 Where to write files?
 +++++++++++++++++++++
 
 .. warning::
 
-   Plugins my never ask user to give them write access on their own directory!
+   Plugins may never ask user to give them write access on their own directory!
 
 The GLPI installation already ask for administrator to get write access on its ``files`` directory; just use ``GLPI_PLUGIN_DOC_DIR/{plugin_name}`` (that would resolve to ``glpi_dir/files/_plugins/{plugin_name}`` in default basic installations).
 
