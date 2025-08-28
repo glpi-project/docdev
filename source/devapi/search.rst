@@ -336,6 +336,7 @@ To define join parameters, you can use one or more of the following:
       OR NEWTABLE.`id` = REFTABLE.`#fk_for_new_table#_2`
 
 .. _search_joinparams_condition:
+
 ``condition``
 
    Additional condition to add to the standard link.

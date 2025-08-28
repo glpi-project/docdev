@@ -2592,7 +2592,7 @@ With these classes, we can build a dashboard that will display cards on its grid
 A card is a combination of a widget, a data provider, a place on grid and various options (like a background colour for example).
 
 Completing existing concepts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 From your plugin, you can complete these concepts with your own data and code.
 
@@ -2745,7 +2745,7 @@ A few explanations on those methods:
 * ``cardBigNumberProvider()``: provider and expected return example when grid will display card.
 
 Display your own dashboard
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 GLPI dashboards system is modular and you can use it in your own displays.
 
