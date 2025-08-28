@@ -70,7 +70,7 @@ Since it has been implemented, internal query builder (named ``DBMysqlIterator``
 2. table name as first parameter and condition as second parameter,
 3. raw SQL queries,
 
-The most used and easiest to maintain was the first. The second has been deprecated and the thrird has been prohibited or security reasons.
+The most used and easiest to maintain was the first. The second has been deprecated and the third has been prohibited or security reasons.
 
 If you were using the second syntax, you will need to replace as follows:
 
