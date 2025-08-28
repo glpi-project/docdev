@@ -79,7 +79,7 @@ If you were using the second syntax, you will need to replace as follows:
    - $iterator = $DB->request('mytable', ['field' => 'condition']);
    + $iterator = $DB->request(['FROM' => 'mytable', 'WHERE' => ['field' => 'condition']]);
 
-Using raw SQL queries must be replaced with query builder call, among other to prevent syntax issues, and SQL injections; please refer to :doc:devapi/database/dbiterator.
+Using raw SQL queries must be replaced with query builder call, among other to prevent syntax issues, and SQL injections; please refer to :doc:`../devapi/database/dbiterator`.
 
 Changes related to web requests handling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
