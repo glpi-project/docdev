@@ -48,7 +48,7 @@ Let's look at a partial version of the schema definition for a User since it sho
                 'type' => Doc\Schema::TYPE_INTEGER,
                 'format' => Doc\Schema::FORMAT_INTEGER_INT64,
                 'description' => 'ID',
-                'x-readonly' => true,
+                'readOnly' => true,
             ],
             'username' => [
                 'x-field' => 'name',
@@ -96,13 +96,13 @@ Let's look at a partial version of the schema definition for a User since it sho
                 'type' => Doc\Schema::TYPE_STRING,
                 'format' => Doc\Schema::FORMAT_STRING_PASSWORD,
                 'description' => 'Password',
-                'x-writeonly' => true,
+                'writeOnly' => true,
             ],
             'password2' => [
                 'type' => Doc\Schema::TYPE_STRING,
                 'format' => Doc\Schema::FORMAT_STRING_PASSWORD,
                 'description' => 'Password confirmation',
-                'x-writeonly' => true,
+                'writeOnly' => true,
             ],
             'picture' => [
                 'type' => Doc\Schema::TYPE_STRING,
@@ -146,7 +146,7 @@ The full schema can be specified using the 'x-full-schema' field.
 The criteria for the join is specified in the 'x-join' field (more on that in the :ref:`Joins section <joins>`).
 
 Users have two password fields which we would never want to show via the API, but we do want them to exist in the schema to allow setting/resetting a password.
-In this case, both 'password' and 'password2' have a 'x-writeonly' field present and set to true.
+In this case, both 'password' and 'password2' have a 'writeOnly' field present and set to true.
 
 The last property shown, 'picture', is an example of a mapped property.
 In some cases, the data we want the user to see will differ from the raw value in the database.
@@ -243,10 +243,6 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - A callable that transforms the raw value specified by 'x-mapped-from' to the display value.
       - Schema properties
       - Debug mode only
-    * - x-readonly
-      - Specifies the property can only be read and not written to.
-      - Schema properties
-      - Yes
     * - x-rights-conditions
       - Array of arrays or callables that returns an array of SQL criteria for special visibility restrictions. Only 'read' restrictions are currently supported.
         The type of restriction should be specified as the array key, and the callable or array as the value.
@@ -258,7 +254,3 @@ Below is a complete list of supported extension fields/properties used in OpenAP
         Typically you would find all shared properties between the different schemas and use that as the properties for this shared schema.
       - Main schema
       - Debug mode only
-    * - x-writeonly
-      - Specifies the property can only be written to and not read.
-      - Schema properties
-      - Yes
