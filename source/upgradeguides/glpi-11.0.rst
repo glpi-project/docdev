@@ -51,7 +51,7 @@ and the JS variables with the ``jsescape()`` function.
    echo '
        <script>
    -        $(body).append('<p>' . $content . '</p>');
-   +        $(body).append("' . jsescape('<p>' . htmlescape($content) . '</p>') . '"');
+   +        $(body).append("' . jsescape('<p>' . htmlescape($content) . '</p>') . '");
        </script>
    ';
 
