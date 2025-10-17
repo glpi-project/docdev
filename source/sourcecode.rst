@@ -99,32 +99,19 @@ This is a brief description of GLPI main folders and files:
   * |file| `*.po`: Gettext's translations
   * |file| `*.mo`: Gettext's compiled translations
 
-* |folder| `pics`
-
-  * |file| `*.*`: pictures and icons
-
 * |folder| `plugins`:
 
   * |folder| `...`: where all plugins lends
 
-* |folder| `scripts`: various scripts which can be used in crontabs for example
 * |folder| `tests`: unit and integration tests
 * |folder| `tools`: a bunch of tools
 * |folder| `vendor`: third party libs installed from composer (see composer.json below)
 * |file| `.gitignore`: Git ignore list
-* |file| `.htaccess`: Some convenient apache rules (all are commented)
-* |file| `.travis.yml`: Travis-CI configuration file
-* |phpfile| `apirest.php`: REST API main entry point
 * |file| `apirest.md`: REST API documentation
-* |phpfile| `apixmlrpc.php`: XMLRPC API main entry point
-* |file| `AUTHORS.txt`: list of GLPI authors
 * |file| `CHANGELOG.md`: Changes
 * |file| `composer.json`: Definition of third party libraries (`see composer website <https://getcomposer.org>`_)
-* |file| `COPYING.txt`: Licence
-* |phpfile| `index.php`: main application entry point
 * |file| `phpunit.xml.dist`: unit testing configuration file
 * |file| `README.md`: well... a README ;)
-* |file| `status.php`: get GLPI status for monitoring purposes
 
 
 
