@@ -56,38 +56,48 @@ File Hierarchy System
 
 This is a brief description of GLPI main folders and files:
 
+* |folder| `.devcontainer`
+* |folder| `.docker`
 * |folder| `.tx`: Transifex configuration
+* |folder| `.github`: Github related setup (CI, builds, templates and so on)
 * |folder| `ajax`
 
   * |phpfile| `*.php`: Ajax components
 
-* |folder| `files` Files written by GLPI or plugins (documents, session files, log files, ...)
-* |folder| `front`
+* |folder| `bin`
 
-  * |phpfile| `*.php`: Front components (all displayed pages)
+  * |phpfile| `console`: GLPI console executable
 
 * |folder| `config` (only populated once installed)
 
   * |phpfile| `config_db.php`: Database configuration file
   * |phpfile| `local_define.php`: Optional file to override some constants definitions (see ``inc/define.php``)
+  * |file| `glpicrypt.key`: Crypt key used to encrypt/decrypt database stored passwords
 
 * |folder| `css`
 
-  * |folder| `...`: CSS stylesheets
-  * |file| `*.css`: CSS stylesheets
+  * |folder| `...`: SCSS stylesheets
+  * |file| `*.css`: SCSS stylesheets
+
+* |folder| `dependency_injection`: dependency injection setup
+* |folder| `files` Files written by GLPI or plugins (documents, session files, log files, ...)
+* |folder| `front`
+
+  * |phpfile| `*.php`: Front components (all displayed pages)
 
 * |folder| `inc`
 
-  * |phpfile| `*.php`: Classes, functions and definitions
+  * |phpfile| `*.php`: Functions and definitions
 
 * |folder| `install`
 
+  * |folder| `migrations`: Update files
   * |folder| `mysql`: MariaDB/MySQL schemas
-  * |phpfile| `*.php`: upgrades scripts and installer
+  * |phpfile| `*.php`: upgrades scripts, installer, data to inject after installation
 
 * |folder| `js`
 
-  * |file| `*.js`: Javascript files
+  * |file| `*.js`: Javascript source files
 
 * |folder| `lib`
 
@@ -99,19 +109,41 @@ This is a brief description of GLPI main folders and files:
   * |file| `*.po`: Gettext's translations
   * |file| `*.mo`: Gettext's compiled translations
 
+* |folder| `marketplace`:
+
+  * |folder| `...`: where all plugins from marketplace lends
+
 * |folder| `plugins`:
 
   * |folder| `...`: where all plugins lends
 
+* |folder| `public`:
+
+  * |folder| `...`: images, compiled stylesheets and javascripts
+  * |phpfile| `index.php`: application main entry point
+
+
+* |folder| `resources`: Various resources
+* |folder| `routes`: Routing setup
+* |folder| `src`
+
+  * |folder| `...`: Classes
+  * |phpfile| `*.php`: Classes
+
+* |folder| `stubs`
+* |folder| `templates`: Twig templates files
 * |folder| `tests`: unit and integration tests
 * |folder| `tools`: a bunch of tools
+* |folder| `version`: Current version for internal use
 * |folder| `vendor`: third party libs installed from composer (see composer.json below)
 * |file| `.gitignore`: Git ignore list
 * |file| `apirest.md`: REST API documentation
 * |file| `CHANGELOG.md`: Changes
-* |file| `composer.json`: Definition of third party libraries (`see composer website <https://getcomposer.org>`_)
+* |file| `LICENSE`: License file
+* |file| `composer.json`: Definition of PHP third party libraries (`see composer <https://getcomposer.org>`_)
+* |file| `package.json`: Definition of javascript third party libraries (`see NPM <https://www.npmjs.com/>`_)
 * |file| `phpunit.xml.dist`: unit testing configuration file
-* |file| `README.md`: well... a README ;)
+* |file| `...`: various files to setup builds, lint and so on
 
 
 
