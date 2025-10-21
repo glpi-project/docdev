@@ -111,11 +111,11 @@ This is a brief description of GLPI main folders and files:
 
 * |folder| `marketplace`:
 
-  * |folder| `...`: where all plugins from marketplace lends
+  * |folder| `...`: where all plugins from marketplace land
 
 * |folder| `plugins`:
 
-  * |folder| `...`: where all plugins lends
+  * |folder| `...`: where all plugins land
 
 * |folder| `public`:
 
