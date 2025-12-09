@@ -104,6 +104,7 @@ You need to add the following classes for describing you new ``sub_type``.
         }
 
         // return an array of criteria
+		// default type can be found under Rule::getCriteriaDisplayPattern
         function getCriterias() {
             $criterias = [
                 '_users_id_requester' => [
@@ -127,15 +128,6 @@ You need to add the following classes for describing you new ``sub_type``.
                 ...
 
             ];
-
-            $criterias['GROUPS']['table']                   = 'glpi_groups';
-            $criterias['GROUPS']['field']                   = 'completename';
-            $criterias['GROUPS']['name']                    = sprintf(__('%1$s: %2$s'), __('User'),
-                                                                      __('Group'));
-            $criterias['GROUPS']['linkfield']               = '';
-            $criterias['GROUPS']['type']                    = 'dropdown';
-            $criterias['GROUPS']['virtual']                 = true;
-            $criterias['GROUPS']['id']                      = 'groups';
 
             return $criterias;
         }
