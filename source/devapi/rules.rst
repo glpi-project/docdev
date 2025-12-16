@@ -285,7 +285,7 @@ To call your rules collection and alter the data:
 
 Test for rule collection
 ^^^^^^^^^^^^^^^^^^^^^^^^
-Since GLPI 11.0.5, plugin and core RuleCollection can change the test path by overriding the ``RuleCollection::getRulesTestURL`` function.
+.. versionchanged:: 11.0.5 plugin and core RuleCollection can change the test path by overriding the ``RuleCollection::getRulesTestURL`` function.
 
 For plugins, there is currently no GenericController so you must implement it.
 
@@ -298,7 +298,6 @@ Here is the minimal setup:
     namespace GlpiPlugin\MyPlugin\Controller;
 
     use Glpi\Controller\AbstractController;
-
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\Attribute\Route;
@@ -306,7 +305,7 @@ Here is the minimal setup:
     final class RuleTestController extends AbstractController
     {
         #[Route(
-            "/rules/test",
+            "/rules/test", // /front/rulesengine.test.php for version previous to 11.0.5
             name: "rule_myplugin_test",
             methods: ["GET"],
         )]
