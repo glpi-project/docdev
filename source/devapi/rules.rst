@@ -104,7 +104,7 @@ You need to add the following classes for describing you new ``sub_type``.
         }
 
         // return an array of criteria
-		// default type can be found under Rule::getCriteriaDisplayPattern
+        // default type can be found under Rule::getCriteriaDisplayPattern
         function getCriterias() {
             $criterias = [
                 '_users_id_requester' => [
@@ -287,7 +287,7 @@ Test for rule collection
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Since GLPI 11.0.5, plugin and core RuleCollection can change the test path by overriding the ``RuleCollection::getRulesTestURL`` function.
 
-For plugin, they are currently no GenericController so you must implement it.
+For plugins, there is currently no GenericController so you must implement it.
 
 Here is the minimal setup:
 
@@ -298,7 +298,7 @@ Here is the minimal setup:
     namespace GlpiPlugin\MyPlugin\Controller;
 
     use Glpi\Controller\AbstractController;
-    use GlpiPlugin\MyPlugin\Rule\TicketRuleCollection;
+
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\Attribute\Route;
