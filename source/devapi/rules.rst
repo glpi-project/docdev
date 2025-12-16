@@ -104,6 +104,7 @@ You need to add the following classes for describing you new ``sub_type``.
         }
 
         // return an array of criteria
+        // default type can be found under Rule::getCriteriaDisplayPattern
         function getCriterias() {
             $criterias = [
                 '_users_id_requester' => [
@@ -127,15 +128,6 @@ You need to add the following classes for describing you new ``sub_type``.
                 ...
 
             ];
-
-            $criterias['GROUPS']['table']                   = 'glpi_groups';
-            $criterias['GROUPS']['field']                   = 'completename';
-            $criterias['GROUPS']['name']                    = sprintf(__('%1$s: %2$s'), __('User'),
-                                                                      __('Group'));
-            $criterias['GROUPS']['linkfield']               = '';
-            $criterias['GROUPS']['type']                    = 'dropdown';
-            $criterias['GROUPS']['virtual']                 = true;
-            $criterias['GROUPS']['id']                      = 'groups';
 
             return $criterias;
         }
@@ -290,6 +282,41 @@ To call your rules collection and alter the data:
       $output,
       $params
    );
+
+Test for rule collection
+^^^^^^^^^^^^^^^^^^^^^^^^
+.. versionchanged:: 11.0.5 plugin and core RuleCollection can change the test path by overriding the ``RuleCollection::getRulesTestURL`` function.
+
+For plugins, there is currently no GenericController so you must implement it.
+
+Here is the minimal setup:
+
+.. code-block:: php
+
+    <?php
+
+    namespace GlpiPlugin\MyPlugin\Controller;
+
+    use Glpi\Controller\AbstractController;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\Routing\Attribute\Route;
+
+    final class RuleTestController extends AbstractController
+    {
+        #[Route(
+            "/rules/test", // /front/rulesengine.test.php for version previous to 11.0.5
+            name: "rule_myplugin_test",
+            methods: ["GET"],
+        )]
+        public function __invoke(Request $request): Response
+        {
+            // No generic RuleTestController controller for now
+            include(GLPI_ROOT . "/front/rulesengine.test.php");
+            return new Response();
+        }
+    }
+
 
 Dictionaries
 ^^^^^^^^^^^^

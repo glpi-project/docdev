@@ -1,2 +1,4 @@
 #generated pages
 build/
+/.vscode/
+/.idea/
