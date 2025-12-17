@@ -377,7 +377,7 @@ In your Rule class (e.g., ``TicketRule``), override the ``getActions()`` method.
         $actions['_send_message'] = [
             'type'          => 'textarea', // Custom type we will handle manually
             'name'          => __('Send a short text message', 'myplugin'),
-            'force_actions' => ['send'],   // Force the 'Send' action operator, name can be found in RuleAction::getActions
+            'force_actions' => ['send'],   // Force the 'Send' action operator; name can be found in RuleAction::getActions
         ];
 
         return $actions;
@@ -400,7 +400,7 @@ Override ``displayAdditionalRuleAction()`` to render your custom input field. Th
         if ($action['type'] === 'textarea') {
             // Render a textarea with a character limit
             echo "<textarea class='form-control' name='value' rows='4' maxlength='255'>" . htmlescape($value) . "</textarea>";
-            // use the following if you don't need to limit the field maxlength
+            // Use the following if you don't need to limit the field maxlength
             // Html::textarea(['name' => 'value', 'value' => $value, 'display' => true, 'rows' => 4]);
             return true;
         }
