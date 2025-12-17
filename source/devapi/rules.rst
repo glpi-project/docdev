@@ -347,3 +347,88 @@ As they are shown in a separate menu, you should define they in a separate ``$CF
                                            'Software', 'OperatingSystemArchitecture',
                                            'RuleMytypeCollection' // <-- My type is added here
                                            );
+
+.. _custom_rule_actions:
+
+Example: Adding Custom Actions with Customized display
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this example, we will add a ``_send_message`` action that:
+
+1.  Uses a **textarea** for input (instead of a standard text field).
+2.  Forces the action type to **"Send"**.
+3.  Limits input to 255 characters.
+
+1. Define the Action
+''''''''''''''''''''
+
+In your Rule class (e.g., ``TicketRule``), override the ``getActions()`` method. Define your custom action and use ``force_actions`` to associate it with a specific action operator (like ``send``).
+
+.. code-block:: php
+
+    <?php
+
+    ...
+
+    public function getActions()
+    {
+        $actions = parent::getActions();
+
+        $actions['_send_message'] = [
+            'type'          => 'textarea', // Custom type we will handle manually
+            'name'          => __('Send a short text message', 'myplugin'),
+            'force_actions' => ['send'],   // Force the 'Send' action operator, name can be found in RuleAction::getActions
+        ];
+
+        return $actions;
+    }
+
+2. Customize the Display
+''''''''''''''''''''''''
+
+Override ``displayAdditionalRuleAction()`` to render your custom input field. This method allows you to output raw HTML (or use GLPI helpers) when your custom type is detected.
+
+.. code-block:: php
+
+    <?php
+
+    ...
+
+    #[Override]
+    public function displayAdditionalRuleAction(array $action, $value = '')
+    {
+        if ($action['type'] === 'textarea') {
+            // Render a textarea with a character limit
+            echo "<textarea class='form-control' name='value' rows='4' maxlength='255'>" . htmlescape($value) . "</textarea>";
+            // use the following if you don't need to limit the field maxlength
+            // Html::textarea(['name' => 'value', 'value' => $value, 'display' => true, 'rows' => 4]);
+            return true;
+        }
+        return false;
+    }
+
+3. Handle the Execution Logic
+'''''''''''''''''''''''''''''
+
+By default, GLPI might not handle your custom field or the "Send" action type for assignment. Override ``executeActions()`` to manually handle the value.
+
+.. code-block:: php
+
+    <?php
+
+    ...
+
+    #[Override]
+    public function executeActions($output, $params, array $input = [])
+    {
+        if (count($this->actions)) {
+            foreach ($this->actions as $action) {
+                // Intercept our specific field and action type
+                if ($action->fields["field"] == '_send_message' && $action->fields["action_type"] == 'send') {
+                    // Manually assign the value to the output
+                    $output[$action->fields["field"]] = $action->fields["value"];
+                }
+            }
+        }
+        return parent::executeActions($output, $params, $input);
+    }
