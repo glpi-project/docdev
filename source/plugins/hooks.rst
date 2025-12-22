@@ -126,7 +126,7 @@ These hooks will work just as the :ref:`hooks with item as parameter <hook_item_
       //)
    }
 
-The hooks that are called with an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``pre_itil_info_section``, ``post_itil_info_section``, ``item_transfer``.
+The hooks that are called with an array of parameters are: ``post_item_form``, ``pre_item_form``, ``pre_show_item``, ``post_show_item``, ``pre_show_tab``, ``post_show_tab``, ``pre_itil_info_section``, ``post_itil_actors_load``, ``post_itil_actors_count``, ``post_itil_info_section``, ``item_transfer``.
 
 Some hooks will receive a specific array as parameter, they will be detailed below.
 
@@ -485,6 +485,17 @@ Hooks that permits to add display on items.
 
    After displaying ITIL object sections (ticket, Change, Problem) Waits for a ``<section>``.
 
+``post_itil_actors_load``
+   .. versionadded:: 11.0.3
+
+   Before displaying the differents ITIL actors.
+
+   Give the possibility to change the displayed value or to add "virtual" actor (i.e: Linked by a plugin through a custom table)
+
+``post_itil_actors_count``
+   .. versionadded:: 11.0.3
+
+   Alter the displayed ITIL Actors count in the sidebar.
 
 ``pre_item_form``
    .. versionadded:: 9.1.2
