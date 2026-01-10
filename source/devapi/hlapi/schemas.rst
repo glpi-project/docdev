@@ -254,3 +254,7 @@ Below is a complete list of supported extension fields/properties used in OpenAP
         Typically you would find all shared properties between the different schemas and use that as the properties for this shared schema.
       - Main schema
       - Debug mode only
+    * - x-supports-mentions
+      - Indicates the property supports user mentions. Only applies to 'string' properties.
+      - Schema properties
+      - Yes
