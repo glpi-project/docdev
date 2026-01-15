@@ -16,7 +16,7 @@ Apart from the current documentation, you can also generate the full PHP documen
    translations
    acl
    crontasks
-   loggin
+   logging
    tools
    javascript
    extra

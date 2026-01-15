@@ -1,5 +1,5 @@
-Logging Systems and history
-===========================
+Logging Systems
+===============
 
 GLPI has distinct logging systems that must not be confused:
 
