@@ -6,7 +6,7 @@ GLPI has distinct logging systems that must not be confused:
 PHP logs
 --------
 
-It reports code errors. It can be used for debugging. It should remain empty.
+It reports code errors. It can be used for debugging.
 It runs on Monolog (PSR-3 standard).
 
 Output: ``files/_log/php-errors.log`` and ``files/_log/access-errors.log``
@@ -16,6 +16,10 @@ There are 3 handlers:
 - ``src/Glpi/Log/ErrorLogHandler.php`` which outputs PHP errors and exceptions in ``files/_log/php-errors.log``.
 - ``src/Glpi/Log/AccessLogHandler.php`` which outputs ``files/_log/access-errors.log``: HTTP access errors (4xx).
 - ``tests/src/Log/TestHandler.php`` used only in automated testing context, contents are in memory only.
+
+.. note::
+
+    Notice that other utilities also write contents in `php-errors.log` (\CronTask::launch(), \MailCollector::collect() and \Toolbox::backtrace() for example)
 
 Usage
 ~~~~~
@@ -118,7 +122,7 @@ It can be forced using the ``force`` parameter of the method.
 Other Toolbox methods
 ~~~~~~~~~~~~~~~~~~~~~
 
-- ``Toolbox::logDebug()`` : it uses Php logger logs a php backtrace in ``php-errors`` file (same file as php logs (see PHP logs above)) with PSR level ``LogLevel::DEBUG``.
+- ``Toolbox::logDebug()`` : it uses Php logger to log a php backtrace in ``php-errors.log`` file (same file as php logs (see PHP logs above)) with PSR level ``LogLevel::DEBUG``.
 
 .. code-block:: php
 
