@@ -21,7 +21,7 @@ Usage
 ~~~~~
 
 Developers can read or empty the logs using regular system utilities (tail, cat, ...).
-Throwing an uncactched exception will write contents php-errors.log file. What is logged depend on configuration (see below).
+Throwing an uncaught exception will write contents of the php-errors.log file. What is logged depends on configuration (see below).
 
 Configuration
 ~~~~~~~~~~~~~
