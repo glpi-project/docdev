@@ -17,7 +17,7 @@ We're following [GitFlow](http://git-flow.readthedocs.io/):
 ### Using Docker
 
 ```shell
-docker compose up --remove-orphans -d
+docker compose up --remove-orphans
 ```
 
 Doc is available at http://localhost:8007/
