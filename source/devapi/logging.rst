@@ -65,7 +65,7 @@ Usage Example
     Event::log(
         $user_id,
         "users",
-        \User::getLogDefaultLevel(),
+        3,
         "login",
         sprintf(__('%1$s log in from IP %2$s'), $login, $ip)
     );
