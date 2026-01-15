@@ -125,7 +125,7 @@ Other Toolbox methods
     try {
         doSomethingThatMayTriggerAnException();
     } catch (Exception $e) {
-        Toolbox::logDebug("Something wrong happend : " . $e->getMessage());
+        Toolbox::logDebug("Something wrong happened : " . $e->getMessage());
     }
 
 - ``Toolbox::logInfo()`` : currently not used in glpi core, same as logDebug() with ``LogLevel::INFO``.
