@@ -6,9 +6,6 @@ Guidelines
 Directories structure
 ^^^^^^^^^^^^^^^^^^^^^
 
-PRE GLPI 10
-++++++++++
-
 Real structure will depend of what your plugin propose. See :doc:`requirements <requirements>` to find out what is needed. You may also want to :ref:`take a look at GLPI File Hierarchy Standard <fhs>`.
 
 .. warning::
