@@ -14,6 +14,16 @@ We're following [GitFlow](http://git-flow.readthedocs.io/):
 
 ## Run it!
 
+### Using Docker
+
+```shell
+docker compose up --remove-orphans
+```
+
+Doc is available at http://localhost:8007/
+
+### Using your machine 
+
 You'll just have to install [Python Sphinx](http://sphinx-doc.org/), it is generally available in distributions repositories for Linux.
 
 If your distribution does not provide it, you could use a `virtualenv`:
