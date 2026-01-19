@@ -221,7 +221,7 @@ Optionally, it can defined the following keys:
 
 ``linkfield``
    Foreign key used to join to the current itemtype table. |br|
-   Used a field name for massive action update. ``field`` is still used to list itemtypes property.
+   Used as field name for massive action update. ``field`` is still used to list itemtypes property.
 
 ``searchtype``
 
