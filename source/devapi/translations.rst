@@ -3,7 +3,7 @@ Translations
 
 Main GLPI language is british english (en_GB). All string in the source code must be in english, and marked as translatable, using some convenient functions.
 
-Since 0.84; GLPI uses `gettext <https://www.gnu.org/software/gettext/>`_ for localization; and `Transifex <https://www.transifex.com/glpi/GLPI/dashboard/>`_ is used for translations. If you want to help translating GLPI, please register on transifex and join our `translation mailing list <https://mail.gna.org/listinfo/glpi-translation>`_
+Since 0.84; GLPI uses `gettext <https://www.gnu.org/software/gettext/>`_ for localization; and `Transifex <https://explore.transifex.com/glpi/GLPI/>`_ is used for translations. If you want to help translating GLPI, please register on transifex and join our `translation mailing list <https://mail.gna.org/listinfo/glpi-translation>`_
 
 What the system is capable to do:
 
