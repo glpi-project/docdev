@@ -41,9 +41,13 @@ To forbid this display for one field, you must define the key ``massiveaction`` 
 Specific massive actions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-After the ``Update`` entry, we can declare additional specific massive actions for our current itemtype.
+If default massive actions are not sufficient for your needs, you can define your own massive actions.
+3 methods must be defined to achieve this.
 
-First, we need declare in our class a ``getSpecificMassiveActions`` method containing our massive action definitions:
+1. declare the actions in ``getSpecificMassiveActions``
+2. display the form in ``showMassiveActionsSubForm``
+3. process in ``processMassiveActionsForOneItemtype``
+
 
 .. code-block:: php
 
@@ -51,30 +55,22 @@ First, we need declare in our class a ``getSpecificMassiveActions`` method conta
 
    ...
 
-   function getSpecificMassiveActions($checkitem=NULL) {
-      $actions = parent::getSpecificMassiveActions($checkitem);
+    public function getSpecificMassiveActions($checkitem = null)
+    {
+        $actions = parent::getSpecificMassiveActions($checkitem);
 
-      // add a single massive action
-      $class        = __CLASS__;
-      $action_key   = "myaction_key";
-      $action_label = "My new massive action";
-      $actions[$class.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
+        if (Session::haveRight(self::$rightname, UPDATE)) {
+            $actions[self::class . MassiveAction::CLASS_ACTION_SEPARATOR . 'update_visibility']
+                = __('Visibility');
+        }
 
-      return $actions;
-   }
+        return $actions;
+    }
 
-A single declaration is defined by these parts:
-
-- a ``classname``
-- a ``separator``: always ``MassiveAction::CLASS_ACTION_SEPARATOR``
-- a ``key``
-- and a ``label``
-
-We can have multiple actions for the same class, and we may target different class from our current object.
 
 .. _massiveactions_specific_subform:
 
-Next, to display the form of our definitions, we need to declare a ``showMassiveActionsSubForm`` method:
+Next, implement ``showMassiveActionsSubForm`` to display the form :
 
 .. code-block:: php
 
@@ -82,7 +78,7 @@ Next, to display the form of our definitions, we need to declare a ``showMassive
 
    ...
 
-   static function showMassiveActionsSubForm(MassiveAction $ma) {
+   public static function showMassiveActionsSubForm(MassiveAction $ma) {
       switch ($ma->getAction()) {
          case 'myaction_key':
             echo __("fill the input");
@@ -97,7 +93,7 @@ Next, to display the form of our definitions, we need to declare a ``showMassive
 
 .. _massiveactions_specific_process:
 
-Finally, to process our definition, we need a ``processMassiveActionsForOneItemtype`` method:
+Finally, for processing implement ``processMassiveActionsForOneItemtype`` method:
 
 
 .. code-block:: php
