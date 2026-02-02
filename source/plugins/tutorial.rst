@@ -1469,7 +1469,7 @@ Plugins can declare import of additional libraries from their ``init`` function.
 
 Several things to remember:
 
-* Loading paths are relative to plugin directory.
+* Loading paths are relative to plugin `public` directory.
 * Scripts declared this way will be loaded on **all** GLPI pages. You must check the current page in the ``init`` function.
 * You can rely on ``Html::requireJs()`` method to load external resources. Paths will be prefixed with GLPI root URL at load.
 * If you want to modify page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
