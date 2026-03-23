@@ -210,6 +210,10 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Specifies the column that contains the data for the property if it differs from the property name.
       - Schema properties
       - Debug mode only
+    * - x-input-field
+      - Specifies the input array key that the property should map to for writes. For example, the visibility properties for States all have the same "is_visible" field name when fetching from the DB, but they need to be "is_visible_ITEMTYPE" when writing.
+      - Schema properties
+      - Debug mode only
     * - x-full-schema
       - Indicates which schema is the full representation of the joined property.
         This enables the accessing of properties not in the partial schema in certain conditions such as a GraphQL query.
