@@ -10,6 +10,7 @@ Apart from the current documentation, you can also generate the full PHP documen
    database/index
    search
    controllers
+   symfonycomponents/index
    hlapi/index
    massiveactions
    rules
