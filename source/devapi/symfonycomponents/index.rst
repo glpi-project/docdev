@@ -77,3 +77,107 @@ There is also a ``component()`` Twig function, but its use is discouraged except
     }) }}
 
 This integration mode will not be shown in the component documentation.
+
+Creating a Component
+--------------------
+
+`Symfony Documentation <https://symfony.com/bundles/ux-twig-component/current/index.html>`_
+
+A Twig component consists of two parts: a **PHP class** that declares the props and logic, and a **Twig template** that defines the markup.
+
+The PHP Class
+^^^^^^^^^^^^^
+
+Create a class under ``src/Twig/Components/`` and annotate it with ``#[AsTwigComponent]``.
+
+By default, **Public properties** become the component's props and are automatically available as variables in the template.
+
+**Public methods** are also accessible from the template via the special ``this`` variable.
+
+.. code-block:: php
+
+    namespace Twig\Components;
+
+    use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+
+    #[AsTwigComponent(name: 'MyComponent', template: 'twig_components/MyComponent.html.twig')]
+    class MyComponent
+    {
+        public string $title = '';
+        public bool $important = false;
+
+        public function getComputedClass(): string
+        {
+            return $this->important ? 'text-bold' : '';
+        }
+    }
+
+The ``name`` parameter sets the tag name used in templates (``<twig:MyComponent />``) — if not defined it will be generated based on the class namespace after ``Twig\Components``.
+
+The ``template`` parameter is optional — if omitted, Symfony derives the path from the class namespace after ``Twig\Components`` and under ``templates/twig_components``.
+
+.. note::
+
+    For components with multiple variants (e.g., ``Alert:Success``, ``Alert:Danger``), the recommended pattern is to extract shared props and logic into an abstract base class, then create lightweight variant classes that extend it and override the relevant defaults. See ``src/Twig/Components/Alert/`` (`Github <https://github.com/glpi-project/glpi/tree/main/src/Twig/Components/Alert/>`_) for a real-world example.
+
+The Twig Template
+^^^^^^^^^^^^^^^^^
+
+Place templates under ``templates/twig_components/``. Props are available directly as template variables. The component object itself is accessible via ``this``, which is useful for calling methods:
+
+.. code-block:: twig
+
+    <div class="{{ this.computedClass }}">
+        {% block title %}
+            {% if title|length %}
+                <h4>{{ title }}</h4>
+            {% endif %}
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+Define ``{% block %}`` sections for any part of the markup that consumers may need to override.
+
+The ``{% block content %}`` is a specific block that will received content directly from whiting the Twig Syntax ``<twig:Alert>Will be injected into content block</twig:Alert>``
+
+Variants
+^^^^^^^^
+
+Variant components share a base class and, typically, the same template. The class name determines the component tag name: a class ``Twig\Components\Alert\Danger`` automatically resolves to the tag ``<twig:Alert:Danger>``.
+
+.. code-block:: php
+
+    namespace Twig\Components\Alert;
+
+    use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+
+    #[AsTwigComponent(template: 'twig_components/Alert/Info.html.twig')]
+    final class Danger extends AbstractAlert
+    {
+        public string $type = 'danger';
+    }
+
+The ``template`` parameter is specified explicitly here because all Alert variants share a single template file (``twig_components/Alert/Info.html.twig``).
+
+Testing
+^^^^^^^
+
+Two levels of tests are recommended:
+
+- **Unit tests**: instantiate the PHP class directly and assert prop defaults and method return values. No GLPI environment needed.
+- **Rendering tests**: render a Twig string using ``TemplateRenderer::getInstance()->renderFromStringTemplate()`` and assert the resulting HTML. These extend ``GLPITestCase``.
+
+Tests live in ``tests/functional/Twig/Components/`` (`Github <https://github.com/glpi-project/glpi/tree/main/tests/functional/Twig/Components/>`_). See ``AlertTest.php``  and ``AlertRenderingTest.php`` for examples.
+
+Debugging
+^^^^^^^^^
+
+To list all registered components and their resolved template paths, run:
+
+.. code-block:: bash
+
+    bin/console symfony:debug:twig-component
+
+    # Using Makefile
+    make console c='symfony:debug:twig-component'
