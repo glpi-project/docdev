@@ -131,7 +131,11 @@ This is a brief description of GLPI main folders and files:
   * |phpfile| `*.php`: Classes
 
 * |folder| `stubs`
+
 * |folder| `templates`: Twig templates files
+
+  * |folder| `twig_components`: Symfony Twig Components (`see documentation <devapi/symfonycomponents/index.html>`_)
+
 * |folder| `tests`: unit and integration tests
 * |folder| `tools`: a bunch of tools
 * |folder| `version`: Current version for internal use
