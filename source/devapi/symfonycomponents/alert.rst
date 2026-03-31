@@ -37,19 +37,36 @@ content
 ^^^^^^^
 Completely override the message field.
 
-
 .. code-block:: twig
-    <twig:Alert>
+
+    <twig:Alert:Danger>
         <twig:block name="title">
-            <h3 class="alert-title bg-green">
-                We can also be more like a vue/nuxt component
-            </h3>
+            <h2 class="alert-title">
+                Custom title block
+            </h2>
         </twig:block>
 
         <div>
-            My content custom alert content
+            My alert content
         </div>
-    </twig:Alert>
+    </twig:Alert:Danger>
+
+.. image:: /_static/images/symfonycomponents/alert-custom-block.png
+   :alt: Example with custom twig block
 
 Variants
 --------
+Multiple variation of the Alert exist, you can find the listed options here:
+
+.. code-block:: twig
+
+    <twig:Alert:Success>Success alert</twig:Alert:Success>
+    <twig:Alert:Info>Info alert</twig:Alert:Info>
+    <twig:Alert:Warning>Warning alert</twig:Alert:Warning>
+    <twig:Alert:Danger>Danger alert</twig:Alert:Danger>
+
+    <twig:Alert>Main alert</twig:Alert>
+    <twig:Alert type="danger">Main alert with type danger</twig:Alert>
+
+.. image:: /_static/images/symfonycomponents/alert-variants.png
+   :alt: Alert variants
