@@ -112,9 +112,9 @@ By default, **Public properties** become the component's props and are automatic
         }
     }
 
-The ``name`` parameter sets the tag name used in templates (``<twig:MyComponent />``) — if not defined it will be generated based on the class namespace after ``Twig\Components``.
+The ``name`` parameter sets the tag name used in templates (``<twig:MyComponent />``). If omitted, it is derived from the class namespace relative to ``Twig\Components``.
 
-The ``template`` parameter is optional — if omitted, Symfony derives the path from the class namespace after ``Twig\Components`` and under ``templates/twig_components``.
+The ``template`` parameter is also optional. If omitted, Symfony derives the template path from the class namespace, resolved under ``templates/twig_components/``.
 
 .. note::
 
@@ -139,7 +139,11 @@ Place templates under ``templates/twig_components/``. Props are available direct
 
 Define ``{% block %}`` sections for any part of the markup that consumers may need to override.
 
-The ``{% block content %}`` is a specific block that will received content directly from whiting the Twig Syntax ``<twig:Alert>Will be injected into content block</twig:Alert>``
+The ``{% block content %}`` block is special: any markup placed directly inside the component tag (without an explicit ``<twig:block>``) is injected into it automatically:
+
+.. code-block:: twig
+
+    <twig:Alert>This text is injected into the content block.</twig:Alert>
 
 Variants
 ^^^^^^^^
@@ -168,7 +172,7 @@ Two levels of tests are recommended:
 - **Unit tests**: instantiate the PHP class directly and assert prop defaults and method return values. No GLPI environment needed.
 - **Rendering tests**: render a Twig string using ``TemplateRenderer::getInstance()->renderFromStringTemplate()`` and assert the resulting HTML. These extend ``GLPITestCase``.
 
-Tests live in ``tests/functional/Twig/Components/`` (`Github <https://github.com/glpi-project/glpi/tree/main/tests/functional/Twig/Components/>`_). See ``AlertTest.php``  and ``AlertRenderingTest.php`` for examples.
+Tests live in ``tests/functional/Twig/Components/`` (`GitHub <https://github.com/glpi-project/glpi/tree/main/tests/functional/Twig/Components/>`_). See ``AlertTest.php`` and ``AlertRenderingTest.php`` for examples.
 
 Debugging
 ^^^^^^^^^
