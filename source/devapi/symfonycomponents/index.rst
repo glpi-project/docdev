@@ -3,11 +3,11 @@ Symfony Twig Components
 
 .. versionadded:: 12.0
 
-Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ giving us the possibility to configure component in PHP.
+Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ that allows configuring components in PHP.
 
-It also enable a cleaner integration and :code:`vuejs` like integration making it easier to maintain and review (compared to the old macro integration).
+It also enables a cleaner integration with a :code:`Vue.js`-like syntax, making components easier to maintain and review compared to the legacy macro-based integration.
 
-Following components are available:
+The following components are available:
 
 .. toctree::
     :maxdepth: 1
@@ -16,7 +16,8 @@ Following components are available:
 
 Usage
 -----
-Twig component support various integration mode, we recommend using the **Component HTML Syntax**
+
+Twig components support various integration modes. We recommend using the **Component HTML Syntax**.
 
 
 Component HTML Syntax
@@ -24,29 +25,26 @@ Component HTML Syntax
 
 `Symfony Documentation <https://symfony.com/bundles/ux-twig-component/current/index.html#component-html-syntax>`_
 
-
 .. code-block:: twig
 
     <twig:Alert title="My alert title" messages="My message" />
 
-Using this syntax ressemble a lot like modern frontend framework.
+This syntax resembles modern frontend frameworks.
 
-For example, if you want to pass variables, boolean or array you can do a twig block like the following
+To pass dynamic values such as variables, booleans, or arrays, prefix the prop name with ``:`` and use a Twig expression:
 
 .. code-block:: twig
 
-    <twig:Alert title="Overridden tittle" :messages="['Message 1', 'Message 2']" type="danger" :important="true">
+    <twig:Alert title="Overridden title" :messages="['Message 1', 'Message 2']" type="danger" :important="true">
         <twig:block name="title">
             <h4 class="alert-title">
                 Custom title block
             </h4>
-            {{ parent() }} -- Injecting parent datas (here will be `Overridden tittle`)
+            {{ parent() }} {# Renders the parent content — here: "Overridden title" #}
         </twig:block>
     </twig:Alert>
 
-Most of the component also have support the default block that should be named :code:`{% block content %}` inside the twig template.
-
-To inject data into it, you just avec to set data inside the <twig:xx> block.
+Most components also support a default ``content`` block. To inject content into it, place your markup directly inside the ``<twig:xx>`` tag:
 
 .. code-block:: twig
 
@@ -66,11 +64,10 @@ To inject data into it, you just avec to set data inside the <twig:xx> block.
    :alt: Example with custom twig block
 
 
-
 Component Twig Syntax
 ^^^^^^^^^^^^^^^^^^^^^
 
-It exist a `component` twig method, this usage is not advise and should be use for rare case as it's less readable and less flexible (no block overload, visually blending with other twig method).
+There is also a ``component()`` Twig function, but its use is discouraged except in rare cases. It is less readable and less flexible than the HTML syntax (no block overrides, and it visually blends in with other Twig function calls).
 
 .. code-block:: twig
 
@@ -79,4 +76,4 @@ It exist a `component` twig method, this usage is not advise and should be use f
         title: __('My alert title.')
     }) }}
 
-In the components documentation we will not display this integration mode.
+This integration mode will not be shown in the component documentation.

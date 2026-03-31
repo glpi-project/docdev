@@ -3,14 +3,15 @@ Alert
 
 .. versionadded:: 12.0.0
 
-Display an alert in the html where it is placed.
+Renders an alert box inline at its position in the HTML.
 
 .. image:: /_static/images/symfonycomponents/alert-1.png
    :alt: Danger alert
 
 Props
 -----
-All fields are optional.
+
+All props are optional.
 
 * :code:`type` **string**.
 
@@ -18,24 +19,26 @@ All fields are optional.
 
 * :code:`title` **string**.
 
-* :code:`messages` **string|array<string>**. Message content, a list can be passed.
+* :code:`messages` **string|array<string>**. The alert message. An array can be passed to display multiple messages.
 
-* :code:`icon` **string**. CSS icon class, for example :code:`ti ti-info-circle`.
+* :code:`icon` **string**. A CSS icon class, for example :code:`ti ti-info-circle`.
 
-  * If not defined, it will be calculated based on the alert type.
+  * If not set, the icon is automatically determined from the alert type.
 
-* :code:`important` **bool**. False by default, highlight the alert.
+* :code:`important` **bool**. When ``true``, the alert is visually highlighted. Defaults to ``false``.
 
 Blocks
 ------
 
 title
 ^^^^^
-Completely override the title field. Even the `<h4>` field
+
+Completely overrides the title, including the wrapping ``<h4>`` element.
 
 content
 ^^^^^^^
-Completely override the message field.
+
+Completely overrides the message area.
 
 .. code-block:: twig
 
@@ -56,7 +59,8 @@ Completely override the message field.
 
 Variants
 --------
-Multiple variation of the Alert exist, you can find the listed options here:
+
+Pre-typed variant components are available as shortcuts:
 
 .. code-block:: twig
 
