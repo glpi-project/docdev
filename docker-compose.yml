@@ -9,4 +9,4 @@ services:
       - PORT=8007
       - HOST=0.0.0.0
       - SPHINXOPTS="-D html_host=0.0.0.0 -D html_port=8007"
-    command: make livehtml
+    command: sleep infinity

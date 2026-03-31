@@ -20,7 +20,17 @@ We're following [GitFlow](http://git-flow.readthedocs.io/):
 docker compose up --remove-orphans
 ```
 
+or 
+
+```shell
+make up
+```
 Doc is available at http://localhost:8007/
+
+To start with live rebuild output visible in the console (useful to see errors):
+```shell
+make watch
+```
 
 ### Using your machine 
 

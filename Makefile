@@ -64,6 +64,11 @@ up: ## Start all containers
 	@echo "\033[32m▶ Documentation available at: http://localhost:8007 \033[0m"
 .PHONY: start
 
+watch: ## Start containers and run livehtml with live console output
+	$(MAKE) up
+	$(DOCS) bash -c 'make livehtml'
+.PHONY: watch
+
 down: ## Stop the containers
 	$(COMPOSE) down --remove-orphans
 .PHONY: stop
