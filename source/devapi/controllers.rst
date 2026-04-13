@@ -13,6 +13,8 @@ You need a `Controller` any time you want an URL access.
 
    Any new feature added to GLPI >=11 **must** use `Controllers`.
 
+   For plugin development, please read the :doc:`plugin-specific implementation </plugins/controllers>`.
+
 Creating a controller
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -319,7 +321,7 @@ It helps others developers understand how this route must be used and help debug
 .. code-block:: php
 
    <?php
-   ❌#[Route("/my_route”, name: “glpi_my_route”)] 
+   ❌#[Route("/my_route”, name: “glpi_my_route”)]
    ✅#[Route("/my_route”, name: “glpi_my_route”, methods: “GET”)]
 
 Use uppercase first route names
