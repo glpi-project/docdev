@@ -100,11 +100,40 @@ HTTP method constraints compatibility
 
 On GLPI >= 11.0.7, you can safely restrict routes to any HTTP method without the workaround.
 
-Stateless routes
-^^^^^^^^^^^^^^^^
+Unauthenticated access
+^^^^^^^^^^^^^^^^^^^^^^
 
-By default, GLPI requires an active session to access any route (see :doc:`/devapi/controllers`Firewall section).
-If a plugin route must be accessible without a session, register the path pattern in the ``plugin_{key}_init()`` or ``plugin_{key}_boot()`` function in ``setup.php``:
+GLPI offers two distinct mechanisms for routes that must be accessible without a logged-in user.
+Choosing the right one depends on whether the route needs a session at all.
+
+Session based: No auth check
+++++++++++++++++++++++++++++
+
+The session is started normally (the session cookie is read and written), but no authentication check is performed.
+
+The controller can read the current user's session if one happens to be active, but the request is also accepted from anonymous visitors.
+
+Use this for public web pages (e.g. a public form or a login endpoint).
+
+.. code-block:: php
+
+   <?php
+   #[Route("/MyAction", name: "myplugin_my_action", methods: ['GET'])]
+   #[Glpi\Security\Attribute\SecurityStrategy(Glpi\Http\Firewall::STRATEGY_NO_CHECK)]
+   public function __invoke(Request $request): Response
+   {
+       // Session may or may not be active so do not assume the user is logged in.
+   }
+
+No session: Stateless
++++++++++++++++++++++
+
+No session is started and no session cookie is sent or read. The request is fully stateless.
+
+Use this when the controller manages its own authentication (i.g., an API endpoint that expects a token in a header).
+It also prevents session cookies from interfering with HTTP caching for machine-to-machine endpoints.
+
+Register the path pattern in the ``plugin_{key}_init()`` or ``plugin_{key}_boot()`` function in ``setup.php``:
 
 .. code-block:: php
 
@@ -113,7 +142,7 @@ If a plugin route must be accessible without a session, register the path patter
 
    function plugin_myplugin_init(): void
    {
-       \Glpi\Http\SessionManager::registerPluginStatelessPath('myplugin', '#^/MyPublicRoute$#');
+       \Glpi\Http\SessionManager::registerPluginStatelessPath('myplugin', '#^/MyApiEndpoint$#');
    }
 
 The pattern is a regex matched against the path relative to the plugin base URL (i.e. without the ``/plugins/myplugin`` prefix).
