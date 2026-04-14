@@ -14,9 +14,9 @@ Requirements:
 
 * The controller file must be placed in the ``src/Controller/`` folder of the plugin.
 * The namespace must follow PSR-4: ``GlpiPlugin\MyPlugin\Controller\``.
-* The controller must extend ``Glpi\Controller\AbstractController``.
+* The controller must extend ``Glpi\Controller\AbstractController`` or implement the ``Glpi\\DependencyInjection\\PublicService`` interface.
 * The controller must define a route using the ``Route`` attribute.
-* The controller must return some kind of response.
+* The controller must return a ``Symfony\\Component\\HttpFoundation\\Response`` instance.
 
 Controllers placed in ``src/Controller/`` are **automatically discovered**, no manual registration is needed.
 
