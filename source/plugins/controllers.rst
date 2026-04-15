@@ -50,7 +50,6 @@ URL routing
 Plugin routes are automatically prefixed with the plugin base path. A route defined as ``/Hello`` in the ``myplugin`` plugin will be accessible at:
 
 * ``/plugins/myplugin/Hello`` (standard plugins directory)
-* ``/marketplace/myplugin/Hello`` (marketplace plugins directory)
 
 You do not need to include the plugin prefix in the ``Route`` attribute.
 
@@ -130,8 +129,7 @@ No session: Stateless
 
 No session is started and no session cookie is sent or read. The request is fully stateless.
 
-Use this when the controller manages its own authentication (i.g., an API endpoint that expects a token in a header).
-It also prevents session cookies from interfering with HTTP caching for machine-to-machine endpoints.
+Use this when the controller manages its own authentication (e.g. an API endpoint that expects a token in a header).
 
 Register the path pattern in the ``plugin_{key}_init()`` or ``plugin_{key}_boot()`` function in ``setup.php``:
 
