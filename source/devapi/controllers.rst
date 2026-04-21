@@ -87,15 +87,6 @@ Restricting a route to a specific HTTP method
 
    #[Symfony\Component\Routing\Attribute\Route("/Tickets", name: "glpi_tickets", methods: "GET")]
 
-Known limitation for ajax routes
-++++++++++++++++++++++++++++++++
-
-If an ajax route will be accessed by multiple POST requests without a page reload then you will run into CRSF issues.
-
-This is because GLPI’s solution for this is to check a special CRSF token that is valid for multiples requests, but this special token is only checked if your url start with ``/ajax``.
-
-You will thus need to prefix your route by ``/ajax`` until we find a better way to handle this.
-
 Reading query parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

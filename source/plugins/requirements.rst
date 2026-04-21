@@ -41,9 +41,6 @@ This is a minimalist example, for a plugin named `myexample` (functions names wi
    function plugin_init_myexample() {
       global $PLUGIN_HOOKS;
 
-      //required!
-      $PLUGIN_HOOKS['csrf_compliant']['myexample'] = true;
-
       //some code here, like call to Plugin::registerClass(), populating PLUGIN_HOOKS, ...
    }
 
