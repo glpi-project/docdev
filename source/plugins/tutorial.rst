@@ -1130,6 +1130,15 @@ As previously, we will use a Twig template to handle display.
 
     We will include a mini form to insert related items in our table. Form actions can be handled from ``myplugin/front/supperasset.form.php`` file.
 
+    Prior to GLPI 12, GLPI forms submitted as ``POST`` will be protected with a CRSF token..
+    You can include a hidden field to validate the form:
+
+    .. code-block:: twig
+
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+
+ This has no effect on GLPI 12 and can be omitted. For further information, read `CSRF protection <../devapi/controllers.html#csrf-protection>`_.
+
     We will also display a list of computers already associated below the form.
 
 .. _using-core-objects:
@@ -1643,6 +1652,7 @@ Once again, we manage display from a dedicated template file:
        <form name="form" action="{{ "Config"|itemtype_form_path }}" method="POST">
            <input type="hidden" name="config_class" value="GlpiPlugin\\Myplugin\\Config">
            <input type="hidden" name="config_context" value="plugin:myplugin">
+           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"> {# useless for GLPI 12 #}
 
            {{ fields.dropdownYesNo(
                'myplugin_computer_tab',
@@ -1894,6 +1904,7 @@ Once again, display will be done from a Twig template:
    <div class='firstbloc'>
        <form name="form" action="{{ "Profile"|itemtype_form_path }}" method="POST">
            <input type="hidden" name="id" value="{{ profile.fields['id'] }}">
+           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"> {# useless for GLPI 12 #}
 
            {% if can_edit %}
                <button type="submit" class="btn btn-primary mx-1" name="update" value="1">
