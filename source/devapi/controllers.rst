@@ -209,6 +209,20 @@ Invalid input
        }
    }
 
+CSRF protection
++++++++++++++++
+
+Prior to GLPI 12, a form input is required in the form of
+
+.. code-block:: twig
+
+    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">``.
+
+Starting with GLPI 12, CSRF protection is handled using Fetch metadata headers sent by client's browser. No more token form inputs are needed, you just don't need to worry about it anymore.
+For further information about CSRF, read `MDN documentation <https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF#m%C3%A9tadonn%C3%A9es_fetch>`_.
+
+In GLPI 11 or 12, csrf/tokens are checked in the `CheckCsrfListener <https://github.com/glpi-project/glpi/blob/main/src/Glpi/Kernel/Listener/ControllerListener/CheckCsrfListener.php>`_.
+
 Firewall
 ^^^^^^^^
 
