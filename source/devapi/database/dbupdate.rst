@@ -12,10 +12,17 @@ Escaping of data is currently provided automatically by the framework for all da
 
 The `WHERE` part of `UPDATE` and `DELETE` methods uses the same :ref:`criteria capabilities <query_criteria>` than `SELECT` queries.
 
-Inserting a row
-^^^^^^^^^^^^^^^
+Inserting rows
+^^^^^^^^^^^^^^
 
-You can insert a row in the database using the ``insert()``:
+You can insert a row in the database using the ``insert()`` method.
+
+An ``insertOrDie()`` method is also provided.
+
+Insert from values
+""""""""""""""""""
+
+You can insert a new row using fixed values for each column:
 
 .. code-block:: php
 
@@ -29,10 +36,28 @@ You can insert a row in the database using the ``insert()``:
    );
    // => INSERT INTO `glpi_my_table` (`a_field`, `other_field`) VALUES ('My value', Other value)
 
-An ``insertOrDie()`` method is also provided.
+Insert from a selection
+"""""""""""""""""""""""
 
-Updating a row
-^^^^^^^^^^^^^^
+You can also insert new rows from a selection using :ref:`sub_queries`:
+
+.. code-block:: php
+
+   <?php
+
+   $DB->insert(
+      'glpi_my_table', new \QuerySubQuery([
+         'SELECT'          => [
+            'a_field',
+            'other_field'
+         ],
+         'FROM'            => 'glpi_my_other_table'
+      ])
+   );
+   // => INSERT INTO `glpi_my_table` (SELECT `a_field`, `other_field` FROM `glpi_my_other_table`)
+
+Updating rows
+^^^^^^^^^^^^^
 
 You can update rows in the database using the ``update()`` method:
 
@@ -69,8 +94,8 @@ When issuing an `UPDATE` query, you can use an `ORDER` and/or a `LIMIT` clause a
       ]
    );
 
-Removing a row
-^^^^^^^^^^^^^^
+Removing rows
+^^^^^^^^^^^^^
 
 You can remove rows from the database using the ``delete()`` method:
 
@@ -105,7 +130,7 @@ Let's see an example with an insert statement:
    $stmt = $DB->prepare($insert_query);
 
    foreach ($data as $row) {
-      $stmt->bind_params(
+      $stmt->bind_param(
          'ss',
          $row['field'],
          $row['other']
