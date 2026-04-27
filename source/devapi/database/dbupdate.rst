@@ -105,7 +105,7 @@ Let's see an example with an insert statement:
    $stmt = $DB->prepare($insert_query);
 
    foreach ($data as $row) {
-      $stmt->bind_params(
+      $stmt->bind_param(
          'ss',
          $row['field'],
          $row['other']
