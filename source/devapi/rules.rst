@@ -150,7 +150,7 @@ You need to add the following classes for describing you new ``sub_type``.
     }
 
 A separator can be added in the criteria or actions lists by adding an entry with text contents.
-It render the following criterias/actions in an html fieldset with the provided text as legend.
+It render the following criteria/actions in an HTML fieldset with the provided text as legend.
 
 .. code-block:: php
 
@@ -161,7 +161,7 @@ It render the following criterias/actions in an html fieldset with the provided 
         function getCriterias() {
             return [
                 '_users_id_requester' => [...],
-                'separator' => __('Additional criteria'),
+                'separator' => __('Additional criteria'), // can be any string, not only 'separator'
                 '_users_id_observer' => [...],
             ];
         }
