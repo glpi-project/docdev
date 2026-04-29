@@ -63,21 +63,6 @@ Most components also support a default ``content`` block. To inject content into
 .. image:: /_static/images/symfonycomponents/alert-custom-block.png
    :alt: Example with custom twig block
 
-
-Component Twig Syntax
-^^^^^^^^^^^^^^^^^^^^^
-
-There is also a ``component()`` Twig function, but its use is discouraged except in rare cases. It is less readable and less flexible than the HTML syntax (no block overrides, and it visually blends in with other Twig function calls).
-
-.. code-block:: twig
-
-    {{ component('Alert', {
-        type: 'warning',
-        title: __('My alert title.')
-    }) }}
-
-This integration mode will not be shown in the component documentation.
-
 Creating a Component
 --------------------
 
