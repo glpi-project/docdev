@@ -33,9 +33,9 @@ All props are optional.
 
 * :code:`link_url` **string**. Text for the link. If not defined will display the :code:`link_text`
 
-* :code:`link_target` **string**. Target of the link
+* :code:`link_blank` **bool**. If true link target will be :code:`_blank`, :code:`_self` otherwise
 
-  * Possible values: :code:`_blank` (default), :code:`_self`, :code:`_parent`, :code:`_top`.
+  * Default: ``true``.
 
 Blocks
 ------
