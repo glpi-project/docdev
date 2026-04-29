@@ -19,7 +19,7 @@ All props are optional.
 
 * :code:`title` **string**.
 
-* :code:`messages` **string|array<string>**. The alert message. An array can be passed to display multiple messages.
+* :code:`message` **string**. The alert message.
 
 * :code:`icon` **string**. A CSS icon class, for example :code:`ti ti-info-circle`.
 
