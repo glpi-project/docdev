@@ -3,7 +3,7 @@ Alert
 
 .. versionadded:: 12.0.0
 
-Renders an alert box inline at its position in the HTML.
+Renders an alert box (also known as callout) in the HTML.
 
 .. image:: /_static/images/symfonycomponents/alert-1.png
    :alt: Danger alert
@@ -25,7 +25,17 @@ All props are optional.
 
   * If not set, the icon is automatically determined from the alert type.
 
-* :code:`important` **bool**. When ``true``, the alert is visually highlighted. Defaults to ``false``.
+* :code:`important` **bool**. When ``true``, the alert is visually highlighted.
+
+  * Default: ``false``.
+
+* :code:`link_text` **string**. Alert link, either internal or external.
+
+* :code:`link_url` **string**. Text for the link. If not defined will display the :code:`link_text`
+
+* :code:`link_target` **string**. Target of the link
+
+  * Possible values: :code:`_blank` (default), :code:`_self`, :code:`_parent`, :code:`_top`.
 
 Blocks
 ------
