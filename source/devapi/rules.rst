@@ -149,6 +149,31 @@ You need to add the following classes for describing you new ``sub_type``.
         }
     }
 
+A separator can be added in the criteria or actions lists by adding an entry with text contents.
+It render the following criteria/actions in an HTML fieldset with the provided text as legend.
+
+.. code-block:: php
+
+    <?php
+
+    class RuleMytype extends Rule {
+
+        function getCriterias() {
+            return [
+                '_users_id_requester' => [...],
+                'separator' => __('Additional criteria'), // can be any string, not only 'separator'
+                '_users_id_observer' => [...],
+            ];
+        }
+
+        function getActions() {
+            return [
+                'separator' => __('Observers'),
+                '_users_id_observer' => [...],
+            ];
+        }
+
+
 * ``src/RuleMytypeCollection.php``
 
 .. code-block:: php
