@@ -3,7 +3,7 @@ Symfony Twig Components
 
 .. versionadded:: 12.0
 
-Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ allowing to use components in twig template, inspired by html components. It aims to replace twig macros.
+Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ allowing to use components in Twig template, inspired by HTML components. It aims to replace twig macros.
 
 It also enables a cleaner integration with a :code:`Vue.js`-like syntax, making components easier to maintain and review compared to the legacy macro-based integration.
 
