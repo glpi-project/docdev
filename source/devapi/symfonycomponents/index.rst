@@ -3,7 +3,7 @@ Symfony Twig Components
 
 .. versionadded:: 12.0
 
-Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ that allows configuring components in PHP.
+Twig Components is a `Symfony UX bundle <https://symfony.com/bundles/ux-twig-component/current/index.html>`_ allowing to use components in twig template, inspired by html components. It aims to replace twig macros.
 
 It also enables a cleaner integration with a :code:`Vue.js`-like syntax, making components easier to maintain and review compared to the legacy macro-based integration.
 
@@ -96,6 +96,7 @@ By default, **Public properties** become the component's props and are automatic
 
 .. code-block:: php
 
+    <?php
     namespace Twig\Components;
 
     use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -152,6 +153,7 @@ Variant components share a base class and, typically, the same template. The cla
 
 .. code-block:: php
 
+    <?php
     namespace Twig\Components\Alert;
 
     use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -179,7 +181,7 @@ Debugging
 
 To list all registered components and their resolved template paths, run:
 
-.. code-block:: bash
+::
 
     bin/console symfony:debug:twig-component
 
