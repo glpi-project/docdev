@@ -262,3 +262,16 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Indicates the property supports user mentions. Only applies to 'string' properties.
       - Schema properties
       - Yes
+    * - x-singleton
+      - Indicates the schema represents a type that can only ever comprise of a single item.
+        For example, ServiceCatalogInfo which will only ever represent the information for the current user.
+        This is currently only used by the GraphQL API to change how the query for the schema is generated.
+      - Main schema
+      - Debug mode only
+    * - x-graphql-resolver
+      - Specifies a custom resolver to use for the GraphQL API.
+      - Its use is not necessary unless there are extremely specific, complex requirements for data fetching where it is not possible to use the default resolvers.
+        As a general rule, if you can use the ``ResourceAccessor`` methods in your REST endpoints, then this property should not be needed.
+        If set to null, no query is added to the GraphQL schema for it but it may still be available indirectly.
+      - Main schema
+      - Debug mode only
