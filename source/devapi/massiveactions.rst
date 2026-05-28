@@ -13,6 +13,70 @@ Add to itemtypes :doc:`search lists <../devapi/search>`:
 - a checkbox to select all items checkboxes,
 - an `Actions` button to apply modifications to each selected items.
 
+Stages
+^^^^^^
+
+Processing is splitted in three stages (each handled by a different file).
+They are determined by the ``MassiveAction`` constructor ``$stage`` parameter that determines its behaviour.
+
+Stage 1: initial
+""""""""""""""""
+
+**File:** ``ajax/massiveaction.php``
+
+**When:** The user checks items and clicks the bulk actions button.
+
+What this stage does:
+
+* Collects checked items (``$_POST['item'][itemtype][id] = 1``)
+* Calls ``MassiveAction::getAllMassiveActions()`` for each itemtype → aggregates available actions
+* Stores items in ``$POST['items']`` and the action list in ``$POST['actions']``
+* Displays a dropdown listing available actions
+* Each change in the dropdown triggers an AJAX call to the ``specialize`` stage
+
+Stage 2: specialize
+"""""""""""""""""""
+
+**File:** ``ajax/dropdownMassiveAction.php``
+
+**When:** The user selects an action from the dropdown.
+
+What this stage does:
+
+* Retrieves the chosen action and its label from ``$POST['actions']``
+* Filters out items that do not support the action (via ``action_filter`` and ``getForbiddenStandardMassiveAction()``)
+* Extracts the processor: if the action key contains ``ClassName:action_name``, the processor is ``ClassName``; otherwise ``MassiveAction`` is used by default
+* Calls ``$processor::showMassiveActionsSubForm($ma)`` → displays fields specific to the action
+* Hidden fields are injected via ``$ma->addHiddenFields()``
+
+The processor is the class that contains the subform and the processing logic. It is encoded in the action key:
+
+.. code-block:: php
+
+   <?php
+
+   // Action key with explicit processor
+   $actions['MyClass:my_action'] = 'My action';
+
+   // Implicit processor = MassiveAction
+   $actions['MassiveAction:delete'] = 'Move to trash';
+
+Stage 3: process
+""""""""""""""""
+
+**File:** ``front/massiveaction.php``
+
+**When:** The user submits the form from the ``specialize`` stage.
+
+What this stage does:
+
+* Initialises result counters: ``ok``, ``ko``, ``noright``, ``noaction``, ``messages``
+* Calls ``$ma->process()`` → ``processForSeveralItemtypes()``
+* For each remaining itemtype, calls ``$processor::processMassiveActionsForOneItemtype($ma, $item, $ids)``
+* Displays a progress bar
+* If processing takes more than 5 seconds, reloads the page with the session identifier to continue (anti-timeout), via ``$ma->itemDone()``
+* Redirects to the previous page with a result message
+
 Update item's fields
 ^^^^^^^^^^^^^^^^^^^^
 
