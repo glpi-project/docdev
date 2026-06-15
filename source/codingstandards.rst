@@ -246,8 +246,7 @@ Checking standards
 ------------------
 
 Linting (checking and fixing coding standards) is a good way to ensure code quality and consistency of the code base.
-This is done using [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer), [PHPStan](https://phpstan.org/), [ESLint](https://eslint.org/), [Stylelint](https://stylelint.io/) and [TwigCS](https://github.com/friendsoftwig/twigcs).
+This is done using `PHP Coding Standards Fixer <https://cs.symfony.com/>`__, `Rector <https://getrector.com/>`__, `PHPStan <https://phpstan.org/>`__, `ESLint <https://eslint.org/>`__, `Stylelint <https://stylelint.io/>`__ and `TwigCS <https://github.com/friendsoftwig/twigcs>`__.
 
-This can run the tasks using Docker, on your local host use `./tests/run_tests.sh lint` to proceed to all linting tasks, or use a scoped task, `./tests/run_tests.sh lint_php` to proceed to PHP linting only for example.
-All possible lintings are listed in the `./tests/run_tests.sh` script.
-For faster action you can run the scripts on your local machine or Docker development container using `node_modules/.bin/eslint . && echo "ESLint found no errors"` for example. You can find all the commands in [`.github/actions` directory](https://github.com/glpi-project/glpi/tree/main/.github/actions).
+This can run the tasks using Docker, on your local host use `make lint` to proceed to all linting tasks, or use a scoped task, `lint-php` to proceed to PHP linting only for example.
+All possible lintings are listed in the makeFile (`make help`).
