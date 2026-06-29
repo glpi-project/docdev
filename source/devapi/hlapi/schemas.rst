@@ -270,7 +270,7 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Debug mode only
     * - x-graphql-resolver
       - Specifies a custom resolver to use for the GraphQL API.
-      - Its use is not necessary unless there are extremely specific, complex requirements for data fetching where it is not possible to use the default resolvers.
+        Its use is not necessary unless there are extremely specific, complex requirements for data fetching where it is not possible to use the default resolvers.
         As a general rule, if you can use the ``ResourceAccessor`` methods in your REST endpoints, then this property should not be needed.
         If set to null, no query is added to the GraphQL schema for it but it may still be available indirectly.
       - Main schema

@@ -71,7 +71,7 @@ Usage Example
     );
 
 Levels (``$level``) - GLPI Internal Scale (1-5)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - **1 — Critical**: Critical security errors. Examples: Login failure.
 - **2 — Severe**: Severe errors (currently unused).
