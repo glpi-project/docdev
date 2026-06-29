@@ -54,11 +54,11 @@ The plugin directory structure should look like the following:
 PSR-4 autoload
 ++++++++++++++
 
-.. version-added:: 10.0
+.. versionadded:: 10.0
 
 In order to use the Composer PSR-4 autoloader in your plugin, must place your PHP class files in the `/src` directory instead of `/inc`. In this scenario the `/inc` directory should no longer be present in the plugin folder structure.
 
-The convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every class in the `/src` directory and per the PSR-12 PHP convention be placed in the top of your class. Classes using the `GlpiPlugin\Myplugin\` namespaces will be loaded from:  `GLPI_ROOT\plugins\myplugin\src\`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\` will load from `GLPI_ROOT\plugins\myplugin\src\SubFolder\`.
+The convention to be used is (Case sensitive): `namespace GlpiPlugin\Myplugin;`. The namespace should be added to every class in the `/src` directory and per the PSR-12 PHP convention be placed in the top of your class. Classes using the `GlpiPlugin\Myplugin\\` namespaces will be loaded from:  `GLPI_ROOT\plugins\myplugin\src\\`. To include folders inside the `/src` directory simply add them to your namespace and use keywords i.e. `namespace GlpiPlugin\Myplugin\SubFolder\\` will load from `GLPI_ROOT\plugins\myplugin\src\SubFolder\\`.
 
 +-------------+------------------------------------------------------------+
 | Directive   | Composer mapping                                           |
