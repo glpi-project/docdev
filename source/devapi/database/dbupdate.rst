@@ -29,8 +29,6 @@ You can insert a row in the database using the ``insert()``:
    );
    // => INSERT INTO `glpi_my_table` (`a_field`, `other_field`) VALUES ('My value', Other value)
 
-An ``insertOrDie()`` method is also provided.
-
 Updating a row
 ^^^^^^^^^^^^^^
 
@@ -49,8 +47,6 @@ You can update rows in the database using the ``update()`` method:
       ]
    );
    // => UPDATE `glpi_my_table` SET `a_field` = 'My value', `other_field` = 'Other value' WHERE `id` = 42
-
-An ``updateOrDie()`` method is also provided.
 
 .. versionadded:: 9.3.1
 
