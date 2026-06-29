@@ -39,7 +39,7 @@ For example, we will create a basic table to store some configuration for our pl
                      `name` VARCHAR(255) NOT NULL,
                      PRIMARY KEY  (`id`)
                   ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC";
-         $DB->queryOrDie($query, $DB->error());
+         $DB->doQuery($query, $DB->error());
       }
 
       //execute the whole migration
@@ -72,7 +72,7 @@ The update part is quite the same. Considering our previous example, we missed t
                      `name` VARCHAR(255) NOT NULL,
                      PRIMARY KEY  (`id`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC";
-         $DB->queryOrDie($query, $DB->error());
+         $DB->doQuery($query, $DB->error());
       }
 
       if ($DB->tableExists('glpi_plugin_myexample_configs')) {
@@ -121,7 +121,7 @@ You will have to drop all plugins tables when it will be uninstalled. Just put y
          $tablename = 'glpi_plugin_myexample_' . $table;
          //Create table only if it does not exists yet!
          if ($DB->tableExists($tablename)) {
-            $DB->queryOrDie(
+            $DB->doQuery(
                "DROP TABLE `$tablename`",
                $DB->error()
             );
