@@ -27,7 +27,7 @@ Component HTML Syntax
 
 .. code-block:: twig
 
-    <twig:Alert title="My alert title" messages="My message" />
+    <twig:Alert title="My alert title" message="My message" />
 
 This syntax resembles modern frontend frameworks.
 
@@ -35,7 +35,7 @@ To pass dynamic values such as variables, booleans, or arrays, prefix the prop n
 
 .. code-block:: twig
 
-    <twig:Alert title="Overridden title" :messages="['Message 1', 'Message 2']" type="danger" :important="true">
+    <twig:Alert title="Overridden title" :message="My message" type="danger" :important="true">
         <twig:block name="title">
             <h4 class="alert-title">
                 Custom title block
