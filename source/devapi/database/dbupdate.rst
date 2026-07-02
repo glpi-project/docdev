@@ -84,6 +84,12 @@ You can remove rows from the database using the ``delete()`` method:
 Use prepared statements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+.. versionchanged: 12.0.0
+
+.. warning::
+
+   Since GLPI 12, values passed will automatically be converted into `QueryParam` objects; you will have to bind explicitely their values.
+
 On some cases, you may want to use prepared statements to improve performances. In order to achieve that, you will have to create a query with some parameters (not named, since mysqli does not supports named parameters), then to prepare it, and finally to bind parameters and execute the statement.
 
 Let's see an example with an insert statement:
@@ -130,4 +136,12 @@ Preparing a `SELECT` query is a bit different:
    $query = $it->getSql();
    // => SELECT FROM `my_table` WHERE `something` = ? AND `foo` = 'bar'
    $stmt = $DB->prepare($query);
-   // [...]
+
+   foreach ($data as $row) {
+      $stmt->bind_param(
+         'ss',
+         $something,
+         'bar' // `foo` has been converted to a QueryParam, binding its value is required
+      );
+      $stmt->execute();
+   }
