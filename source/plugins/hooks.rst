@@ -333,6 +333,21 @@ Hooks that cannot be classified in above categories :)
          'items_id'  => int, //ID of itemtype showing the Kanban
          'metadata'  => array //current metadata array
       ];
+
+``menu_toadd``
+
+   Adds your plugin to the selected menu.
+
+   .. code-block:: php
+
+      <?php
+      $PLUGIN_HOOKS[Hooks::MENU_TOADD]['myplugin'] = [
+         'plugins' => Item::class,
+      ]
+
+   .. note::
+      Your Item must implement the CommonGLPI's ``getMenuName()`` and ``getMenuContent()`` methods in order to make this hook work properly.
+
 ``vcard_data``
    .. versionadded 9.5
 

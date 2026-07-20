@@ -634,7 +634,7 @@ Common actions on an object
     * display a list and a form to add/edit
     * define add/edit/delete routes
 
-In our ``front`` directory, we will need two new files.
+In our ``front`` directory, we will need one new file.
 
 .. raw:: html
 
@@ -645,7 +645,6 @@ In our ``front`` directory, we will need two new files.
             ...
             📂 front
                🗋 superasset.php
-               🗋 superasset.form.php
             ...
    </pre>
 
@@ -689,7 +688,9 @@ It will use the internal search engine ``show`` method of the :doc:`search engin
 
 ``header`` and ``footer`` methods from `Html`_ class permit to rely on GLPI graphical user interface (menu, breadcrumb, page footer, etc).
 
-Second file (``superasset.form.php`` - with ``.form`` suffix) will handle CRUD actions.
+Standard CRUD actions (Add, Delete, Update, ...) are automaticaly handled by a generic system.
+However, if we ever needed to handle some specific CRUD actions for our plugin, a second file (``superasset.form.php`` - with ``.form`` suffix) could be created to handle those CRUD actions.
+The file would look like the sample just below.
 
 **🗋 front/superasset.form.php**
 
@@ -1043,11 +1044,24 @@ In this new class we will define two other methods to control title and content 
 
    namespace GlpiPlugin\Myplugin;
 
-   use CommonDBTM;
+   use CommonDBRelation;
    use Glpi\Application\View\TemplateRenderer;
 
-   class Superasset_Item extends CommonDBTM
+   class Superasset_Item extends CommonDBRelation
    {
+        // From CommonDBRelation
+        public static $itemtype_1    = Superasset::class;
+
+        public static $items_id_1    = 'plugin_myplugin_superassets_id';
+
+        public static $take_entity_1 = false;
+
+        public static $itemtype_2    = "itemtype";
+
+        public static $items_id_2    = 'items_id';
+
+        public static $take_entity_2 = true;
+
        /**
         * Tabs title
         */
@@ -1055,12 +1069,12 @@ In this new class we will define two other methods to control title and content 
        {
            switch ($item->getType()) {
                case Superasset::class:
-                   $nb = countElementsInTable(self::getTable(),
-                       [
-                           'plugin_myplugin_superassets_id' => $item->getID()
-                       ]
-                   );
-                   return self::createTabEntry(self::getTypeName($nb), $nb);
+                   $nb = 0;
+                    if ($_SESSION['glpishow_count_on_tabs'] && $item instanceof CommonDBTM) {
+                        $nb = self::countForMainItem($item);
+                    }
+
+                    return self::createTabEntry(_n('Associated item', 'Associated items', Session::getPluralNumber()), $nb, $item::class, 'ti ti-package');
            }
            return '';
        }
@@ -1083,22 +1097,20 @@ In this new class we will define two other methods to control title and content 
         */
        static function showForSuperasset(Superasset $superasset, $withtemplate = 0)
        {
-           TemplateRenderer::getInstance()->display('@myplugin/superasset_item_.html.twig', [
-               'superasset' => $superasset,
+           TemplateRenderer::getInstance()->display('components/form/link_existing_or_new.html.twig', [
+               //...
            ]);
+
+            // ...
+
+           TemplateRenderer::getInstance()->display('components/datatable.html.twig', [
+                // ...
+            ]);
        }
    }
 
 As previously, we will use a Twig template to handle display.
 
-**🗋 templates/superasset_item.html.twig**
-
-.. code-block:: twig
-   :linenos:
-
-   {% import "components/form/fields_macros.html.twig" as fields %}
-
-   example content
 
 .. note::
 
@@ -1119,27 +1131,12 @@ As previously, we will use a Twig template to handle display.
 
     For the exercise, we will only display computers (`Computer`_) displayed with the following code:
 
-    .. code-block:: twig
-
-        {{ fields.dropdownField(
-            'Computer',
-            'items_id',
-            '',
-            __('Add a computer')
-        ) }}
-
-    We will include a mini form to insert related items in our table. Form actions can be handled from ``myplugin/front/supperasset.form.php`` file.
-
-    Prior to GLPI 12, GLPI forms submitted as ``POST`` will be protected with a CRSF token..
-    You can include a hidden field to validate the form:
-
-    .. code-block:: twig
-
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-
- This has no effect on GLPI 12 and can be omitted. For further information, read `CSRF protection <../devapi/controllers.html#csrf-protection>`_.
-
     We will also display a list of computers already associated below the form.
+
+    .. tip::
+        * The form to associate a SuperAsset with a Computer can be displayed with the "link_new_or_existing" twig template.
+        * The list of already associated computers can be handled by the "datatable" twig template.
+        * You can inspire yourself from other CommonDBRelation objects in the source code to complete this part.
 
 .. _using-core-objects:
 
@@ -1397,12 +1394,10 @@ We will declare one of those hooks usage in the plugin init function and add a `
            'Computer' => 'myplugin_computer_updated'
        ];
 
-       // callback a class method
-       $PLUGIN_HOOKS[Hooks::ITEM_ADD]['myplugin'] = [
-            'Computer' => [
-                 Superasset::class, 'computerUpdated'
-            ]
-       ];
+       // callback a hook method
+        $PLUGIN_HOOKS[Hooks::ITEM_ADD]['myplugin'] = [
+            'Computer' => 'myplugin_computer_added',
+        ];
    }
 
 In both cases (``hook.php`` function or class method), the prototype of the functions will be made on this model:
@@ -1463,7 +1458,7 @@ Plugins can declare import of additional libraries from their ``init`` function.
        // on ticket page (in edition)
        if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
            && isset($_GET['id'])) {
-           $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['myplugin'][] = 'js/ticket.js.php';
+           $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['myplugin'][] = 'js/ticket.js';
        }
 
        ...
@@ -1479,23 +1474,19 @@ Several things to remember:
 .. code-block:: javascript
    :linenos:
 
-   $(function() {
-       doStuff();
-       $(".glpi_tabs").on("tabsload", function(event, ui) {
-           doStuff();
-       });
-   });
+    $(() => {
+        doStuff();
+    });
 
-   var doStuff = function()
-   {
-       if (! $("html").hasClass("stuff-added")) {
-           $("html").addClass("stuff-added");
+    function doStuff()
+    {
+        if (! $("html").hasClass("stuff-added")) {
+            $("html").addClass("stuff-added");
 
-           // do stuff you need
-           ...
+            // Code to change the content of the page goes here
 
-       }
-   };
+        }
+    };
 
 .. note::
 
@@ -1505,7 +1496,7 @@ Several things to remember:
 
       * ``<a href='...' class='ti ti-mood-smile'></a>``
 
-    #. On ticket edition page, add an icon to self-associate as a requester on the model of the one present for the "assigned to" part.
+    #. On ticket edition page, change the icon to self-associate as a requester on the model of the one present for the "assigned to" part.
 
 Display hooks
 -------------
@@ -2086,7 +2077,6 @@ Here is a minimal implementation example:
                case 'myaction_key':
                    echo __("fill the input");
                    echo Html::input('myinput');
-                   echo Html::submit(__('Do it'), ['name' => 'massiveaction']) . "</span>";
 
                    break;
            }
@@ -2176,14 +2166,6 @@ Sub form display and processing are done the same way as you did for your plugin
 
 Notifications
 -------------
-
-.. warning::
-    ⚠️ Access to an SMTP server is recommended; it must be properly configured in ``Setup > Notifications`` menu.
-    On a development environment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local SMTP server and allow you to get emails sent by GLPI in a graphical interface.
-
-    Please also note that GLPI queues all notifications rather than sending them directly. The only exception to this is the test email notification.
-    All "pending" notifications are visible in the ``Administration > Notification queue`` menu.
-    You can send notifications immediately from this menu or by forcing the ``queuednotification`` automatic action.
 
 The GLPI notification system allows sending alerts to the actors of a recorded event.
 By default, notifications can be sent by email or as browser notifications, but other channels may be available from plugins (or you can add your own one).
