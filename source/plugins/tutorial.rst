@@ -2167,6 +2167,15 @@ Sub form display and processing are done the same way as you did for your plugin
 Notifications
 -------------
 
+.. warning::
+    ⚠️ Access to an SMTP server is recommended; it must be properly configured in ``Setup > Notifications`` menu.
+    Concerning the mailing service, it is recommended to use the provided **docker** environment in the glpi project, there is a container with a configured `mailpit <https://hub.docker.com/r/axllent/mailpit>`_ **running on port 8025**.
+    However, if you are on a local development environment, you can install `mailhog <https://github.com/mailhog/MailHog>`_ or `mailcatcher <https://mailcatcher.me/>`_ which expose a local SMTP server and allow you to get emails sent by GLPI in a graphical interface.
+
+    Please also note that GLPI queues all notifications rather than sending them directly. The only exception to this is the test email notification.
+    All "pending" notifications are visible in the ``Administration > Notification queue`` menu.
+    You can send notifications immediately from this menu or by forcing the ``queuednotification`` automatic action.
+
 The GLPI notification system allows sending alerts to the actors of a recorded event.
 By default, notifications can be sent by email or as browser notifications, but other channels may be available from plugins (or you can add your own one).
 
