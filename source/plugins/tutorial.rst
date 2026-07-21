@@ -688,7 +688,7 @@ It will use the internal search engine ``show`` method of the :doc:`search engin
 
 ``header`` and ``footer`` methods from `Html`_ class permit to rely on GLPI graphical user interface (menu, breadcrumb, page footer, etc).
 
-Standard CRUD actions (Add, Delete, Update, ...) are automaticaly handled by a generic system.
+Standard CRUD actions (Add, Delete, Update, ...) are automatically handled by a generic system.
 However, if we ever needed to handle some specific CRUD actions for our plugin, a second file (``superasset.form.php`` - with ``.form`` suffix) could be created to handle those CRUD actions.
 The file would look like the sample just below.
 
@@ -1069,7 +1069,7 @@ In this new class we will define two other methods to control title and content 
        {
            switch ($item->getType()) {
                case Superasset::class:
-                   $nb = 0;
+                    $nb = 0;
                     if ($_SESSION['glpishow_count_on_tabs'] && $item instanceof CommonDBTM) {
                         $nb = self::countForMainItem($item);
                     }
@@ -1134,7 +1134,7 @@ As previously, we will use a Twig template to handle display.
     We will also display a list of computers already associated below the form.
 
     .. tip::
-        * The form to associate a SuperAsset with a Computer can be displayed with the "link_new_or_existing" twig template.
+        * The form to associate a SuperAsset with a Computer can be displayed with the "link_existing_or_new" twig template.
         * The list of already associated computers can be handled by the "datatable" twig template.
         * You can inspire yourself from other CommonDBRelation objects in the source code to complete this part.
 
@@ -1387,14 +1387,14 @@ We will declare one of those hooks usage in the plugin init function and add a `
 
    function plugin_init_myplugin()
    {
-      ...
+        ...
 
-       // callback a function (declared in hook.php)
-       $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['myplugin'] = [
-           'Computer' => 'myplugin_computer_updated'
-       ];
+        // callback a function (declared in hook.php)
+        $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['myplugin'] = [
+            'Computer' => 'myplugin_computer_updated'
+        ];
 
-       // callback a hook method
+        // callback a hook method
         $PLUGIN_HOOKS[Hooks::ITEM_ADD]['myplugin'] = [
             'Computer' => 'myplugin_computer_added',
         ];
@@ -1469,7 +1469,7 @@ Several things to remember:
 * Loading paths are relative to plugin `public` directory.
 * Scripts declared this way will be loaded on **all** GLPI pages. You must check the current page in the ``init`` function.
 * You can rely on ``Html::requireJs()`` method to load external resources. Paths will be prefixed with GLPI root URL at load.
-* If you want to modify page DOM and especially what is displayed in main form, you should call your code twice (on page load and on current tab load) and add a class to check the effective application of your code:
+* If you want to modify page DOM and especially what is displayed in main form, you should add a class to check the effective application of your code:
 
 .. code-block:: javascript
    :linenos:
@@ -1486,7 +1486,7 @@ Several things to remember:
             // Code to change the content of the page goes here
 
         }
-    };
+    }
 
 .. note::
 

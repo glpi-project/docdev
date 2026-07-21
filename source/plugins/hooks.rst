@@ -343,7 +343,7 @@ Hooks that cannot be classified in above categories :)
       <?php
       $PLUGIN_HOOKS[Hooks::MENU_TOADD]['myplugin'] = [
          'plugins' => Item::class,
-      ]
+      ];
 
    .. note::
       Your Item must implement the CommonGLPI's ``getMenuName()`` and ``getMenuContent()`` methods in order to make this hook work properly.
