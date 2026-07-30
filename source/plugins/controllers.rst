@@ -72,10 +72,9 @@ Sensitive routes
 
 .. versionadded:: 12.0
 
-A plugin route performing a sensitive action may require a
-:doc:`re-authentication </devapi/reauthentication>` ("sudo mode"), like core does. A plugin can
-also provide its own verification method (for instance through an identity provider): see
-:ref:`providing a re-authentication strategy from a plugin <reauth_plugin_strategy>`.
+A plugin route performing a sensitive action may require a re-authentication ("sudo mode"), like
+core does. A plugin can also provide its own verification method, for instance through an
+identity provider: see :doc:`reauthentication`.
 
 HTTP method constraints compatibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

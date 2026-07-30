@@ -29,8 +29,8 @@ Extra operations are aslo described in the :doc:`tips and tricks page <tips>`, y
    .. versionadded:: 12.0
 
    If your object is a sensitive one (rights, authentication, credentials…), you can require a
-   :doc:`re-authentication </devapi/reauthentication>` ("sudo mode") before it is displayed or
-   modified, by overriding ``itemTypeRequiresReauthentication()``. See
+   :doc:`re-authentication <reauthentication>` ("sudo mode") before it is displayed or modified,
+   by overriding ``itemTypeRequiresReauthentication()``. See
    :ref:`protecting a page or an action <reauth_protect_page>`.
 
 Add a front for my object (CRUD)
