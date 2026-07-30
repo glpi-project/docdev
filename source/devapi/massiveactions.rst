@@ -77,6 +77,15 @@ What this stage does:
 * If processing takes more than 5 seconds, reloads the page with the session identifier to continue (anti-timeout), via ``$ma->itemDone()``
 * Redirects to the previous page with a result message
 
+.. note::
+
+   .. versionadded:: 12.0
+
+   This stage is also where :doc:`re-authentication <reauthentication>` ("sudo mode") is
+   requested: if at least one of the selected itemtypes is sensitive, the user is prompted once,
+   then the whole selection is replayed. See
+   :ref:`re-authentication and massive actions <reauth_massiveactions>`.
+
 Update item's fields
 ^^^^^^^^^^^^^^^^^^^^
 

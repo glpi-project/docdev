@@ -24,6 +24,15 @@ Your object will extends one of the :doc:`common core types <../devapi/mainobjec
 
 Extra operations are aslo described in the :doc:`tips and tricks page <tips>`, you may want to take a look at it.
 
+.. note::
+
+   .. versionadded:: 12.0
+
+   If your object is a sensitive one (rights, authentication, credentials…), you can require a
+   :doc:`re-authentication </devapi/reauthentication>` ("sudo mode") before it is displayed or
+   modified, by overriding ``itemTypeRequiresReauthentication()``. See
+   :ref:`protecting a page or an action <reauth_protect_page>`.
+
 Add a front for my object (CRUD)
 ++++++++++++++++++++++++++++++++
 

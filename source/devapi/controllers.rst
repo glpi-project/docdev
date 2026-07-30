@@ -183,6 +183,14 @@ Missing rights
        }
    }
 
+.. note::
+
+   .. versionadded:: 12.0
+
+   A controller exposing a sensitive action (users, rights, authentication, configuration…) must
+   also require :doc:`re-authentication <reauthentication>` ("sudo mode"), right after the rights
+   check. See :ref:`protecting a page or an action <reauth_protect_page>`.
+
 Invalid header
 ++++++++++++++
 
