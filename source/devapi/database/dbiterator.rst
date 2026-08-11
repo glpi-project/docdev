@@ -515,6 +515,26 @@ An example with a field value:
    ]);
    // SELECT * FROM `my_table` WHERE `field` = `other_field`
 
+
+.. versionadded:: 12.0.0
+
+`QueryExpression` can have values that will be handled in prepared statements; so no escaping is neeeded:
+
+.. code-block:: php
+
+   <?php
+   $sql_expression = new \QueryExpression(...); //an SQL expression that will be used in a comparison
+   $DB->request([
+      'FROM'   => 'my_table',
+      'WHERE'  => [
+         'field'  => new \QueryExpression($sql_expression . ' < ?', 30)
+      ]
+   ]);
+   // SELECT * FROM `my_table` WHERE {$sql_expression} < ?
+   // Value "30" will be added to prepared statement parameters
+
+
+
 .. versionadded:: 9.3.1
 
 You can also use some function or non supported stuff on field part by using a `RAW` entry in the query:
