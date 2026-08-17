@@ -134,9 +134,22 @@ on the page they asked for.
 Session keys used
 +++++++++++++++++
 
-``glpi_reauth_until`` (expiration timestamp), ``glpi_reauth_requested_url``,
-``glpi_reauth_requested_httpmethod``, ``glpi_reauth_requested_post_data``,
-``glpi_reauth_origin_url``.
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Session key
+     - Holds
+   * - ``glpi_reauth_until``
+     - Expiration timestamp of the current window.
+   * - ``glpi_reauth_requested_url``
+     - The URL to replay once verified.
+   * - ``glpi_reauth_requested_httpmethod``
+     - The HTTP method of the replayed request.
+   * - ``glpi_reauth_requested_post_data``
+     - The POST data of the replayed request.
+   * - ``glpi_reauth_origin_url``
+     - The referer, used for the "Cancel" button.
 
 .. warning::
 
