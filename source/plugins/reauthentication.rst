@@ -164,9 +164,10 @@ other plugin template (see :doc:`controllers`).
 Implementing a remote (out-of-band) strategy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When the identity is verified by an external service (OAuth/SSO, an external MFA provider…),
-override ``getVerifyUrl()`` — and possibly ``getVerifyHttpMethod()`` — to point at one of your
-own routes:
+When the identity is verified by an external service (OAuth/SSO, an external MFA provider…), the
+plugin's own route takes over the whole flow: verifying the identity, opening the
+re-authentication window, and replaying the initial request. To do this, override
+``getVerifyUrl()`` — and possibly ``getVerifyHttpMethod()`` — to point at one of your own routes:
 
 .. code-block:: php
 
