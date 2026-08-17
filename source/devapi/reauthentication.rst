@@ -375,13 +375,10 @@ What this means for a specific massive action (core or plugin):
 Providing a re-authentication strategy from a plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A plugin can contribute its own verification method — typically an OAuth/SSO plugin verifying
-the identity through the identity provider. Registered strategies are merged with the native
-ones and take part in the same priority-based selection: ``ReAuthManager::registerStrategy()``
-is where it starts.
-
-A plugin supplies only the *how* of verifying the identity. It cannot change the window
-duration, nor which itemtypes are sensitive.
+A plugin can contribute its own verification method (typically an OAuth/SSO plugin verifying
+the identity through the identity provider) via ``ReAuthManager::registerStrategy()``. It
+supplies only the *how* of verifying the identity: it cannot change the window duration, nor
+which itemtypes are sensitive.
 
 See :doc:`/plugins/reauthentication` for the whole recipe: registering the strategy,
 implementing an in-place one, providing the prompt template, and delegating the verification to
