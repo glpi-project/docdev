@@ -149,6 +149,15 @@ All above functions return a boolean. If we want a graceful die of your pages, w
 * ``checkRightsAnd``
 * ``checkRightsOr``
 
+.. warning::
+
+   .. versionadded:: 12.0
+
+   These module-level functions know nothing about :doc:`re-authentication <reauthentication>`
+   ("sudo mode"): they never ask the user for a fresh proof of identity. On a sensitive page,
+   prefer the item methods ``$item->check($id, $right)`` or ``$item->checkGlobal($right)``, which
+   enforce both the rights and the re-authentication.
+
 If you need to check a right directly in a SQL query, use bitwise `& <https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html>`_ and `| <http://php.net/manual/fr/language.operators.bitwise.php>`_ operators, ex for users:
 
 .. code-block:: php

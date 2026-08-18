@@ -67,6 +67,15 @@ To render a Twig template from a plugin controller, use the ``@plugin_key`` pref
 
 This will resolve to ``plugins/myplugin/templates/path/to/template.html.twig``.
 
+Sensitive routes
+^^^^^^^^^^^^^^^^
+
+.. versionadded:: 12.0
+
+A plugin route performing a sensitive action may require a re-authentication ("sudo mode"), like
+core does. A plugin can also provide its own verification method, for instance through an
+identity provider: see :doc:`reauthentication`.
+
 HTTP method constraints compatibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

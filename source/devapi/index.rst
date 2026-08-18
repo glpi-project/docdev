@@ -16,6 +16,7 @@ Apart from the current documentation, you can also generate the full PHP documen
    rules
    translations
    acl
+   reauthentication
    crontasks
    logging
    tools
