@@ -14,9 +14,17 @@ displayed or such an action is performed, GLPI asks the user to prove their iden
 time. This extra step is called **re-authentication**, informally *sudo mode*, by analogy with
 the ``sudo`` command.
 
-It mitigates the misuse of an already opened session: unattended workstation, stolen or
-replayed session cookie, forged link (CSRF-like), injected script. None of these carry the
-user's password, TOTP code or SSO credentials.
+It targets the misuse of an **already opened session**: the attacker holds the session, but
+neither the password, nor the TOTP code, nor the SSO credentials.
+
+* **Unattended workstation, stolen or replayed session cookie**: the attacker acts with the
+  session alone, and is stopped.
+* **Forged link (CSRF-like)**: re-authentication is a second layer here, CSRF protection being
+  the first one. It still matters when that first one fails: a cross-origin request can neither
+  display the prompt nor supply the secret.
+* **Injected script**: only partially. Such a script runs in the user's own browser, so it can
+  ride an open window. It cannot open one, though, and a request that cannot display the prompt
+  is denied rather than redirected.
 
 Once a verification succeeds, the user gets a **15 minute** window
 (``ReAuthManager::REAUTH_DELAY_SECONDS``) during which sensitive actions no longer trigger the
@@ -27,6 +35,12 @@ prompt.
    Re-authentication is **not** a right. It never grants anything: it only adds a condition on
    top of the existing :doc:`rights checks <acl>`. An action forbidden by the profile stays
    forbidden.
+
+.. warning::
+
+   Re-authentication is only as strong as the strategy available to the user. When no other one
+   applies, ``FallbackReAuthStrategy`` merely asks for a confirmation and always succeeds: no
+   identity is checked.
 
 Key properties to keep in mind while developing:
 
