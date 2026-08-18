@@ -5,7 +5,7 @@ Re-authentication ("sudo mode")
 
 .. versionadded:: 12.0
 
-   Re-authentication is only available from GLPI 12.0, which is not released yet.
+   Re-authentication is only available from GLPI 12.0.
 
 GLPI asks the user for a fresh proof of identity before a sensitive action (users, rights,
 authentication settings, plugins, configuration…). The mechanism, its architecture and how a

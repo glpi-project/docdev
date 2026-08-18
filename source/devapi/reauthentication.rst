@@ -4,7 +4,6 @@ Re-authentication ("sudo mode")
 .. versionadded:: 12.0
 
    Re-authentication is only available from GLPI 12.0.
-   Nothing described on this page exists in GLPI 11 or earlier.
 
 Goals
 ^^^^^
@@ -19,7 +18,7 @@ It mitigates the misuse of an already opened session: unattended workstation, st
 replayed session cookie, forged link (CSRF-like), injected script. None of these carry the
 user's password, TOTP code or SSO credentials.
 
-Once a verification succeeds, the user gets a **15 minutes** window
+Once a verification succeeds, the user gets a **15 minute** window
 (``ReAuthManager::REAUTH_DELAY_SECONDS``) during which sensitive actions no longer trigger the
 prompt.
 
@@ -199,7 +198,7 @@ Step 2 — use a right check that enforces it
 +++++++++++++++++++++++++++++++++++++++++++
 
 Nothing else is needed **if** the page checks its rights with the standard methods, because
-they already handle the redirection. The declaration is not right-specific: once an itemtype is
+they already handle the redirection. The declaration is not right-specific; once an itemtype is
 sensitive, ``READ`` is prompted just like ``UPDATE``, so simply displaying such a page requires
 a fresh proof of identity.
 
@@ -224,8 +223,8 @@ a fresh proof of identity.
      - **Nothing.** These are module-level right checks; they know nothing about
        re-authentication.
 
-So the most common change when protecting an existing legacy page is to replace a bare right
-check by an item check. This is exactly what was done for the plugins and marketplace pages:
+So, the most common change when protecting an existing legacy page is to replace a plain right
+check by an item check. This is what was done for the plugin and marketplace pages:
 
 .. code-block:: diff
 
@@ -234,7 +233,7 @@ check by an item check. This is exactly what was done for the plugins and market
 
 .. warning::
 
-   ``Session::checkRight()`` and friends silently bypass re-authentication. If a sensitive page
+   ``Session::checkRight()`` and similar functions silently bypass re-authentication. If a sensitive page
    keeps using them, it stays unprotected even though its itemtype declares
    ``itemTypeRequiresReauthentication()``.
 
@@ -369,7 +368,7 @@ What this means for a specific massive action (core or plugin):
          throw new AccessDeniedHttpException('Missing authorization');
      }
 
-* ``processMassiveActionsForOneItemtype()`` needs no change: it is only reached after the
+* ``processMassiveActionsForOneItemtype()`` needs no change; it is only reached after the
   prompt has been passed, so ``$item->can()`` behaves as usual.
 
 Providing a re-authentication strategy from a plugin
