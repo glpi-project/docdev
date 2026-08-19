@@ -81,6 +81,10 @@ entry points on ``CommonGLPI`` / ``CommonDBTM``.
    * - ``Glpi\Controller\Security\ReAuthController``
      - Routes ``/ReAuth/Prompt`` (display the form) and ``/ReAuth/Verify`` (verify, then
        replay the initial request).
+   * - ``Glpi\Kernel\Listener\RequestListener\ReAuthReplayListener``
+     - Request listener restoring the origin page as the referer of the replayed request, so
+       that what reads it — ``Html::back()`` most notably — sends the user back where they
+       came from instead of into the re-authentication flow.
 
 ``ReAuthManager`` uses ``SingletonTrait``, and is registered as an autowirable service in
 ``dependency_injection/services.php`` (a factory on ``getInstance()``).
@@ -139,10 +143,36 @@ Request flow
         └─ on success:
              ├─ ReAuthManager::authenticate() → opens the 15 min window
              └─ renders pages/redirect_post.html.twig, which replays the initial request
-                (same URL, same method, same POST data)
+                (same URL, same method, same data — ReAuthManager::getReplayData())
+
+   4. the replayed request
+        └─ ReAuthReplayListener restores the origin page as the referer
 
 The replay is what makes the detour transparent: a submitted form is not lost, the user lands
 on the page they asked for.
+
+Coming back to the origin page
+++++++++++++++++++++++++++++++
+
+The replay is an auto-submitted form served by the verification page, so the browser reports
+that page as the ``Referer`` of the replayed request. Anything reading it — ``Html::back()``
+most notably — would then send the user back into the re-authentication flow instead of the
+page the action was triggered from.
+
+``ReAuthManager::getReplayData()`` therefore adds one parameter to the replayed request,
+``_glpi_reauth_restore_referer`` (``ReAuthManager::RESTORE_REFERER_PARAM``). It lands in the
+query string of a GET replay and in the body of a POST one, and ``ReAuthReplayListener`` acts
+upon it before any controller runs — legacy scripts included: it reads the origin URL from the
+session and writes it both on the Symfony request headers and on ``$_SERVER['HTTP_REFERER']``,
+so both worlds see the same referer.
+
+The parameter carries no value of its own: the URL is read from the session, never from the
+request. A forged parameter can therefore only send the user back to their own origin page.
+
+.. note::
+
+   A replayed request carries that extra parameter. Code reading the whole query string or the
+   whole POST payload must tolerate it.
 
 Session keys used
 +++++++++++++++++
@@ -160,9 +190,10 @@ Session keys used
    * - ``glpi_reauth_requested_httpmethod``
      - The HTTP method of the replayed request.
    * - ``glpi_reauth_requested_post_data``
-     - The POST data of the replayed request.
+     - The data of the replayed request: the POST payload, or the query parameters of a GET.
    * - ``glpi_reauth_origin_url``
-     - The referer, used for the "Cancel" button.
+     - The page the action was triggered from. Used by the "Cancel" button of the prompt, and
+       restored as the referer of the replayed request.
 
 .. warning::
 

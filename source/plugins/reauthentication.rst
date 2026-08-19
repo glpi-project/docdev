@@ -232,7 +232,7 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
            return $this->render('pages/redirect_post.html.twig', [
                'http_method' => $this->reAuthManager->getRequestedMethod(),
                'url'         => $this->reAuthManager->getRequestedURL(),
-               'post_data'   => $this->reAuthManager->getRequestedPostData(),
+               'replay_data' => $this->reAuthManager->getReplayData(),
            ]);
        }
    }
@@ -246,6 +246,10 @@ Points of attention for such an endpoint:
 * When the provider answers asynchronously (redirect back from the provider, callback), make
   sure the state you check cannot be forged or replayed, and only then call ``authenticate()``.
 * Do not skip step 3, otherwise the user loses the action they had triggered.
+* Replay the request with ``getReplayData()``, not with the raw stored data: it adds the
+  parameter that restores the origin page as the referer of the replayed request (see
+  :doc:`the core documentation </devapi/reauthentication>`). Building the payload yourself
+  would send the user back into the re-authentication flow on the next ``Html::back()``.
 
 Security considerations for strategy authors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
