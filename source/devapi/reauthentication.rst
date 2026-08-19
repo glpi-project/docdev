@@ -56,8 +56,8 @@ Key properties to keep in mind while developing:
 Architecture
 ^^^^^^^^^^^^
 
-Everything lives in the ``Glpi\Security\ReAuth`` namespace, plus a controller and a few
-entry points on ``CommonGLPI`` / ``CommonDBTM``.
+Most of it lives in the ``Glpi\Security\ReAuth`` namespace, plus a controller, a request
+listener, and a few entry points on ``CommonGLPI`` / ``CommonDBTM``.
 
 .. list-table::
    :header-rows: 1
@@ -231,8 +231,9 @@ by default):
        }
    }
 
-Core examples: ``User``, ``Profile``, ``Profile_User``, ``Group``, ``Group_User``, ``Config``,
-``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``, ``Glpi\Inventory\Conf``.
+Core examples: ``User``, ``Profile``, ``Profile_User``, ``Group``, ``Group_User``,
+``Preference``, ``Config``, ``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``,
+``Glpi\System\Log\LogViewer``, ``Glpi\Inventory\Conf``.
 
 The derived state is read through the ``final`` method
 ``CommonGLPI::isUserReauthenticationNeeded()``, which returns ``true`` only when the itemtype
@@ -278,8 +279,8 @@ check by an item check. This is what was done for the plugin and marketplace pag
 
 .. warning::
 
-   ``Session::checkRight()`` and similar functions silently bypass re-authentication. If a sensitive page
-   keeps using them, it stays unprotected even though its itemtype declares
+   ``Session::checkRight()`` and similar functions silently bypass re-authentication. If a
+   sensitive page keeps using them, it stays unprotected even though its itemtype declares
    ``itemTypeRequiresReauthentication()``.
 
 The ``$reauth_needed`` by-reference parameter of ``can()`` / ``canGlobal()`` exists for the
@@ -338,6 +339,27 @@ Generic controllers
 ``GenericFormController`` and ``GenericListController`` already call
 ``$class::checkReAuthenticationOrRedirect()``. An itemtype served by them is protected as soon
 as it declares ``itemTypeRequiresReauthentication()``.
+
+Links and buttons in templates
+++++++++++++++++++++++++++++++
+
+The Twig helper ``has_itemtype_right()`` goes through ``CommonDBTM::canGlobal()``, so it
+returns ``false`` as long as the re-authentication is missing. Guarding a link with it
+therefore **hides** it instead of letting the user click it and get the prompt — and a user who
+never sees the entry has no way to reach the action at all.
+
+Guard such a link with ``has_profile_right()``, a plain right check: the page it points at
+runs the re-authentication check on its own.
+
+.. code-block:: diff
+
+   - {% if has_itemtype_right('Config', constant('UPDATE')) %}
+   + {% if has_profile_right('config', constant('UPDATE')) %}
+
+.. note::
+
+   The two helpers do not take the same argument: ``has_itemtype_right()`` expects an itemtype,
+   ``has_profile_right()`` a right name.
 
 AJAX and non-HTML endpoints
 +++++++++++++++++++++++++++
