@@ -56,8 +56,8 @@ Key properties to keep in mind while developing:
 Architecture
 ^^^^^^^^^^^^
 
-Everything lives in the ``Glpi\Security\ReAuth`` namespace, plus a controller and a few
-entry points on ``CommonGLPI`` / ``CommonDBTM``.
+Most of it lives in the ``Glpi\Security\ReAuth`` namespace, plus a controller, a request
+listener, and a few entry points on ``CommonGLPI`` / ``CommonDBTM``.
 
 .. list-table::
    :header-rows: 1
@@ -81,6 +81,10 @@ entry points on ``CommonGLPI`` / ``CommonDBTM``.
    * - ``Glpi\Controller\Security\ReAuthController``
      - Routes ``/ReAuth/Prompt`` (display the form) and ``/ReAuth/Verify`` (verify, then
        replay the initial request).
+   * - ``Glpi\Kernel\Listener\RequestListener\ReAuthReplayListener``
+     - Request listener restoring the origin page as the referer of the replayed request, so
+       that what reads it — ``Html::back()`` most notably — sends the user back where they
+       came from instead of into the re-authentication flow.
 
 ``ReAuthManager`` uses ``SingletonTrait``, and is registered as an autowirable service in
 ``dependency_injection/services.php`` (a factory on ``getInstance()``).
@@ -139,10 +143,37 @@ Request flow
         └─ on success:
              ├─ ReAuthManager::authenticate() → opens the 15 min window
              └─ renders pages/redirect_post.html.twig, which replays the initial request
-                (same URL, same method, same POST data)
+                (same URL, same method, same data — ReAuthManager::getReplayData())
+
+   4. the replayed request
+        └─ ReAuthReplayListener restores the origin page as the referer
 
 The replay is what makes the detour transparent: a submitted form is not lost, the user lands
 on the page they asked for.
+
+Coming back to the origin page
+++++++++++++++++++++++++++++++
+
+The replay is an auto-submitted form served by the verification page, so the browser reports
+that page as the ``Referer`` of the replayed request. Anything reading it — ``Html::back()``
+most notably — would then send the user back into the re-authentication flow instead of the
+page the action was triggered from.
+
+``ReAuthManager::getReplayData()`` therefore adds one parameter to the replayed request,
+``_glpi_reauth_restore_referer`` (``ReAuthManager::RESTORE_REFERER_PARAM``). It lands in the
+query string of a GET replay and in the body of a POST one.
+
+``ReAuthReplayListener`` acts upon it before any controller runs, legacy scripts included: it
+reads the origin URL from the session and writes it both on the Symfony request headers and on
+``$_SERVER['HTTP_REFERER']``, so both worlds see the same referer.
+
+The parameter carries no value of its own: the URL is read from the session, never from the
+request. A forged parameter can therefore only send the user back to their own origin page.
+
+.. note::
+
+   A replayed request carries that extra parameter. Code reading the whole query string or the
+   whole POST payload must tolerate it.
 
 Session keys used
 +++++++++++++++++
@@ -160,9 +191,10 @@ Session keys used
    * - ``glpi_reauth_requested_httpmethod``
      - The HTTP method of the replayed request.
    * - ``glpi_reauth_requested_post_data``
-     - The POST data of the replayed request.
+     - The data of the replayed request: the POST payload, or the query parameters of a GET.
    * - ``glpi_reauth_origin_url``
-     - The referer, used for the "Cancel" button.
+     - The page the action was triggered from. Used by the "Cancel" button of the prompt, and
+       restored as the referer of the replayed request.
 
 .. warning::
 
@@ -200,8 +232,9 @@ by default):
        }
    }
 
-Core examples: ``User``, ``Profile``, ``Profile_User``, ``Group``, ``Group_User``, ``Config``,
-``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``, ``Glpi\Inventory\Conf``.
+Core examples: ``User``, ``Profile``, ``Profile_User``, ``Group``, ``Group_User``,
+``Preference``, ``Config``, ``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``,
+``Glpi\System\Log\LogViewer``, ``Glpi\Inventory\Conf``.
 
 The derived state is read through the ``final`` method
 ``CommonGLPI::isUserReauthenticationNeeded()``, which returns ``true`` only when the itemtype
@@ -247,8 +280,8 @@ check by an item check. This is what was done for the plugin and marketplace pag
 
 .. warning::
 
-   ``Session::checkRight()`` and similar functions silently bypass re-authentication. If a sensitive page
-   keeps using them, it stays unprotected even though its itemtype declares
+   ``Session::checkRight()`` and similar functions silently bypass re-authentication. If a
+   sensitive page keeps using them, it stays unprotected even though its itemtype declares
    ``itemTypeRequiresReauthentication()``.
 
 The ``$reauth_needed`` by-reference parameter of ``can()`` / ``canGlobal()`` exists for the
@@ -307,6 +340,27 @@ Generic controllers
 ``GenericFormController`` and ``GenericListController`` already call
 ``$class::checkReAuthenticationOrRedirect()``. An itemtype served by them is protected as soon
 as it declares ``itemTypeRequiresReauthentication()``.
+
+Links and buttons in templates
+++++++++++++++++++++++++++++++
+
+The Twig helper ``has_itemtype_right()`` goes through ``CommonDBTM::canGlobal()``, so it
+returns ``false`` as long as the re-authentication is missing. Guarding a link with it
+therefore **hides** it instead of letting the user click it and get the prompt — and a user who
+never sees the entry has no way to reach the action at all.
+
+Guard such a link with ``has_profile_right()``, a plain right check: the page it points at
+runs the re-authentication check on its own.
+
+.. code-block:: diff
+
+   - {% if has_itemtype_right('Config', constant('UPDATE')) %}
+   + {% if has_profile_right('config', constant('UPDATE')) %}
+
+.. note::
+
+   The two helpers do not take the same argument: ``has_itemtype_right()`` expects an itemtype,
+   ``has_profile_right()`` a right name.
 
 AJAX and non-HTML endpoints
 +++++++++++++++++++++++++++
