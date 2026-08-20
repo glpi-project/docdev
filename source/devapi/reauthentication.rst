@@ -161,10 +161,11 @@ page the action was triggered from.
 
 ``ReAuthManager::getReplayData()`` therefore adds one parameter to the replayed request,
 ``_glpi_reauth_restore_referer`` (``ReAuthManager::RESTORE_REFERER_PARAM``). It lands in the
-query string of a GET replay and in the body of a POST one, and ``ReAuthReplayListener`` acts
-upon it before any controller runs — legacy scripts included: it reads the origin URL from the
-session and writes it both on the Symfony request headers and on ``$_SERVER['HTTP_REFERER']``,
-so both worlds see the same referer.
+query string of a GET replay and in the body of a POST one.
+
+``ReAuthReplayListener`` acts upon it before any controller runs, legacy scripts included: it
+reads the origin URL from the session and writes it both on the Symfony request headers and on
+``$_SERVER['HTTP_REFERER']``, so both worlds see the same referer.
 
 The parameter carries no value of its own: the URL is read from the session, never from the
 request. A forged parameter can therefore only send the user back to their own origin page.
