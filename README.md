@@ -25,12 +25,13 @@ or
 ```shell
 make up
 ```
-Doc is available at http://localhost:8007/
+This only starts the container; it does not serve the documentation yet.
 
-To start with live rebuild output visible in the console (useful to see errors):
+To build and serve the documentation, with live rebuild on changes and console output (useful to see errors):
 ```shell
 make watch
 ```
+Doc is then available at http://localhost:8007/
 
 ### Using your machine 
 

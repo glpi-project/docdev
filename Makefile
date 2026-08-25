@@ -11,9 +11,14 @@ PAPER         =
 BUILDDIR      = build
 SPHINXAUTOBUILD = sphinx-autobuild
 
-# User-friendly check for sphinx-build
+# User-friendly check for sphinx-build, skipped for Docker/meta goals which
+# don't need Sphinx on the host (it runs inside the "docs" container instead).
+DOCKER_GOALS = help build up watch down
+NON_DOCKER_GOALS := $(filter-out $(DOCKER_GOALS),$(or $(MAKECMDGOALS),help))
+ifneq ($(NON_DOCKER_GOALS),)
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
 $(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/)
+endif
 endif
 
 # Internal variables.
@@ -52,7 +57,7 @@ help: ## Show this help message
 	@echo ""
 
 ## —— Docker ———————————————————————————————————————————————————————————————————
-.PHONY: build start stop kill bash
+.PHONY: build start stop
 
 build: ## Build the Docker images
 	$(COMPOSE) pull
@@ -61,7 +66,6 @@ build: ## Build the Docker images
 
 up: ## Start all containers
 	$(COMPOSE) up -d
-	@echo "\033[32m▶ Documentation available at: http://localhost:8007 \033[0m"
 .PHONY: start
 
 watch: ## Start containers and run livehtml with live console output
@@ -72,15 +76,6 @@ watch: ## Start containers and run livehtml with live console output
 down: ## Stop the containers
 	$(COMPOSE) down --remove-orphans
 .PHONY: stop
-
-kill: ## Stop the containers and remove the volumes
-	$(COMPOSE) kill
-	$(COMPOSE) down --volumes --remove-orphans
-.PHONY: kill
-
-bash: ## Start a shell inside the php container
-	$(DOCS) bash
-.PHONY: bash
 
 ## —— Sphinx ———————————————————————————————————————————————————————————————————
 .PHONY: clean html livehtml dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf latexpdfja text man texinfo info gettext changes linkcheck doctest xml pseudoxml
