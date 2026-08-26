@@ -13,6 +13,7 @@ The following components are available:
     :maxdepth: 1
 
     alert
+    mfacodeinput
 
 Usage
 -----
