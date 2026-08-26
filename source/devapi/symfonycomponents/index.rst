@@ -28,7 +28,7 @@ Component HTML Syntax
 
 .. code-block:: twig
 
-    <twig:Alert title="My alert title" message="My message" />
+    <twig:Alert heading="My alert title" content="My message" />
 
 This syntax resembles modern frontend frameworks.
 
@@ -36,10 +36,10 @@ To pass dynamic values such as variables, booleans, or arrays, prefix the prop n
 
 .. code-block:: twig
 
-    <twig:Alert title="Overridden title" :message="My message" type="danger" :important="true">
-        <twig:block name="title">
-            <h4 class="alert-title">
-                Custom title block
+    <twig:Alert heading="Overridden title" :content="My message" color="danger" :important="true">
+        <twig:block name="heading">
+            <h4 class="alert-heading">
+                Custom heading block
             </h4>
             {{ parent() }} {# Renders the parent content — here: "Overridden title" #}
         </twig:block>
@@ -50,9 +50,9 @@ Most components also support a default ``content`` block. To inject content into
 .. code-block:: twig
 
     <twig:Alert:Danger>
-        <twig:block name="title">
-            <h2 class="alert-title">
-                Custom title block
+        <twig:block name="heading">
+            <h2 class="alert-heading">
+                Custom heading block
             </h2>
         </twig:block>
 
@@ -63,6 +63,26 @@ Most components also support a default ``content`` block. To inject content into
 
 .. image:: /_static/images/symfonycomponents/alert-custom-block.png
    :alt: Example with custom twig block
+
+Attributes
+^^^^^^^^^^
+
+`Symfony Documentation <https://symfony.com/bundles/ux-twig-component/current/index.html#component-attributes>`_
+
+Any attribute passed to a component tag that does not match a declared prop is not discarded: it is collected into a special ``attributes`` variable and can be rendered on the root element with ``{{ attributes.defaults({...}) }}``.
+
+This is how consumers can pass ``class``, ``id``, ``data-*`` or ``role`` to a component without the component having to declare a prop for each of them:
+
+.. code-block:: twig
+
+    <div {{ attributes.defaults({class: 'alert alert-info', role: 'alert'}) }}>
+        ...
+    </div>
+
+    {# <twig:Alert class="mb-0" /> renders: <div class="alert alert-info mb-0" role="alert"> #}
+
+``class`` is handled specially: the defaults come first and the caller's value is appended, rather than one
+replacing the other.
 
 Creating a Component
 --------------------
@@ -105,7 +125,11 @@ The ``template`` parameter is also optional. If omitted, Symfony derives the tem
 
 .. note::
 
-    For components with multiple variants (e.g., ``Alert:Success``, ``Alert:Danger``), the recommended pattern is to extract shared props and logic into an abstract base class, then create lightweight variant classes that extend it and override the relevant defaults. See ``src/Twig/Components/Alert/`` (`Github <https://github.com/glpi-project/glpi/tree/main/src/Twig/Components/Alert/>`_) for a real-world example.
+    For components with multiple variants (e.g., ``Alert:Success``, ``Alert:Danger``), the recommended pattern is to extract shared props and logic into an abstract base class, then create lightweight variant classes that extend it and override the relevant defaults. See ``src/Twig/Components/Alert/`` (`Github <https://github.com/glpi-project/glpi/tree/main/src/Twig/Components/Alert/>`_) for a real-world example. Its shared template lives in a dedicated ``templates/twig_components/Alert/`` folder, named ``Base.html.twig`` rather than ``Alert.html.twig``.
+
+.. warning::
+
+    Do not name a template file the same as its containing folder (e.g. ``templates/twig_components/Alert/Alert.html.twig``). GLPI's anonymous-component auto-discovery derives a component name from every template path under ``templates/twig_components/`` (``/`` becomes ``:``), so a folder and file sharing a name registers a false second component (here, ``Alert:Alert``) that is broken if ever invoked, since it has no backing PHP class.
 
 The Twig Template
 ^^^^^^^^^^^^^^^^^
@@ -115,7 +139,7 @@ Place templates under ``templates/twig_components/``. Props are available direct
 .. code-block:: twig
 
     <div class="{{ this.computedClass }}">
-        {% block title %}
+        {% block heading %}
             {% if title|length %}
                 <h4>{{ title }}</h4>
             {% endif %}
@@ -144,13 +168,13 @@ Variant components share a base class and, typically, the same template. The cla
 
     use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-    #[AsTwigComponent(template: 'twig_components/Alert/Info.html.twig')]
+    #[AsTwigComponent(template: 'twig_components/Alert/Base.html.twig')]
     final class Danger extends AbstractAlert
     {
-        public string $type = 'danger';
+        public string $color = 'danger';
     }
 
-The ``template`` parameter is specified explicitly here because all Alert variants share a single template file (``twig_components/Alert/Info.html.twig``).
+The ``template`` parameter is specified explicitly here because all Alert variants share a single template file (``twig_components/Alert/Base.html.twig``).
 
 Testing
 ^^^^^^^
