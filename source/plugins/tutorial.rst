@@ -2614,12 +2614,12 @@ From your plugin, you can complete these concepts with your own data and code.
 
        // add new widgets to the dashboard
        $PLUGIN_HOOKS[Hooks::DASHBOARD_TYPES]['myplugin'] = [
-           Dashboard::class => 'getTypes',
+           [Dashboard::class, 'getTypes'],
        ];
 
        // add new cards to the dashboard
        $PLUGIN_HOOKS[Hooks::DASHBOARD_CARDS]['myplugin'] = [
-           Dashboard::class => 'getCards',
+           [Dashboard::class, 'getCards'],
        ];
    }
 
