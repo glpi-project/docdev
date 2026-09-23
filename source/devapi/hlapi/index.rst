@@ -10,6 +10,7 @@ These sections are sorted by the recommended reading order. It is recommended th
 .. toctree::
    :maxdepth: 2
 
+   middleware
    schemas
    search
    rsql
