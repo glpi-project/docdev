@@ -5,16 +5,20 @@ Schemas are the definitions of the various item types in GLPI, or facades, for h
 In the legacy API, all classes that extend ``CommonDBTM`` were exposed along with all of their search options.
 This is not the case with the High-Level API.
 
+Note that schema names must be globally unique.
+
 Schema Format
 ^^^^^^^^^^^^^
 
 The schemas loosely follow the `OpenAPI 3 specification <https://swagger.io/specification/v3/>`_ to make it easier to implement the Swagger UI documentation tool.
-GLPI utilizes multiple custom extension fields (fields starting with 'x-') in schemas to enable advanced behavior.
-Schemas are defined in an array with their name as the key and definition as the value.
+Some convenience features are supported in the schema definition such as the ability to specify the `required` properties at the property level instead of the schema level.
+GLPI also utilizes multiple custom extension fields (fields starting with 'x-') in schemas to enable advanced behavior.
+The ``Glpi\Api\HL\OpenAPIGenerator`` class is used to create the final OpenAPI-compliant schema from the GLPI schema definitions and endpoints.
 
-There exists the ``\Glpi\API\HL\Doc\Schema`` class which is used to represent a schema definition in some cases, but also provides constants and static methods for working with schema arrays.
+There exists the ``\Glpi\API\HL\Doc\Schema`` class which is used to represent a schema definition in some cases, but also provides constants and static functions for working with schema arrays.
 This includes constants for the supported property types and formats.
 
+When defining schemas, in most cases however, the array syntax is used.
 Let's look at a partial version of the schema definition for a User since it shows most of the possibilities:
 
 .. code-block:: php
@@ -120,12 +124,12 @@ Let's look at a partial version of the schema definition for a User since it sho
     ]
 
 The first property in the definition, 'x-itemtype' is used to link the schema with an actual GLPI class.
-This is used to determine which table to use to access direct properties and access more data like entity restrictions and extra visiblity restrictions (when implementing the ``ExtraVisibilityCriteria`` class).
+This is used to determine which table to use to access direct properties and access more data like entity restrictions and extra visibility restrictions (when implementing the ``ExtraVisibilityCriteria`` class).
 This property is required.
 
 Next, is a 'type' property which is part of the standard OpenAPI specification. In this case, it defines a User as an object. In general, all schemas would be objects.
 
-Third, is an 'x-rights-conditions' property which defines special visiblity restrictions. This property may be excluded if there are no special restrictions.
+Third, is an 'x-rights-conditions' property which defines special visibility restrictions. This property may be excluded if there are no special restrictions.
 Currently, only 'read' restrictions can be defined here.
 Each type of restriction must be a callable that returns an array of criteria, or just an array of criteria, in the format used by ``DBmysqlIterator``.
 If the criteria is reliant on data from a session or is expensive, it should use a callable so that the criteria is resolved only at the time it is needed.
@@ -157,16 +161,6 @@ To accomplish this, mapped properties have the 'x-mapped-from' and 'x-mapper' fi
 'x-mapper' is a callable that transforms the raw value to the display value.
 The mapper used here takes the relative path and converts it to the front-end URL. It then handles returning the default user picture if it cannot get the user's specific picture.
 
-.. _partial_full_schema:
-
-Partial vs Full Schema
-^^^^^^^^^^^^^^^^^^^^^^
-
-A full schema is the defacto representation of an item in the API.
-In some cases, we do not want every property for an item to be visible such as dropdown types related to a main item.
-In ``Computer`` item we may show the ID and name of the computer's location, but the Location type itself has additional data like geolocation coordinates.
-The partial schema contains only the properties needed for the user to know where to look for the full details and some basic information about it.
-
 .. _joins:
 
 Joins
@@ -188,6 +182,36 @@ The supported properties of the 'x-join' definition are:
   In that case, the 'field' is 'users_id' but the primary property is 'id', so we need to hint to the API that 'id' is still the primary property.
 * ref-join: In some cases, there is no direct connection between the main item's table and the table with the data desired (typically seen with many-to-many relations).
   In that case, a reference or in-between join can be specified. The 'ref_join' property follows the same format as 'x-join' except that you cannot have another 'ref_join'.
+
+When working with joins, it can get a little confusing. To address this, the ``Glpi\Api\HL\Controller\AbstractController`` class has a helper function:
+- getDropdownTypeSchema: This function will build a schema for a dropdown type of property where the related information is a single object, linked to the main item by a column in the main item's table. For example, entities, locations, and users on most schemas.
+.. todo:: v2.4 should also have a getChildrenTypeSchema helper (https://github.com/glpi-project/glpi/pull/24885)
+
+.. _partial_full_schema:
+
+Partial vs Full Schema
+^^^^^^^^^^^^^^^^^^^^^^
+
+A full schema is the basic representation of an item in the API.
+In some cases, we do not want every property for an item to be visible such as dropdown types related to a main item.
+In ``Computer`` item we may show the ID and name of the computer's location, but the Location type itself has additional data like geolocation coordinates.
+The partial schema contains only the properties needed for the user to know where to look for the full details and some basic information about it.
+
+The line between a partial and full schema only really applies to access through the REST endpoints.
+In GraphQL, within some limits on the query complexity and depth, the user can specify properties from the full schema even if the property is defined as a partial schema in the REST endpoints.
+By doing so, a GraphQL query may reach across many different schemas as long as there is a defined join between them (or if a custom GraphQL resolver allows it).
+
+Schema Resolution
+^^^^^^^^^^^^^^^^^
+
+When a schema is required for a High-Level API request (REST or GraphQL), the schema is requested by name from ``Glpi\Api\HL\Schemas::getSchema``.
+If the schema is not already loaded into the cache property, it will be resolved by:
+1. Check a list of known controller/schema hints to see if we know which controller provides the schema definition. If so, all schemas from that controller are loaded into the cache.
+2. If the controller is not known, schemas are loaded from all registered controllers. This process also updates the controller hints for future requests.
+
+The controller hints are persisted in the GLPI cache, but the schema definition cache is only a static property of the ``Glpi\Api\HL\Schemas`` class and is not persisted between requests.
+
+By lazily loading schemas, we reduce the overhead of the request especially when some schemas may have some complex logic associated especially when some schemas have properties with ``enum`` constraints.
 
 Extension Properties
 ^^^^^^^^^^^^^^^^^^^^
@@ -271,7 +295,11 @@ Below is a complete list of supported extension fields/properties used in OpenAP
     * - x-graphql-resolver
       - Specifies a custom resolver to use for the GraphQL API.
         Its use is not necessary unless there are extremely specific, complex requirements for data fetching where it is not possible to use the default resolvers.
-        As a general rule, if you can use the ``ResourceAccessor`` methods in your REST endpoints, then this property should not be needed.
+        As a general rule, if you can use the ``ResourceAccessor`` functions in your REST endpoints, then this property should not be needed.
         If set to null, no query is added to the GraphQL schema for it but it may still be available indirectly.
       - Main schema
       - Debug mode only
+    * - x-graphql-only
+      - Indicates the property is only available in the GraphQL API and will not be available in the REST API.
+        - Schema properties
+        - Debug mode only
