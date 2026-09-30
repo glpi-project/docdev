@@ -76,11 +76,14 @@ entry points on ``CommonGLPI`` / ``CommonDBTM``.
      - Abstract base class for strategies verified by GLPI itself. Provides the default
        verify URL (``/ReAuth/Verify``) and HTTP method (``POST``).
    * - ``Glpi\Security\ReAuth\ReAuthStrategyEnum``
-     - Native strategies (``totp``, ``password``, ``ldap``, ``fallback``) and their
-       factory.
+     - Native strategies (``totp``, ``password``, ``ldap``, ``mail``, ``cas``,
+       ``fallback``) and their factory.
    * - ``Glpi\Controller\Security\ReAuthController``
      - Routes ``/ReAuth/Prompt`` (display the form) and ``/ReAuth/Verify`` (verify, then
-       replay the initial request).
+       replay the initial request), plus ``/ReAuth/CAS`` and ``/ReAuth/CAS/Callback`` for
+       the CAS round-trip.
+   * - ``Glpi\Kernel\Listener\RequestListener\ReAuthReplayListener``
+     - Restores the referer of the replayed request (see :ref:`below <reauth_request_flow>`).
 
 ``ReAuthManager`` uses ``SingletonTrait``, and is registered as an autowirable service in
 ``dependency_injection/services.php`` (a factory on ``getInstance()``).
@@ -94,6 +97,11 @@ Native strategies and priorities
 The prompt does not let the user choose: among all strategies available for that user, the one
 with the **highest priority** wins.
 
+Availability depends on **how the current session was opened**
+(``$_SESSION['glpiauthtype']``), not only on the account settings: a user logged in through CAS
+is asked to go through CAS again, even if their account also has a local password. A session
+restored from a "remember me" cookie keeps the method of the original login.
+
 .. list-table::
    :header-rows: 1
    :widths: 30 15 55
@@ -106,15 +114,33 @@ with the **highest priority** wins.
      - 2FA is enabled on the account.
    * - ``PasswordReAuthStrategy``
      - 50
-     - Local GLPI account with a password.
+     - Session opened with the GLPI internal database (``Auth::DB_GLPI``), and the account
+       has a password.
    * - ``LdapReAuthStrategy``
      - 50
-     - Account bound to an LDAP directory. Fails closed: a directory outage blocks the
-       action.
+     - Session opened through LDAP, or through an external SSO (``Auth::EXTERNAL``) for an
+       account bound to an LDAP directory; the directory must have a host configured. Fails
+       closed: a directory outage blocks the action.
+   * - ``MailReAuthStrategy``
+     - 50
+     - Same rules as LDAP, for a mail server (IMAP/POP) with a connection string
+       configured. Fails closed.
+   * - ``CasReAuthStrategy``
+     - 50
+     - Session opened through CAS, and a CAS host is configured. Verified out of band: the
+       user is sent to the CAS server with ``renew=true`` and must type their credentials
+       again, and the returned identity must be the one of the user being re-authenticated.
+       Fails closed.
    * - ``FallbackReAuthStrategy``
      - 0
      - Always. Only displays a confirmation and always succeeds, so a user with no other
        method is never locked out. It is **not** an identity check.
+
+A directory or a mail server that is *missing or not configured* makes the strategy
+unavailable, so that a weaker one takes over; a server that is configured but *unreachable*
+keeps the strategy selected, and the verification fails.
+
+.. _reauth_request_flow:
 
 Request flow
 ++++++++++++
@@ -144,6 +170,16 @@ Request flow
 The replay is what makes the detour transparent: a submitted form is not lost, the user lands
 on the page they asked for.
 
+The replayed request also carries the ``_glpi_reauth_restore_referer`` parameter
+(``ReAuthManager::RESTORE_REFERER_PARAM``). ``ReAuthReplayListener`` then replaces the referer
+of that request, which would otherwise be the verification page, by the origin URL stored in
+the session, so that ``Html::back()`` and similar return to the page the user came from.
+
+For CAS, step 3 is replaced by a round-trip: the prompt form sends a ``GET`` to
+``/ReAuth/CAS``, which redirects to the CAS server; the CAS server sends the user back to
+``/ReAuth/CAS/Callback`` with a service ticket, which is validated before opening the window
+and replaying the request the same way.
+
 Session keys used
 +++++++++++++++++
 
@@ -162,14 +198,16 @@ Session keys used
    * - ``glpi_reauth_requested_post_data``
      - The POST data of the replayed request.
    * - ``glpi_reauth_origin_url``
-     - The referer, used for the "Cancel" button.
+     - The referer, used for the "Cancel" button and restored on the replayed request.
+   * - ``glpi_reauth_cas_users_id``
+     - Single-use marker binding a CAS round-trip to the user who started it.
 
 .. warning::
 
    ``ReAuthManager::authenticate()`` performs **no identity check**: it only opens the window.
    Calling it without having verified the user first is an authentication bypass. Outside of
-   ``ReAuthController::verify()`` and of a strategy endpoint that did verify the user, do not
-   call it.
+   ``ReAuthController`` (after ``verify()`` or the CAS callback succeeded) and of a strategy
+   endpoint that did verify the user, do not call it.
 
 .. _reauth_protect_page:
 
@@ -200,8 +238,9 @@ by default):
        }
    }
 
-Core examples: ``User``, ``Profile``, ``Profile_User``, ``Group``, ``Group_User``, ``Config``,
-``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``, ``Glpi\Inventory\Conf``.
+Core examples: ``User``, ``Preference``, ``Profile``, ``Profile_User``, ``Group``,
+``Group_User``, ``Config``, ``AuthLDAP``, ``AuthMail``, ``OAuthClient``, ``Glpi\Event``,
+``Glpi\Inventory\Conf``, ``Glpi\System\Log\LogViewer``.
 
 The derived state is read through the ``final`` method
 ``CommonGLPI::isUserReauthenticationNeeded()``, which returns ``true`` only when the itemtype
@@ -324,6 +363,38 @@ Consequences when designing a sensitive feature:
 * A sub-form loaded by AJAX may be displayed even though re-authentication is missing (see
   massive actions below), as long as the actual processing goes through a full page request
   that will prompt.
+
+.. _reauth_impersonation:
+
+Impersonation
+^^^^^^^^^^^^^
+
+Starting an impersonation is itself a sensitive action (``User`` is a sensitive itemtype):
+the impersonator proves **their own** identity before ``Session::startImpersonating()`` is
+called.
+
+Once the impersonation has started, re-authentication applies to the **impersonated user**,
+not to the impersonator:
+
+* the impersonator's window is not inherited: ``startImpersonating()`` drops
+  ``glpi_reauth_until``, so the first sensitive action prompts again;
+* the strategy is resolved and verified for ``$_SESSION['glpiID']``, i.e. the impersonated
+  user. The TOTP code, the password or the directory password asked for are those of the
+  **impersonated account**; the impersonator's own secrets are rejected;
+* the session auth type, on the other hand, is still the impersonator's one (the session is
+  the one they opened). Both are combined to select the strategy, which may lead to the
+  fallback: for instance, an impersonator logged in through LDAP impersonating a local
+  account gets neither ``PasswordReAuthStrategy`` (the session was not opened with the GLPI
+  internal database) nor ``LdapReAuthStrategy`` (the account has no directory);
+* ``CasReAuthStrategy`` follows the same rule: the identity returned by the CAS server must
+  be the impersonated user's one. The CAS identity kept by phpCAS since the login is the
+  impersonator's, which is why it is not used.
+
+In practice, unless the fallback applies, an impersonator cannot perform a sensitive action
+*as* the impersonated user without knowing that user's secrets.
+
+When the impersonation stops, the impersonator's window is restored as it was when the
+impersonation started (it is kept in ``$_SESSION['impersonator_info']``).
 
 .. _reauth_massiveactions:
 
@@ -455,3 +526,5 @@ Limits
   pass the prompt by itself, but it can act during an already open window.
 * No dedicated audit trail of the prompts themselves.
 * API, CLI and inventory agents are out of scope.
+* During an impersonation, the protection depends on the strategy selected for the
+  impersonated user, which may be the fallback (see :ref:`reauth_impersonation`).
