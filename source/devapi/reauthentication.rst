@@ -68,7 +68,8 @@ entry points on ``CommonGLPI`` / ``CommonDBTM``.
    * - ``Glpi\Security\ReAuth\ReAuthManager``
      - Singleton service. Holds the session state (is the user re-authenticated, which
        request has to be replayed), resolves the strategy to use, and exposes the entry
-       point ``checkReAuthenticationOrRedirect()``.
+       point ``checkReAuthenticationOrRedirect()``. ``isSelectedStrategy()`` tells whether
+       the strategy selected for the current user is of a given class.
    * - ``Glpi\Security\ReAuth\ReAuthStrategyInterface``
      - Contract of a verification method: is it available for that user, what does the
        prompt look like, how is the submission verified.
@@ -79,9 +80,11 @@ entry points on ``CommonGLPI`` / ``CommonDBTM``.
      - Native strategies (``totp``, ``password``, ``ldap``, ``mail``, ``cas``,
        ``fallback``) and their factory.
    * - ``Glpi\Controller\Security\ReAuthController``
-     - Routes ``/ReAuth/Prompt`` (display the form) and ``/ReAuth/Verify`` (verify, then
-       replay the initial request), plus ``/ReAuth/CAS`` and ``/ReAuth/CAS/Callback`` for
-       the CAS round-trip.
+     - Routes ``/ReAuth/Prompt`` (display the form, with the failure alert when called with
+       ``?failed=1``) and ``/ReAuth/Verify`` (verify, then replay the initial request).
+   * - ``Glpi\Controller\Security\Reauth\CASController``
+     - Routes ``/ReAuth/CAS`` and ``/ReAuth/CAS/Callback``: the CAS round-trip, only open
+       to users for whom CAS is the selected strategy.
    * - ``Glpi\Kernel\Listener\RequestListener\ReAuthReplayListener``
      - Restores the referer of the replayed request (see :ref:`below <reauth_request_flow>`).
 
@@ -178,7 +181,8 @@ the session, so that ``Html::back()`` and similar return to the page the user ca
 For CAS, step 3 is replaced by a round-trip: the prompt form sends a ``GET`` to
 ``/ReAuth/CAS``, which redirects to the CAS server; the CAS server sends the user back to
 ``/ReAuth/CAS/Callback`` with a service ticket, which is validated before opening the window
-and replaying the request the same way.
+and replaying the request the same way. On failure, the user is redirected to
+``/ReAuth/Prompt?failed=1``, which displays the prompt again with the failure alert.
 
 Session keys used
 +++++++++++++++++
@@ -206,8 +210,8 @@ Session keys used
 
    ``ReAuthManager::authenticate()`` performs **no identity check**: it only opens the window.
    Calling it without having verified the user first is an authentication bypass. Outside of
-   ``ReAuthController`` (after ``verify()`` or the CAS callback succeeded) and of a strategy
-   endpoint that did verify the user, do not call it.
+   ``ReAuthController::verify()``, ``CASController::casCallback()`` and of a strategy endpoint
+   that did verify the user, do not call it.
 
 .. _reauth_protect_page:
 
@@ -501,7 +505,9 @@ protected page or a strategy:
 * ``fakeWebContext()`` simulates an interactive HTTP request (and can simulate an AJAX one, to
   assert that the access is denied instead of redirected);
 * ``makeVerifyRequest($user_input)`` builds a prompt submission as ``verify()`` receives it;
-* ``resetReAuthManager()`` clears the singleton instance between tests.
+* ``resetReAuthManager()`` clears the singleton instance between tests;
+* ``loginWithCasSession()`` logs the test user in with a session opened through CAS, not
+  re-authenticated yet.
 
 End-to-end tests
 ++++++++++++++++
@@ -528,3 +534,8 @@ Limits
 * API, CLI and inventory agents are out of scope.
 * During an impersonation, the protection depends on the strategy selected for the
   impersonated user, which may be the fallback (see :ref:`reauth_impersonation`).
+* With a ``Strict`` ``session.cookie_samesite`` and a CAS server on another site than GLPI,
+  the browser does not send the session cookie when coming back from the CAS server. The CAS
+  login itself fails in that setup, so no CAS re-authentication can happen either. A CAS server
+  on the same site (e.g. ``cas.example.org`` and ``glpi.example.org``) or ``Lax`` cookies are
+  not affected.
