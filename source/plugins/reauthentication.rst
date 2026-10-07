@@ -120,7 +120,7 @@ Extend ``InPlaceReAuthStrategy`` and implement the five remaining methods:
            return '@myplugin/reauth/reauth_form.html.twig';
        }
 
-       /** Selection weight, highest available wins. Native: TOTP = 100, password = 50. */
+       /** Selection weight, highest available wins. Native: TOTP = 100, others = 50, fallback = 0. */
        #[Override]
        public function getPriority(): int
        {
@@ -221,6 +221,7 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
    namespace GlpiPlugin\MyPlugin\Controller;
 
    use Glpi\Controller\AbstractController;
+   use Glpi\Exception\Http\AccessDeniedHttpException;
    use Glpi\Http\Firewall;
    use Glpi\Security\Attribute\SecurityStrategy;
    use Glpi\Security\ReAuth\ReAuthManager;
@@ -238,6 +239,11 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
        public function __invoke(Request $request): Response
        {
            global $CFG_GLPI;
+
+           // 0. only serve users for whom this strategy is the selected one.
+           if (!$this->reAuthManager->isSelectedStrategy(ReAuthStrategy::class)) {
+               throw new AccessDeniedHttpException();
+           }
 
            // 1. verify the identity of the *current session user* out of band.
            //    On failure: do not open any window, go back to the prompt, which
@@ -262,11 +268,10 @@ Points of attention for such an endpoint:
 
 * Keep the route ``STRATEGY_AUTHENTICATED``: an anonymous request must never be able to reach
   ``authenticate()``.
-* Only serve users for whom your strategy is the selected one, by checking
-  ``$this->reAuthManager->isSelectedStrategy(MyStrategy::class)`` (and throwing an
-  ``AccessDeniedHttpException`` otherwise). Being available for the user is not enough: a
-  higher priority strategy, such as TOTP, may be the one they have to pass, and your endpoint
-  would let them skip it.
+* Only serve users for whom your strategy is the selected one (step 0). Being available for
+  the user is not enough: a higher priority strategy, such as TOTP, may be the one they have to
+  pass, and your endpoint would let them skip it. With a round-trip to a provider, check it on
+  both routes: the one starting the round-trip and the one receiving the answer.
 * The verification **must** be about ``$_SESSION['glpiID']``. Binding the external identity to
   a user coming from the request is an account takeover.
 * When the provider answers asynchronously (redirect back from the provider, callback), make
@@ -281,6 +286,14 @@ Security considerations for strategy authors
 * ``isAvailable()`` decides *who* gets your prompt, ``getPriority()`` decides *when* it wins
   over the native ones. Returning a high priority for users your strategy cannot actually
   verify would downgrade their protection.
+* Native strategies base their availability on how the current session was opened
+  (``$_SESSION['glpiauthtype']``), not only on the account settings. Do the same: offer your
+  strategy to the sessions your plugin opened, not to every account it could verify.
+* During an impersonation, ``$users_id`` is the **impersonated user**: verify that user's
+  identity, never the impersonator's (see
+  :ref:`impersonation in the core documentation <reauth_impersonation>`). State kept in the
+  session since the login is lost when the impersonation starts and ends, as
+  ``Session::init()`` only keeps a fixed list of keys.
 * ``getPromptTemplate()`` and ``getVerifyUrl()`` are rendered into the prompt form. They are
   plugin-controlled values, not user input — never build them from a request parameter.
 * Do not log the submitted secret.
@@ -301,5 +314,5 @@ Testing your strategy
 
 Since a freshly logged-in user is **not** re-authenticated, any test reaching a sensitive page
 goes through the prompt. The helpers available to open or drop the window (PHPUnit trait,
-Playwright fixture, Cypress commands) are listed in
+Playwright fixtures) are listed in
 :ref:`development and testing <reauth_dev_testing>`.

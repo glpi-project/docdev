@@ -56,8 +56,8 @@ Key properties to keep in mind while developing:
 Architecture
 ^^^^^^^^^^^^
 
-Everything lives in the ``Glpi\Security\ReAuth`` namespace, plus a controller and a few
-entry points on ``CommonGLPI`` / ``CommonDBTM``.
+Everything lives in the ``Glpi\Security\ReAuth`` namespace, plus two controllers, a request
+listener and a few entry points on ``CommonGLPI`` / ``CommonDBTM``.
 
 .. list-table::
    :header-rows: 1
@@ -517,11 +517,14 @@ must open the window explicitly. Test-only endpoints ``/test/reauth/grant`` and
 ``/test/reauth/revoke`` are registered in the ``testing`` and ``e2e_testing`` environments
 only (``ReAuthManager::revoke()`` throws anywhere else).
 
-* Playwright: the ``reauth`` fixture (``tests/e2e/utils/ReAuthenticator.ts``) exposes
-  ``grant()`` and ``revoke()``; the prompt page object is
-  ``tests/e2e/pages/ReAuthPromptPage.ts``.
-* Cypress: ``cy.login()`` already calls ``cy.grantReauth()``. A test covering the prompt itself
-  opts out with ``cy.revokeReauth()``.
+The e2e tests use Playwright:
+
+* the ``reauth`` fixture (``tests/e2e/utils/ReAuthenticator.ts``) exposes ``grant()`` and
+  ``revoke()``;
+* the automatic ``ensureReauthenticated`` fixture (``tests/e2e/fixtures/glpi_fixture.ts``)
+  already calls ``grant()`` before each test. A test covering the prompt itself opts out with
+  ``await reauth.revoke()`` at its start;
+* the prompt page object is ``tests/e2e/pages/ReAuthPromptPage.ts``.
 
 Limits
 ^^^^^^
