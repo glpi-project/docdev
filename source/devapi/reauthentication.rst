@@ -56,7 +56,7 @@ Key properties to keep in mind while developing:
 Architecture
 ^^^^^^^^^^^^
 
-Everything lives in the ``Glpi\Security\ReAuth`` namespace, plus two controllers, a request
+Everything lives in the ``Glpi\Security\ReAuth`` namespace, two controllers, a request
 listener and a few entry points on ``CommonGLPI`` / ``CommonDBTM``.
 
 .. list-table::
@@ -80,10 +80,10 @@ listener and a few entry points on ``CommonGLPI`` / ``CommonDBTM``.
      - Native strategies (``totp``, ``password``, ``ldap``, ``mail``, ``cas``,
        ``fallback``) and their factory.
    * - ``Glpi\Controller\Security\ReAuthController``
-     - Routes ``/ReAuth/Prompt`` (display the form, with the failure alert when called with
+     - Routes ``/ReAuth/Prompt`` (Display the form.  Displays with the failure alert when called with
        ``?failed=1``) and ``/ReAuth/Verify`` (verify, then replay the initial request).
    * - ``Glpi\Controller\Security\Reauth\CASController``
-     - Routes ``/ReAuth/CAS`` and ``/ReAuth/CAS/Callback``: the CAS round-trip, only open
+     - Routes ``/ReAuth/CAS`` and ``/ReAuth/CAS/Callback``: The CAS round-trip. Only open
        to users for whom CAS is the selected strategy.
    * - ``Glpi\Kernel\Listener\RequestListener\ReAuthReplayListener``
      - Restores the referer of the replayed request (see :ref:`below <reauth_request_flow>`).
@@ -117,16 +117,16 @@ restored from a "remember me" cookie keeps the method of the original login.
      - 2FA is enabled on the account.
    * - ``PasswordReAuthStrategy``
      - 50
-     - Session opened with the GLPI internal database (``Auth::DB_GLPI``), and the account
+     - Session opened with the GLPI internal database (``Auth::DB_GLPI``) and the account
        has a password.
    * - ``LdapReAuthStrategy``
      - 50
-     - Session opened through LDAP, or through an external SSO (``Auth::EXTERNAL``) for an
-       account bound to an LDAP directory; the directory must have a host configured. Fails
-       closed: a directory outage blocks the action.
+     - Session opened through LDAP or through an external SSO (``Auth::EXTERNAL``) for an
+       account bound to an LDAP directory. The directory must have a host configured. Fails
+       closed, so a directory outage blocks the action.
    * - ``MailReAuthStrategy``
      - 50
-     - Same rules as LDAP, for a mail server (IMAP/POP) with a connection string
+     - Same rules as LDAP for a mail server (IMAP/POP) with a connection string
        configured. Fails closed.
    * - ``CasReAuthStrategy``
      - 50
