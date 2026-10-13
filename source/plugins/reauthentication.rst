@@ -35,8 +35,8 @@ Two flavours exist:
 * **in place**: the prompt form is submitted to core (``/ReAuth/Verify``), which calls your
   ``verify()``;
 * **remote / out-of-band**: the prompt form is submitted to **your own route**, which
-  performs the verification and opens the window itself. ``verify()`` is then never called by
-  core.
+  performs the verification and opens the window itself. ``verify()`` is then not part of the
+  normal flow (see below).
 
 Registering the strategy
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -120,7 +120,7 @@ Extend ``InPlaceReAuthStrategy`` and implement the five remaining methods:
            return '@myplugin/reauth/reauth_form.html.twig';
        }
 
-       /** Selection weight, highest available wins. Native: TOTP = 100, password = 50. */
+       /** Selection weight, highest available wins. Native: TOTP = 100, others = 50, fallback = 0. */
        #[Override]
        public function getPriority(): int
        {
@@ -193,8 +193,26 @@ re-authentication window, and replaying the initial request. To do this, overrid
    identity check, and opens the re-authentication window itself. Only do this when the
    verification genuinely happens out of band.
 
+``verify()`` must still be implemented, and must **return** ``false``. ``/ReAuth/Verify`` stays
+reachable by any authenticated user: a request posted there while your strategy is the
+selected one (a stale prompt in another tab, a forged request) reaches your ``verify()``.
+Returning ``false`` displays the prompt again with the failure alert; throwing an exception
+would end in a server error.
+
+.. code-block:: php
+
+   <?php
+
+   #[Override]
+   public function verify(int $users_id, Request $request): bool
+   {
+       // Verified out of band, by the plugin's own route.
+       return false;
+   }
+
 Your endpoint is then responsible for the last three steps of the flow. It must reproduce what
-``ReAuthController::verify()`` does:
+``ReAuthController::verify()`` does. Core's CAS strategy follows this recipe: see
+``Glpi\Controller\Security\Reauth\CASController``.
 
 .. code-block:: php
 
@@ -203,9 +221,11 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
    namespace GlpiPlugin\MyPlugin\Controller;
 
    use Glpi\Controller\AbstractController;
+   use Glpi\Exception\Http\AccessDeniedHttpException;
    use Glpi\Http\Firewall;
    use Glpi\Security\Attribute\SecurityStrategy;
    use Glpi\Security\ReAuth\ReAuthManager;
+   use Symfony\Component\HttpFoundation\RedirectResponse;
    use Symfony\Component\HttpFoundation\Request;
    use Symfony\Component\HttpFoundation\Response;
    use Symfony\Component\Routing\Attribute\Route;
@@ -218,11 +238,18 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
        #[SecurityStrategy(Firewall::STRATEGY_AUTHENTICATED)]
        public function __invoke(Request $request): Response
        {
+           global $CFG_GLPI;
+
+           // 0. only serve users for whom this strategy is the selected one.
+           if (!$this->reAuthManager->isSelectedStrategy(ReAuthStrategy::class)) {
+               throw new AccessDeniedHttpException();
+           }
+
            // 1. verify the identity of the *current session user* out of band.
-           //    On failure: do not open any window, display the prompt again
-           //    (or redirect to /ReAuth/Prompt).
+           //    On failure: do not open any window, go back to the prompt, which
+           //    displays the failure alert thanks to the `failed` parameter.
            if (!$this->verifyThroughIdentityProvider($request)) {
-               return $this->redirect($this->generateUrl('reauth_prompt'));
+               return new RedirectResponse($CFG_GLPI['root_doc'] . '/ReAuth/Prompt?failed=1');
            }
 
            // 2. open the re-authentication window.
@@ -232,7 +259,7 @@ Your endpoint is then responsible for the last three steps of the flow. It must 
            return $this->render('pages/redirect_post.html.twig', [
                'http_method' => $this->reAuthManager->getRequestedMethod(),
                'url'         => $this->reAuthManager->getRequestedURL(),
-               'post_data'   => $this->reAuthManager->getRequestedPostData(),
+               'replay_data' => $this->reAuthManager->getReplayData(),
            ]);
        }
    }
@@ -241,6 +268,10 @@ Points of attention for such an endpoint:
 
 * Keep the route ``STRATEGY_AUTHENTICATED``: an anonymous request must never be able to reach
   ``authenticate()``.
+* Only serve users for whom your strategy is the selected one (step 0). Being available for
+  the user is not enough: a higher priority strategy, such as TOTP, may be the one they have to
+  pass, and your endpoint would let them skip it. With a round-trip to a provider, check it on
+  both routes: the one starting the round-trip and the one receiving the answer.
 * The verification **must** be about ``$_SESSION['glpiID']``. Binding the external identity to
   a user coming from the request is an account takeover.
 * When the provider answers asynchronously (redirect back from the provider, callback), make
@@ -255,6 +286,14 @@ Security considerations for strategy authors
 * ``isAvailable()`` decides *who* gets your prompt, ``getPriority()`` decides *when* it wins
   over the native ones. Returning a high priority for users your strategy cannot actually
   verify would downgrade their protection.
+* Native strategies base their availability on how the current session was opened
+  (``$_SESSION['glpiauthtype']``), not only on the account settings. Do the same: offer your
+  strategy to the sessions your plugin opened, not to every account it could verify.
+* During an impersonation, ``$users_id`` is the **impersonated user**: verify that user's
+  identity, never the impersonator's (see
+  :ref:`impersonation in the core documentation <reauth_impersonation>`). State kept in the
+  session since the login is lost when the impersonation starts and ends, as
+  ``Session::init()`` only keeps a fixed list of keys.
 * ``getPromptTemplate()`` and ``getVerifyUrl()`` are rendered into the prompt form. They are
   plugin-controlled values, not user input — never build them from a request parameter.
 * Do not log the submitted secret.
@@ -267,11 +306,13 @@ Existing implementations
   nothing else than showing the wiring, and is the shortest way to see the three steps at work.
 * A real out-of-band implementation: the **OAuth SSO** plugin, which verifies the identity
   through the identity provider the user logs in with.
+* In core, ``CasReAuthStrategy`` and ``Glpi\Controller\Security\Reauth\CASController``: an
+  out-of-band strategy with a round-trip to the CAS server.
 
 Testing your strategy
 ^^^^^^^^^^^^^^^^^^^^^
 
 Since a freshly logged-in user is **not** re-authenticated, any test reaching a sensitive page
 goes through the prompt. The helpers available to open or drop the window (PHPUnit trait,
-Playwright fixture, Cypress commands) are listed in
+Playwright fixtures) are listed in
 :ref:`development and testing <reauth_dev_testing>`.
