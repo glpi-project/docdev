@@ -7,6 +7,7 @@ Apart from the current documentation, you can also generate the full PHP documen
    :maxdepth: 2
 
    mainobjects
+   itilobjects
    database/index
    search
    controllers

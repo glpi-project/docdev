@@ -2,3 +2,11 @@
 .wy-nav-content {
     max-width: 1200px;
 }
+
+/* Let cells of tables with the "wrap" class wrap, instead of overflowing the page */
+.rst-content table.docutils.wrap td,
+.rst-content table.docutils.wrap th {
+    white-space: normal;
+    padding-left: 8px;
+    padding-right: 8px;
+}
