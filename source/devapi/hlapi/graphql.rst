@@ -9,6 +9,105 @@ The GraphQL API allows the client to specify exactly what data is needed and in 
 It also lets the client request multiple resources in a single request, reducing the number of round trips needed to get all the required data.
 Finally, the GraphQL API allows the queries to traverse relationships between resources, making it easier to get related data in a single request.
 
+Example:
+
+.. code-block:: graphql
+    query {
+        myComputers:Computer(filter: "user.username==jsmith") {
+            id name
+        }
+        myGroupComputers:Computer(filter: "group.name=='IT Staff'") {
+            id name
+        }
+        Entity(id: 2) {
+            label: completename
+            settings: {
+                usedAutoAssignSetting: auto_assign_mode(computed: true)
+                rawAutoAssignSetting: auto_assign_mode
+            }
+        }
+        ServiceCatalogInfo {
+		        helpdesk_home_title
+		        helpdesk_home_search_enabled
+		        tiles {
+			          ...GLPIPageTileFields
+			          ...ExternalPageTileFields
+			          ...FormTileFields
+		        }
+	      }
+    }
+    fragment GLPIPageTileFields on GLPIPageTile {
+	      _tile_type id title description illustration page
+    }
+
+    fragment ExternalPageTileFields on ExternalPageTile {
+	      _tile_type id title description illustration url
+    }
+
+    fragment FormTileFields on FormTile {
+	      _tile_type id title description illustration form {id name}
+    }
+
+Example response:
+
+.. code-block:: json
+    {
+        "data": {
+            "myComputers": [
+                {
+                    "id": 45,
+                    "name": "JSmithPC26"
+                }
+            ],
+            "myGroupComputers": [
+                {
+                    "id": 234,
+                    "name": "ITWorkbench01"
+                }
+            ],
+            "Entity": [
+                {
+                    "label": "Root Entity > IT",
+                    "settings": {
+                        "usedAutoAssignSetting": "1",
+                        "rawAutoAssignSetting": "-2"
+                    }
+                }
+            ],
+            "ServiceCatalogInfo": {
+			          "helpdesk_home_title": "How can we help you?",
+			          "helpdesk_home_search_enabled": true,
+			          "tiles": [
+				            {
+					              "_tile_type": "GLPIPageTile",
+					              "id": 1,
+					              "title": "Browse help articles",
+					              "description": "See all available help articles and our FAQ.",
+					              "illustration": "browse-kb",
+					              "page": "faq"
+				            },
+				            {
+					              "_tile_type": "FormTile",
+					              "id": 1,
+                        "title": "Report an issue",
+					              "description": "Ask for support from our helpdesk team.",
+					              "illustration": "report-issue",
+					              "form": {
+						                "id": 1,
+						                "name": "Report an issue"
+					              }
+				            },
+			          ]
+		        }
+        },
+    }
+
+As you can see, GraphQL queries can be quite a bit more complex than a REST query, but it is doing the job of multiple REST queries which would have over-fetched the data for each of the resources.
+Most of the GraphQL-specific functionality you can see in this example is handled automatically by the GraphQL client library being used by GLPI such as query/field aliases, fragments, etc.
+Even traversing different schemas, like `settings` in the `Entity` schema, is made easier by the library as the data fetching gets broken down into steps so resolvers can focus on only a small part at a time.
+
+Some features still require manual handling such as field arguments, like `computed` in the entity settings, which tells the resolver to change how the data is handled before being sent to the client, but these are handled fairly simply by declaring them in an extension property in the schema and then checking the arguments in the custom resolver.
+
 To ease the implementation of the GraphQL API, most schemas require no changes to be available and functional within the GraphQL API.
 
 The GraphQL schema is generated automatically from the existing schema.
@@ -38,7 +137,8 @@ The context object is an object that is passed to every resolver function in the
 
 By default, the GraphQL API adds an ``api_version`` property to the context object, which contains the version of the High-Level API being used.
 
-When a list of results is being fetched, the some ``pagination`` data is added to the context object, including the following properties:
+When a list of results is being fetched, some ``pagination`` data is added to the context object, including the following properties:
+
 - ``start``: The starting index of the results being fetched.
 - ``limit``: The maximum number of results being fetched.
 - ``total_count``: The total number of results available for the query.
@@ -51,6 +151,7 @@ Default Resolvers
 -----------------
 
 By default, all fields in a schema are resolved using default resolvers based on:
+
 - ListOfType: This type of field is resolved by ``\Glpi\Api\HL\GraphQL\DefaultResolvers::resolveListField``.
 - ObjectType: This type of field is resolved by ``\Glpi\Api\HL\GraphQL\DefaultResolvers::resolveObjectField``.
 - Any other type: This type of field is resolved by ``\Glpi\Api\HL\GraphQL\DefaultResolvers::resolveScalarField``.

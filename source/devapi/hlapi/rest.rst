@@ -14,6 +14,7 @@ The standard is to use GET for get/search, POST for create, PATCH for update, an
 Some APIs use PUT for update operations even when the update is not a full replacement of the item, but the High-Level API (and the underlying core GLPI logic) works with state changes and PATCH is the correct method to use for this type of operation.
 
 The following attributes are required on all endpoint functions:
+
 - ``Glpi\Api\HL\Route``: Defines the functional information about the endpoint such as the HTTP methods, path, path attribute requirements, priority, required security level, required scopes, and additional middleware to register for the responses coming from the endpoint.
   With path parameters, you can define them to match against a regular expression.
   Additionally, you can define path parameters to match against the result of a static method on the controller class (defined in any callable format) that returns an array of valid values for the path parameter.
@@ -53,6 +54,7 @@ An example of an endpoint is shown below:
     }
 
 Here you can tell:
+
 - The endpoint is for GET /Asset/{itemtype}
 - The ``itemtype`` path parameter is validated against the result of the static method ``getAssetTypes`` on the controller class
 - The endpoint is documented as a search endpoint for the schema corresponding to the ``itemtype``
@@ -126,7 +128,9 @@ This function also takes:
 - a field name to use as the primary key for the search (defaults to id). An example of this being used is for ``/Administration/Users/{username}`` where we are trying to look for a user by their username instead of their ID.
 
 The basic logic for this function is:
-1. Apply read restrictions to the schema itself to filter any properties that should be unknown.
+
+1. Apply read restrictions to the schema itself to filter any properties that should be unknown. This process enumerates each property in the schema, checks if there is a restriction callable for the property, and then if so and the callable returns false, unsets the property from the schema being used before returning the modified schema.
+   This way, the search code has no clue those properties originally existed and therefore would not fetch the data for them.
 2. Resolves the itemtype from the schema and checks that the user has the global read permission to view the itemtype.
    Item-level permissions are expected to be handled within the SQL query based on the ``x-rights-conditions`` property in the schema.
 3. Adds a filter to the request parameters to limit the search to the single record specified by the field name and value.
