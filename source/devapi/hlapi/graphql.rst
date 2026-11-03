@@ -12,6 +12,7 @@ Finally, the GraphQL API allows the queries to traverse relationships between re
 Example:
 
 .. code-block:: graphql
+
     query {
         myComputers:Computer(filter: "user.username==jsmith") {
             id name
@@ -51,6 +52,7 @@ Example:
 Example response:
 
 .. code-block:: json
+
     {
         "data": {
             "myComputers": [

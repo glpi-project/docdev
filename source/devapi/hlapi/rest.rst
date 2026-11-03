@@ -35,6 +35,7 @@ Therefore, most endpoints can be programmed with just a few lines of code.
 An example of an endpoint is shown below:
 
 .. code-block:: php
+
     #[Route(path: '/Assets', priority: 1, tags: ['Assets'])]
     final class AssetController extends AbstractController
     {
@@ -66,6 +67,7 @@ The only logic in the endpoint is to call the ``ResourceAccessor::searchBySchema
 A slightly more complex example is shown below:
 
 .. code-block:: php
+
     #[Route(path: '/Assets', priority: 1, tags: ['Assets'])]
     #[Doc\Route(
         parameters: [
@@ -164,6 +166,7 @@ Creates a new item by a schema name. This function also takes:
 - any extra parameters to pass to the GET route
 
 The basic logic for this function is:
+
 1. Apply read restrictions to the schema itself to filter any properties that should be unknown.
 2. Forces the ``entity`` parameter to be set to the current entity if it was not specified in the request parameters.
 3. Validates the parameters provided against the requirements of the properties in the schema.
@@ -176,6 +179,7 @@ updateBySchema
 ^^^^^^^^^^^^^^
 
 Updates an existing item by a schema name. This function also takes:
+
 - request parameters to update the item
 - request attributes to be used in addition to the field name option to add an RSQL filter that will be applied to the search. For example "id==5" or "username==glpi".
 - a field name to use as the primary key for the search (defaults to id). An example of this being used is for ``/Administration/Users/{username}`` where we are trying to update a user by their username instead of their ID.
@@ -198,6 +202,7 @@ Deletes an existing item by a schema name. This function also takes:
 - a field name to use as the primary key for the search (defaults to id). An example of this being used is for ``/Administration/Users/{username}`` where we are trying to delete a user by their username instead of their ID.
 
 The basic logic for this function is:
+
 1. Checks if the "force" parameter is set and true to indicate the item should be purged instead of just soft-deleted (if the itemtype supports it).
 2. Checks that the user has permission to delete or purge an item with the given fields.
 3. Calls the ``CommonDBTM::delete`` function to delete or purge the item.
@@ -218,6 +223,7 @@ Some of the ``prepareInputForAdd`` and ``prepareInputForUpdate`` methods on the 
 By checking the constraints within the High-Level API, we can provide a consistent and machine-readable error message for any validation errors.
 
 Currently, the following constraints are checked:
+
 - Required properties must be provided in the request parameters. Required properties are only checked for create operations, not update operations.
 - Properties with a maxLength constraint must not exceed the maximum length.
 - Properties with a minimum constraint must not be less than the minimum value.
@@ -229,6 +235,7 @@ Precondition Checks
 ^^^^^^^^^^^^^^^^^^^
 
 Currently, the following precondition checks are supported:
+
 - If-Modified-Since: Checks if the item has been modified since the specified date/time.
   If it has not been modified, a 304 Not Modified response is returned for GET requests or a 412 Precondition Failed response is returned for other requests.
 - If-Unmodified-Since: Checks if the item has been modified since the specified date/time.
