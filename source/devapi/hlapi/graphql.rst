@@ -13,96 +13,84 @@ Example:
 
 .. code-block:: graphql
 
-    query {
-        myComputers:Computer(filter: "user.username==jsmith") {
-            id name
-        }
-        myGroupComputers:Computer(filter: "group.name=='IT Staff'") {
-            id name
-        }
-        Entity(id: 2) {
-            label: completename
-            settings: {
-                usedAutoAssignSetting: auto_assign_mode(computed: true)
-                rawAutoAssignSetting: auto_assign_mode
-            }
-        }
-        ServiceCatalogInfo {
-		        helpdesk_home_title
-		        helpdesk_home_search_enabled
-		        tiles {
-			          ...GLPIPageTileFields
-			          ...ExternalPageTileFields
-			          ...FormTileFields
-		        }
-	      }
+  query {
+    myComputers:Computer(filter: "user.username==jsmith") { id name }
+    myGroupComputers:Computer(filter: "group.name=='IT Staff'") { id name }
+    Entity(id: 2) {
+      label: completename
+      settings: {
+        usedAutoAssignSetting: auto_assign_mode(computed: true)
+        rawAutoAssignSetting: auto_assign_mode
+      }
     }
-    fragment GLPIPageTileFields on GLPIPageTile {
-	      _tile_type id title description illustration page
-    }
-
-    fragment ExternalPageTileFields on ExternalPageTile {
-	      _tile_type id title description illustration url
-    }
-
-    fragment FormTileFields on FormTile {
-	      _tile_type id title description illustration form {id name}
-    }
+    ServiceCatalogInfo {
+		  helpdesk_home_title
+		  helpdesk_home_search_enabled
+		  tiles {
+        ...GLPIPageTileFields
+			  ...ExternalPageTileFields
+			  ...FormTileFields
+		  }
+	  }
+  }
+  fragment GLPIPageTileFields on GLPIPageTile { _tile_type id title description illustration page }
+  fragment ExternalPageTileFields on ExternalPageTile { _tile_type id title description illustration url }
+  fragment FormTileFields on FormTile { _tile_type id title description illustration form {id name} }
 
 Example response:
 
 .. code-block:: json
 
-    {
-        "data": {
-            "myComputers": [
-                {
-                    "id": 45,
-                    "name": "JSmithPC26"
-                }
-            ],
-            "myGroupComputers": [
-                {
-                    "id": 234,
-                    "name": "ITWorkbench01"
-                }
-            ],
-            "Entity": [
-                {
-                    "label": "Root Entity > IT",
-                    "settings": {
-                        "usedAutoAssignSetting": "1",
-                        "rawAutoAssignSetting": "-2"
-                    }
-                }
-            ],
-            "ServiceCatalogInfo": {
-			          "helpdesk_home_title": "How can we help you?",
-			          "helpdesk_home_search_enabled": true,
-			          "tiles": [
-				            {
-					              "_tile_type": "GLPIPageTile",
-					              "id": 1,
-					              "title": "Browse help articles",
-					              "description": "See all available help articles and our FAQ.",
-					              "illustration": "browse-kb",
-					              "page": "faq"
-				            },
-				            {
-					              "_tile_type": "FormTile",
-					              "id": 1,
-                        "title": "Report an issue",
-					              "description": "Ask for support from our helpdesk team.",
-					              "illustration": "report-issue",
-					              "form": {
-						                "id": 1,
-						                "name": "Report an issue"
-					              }
-				            },
-			          ]
-		        }
-        },
-    }
+  {
+    "data": {
+      "myComputers": [
+        {
+          "id": 45,
+          "name": "JSmithPC26"
+        }
+      ],
+      "myGroupComputers": [
+        {
+          "id": 234,
+          "name": "ITWorkbench01"
+        }
+      ],
+      "Entity": [
+        {
+          "label": "Root Entity > IT",
+          "settings": {
+            "usedAutoAssignSetting": "1",
+            "rawAutoAssignSetting": "-2"
+          }
+        }
+      ],
+      "ServiceCatalogInfo": {
+			  "helpdesk_home_title": "How can we help you?",
+			  "helpdesk_home_search_enabled": true,
+			  "tiles": [
+				  {
+					  "_tile_type": "GLPIPageTile",
+					  "id": 1,
+					  "title": "Browse help articles",
+					  "description": "See all available help articles and our FAQ.",
+					  "illustration": "browse-kb",
+					  "page": "faq"
+				  },
+				  {
+					  "_tile_type": "FormTile",
+					  "id": 1,
+            "title": "Report an issue",
+					  "description": "Ask for support from our helpdesk team.",
+					  "illustration": "report-issue",
+					  "form": {
+              "id": 1,
+						  "name": "Report an issue"
+					  }
+				  },
+			  ]
+		  }
+    },
+  }
 
 As you can see, GraphQL queries can be quite a bit more complex than a REST query, but it is doing the job of multiple REST queries which would have over-fetched the data for each of the resources.
 Most of the GraphQL-specific functionality you can see in this example is handled automatically by the GraphQL client library being used by GLPI such as query/field aliases, fragments, etc.
