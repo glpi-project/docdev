@@ -1,0 +1,4 @@
+/* Widen the content area (the Read the Docs based theme caps it at 800px) */
+.wy-nav-content {
+    max-width: 1200px;
+}
