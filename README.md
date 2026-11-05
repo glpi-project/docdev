@@ -14,56 +14,27 @@ We're following [GitFlow](http://git-flow.readthedocs.io/):
 
 ## Run it!
 
+Each command exists in two flavours: with Docker (`docker-` prefix, only Docker required) or directly on your machine (Sphinx required).
+
+| Docker              | Your machine | What it does                                                         |
+|---------------------|--------------|----------------------------------------------------------------------|
+| `make docker-build` | `make build` | Build the HTML documentation in `build/html`                         |
+| `make docker-watch` | `make watch` | Serve the documentation on http://localhost:8007/, rebuilt on change |
+| `make docker-lint`  | `make lint`  | Check RST syntax and references; fails on any warning                |
+
+Run `make` alone to list the available commands.
+
 ### Using Docker
 
+Nothing to install but Docker: each command runs in a throwaway container, and the image is built on first use.
+
+### Using your machine
+
+Install Sphinx, `sphinx-autobuild` and the GLPI theme, for example in a virtual environment:
 ```shell
-docker compose up --remove-orphans
-```
-
-or 
-
-```shell
-make up
-```
-This only starts the container; it does not serve the documentation yet.
-
-To build and serve the documentation, with live rebuild on changes and console output (useful to see errors):
-```shell
-make watch
-```
-Doc is then available at http://localhost:8007/
-
-### Using your machine 
-
-You'll just have to install [Python Sphinx](http://sphinx-doc.org/), it is generally available in distributions repositories for Linux.
-
-If your distribution does not provide it, you could use a `virtualenv`:
-```
-$ virtualenv /path/to/virtualenv/files
-$ /path/to/virtualenv/bin/activate
-$ pip install sphinx
-```
-
-Once all has been successfully installed, just run the following to build the documentation:
-```
-$ make html
-```
-
-Results will be available in the `build/html` directory :)
-
-Note that it actually uses the default theme, which differs locally and on readthedocs system.
-
-## Autobuild
-
-Autobuild automatically rebuild and refresh the current page on edit.
-To use it, you need the `sphinx-autobuild` module:
-```
-$ pip install sphinx-autobuild
-```
-
-You can then use the `livehtml` command:
-```
-$ make livehtml
+python3 -m venv .venv
+. .venv/bin/activate
+pip install sphinx sphinx-autobuild -r requirements.txt
 ```
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
