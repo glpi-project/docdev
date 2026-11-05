@@ -152,8 +152,7 @@ Gets a list of items by a schema name. This function also takes:
 
 The basic logic for this function is:
 1. Apply read restrictions to the schema itself to filter any properties that should be unknown.
-2. Resolves the itemtype from the schema and checks that the user has the global read permission to view the itemtype.
-   Item-level permissions are expected to be handled within the SQL query based on the ``x-rights-conditions`` property in the schema.
+2. Resolves the itemtype from the schema and checks that the user has the global read permission to view the itemtype. Item-level permissions are expected to be handled within the SQL query based on the ``x-rights-conditions`` property in the schema.
 3. Calls ``Glpi\Api\HL\Search::getSearchResultsBySchema`` with the schema and request parameters to get the list of records.
 4. Returns the list of records found along with a ``Content-Range`` header, or a 404 error if no records were found.
 

@@ -301,5 +301,5 @@ Below is a complete list of supported extension fields/properties used in OpenAP
       - Debug mode only
     * - x-graphql-only
       - Indicates the property is only available in the GraphQL API and will not be available in the REST API.
-        - Schema properties
-        - Debug mode only
+      - Schema properties
+      - Debug mode only
