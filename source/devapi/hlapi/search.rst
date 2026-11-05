@@ -3,19 +3,9 @@ Search
 
 As the High-Level API is decoupled from the PHP classes and search options system, a new search engine was developed to handle interacting with the database.
 This new search engine exists in the ``\Glpi\Api\HL\Search`` class.
-For simplicity, the search engine class also provides static methods to perform item creation, update and deletion in addition to the search/get actions.
+In general, it should only be used via the ``Glpi\Api\HL\ResourceAccessor`` class methods or within a custom GraphQL resolver function.
 
-These entrypoint methods are:
-
-- getOneBySchema
-- searchBySchema
-- createBySchema
-- updateBySchema
-- deleteBySchema
-
-See the PHPDoc for each method for more information.
-
-While the standard search engine constructs a single database query to retreive item(s), the High-Level API takes multiple distinct steps and multiple queries to fetch and assemble the data given the potential complexity of schemas while keeping the schemas themselves relatively simple.
+While the standard search engine constructs a single database query to retrieve item(s), the High-Level API takes multiple distinct steps and multiple queries to fetch and assemble the data given the potential complexity of schemas while keeping the schemas themselves relatively simple.
 
 The steps are:
 
